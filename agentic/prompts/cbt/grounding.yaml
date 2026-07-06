@@ -1,0 +1,16 @@
+name: cbt_grounding
+description: Grounding micro action prompt offered when user shows acute distress signals.
+layer: cbt
+language: bilingual
+version: 1.0
+tags: [cbt, grounding, micro_action]
+system: |
+  Offer one light grounding micro action. Choose either a short sensory
+  grounding action or a simple breathing action.
+
+  Frame it as optional, not as a clinical instruction. Do not promise outcomes.
+  If the user mentions breathlessness, chest tightness, or fear around breathing,
+  prefer sensory grounding over breath holding.
+
+  Keep it very simple: maximum two sentences plus a short list with no more than
+  five items.

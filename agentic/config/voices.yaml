@@ -1,0 +1,114 @@
+# Voice catalog for the TTS layer.
+#
+# Each entry pairs a stable internal id with the provider-specific id.
+# Users pick one of these via the UI; the TTS node resolves the entry
+# at request time. Replace the elevenlabs_voice_id placeholders with
+# real ids once you have selected the voices on ElevenLabs.
+#
+# Layout: 4 Indonesian voices (2F + 2M) and 4 English voices (2F + 2M).
+# When the user has not chosen a voice, the catalog picks the default
+# for the resolved language. Phase 1 ElevenLabs free tier supports
+# Multilingual v2 and v3 alpha.
+
+# Default voice per language. The TTS node passes the resolved
+# language and falls through to ``default_voice`` only when no
+# language match is found.
+default_voice: "nura_warm_female"
+
+default_voice_by_language:
+  id: "nura_warm_female"
+  en: "sarah_clear_female"
+
+voices:
+  # ── Indonesian voices ──────────────────────────────────────────
+  nura_warm_female:
+    label_id: "Nura"
+    label_en: "Nura"
+    gender: "female"
+    language: "id"
+    persona: "warm, calm, late twenties tone"
+    elevenlabs_voice_id: "hpp4J3VqNfWAUOO0d1Us"
+    openai_fallback_voice: "cedar"
+    notes: "Default Indonesian voice. Curated for empathic listening."
+
+  rini_clear_female:
+    label_id: "Rini"
+    label_en: "Rini"
+    gender: "female"
+    language: "id"
+    persona: "clear, friendly, mid twenties tone"
+    elevenlabs_voice_id: "WQ4h6sgS9p2XXvLsESBT"
+    openai_fallback_voice: "cedar"
+    notes: "Brighter timbre. Suitable for celebratory moments."
+
+  arif_grounded_male:
+    label_id: "Arif"
+    label_en: "Arif"
+    gender: "male"
+    language: "id"
+    persona: "grounded, steady, low pitch"
+    elevenlabs_voice_id: "LMO8Em46czmXgX8nuxIU"
+    openai_fallback_voice: "cedar"
+    notes: "Calm masculine voice for grounding exercises."
+
+  budi_friendly_male:
+    label_id: "Budi"
+    label_en: "Budi"
+    gender: "male"
+    language: "id"
+    persona: "friendly, conversational, mid twenties tone"
+    elevenlabs_voice_id: "i8CJLmX03JoyL7Dl2LaT"
+    openai_fallback_voice: "cedar"
+    notes: "Warm conversational baseline."
+
+  # ── English voices ─────────────────────────────────────────────
+  emma_warm_female:
+    label_id: "Emma"
+    label_en: "Emma"
+    gender: "female"
+    language: "en"
+    persona: "warm, attentive, late twenties tone"
+    elevenlabs_voice_id: "eXpIbVcVbLo8ZJQDlDnl"
+    openai_fallback_voice: "cedar"
+    notes: "Default English voice. Soft, empathic delivery."
+
+  sarah_clear_female:
+    label_id: "Sarah"
+    label_en: "Sarah"
+    gender: "female"
+    language: "en"
+    persona: "bright, clear, mid twenties tone"
+    elevenlabs_voice_id: "nf4MCGNSdM0hxM95ZBQR"
+    openai_fallback_voice: "cedar"
+    notes: "Crisp diction. Good for psychoeducation snippets."
+
+  adam_grounded_male:
+    label_id: "Adam"
+    label_en: "Adam"
+    gender: "male"
+    language: "en"
+    persona: "friendly, conversational, mid twenties tone"
+    elevenlabs_voice_id: "inGcvmoPgbvKUk9uCvHu"
+    openai_fallback_voice: "cedar"
+    notes: "Warm conversational baseline for English check-ins."
+
+  michael_friendly_male:
+    label_id: "Michael"
+    label_en: "Michael"
+    gender: "male"
+    language: "en"
+    persona: "grounded, steady, low register"
+    elevenlabs_voice_id: "ljX1ZrXuDIIRVcmiVSyR"
+    openai_fallback_voice: "cedar"
+    notes: "Calm masculine voice for grounding exercises."
+
+# Quota fallback policy
+fallback:
+  on_elevenlabs_quota_exceeded: "openai_tts1"
+  on_all_failed: "text_only"
+  openai_tts_model: "gpt-4o-mini-tts"
+  openai_tts_format: "mp3"
+  openai_tts_instructions: >-
+    Speak naturally in the input language. Keep one consistent voice profile.
+    Use lively, warm, conversational pacing with gentle variation. Do not
+    translate. Avoid robotic, flat, theatrical, or overly cheerful delivery.

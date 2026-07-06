@@ -1,0 +1,417 @@
+x-restart-policy: &restart_policy
+  restart: unless-stopped
+
+x-log-driver: &log_driver
+  logging:
+    driver: json-file
+    options:
+      max-size: "10m"
+      max-file: "5"
+
+networks:
+  internal:
+    driver: bridge
+    internal: false # set true to fully isolate (then add a public net)
+  public:
+    driver: bridge
+
+services:
+  # ── Storage tier (internal only) ────────────────────────────────────
+
+  neo4j:
+    image: neo4j:5.26-community
+    <<: [*restart_policy, *log_driver]
+    environment:
+      NEO4J_AUTH: neo4j/${NEO4J_PASSWORD:?NEO4J_PASSWORD required}
+      # Any NEO4J_* var is treated by the official image as a neo4j.conf
+      # setting (except a hardcoded allowlist like NEO4J_AUTH) -- so the
+      # plain password for the healthcheck below must NOT be NEO4J_-prefixed,
+      # or the server refuses to start ("Unrecognized setting").
+      HEALTHCHECK_NEO4J_PASSWORD: ${NEO4J_PASSWORD}
+      NEO4J_PLUGINS: '["apoc"]'
+      NEO4J_dbms_security_procedures_unrestricted: "apoc.*"
+      NEO4J_server_memory_pagecache_size: ${NEO4J_PAGECACHE:-512m}
+      NEO4J_server_memory_heap_initial__size: ${NEO4J_HEAP_INIT:-512m}
+      NEO4J_server_memory_heap_max__size: ${NEO4J_HEAP_MAX:-1G}
+    volumes:
+      - neo4j_data:/data
+      - ./infra/neo4j/schema:/schema:ro
+      - ./infra/neo4j/migrations:/migrations:ro
+    healthcheck:
+      test:
+        ["CMD-SHELL", "cypher-shell -u neo4j -p $$HEALTHCHECK_NEO4J_PASSWORD 'RETURN 1'"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+      start_period: 60s
+    networks: [internal]
+
+  postgres:
+    image: pgvector/pgvector:pg15
+    <<: [*restart_policy, *log_driver]
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:?POSTGRES_USER required}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD required}
+      POSTGRES_DB: ${POSTGRES_DB:?POSTGRES_DB required}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./infra/postgres/init.sql:/docker-entrypoint-initdb.d/000_init.sql:ro
+      - ./infra/postgres/pgvector_init.sql:/docker-entrypoint-initdb.d/010_pgvector_init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    networks: [internal]
+
+  redis:
+    image: redis:7-alpine
+    <<: [*restart_policy, *log_driver]
+    command:
+      - "redis-server"
+      - "--requirepass"
+      - "${REDIS_PASSWORD:?REDIS_PASSWORD required}"
+      - "--save"
+      - "60"
+      - "1000"
+    environment:
+      # --requirepass above only sets the server's password via command arg;
+      # the healthcheck needs its own env var to authenticate with redis-cli.
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli -a $$REDIS_PASSWORD ping | grep PONG"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+    networks: [internal]
+
+  # ── One-shot DB migration ───────────────────────────────────────────
+
+  postgres-migrate:
+    image: migrate/migrate:v4.17.1
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./backend/migrations:/migrations:ro
+    command:
+      [
+        "-path",
+        "/migrations",
+        "-database",
+        "postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?sslmode=disable",
+        "up",
+      ]
+    restart: "no"
+    networks: [internal]
+
+  # ── Agentic FastAPI service ─────────────────────────────────────────
+
+  agentic:
+    build:
+      context: .
+      dockerfile: agentic/Dockerfile
+    <<: [*restart_policy, *log_driver]
+    environment:
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+      DEFAULT_USER_LANGUAGE: ${DEFAULT_USER_LANGUAGE:-id}
+      GUARDRAIL_AUDIT_ENABLED: ${GUARDRAIL_AUDIT_ENABLED:-1}
+      PGVECTOR_SYNC_ENABLED: ${PGVECTOR_SYNC_ENABLED:-1}
+      PGVECTOR_SYNC_INTERVAL_SECONDS: ${PGVECTOR_SYNC_INTERVAL_SECONDS:-300}
+      PGVECTOR_SYNC_BATCH_SIZE: ${PGVECTOR_SYNC_BATCH_SIZE:-100}
+      RETRIEVAL_MODE: ${RETRIEVAL_MODE:-full}
+      RETRIEVAL_QUERY_REWRITE_ENABLED: ${RETRIEVAL_QUERY_REWRITE_ENABLED:-1}
+      # Runtime
+      AGENTIC_HOST: 0.0.0.0
+      AGENTIC_PORT: 8000
+      AGENTIC_LOG_LEVEL: ${AGENTIC_LOG_LEVEL:-info}
+      AGENTIC_RELOAD: "0"
+      AGENTIC_ENABLE_DOCS: ${AGENTIC_ENABLE_DOCS:-0} # off in prod
+      AGENTIC_CORS_ORIGINS: ${AGENTIC_CORS_ORIGINS:?AGENTIC_CORS_ORIGINS required}
+      AGENTIC_GATEWAY_PRIVATE_KEY: ${AGENTIC_GATEWAY_PRIVATE_KEY:?AGENTIC_GATEWAY_PRIVATE_KEY required}
+      AGENTIC_GATEWAY_PRIVATE_KEY_HEADER: ${AGENTIC_GATEWAY_PRIVATE_KEY_HEADER:-X-Agentic-Private-Key}
+      AXIS_GRAPH_STATE_LOG: ${AXIS_GRAPH_STATE_LOG:-0}
+      AXIS_GRAPH_TIMING_LOG: ${AXIS_GRAPH_TIMING_LOG:-0}
+      # Storage
+      NEO4J_URI: bolt://neo4j:7687
+      NEO4J_USERNAME: neo4j
+      NEO4J_PASSWORD: ${NEO4J_PASSWORD}
+      NEO4J_DATABASE: ${NEO4J_DATABASE:-neo4j}
+      NEO4J_POOL_SIZE: ${NEO4J_POOL_SIZE:-50}
+      PG_HOST: postgres
+      PG_PORT: 5432
+      PG_USER: ${POSTGRES_USER}
+      PG_PASSWORD: ${POSTGRES_PASSWORD}
+      PG_DATABASE: ${POSTGRES_DB}
+      PG_POOL_MIN_SIZE: ${PG_POOL_MIN_SIZE:-2}
+      PG_POOL_MAX_SIZE: ${PG_POOL_MAX_SIZE:-20}
+      EMBED_MODEL: ${EMBED_MODEL:-text-embedding-3-small}
+      # LLM providers
+      LLM_PROVIDER: ${LLM_PROVIDER:-openai}
+      # Optional: code falls back gracefully when unset (e.g. LLM_PROVIDER=gemini,
+      # OpenAI only used for optional TTS/web-search fallback paths).
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      OPENAI_MODEL: ${OPENAI_MODEL:-gpt-4o-mini}
+      OPENAI_TEMPERATURE: ${OPENAI_TEMPERATURE:-0.2}
+      GOOGLE_API_KEY: ${GOOGLE_API_KEY:-}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      GEMINI_MODEL_CHEAP: ${GEMINI_MODEL_CHEAP:-gemini-2.5-flash-lite}
+      GEMINI_MODEL_STRONG: ${GEMINI_MODEL_STRONG:-gemini-2.5-flash}
+      GEMINI_MODEL_STRONG_GENERATION: ${GEMINI_MODEL_STRONG_GENERATION:-gemini-2.5-flash}
+      GEMINI_MODEL_KG_EXTRACTOR: ${GEMINI_MODEL_KG_EXTRACTOR:-gemini-2.5-flash}
+      GEMINI_RETRIEVAL_QUERY_REWRITER_MODEL: ${GEMINI_RETRIEVAL_QUERY_REWRITER_MODEL:-gemini-2.5-flash-lite}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      ANTHROPIC_MODEL: ${ANTHROPIC_MODEL:-}
+      GROQ_API_KEY: ${GROQ_API_KEY:-}
+      GROQ_MODEL: ${GROQ_MODEL:-}
+      LLM_MODEL_CHEAP: ${LLM_MODEL_CHEAP:-gpt-4o-mini}
+      LLM_MODEL_STRONG: ${LLM_MODEL_STRONG:-gpt-4o}
+      LLM_MODEL_STRONG_GENERATION: ${LLM_MODEL_STRONG_GENERATION:-gpt-5.4-nano}
+      LLM_MODEL_KG_EXTRACTOR: ${LLM_MODEL_KG_EXTRACTOR:-o4-mini}
+      LLM_KG_REASONING_EFFORT: ${LLM_KG_REASONING_EFFORT:-high}
+      LOCAL_LLM_BASE_URL: ${LOCAL_LLM_BASE_URL:-http://127.0.0.1:8080/v1}
+      LOCAL_LLM_API_KEY: ${LOCAL_LLM_API_KEY:-not-needed}
+      LOCAL_MODEL_CHEAP: ${LOCAL_MODEL_CHEAP:-mlx-community/Qwen3-4B-Instruct-2507-4bit}
+      LOCAL_MODEL_STRONG: ${LOCAL_MODEL_STRONG:-mlx-community/Qwen3-4B-Instruct-2507-4bit}
+      LOCAL_MODEL_STRONG_GENERATION: ${LOCAL_MODEL_STRONG_GENERATION:-mlx-community/Qwen3-4B-Instruct-2507-4bit}
+      LOCAL_MODEL_KG_EXTRACTOR: ${LOCAL_MODEL_KG_EXTRACTOR:-mlx-community/Qwen3-4B-Instruct-2507-4bit}
+      LOCAL_RETRIEVAL_QUERY_REWRITER_MODEL: ${LOCAL_RETRIEVAL_QUERY_REWRITER_MODEL:-mlx-community/Qwen3-4B-Instruct-2507-4bit}
+      EMBED_PROVIDER: ${EMBED_PROVIDER:-}
+      EMBED_DIM: ${EMBED_DIM:-1536}
+      OLLAMA_BASE_URL: ${OLLAMA_BASE_URL:-http://127.0.0.1:11434}
+      # Speech
+      OPENAI_TRANSCRIBE_MODEL: ${OPENAI_TRANSCRIBE_MODEL:-gpt-4o-mini-transcribe}
+      ELEVENLABS_API_KEY: ${ELEVENLABS_API_KEY:?ELEVENLABS_API_KEY required}
+      ELEVENLABS_MODEL_REALTIME: ${ELEVENLABS_MODEL_REALTIME:-eleven_flash_v2_5}
+      ELEVENLABS_MODEL_PRERENDERED: ${ELEVENLABS_MODEL_PRERENDERED:-eleven_multilingual_v2}
+      ELEVENLABS_OUTPUT_FORMAT: ${ELEVENLABS_OUTPUT_FORMAT:-mp3_44100_128}
+      ELEVENLABS_STABILITY: ${ELEVENLABS_STABILITY:-0.64}
+      ELEVENLABS_SIMILARITY_BOOST: ${ELEVENLABS_SIMILARITY_BOOST:-1.0}
+      ELEVENLABS_STYLE: ${ELEVENLABS_STYLE:-0.12}
+      ELEVENLABS_USE_SPEAKER_BOOST: ${ELEVENLABS_USE_SPEAKER_BOOST:-true}
+      OPENAI_TTS_MODEL: ${OPENAI_TTS_MODEL:-gpt-4o-mini-tts}
+      OPENAI_TTS_FORMAT: ${OPENAI_TTS_FORMAT:-mp3}
+      OPENAI_TTS_INSTRUCTIONS: ${OPENAI_TTS_INSTRUCTIONS:-}
+      GEMINI_TTS_MODEL: ${GEMINI_TTS_MODEL:-gemini-2.5-flash-preview-tts}
+      GEMINI_TTS_VOICE: ${GEMINI_TTS_VOICE:-Kore}
+      GEMINI_TRANSCRIBE_MODEL: ${GEMINI_TRANSCRIBE_MODEL:-gemini-2.5-flash}
+      # Tools
+      TAVILY_API_KEY: ${TAVILY_API_KEY:-}
+      OPENAI_WEBSEARCH_MODEL: ${OPENAI_WEBSEARCH_MODEL:-gpt-4o-mini-search-preview}
+      OPENWEBUI_ADAPTER_API_KEY: ${OPENWEBUI_ADAPTER_API_KEY:-}
+      # Background workers
+      MEMORY_DECAY_ENABLED: ${MEMORY_DECAY_ENABLED:-1}
+      SESSION_SWEEPER_ENABLED: ${SESSION_SWEEPER_ENABLED:-1}
+      SWEEPER_IDLE_MINUTES: ${SWEEPER_IDLE_MINUTES:-30}
+      SWEEPER_POLL_INTERVAL_SECONDS: ${SWEEPER_POLL_INTERVAL_SECONDS:-60}
+      SWEEPER_BATCH_LIMIT: ${SWEEPER_BATCH_LIMIT:-25}
+      SWEEPER_CHECKPOINT_MESSAGE_THRESHOLD: ${SWEEPER_CHECKPOINT_MESSAGE_THRESHOLD:-16}
+      SWEEPER_RECOVERY_ENABLED: ${SWEEPER_RECOVERY_ENABLED:-1}
+      SWEEPER_RECOVERY_INTERVAL_HOURS: ${SWEEPER_RECOVERY_INTERVAL_HOURS:-12}
+      SWEEPER_RECOVERY_COOLDOWN_HOURS: ${SWEEPER_RECOVERY_COOLDOWN_HOURS:-12}
+      AXIS_RESPONSE_MODEL_TEST_MESSAGE: ${AXIS_RESPONSE_MODEL_TEST_MESSAGE:-Apa yang lu inget tentang gua}
+      AXIS_RUN_RESPONSE_MODEL_BENCHMARK: ${AXIS_RUN_RESPONSE_MODEL_BENCHMARK:-1}
+      AXIS_RUN_REAL_FINALIZER: ${AXIS_RUN_REAL_FINALIZER:-1}
+      AXIS_GRAPH_IMAGE_PATH: ${AXIS_GRAPH_IMAGE_PATH:-graph.png}
+      AXIS_GRAPH_IMAGE_BG: ${AXIS_GRAPH_IMAGE_BG:-white}
+      AXIS_GRAPH_IMAGE_PADDING: ${AXIS_GRAPH_IMAGE_PADDING:-24}
+      AXIS_GRAPH_IMAGE_WRAP_WORDS: ${AXIS_GRAPH_IMAGE_WRAP_WORDS:-6}
+      AXIS_GRAPH_IMAGE_THEME: ${AXIS_GRAPH_IMAGE_THEME:-dark}
+      AXIS_GRAPH_IMAGE_FONT_FAMILY: ${AXIS_GRAPH_IMAGE_FONT_FAMILY:-ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto}
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:8000/health || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 60s
+    depends_on:
+      neo4j:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+    networks: [internal]
+
+  # ── Backend Go services ─────────────────────────────────────────────
+
+  backend-auth:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    command: ["/app/auth"]
+    <<: [*restart_policy, *log_driver]
+    environment:
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+      HTTP_PORT_AUTH: 8083
+      POSTGRES_DSN: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?sslmode=disable
+      POSTGRES_MAX_OPEN_CONNS: ${POSTGRES_MAX_OPEN_CONNS:-20}
+      POSTGRES_MAX_IDLE_CONNS: ${POSTGRES_MAX_IDLE_CONNS:-5}
+      POSTGRES_CONN_MAX_LIFETIME: ${POSTGRES_CONN_MAX_LIFETIME:-30m}
+      JWT_SECRET: ${JWT_SECRET:?JWT_SECRET required}
+      AUTH_COOKIE_SECURE: ${AUTH_COOKIE_SECURE:-true}
+      AUTH_COOKIE_SAMESITE: ${AUTH_COOKIE_SAMESITE:-none}
+      # Intentionally optional: empty means "no Domain attribute", which is
+      # correct when frontend and API are same-origin behind one reverse proxy.
+      AUTH_COOKIE_DOMAIN: ${AUTH_COOKIE_DOMAIN:-}
+      # Google Sign-In ID-token verification (shared/pkg/googleauth) checks
+      # the token's "aud" claim against this -- empty means Google Sign-In
+      # is rejected server-side with a clear message rather than silently
+      # accepting a token meant for a different OAuth client.
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
+      # DeleteAccount purges KG/pgvector via the memory service directly,
+      # server-side, rather than relying solely on frontend orchestration.
+      MEMORY_SERVICE_URL: http://backend-memory:8082
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O - http://127.0.0.1:8083/health || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    depends_on:
+      postgres:
+        condition: service_healthy
+      postgres-migrate:
+        condition: service_completed_successfully
+    networks: [internal]
+
+  backend-chat:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    command: ["/app/chat"]
+    <<: [*restart_policy, *log_driver]
+    environment:
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+      HTTP_PORT_CHAT: 8081
+      POSTGRES_DSN: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?sslmode=disable
+      POSTGRES_MAX_OPEN_CONNS: ${POSTGRES_MAX_OPEN_CONNS:-20}
+      POSTGRES_MAX_IDLE_CONNS: ${POSTGRES_MAX_IDLE_CONNS:-5}
+      POSTGRES_CONN_MAX_LIFETIME: ${POSTGRES_CONN_MAX_LIFETIME:-30m}
+      REDIS_ADDR: redis:6379
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+      REDIS_DB: ${REDIS_DB:-0}
+      AGENTIC_BASE_URL: http://agentic:8000
+      AGENTIC_GATEWAY_PRIVATE_KEY: ${AGENTIC_GATEWAY_PRIVATE_KEY}
+      ELEVENLABS_API_KEY: ${ELEVENLABS_API_KEY}
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O - http://127.0.0.1:8081/health || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      postgres-migrate:
+        condition: service_completed_successfully
+      agentic:
+        condition: service_started
+    networks: [internal]
+
+  backend-memory:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    command: ["/app/memory"]
+    <<: [*restart_policy, *log_driver]
+    environment:
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+      HTTP_PORT_MEMORY: 8082
+      NEO4J_URI: bolt://neo4j:7687
+      NEO4J_USERNAME: neo4j
+      NEO4J_PASSWORD: ${NEO4J_PASSWORD}
+      NEO4J_MAX_POOL_SIZE: ${NEO4J_MAX_POOL_SIZE:-50}
+      NEO4J_ACQUIRE_TIMEOUT: ${NEO4J_ACQUIRE_TIMEOUT:-60s}
+      NEO4J_TX_RETRY_TIME: ${NEO4J_TX_RETRY_TIME:-30s}
+      AGENTIC_BASE_URL: http://agentic:8000
+      AGENTIC_GATEWAY_PRIVATE_KEY: ${AGENTIC_GATEWAY_PRIVATE_KEY}
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O - http://127.0.0.1:8082/health || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    depends_on:
+      neo4j:
+        condition: service_healthy
+      agentic:
+        condition: service_started
+    networks: [internal]
+
+  # ── Public-facing gateway ───────────────────────────────────────────
+
+  backend-gateway:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    command: ["/app/gateway"]
+    <<: [*restart_policy, *log_driver]
+    environment:
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+      HTTP_PORT_MAIN: 3001
+      AUTH_SERVICE_URL: http://backend-auth:8083
+      CHAT_SERVICE_URL: http://backend-chat:8081
+      MEMORY_SERVICE_URL: http://backend-memory:8082
+      REDIS_ADDR: redis:6379
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+      REDIS_DB: ${REDIS_DB:-0}
+      AGENTIC_BASE_URL: http://agentic:8000
+      AGENTIC_GATEWAY_PRIVATE_KEY: ${AGENTIC_GATEWAY_PRIVATE_KEY}
+      JWT_SECRET: ${JWT_SECRET}
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:?CORS_ALLOWED_ORIGINS required}
+      PUBLIC_AGENTIC_PROXY_ENABLED: ${PUBLIC_AGENTIC_PROXY_ENABLED:-0}
+      AUTH_COOKIE_SECURE: ${AUTH_COOKIE_SECURE:-true}
+      AUTH_COOKIE_SAMESITE: ${AUTH_COOKIE_SAMESITE:-none}
+      AUTH_COOKIE_DOMAIN: ${AUTH_COOKIE_DOMAIN}
+    ports:
+      - "127.0.0.1:${GATEWAY_PORT:-3001}:3001"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O - http://127.0.0.1:3001/health || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    depends_on:
+      backend-auth:
+        condition: service_healthy
+      backend-chat:
+        condition: service_healthy
+      backend-memory:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks: [internal, public]
+
+  # ── Public-facing frontend v2 ───────────────────────────────────────
+
+  frontend:
+    build:
+      context: ./frontend_v2
+      dockerfile: Dockerfile
+      target: runner
+    <<: [*restart_policy, *log_driver]
+    environment:
+      NODE_ENV: production
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:?NEXT_PUBLIC_API_URL required}
+      NEXT_TELEMETRY_DISABLED: "1"
+    ports:
+      - "127.0.0.1:${FRONTEND_PORT:-3000}:3000"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O - http://127.0.0.1:3000 || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    depends_on:
+      backend-gateway:
+        condition: service_healthy
+    networks: [public]
+
+volumes:
+  neo4j_data:
+  postgres_data:
+  redis_data:

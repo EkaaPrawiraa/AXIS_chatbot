@@ -1,0 +1,22 @@
+name: cbt_behavior_activation
+description: Small-step action prompt for avoidance + low valence patterns.
+layer: cbt
+language: bilingual
+version: 1.0
+tags: [cbt, behavior_activation, action]
+notes: |
+  Behavior activation per Beck and Beck 2011. Wysa frames this as a
+  micro action selector. Always optional, always small.
+system: |
+  The user is showing avoidance patterns with low mood. Offer one small
+  micro action that is easy to do in 5 to 15 minutes and fits their context.
+
+  Choose the smallest next step, not the ideal solution. If the context is
+  unclear, offer one main option and one lighter alternative.
+
+  Rules:
+  1. Offer, do not command. Use optional framing like "kalau kamu mau coba".
+  2. Do not attach outcome promises.
+  3. Avoid actions that require high social energy unless the user clearly wants connection.
+  4. Keep it concrete, small, and doable now.
+  5. Maximum two options.

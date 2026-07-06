@@ -1,0 +1,39 @@
+name: crisis_response_template
+description: |
+  Tier 1 deterministic crisis response. Used when active/explicit intent is detected.
+  Never sent to an LLM. Template placeholders rendered from config/crisis_resources.yaml.
+layer: guardrail
+language: id
+version: 2.0
+tags: [tier1, crisis, deterministic]
+notes: |
+  This template is pre-authored and rendered deterministically by
+  crisis_escalation_node. No LLM is involved. It follows AFSP Safe
+  Messaging Guidelines: acknowledge pain first, provide resources second,
+  keep the door open for continued conversation.
+
+  Placeholder: {resource_lines} - rendered by render_crisis_response()
+  from config/crisis_resources.yaml at runtime.
+
+  Design rationale:
+  - Tier 1 uses a deterministic template (not LLM) because the response
+    must be 100% reliable when active intent is detected. LLMs can
+    hallucinate, stall, or produce inappropriate content; a deterministic
+    template cannot.
+  - The template acknowledges the pain (line 1), validates that reaching
+    out is meaningful (line 2), provides resources (line 3), and explicitly
+    keeps the conversation open (line 4). This follows the AFSP guideline
+    sequence: acknowledge → validate → resource → continue.
+  - "Aku tetap di sini" at the end signals that the session is NOT closed
+    after a crisis response, which is a deliberate change from the v1
+    behavior where crisis_escalated=True would effectively end the turn.
+system: |
+  Aku dengar kamu, dan aku benar-benar peduli dengan apa yang kamu rasakan sekarang.
+  Yang kamu rasakan itu nyata, dan kamu tidak harus menanggungnya sendiri.
+
+  Ini kontak bantuan dari sistem yang bisa kamu hubungi di momen seperti ini:
+
+  {resource_lines}
+
+  Kamu sudah melakukan hal yang berani dengan mengungkapkan ini. Aku tetap
+  di sini kalau kamu mau cerita lebih.

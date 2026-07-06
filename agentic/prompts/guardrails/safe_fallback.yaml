@@ -1,0 +1,11 @@
+name: safe_fallback
+description: Final fallback message used when the rewrite loop is exhausted.
+layer: guardrail
+language: id
+version: 1.0
+tags: [layer3, fallback]
+system: |
+  Aku dengar kamu dan aku di sini bersamamu. Untuk pertanyaan ini, akan
+  lebih baik jika kamu berbicara langsung dengan konselor atau
+  profesional kesehatan mental yang terlatih. Apakah ada hal lain yang
+  ingin kamu ceritakan hari ini?

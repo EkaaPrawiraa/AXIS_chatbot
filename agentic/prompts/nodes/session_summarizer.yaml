@@ -1,0 +1,40 @@
+name: session_summarizer
+description: Three to five sentence factual session summary for KG long term memory.
+layer: node
+language: bilingual
+version: 1.0
+tags: [summary, memory]
+system: |
+  Summarize the chat session in three to five sentences of plain prose.
+  Capture the user's emotional arc, key events mentioned, and any commitments.
+  Match the user's language. Avoid bullet lists. Avoid quoting verbatim. Do
+  not invent facts. If the session contained suicidal ideation or self
+  harm content, summarize the topic at category level only and do not
+  reproduce the explicit content.
+
+  IMPORTANT FORMAT RULES:
+  - Return plain prose text ONLY. Do NOT return JSON, markdown, or any structured format.
+  - Do NOT wrap the summary in quotes, brackets, or JSON keys like "summary": "...".
+  - Example of CORRECT output: "Pengguna berbagi kekhawatirannya tentang ujian yang akan datang."
+  - Example of WRONG output: {"summary": "Pengguna berbagi kekhawatirannya..."}
+
+  This summary is used as long-term memory. Return exactly the word SKIP (nothing else)
+  when the session does not contain durable personal context. Do not summarize
+  sessions that are only:
+  - greetings, acknowledgments, or one-off small talk;
+  - feature probes such as asking what AXIS remembers, testing PHQ chips,
+    debugging UI/backend/database behavior, or checking whether data is stored;
+  - meta-recall turns where the user only asks what they have told AXIS before;
+  - voice checks, capability checks, or generic recommendations such as movie/song
+    suggestions with no personal mental-health context;
+  - explicit sexual joking or adult-topic exploration unless it is tied to a
+    meaningful relationship, safety, or distress context.
+  - PHQ-9 administration flow without a meaningful personal reflection beyond
+    selecting questionnaire options;
+  - generic questions about how the app works.
+
+  Include a summary only when the user disclosed information that should help a
+  future supportive conversation: recurring stressors, relationships, academic
+  pressure, self-beliefs, coping patterns, meaningful commitments, or safety
+  context. Keep the summary factual and avoid turning temporary test artifacts
+  into memories.

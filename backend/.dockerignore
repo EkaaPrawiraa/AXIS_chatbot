@@ -1,0 +1,9 @@
+.env
+tmp
+bin
+coverage
+*.test
+
+.git
+.pytest_cache
+__pycache__

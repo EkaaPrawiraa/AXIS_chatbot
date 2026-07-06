@@ -1,0 +1,1 @@
+"""HTTP/LangServe route registration for the agentic gateway."""

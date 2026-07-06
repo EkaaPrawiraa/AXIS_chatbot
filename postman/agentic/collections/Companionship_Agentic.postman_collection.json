@@ -1,0 +1,387 @@
+{
+  "info": {
+    "name": "Companionship — Agentic FastAPI Gateway",
+    "_postman_id": "ag-fastapi-v3-2026",
+    "description": "Private FastAPI gateway for the Companionship LangGraph agentic runtime.\n\nBase URL: http://localhost:8000\n\nAuth:\n  • Public paths (no header): /health, /chat/health\n  • Everything else needs the `X-Agentic-Private-Key` header. Header name is configurable via AGENTIC_GATEWAY_PRIVATE_KEY_HEADER but defaults to `X-Agentic-Private-Key`. The key value must equal AGENTIC_GATEWAY_PRIVATE_KEY in agentic/.env (the dev value here is `dev-agentic-key`).\n\nRequest body shape (important):\n  ChatTurnRequest fields are placed at the root of the JSON body — NOT wrapped under an `input` key. The previous LangServe-style wrapping is no longer accepted.\n\nRouters:\n  /chat/invoke         — full response (ChatTurnResponse)\n  /chat/stream         — Server-Sent Events (token/done/error)\n  /voice/synthesize    — text-to-speech outside a chat turn\n  /memory-nodes/...    — KG node inspection/maintenance\n  /metrics             — private metrics snapshot",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base_url",      "value": "http://localhost:8000", "type": "string" },
+    { "key": "private_key",   "value": "dev-agentic-key",       "type": "string" },
+    { "key": "user_id",       "value": "00000000-0000-0000-0000-000000000001", "type": "string" },
+    { "key": "session_id",    "value": "",                      "type": "string" },
+    { "key": "session_turn",  "value": "1",                     "type": "string" }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Auto-generate session_id once per Postman run if empty, so turn 1 and turn 2+ stay on the same session.",
+          "if (!pm.collectionVariables.get('session_id')) {",
+          "  const sid = 'postman-' + Date.now().toString(36);",
+          "  pm.collectionVariables.set('session_id', sid);",
+          "  console.log('Generated session_id:', sid);",
+          "}",
+          "// Auto-inject the private key on every request that doesn't already set it.",
+          "const key = pm.collectionVariables.get('private_key');",
+          "if (key && !pm.request.headers.has('X-Agentic-Private-Key')) {",
+          "  pm.request.headers.upsert({ key: 'X-Agentic-Private-Key', value: key });",
+          "}"
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Best-effort capture of identifiers returned by chat turns so subsequent requests carry forward state.",
+          "try {",
+          "  const r = pm.response.json();",
+          "  if (r && r.user_id)     pm.collectionVariables.set('user_id', r.user_id);",
+          "  if (r && r.session_id)  pm.collectionVariables.set('session_id', r.session_id);",
+          "  if (r && typeof r.session_turn === 'number') {",
+          "    pm.collectionVariables.set('session_turn', String(r.session_turn + 1));",
+          "  }",
+          "} catch (_) { /* non-JSON response (SSE, metrics, etc.) — ignore */ }"
+        ]
+      }
+    }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "Root liveness (public)",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/health",
+            "description": "No auth required."
+          }
+        },
+        {
+          "name": "Chat router liveness (public)",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/chat/health",
+            "description": "No auth required."
+          }
+        },
+        {
+          "name": "Metrics snapshot",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/metrics",
+            "header": [{ "key": "X-Agentic-Private-Key", "value": "{{private_key}}" }],
+            "description": "Counters and aggregates. Requires the private key."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Chat — Full Response",
+      "item": [
+        {
+          "name": "Basic text turn",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/chat/invoke",
+            "header": [
+              { "key": "Content-Type",          "value": "application/json" },
+              { "key": "X-Agentic-Private-Key", "value": "{{private_key}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"user_id\": \"{{user_id}}\",\n  \"session_id\": \"{{session_id}}\",\n  \"current_message\": \"Halo, apa kabar?\",\n  \"messages\": [],\n  \"session_turn\": 1,\n  \"language_pref\": \"id\"\n}"
+            },
+            "description": "Simplest possible chat turn — no history, no voice, turn 1."
+          }
+        },
+        {
+          "name": "Turn with message history",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/chat/invoke",
+            "header": [
+              { "key": "Content-Type",          "value": "application/json" },
+              { "key": "X-Agentic-Private-Key", "value": "{{private_key}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"user_id\": \"{{user_id}}\",\n  \"session_id\": \"{{session_id}}\",\n  \"current_message\": \"Aku merasa kesepian akhir-akhir ini.\",\n  \"messages\": [\n    { \"role\": \"user\",      \"content\": \"Halo, apa kabar?\" },\n    { \"role\": \"assistant\", \"content\": \"Halo! Aku baik-baik saja. Ada yang ingin kamu ceritakan hari ini?\" }\n  ],\n  \"session_turn\": 2,\n  \"language_pref\": \"id\"\n}"
+            },
+            "description": "Turn 2 with prior history carried in. Tests context continuity."
+          }
+        },
+        {
+          "name": "Crisis — tier 1 (active intent)",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/chat/invoke",
+            "header": [
+              { "key": "Content-Type",          "value": "application/json" },
+              { "key": "X-Agentic-Private-Key", "value": "{{private_key}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"user_id\": \"{{user_id}}\",\n  \"session_id\": \"crisis-test-tier1\",\n  \"current_message\": \"aku mau bunuh diri sekarang\",\n  \"messages\": [],\n  \"session_turn\": 1,\n  \"language_pref\": \"id\"\n}"
+            },
+            "description": "Tier 1 crisis: explicit active intent keyword. Expects deterministic safety template, crisis_tier=1, safety_flag=crisis."
+          }
+        },
+        {
+          "name": "Crisis — tier 2 (passive ideation)",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/chat/invoke",
+            "header": [
+              { "key": "Content-Type",          "value": "application/json" },
+              { "key": "X-Agentic-Private-Key", "value": "{{private_key}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"user_id\": \"{{user_id}}\",\n  \"session_id\": \"crisis-test-tier2\",\n  \"current_message\": \"kadang aku merasa lebih baik tidak ada lagi\",\n  \"messages\": [],\n  \"session_turn\": 1,\n  \"language_pref\": \"id\"\n}"
+            },
+            "description": "Tier 2 crisis: passive ideation. Expects LLM empathy response + deterministic resource block, crisis_tier=2, safety_flag=crisis."
+          }
+        },
+        {
+          "name": "PHQ-9 — new session resets client state",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/chat/invoke",
+            "header": [
+              { "key": "Content-Type",          "value": "application/json" },
+              { "key": "X-Agentic-Private-Key", "value": "{{private_key}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"user_id\": \"{{user_id}}\",\n  \"session_id\": \"phq9-reset-test\",\n  \"current_message\": \"halo\",\n  \"messages\": [],\n  \"session_turn\": 1,\n  \"phq9_state\": {\n    \"phase\": \"in_progress\",\n    \"active_item\": 5,\n    \"responses\": {\"1\": {\"score\": 2}}\n  }\n}"
+            },
+            "description": "session_turn=1: phq9_state from client must be ignored (session boundary). Response phq9_state should be empty/idle."
+          }
+        },
+        {
+          "name": "PHQ-9 — carry-over on turn 2+",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/chat/invoke",
+            "header": [
+              { "key": "Content-Type",          "value": "application/json" },
+              { "key": "X-Agentic-Private-Key", "value": "{{private_key}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"user_id\": \"{{user_id}}\",\n  \"session_id\": \"phq9-carryon-test\",\n  \"current_message\": \"hampir tidak pernah\",\n  \"messages\": [\n    {\"role\": \"user\",      \"content\": \"halo\"},\n    {\"role\": \"assistant\", \"content\": \"Halo! Boleh aku tanya beberapa hal?\"}\n  ],\n  \"session_turn\": 2,\n  \"phq9_state\": {\n    \"phase\": \"in_progress\",\n    \"active_item\": 1,\n    \"awaiting_clarification\": false,\n    \"responses\": {},\n    \"back_count\": 0\n  }\n}"
+            },
+            "description": "session_turn>=2: phq9_state from client is honored. Tests mid-assessment continuity."
+          }
+        },
+        {
+          "name": "Debug — include full ConversationState",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/chat/invoke",
+            "header": [
+              { "key": "Content-Type",          "value": "application/json" },
+              { "key": "X-Agentic-Private-Key", "value": "{{private_key}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"user_id\": \"{{user_id}}\",\n  \"session_id\": \"{{session_id}}\",\n  \"current_message\": \"aku merasa cemas\",\n  \"messages\": [],\n  \"session_turn\": 1,\n  \"include_state\": true\n}"
+            },
+            "description": "include_state=true dumps the full ConversationState into response.state. Do not enable this for end-user clients."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Chat — SSE Stream",
+      "item": [
+        {
+          "name": "Stream chat turn",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/chat/stream",
+            "header": [
+              { "key": "Content-Type",          "value": "application/json" },
+              { "key": "X-Agentic-Private-Key", "value": "{{private_key}}" },
+              { "key": "Accept",                "value": "text/event-stream" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"user_id\": \"{{user_id}}\",\n  \"session_id\": \"stream-test-001\",\n  \"current_message\": \"ceritakan sedikit tentang dirimu\",\n  \"messages\": [],\n  \"session_turn\": 1,\n  \"language_pref\": \"id\"\n}"
+            },
+            "description": "SSE stream. Events: token (text chunk), done (final ChatTurnResponse JSON), error. Use Postman's SSE preview or `curl --no-buffer`."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Voice",
+      "item": [
+        {
+          "name": "Voice input turn (base64)",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/chat/invoke",
+            "header": [
+              { "key": "Content-Type",          "value": "application/json" },
+              { "key": "X-Agentic-Private-Key", "value": "{{private_key}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"user_id\": \"{{user_id}}\",\n  \"session_id\": \"voice-test-001\",\n  \"current_message\": null,\n  \"messages\": [],\n  \"session_turn\": 1,\n  \"language_pref\": \"id\",\n  \"voice\": {\n    \"output_modality\": \"both\",\n    \"audio_input_base64\": \"<base64-encoded-audio>\",\n    \"audio_input_mime\": \"audio/webm\",\n    \"tts_model\": \"v2_5_turbo\"\n  }\n}"
+            },
+            "description": "STT → LangGraph → TTS. Replace audio_input_base64 with real audio. output_modality: text | voice | both."
+          }
+        },
+        {
+          "name": "Synthesize speech (no chat turn)",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/voice/synthesize",
+            "header": [
+              { "key": "Content-Type",          "value": "application/json" },
+              { "key": "X-Agentic-Private-Key", "value": "{{private_key}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"text\": \"Halo, ini contoh suara AXIS.\",\n  \"tts_model\": \"v2_5_turbo\",\n  \"language_pref\": \"id\"\n}"
+            },
+            "description": "Play back arbitrary text via TTS. Returns base64-encoded audio or URL depending on provider."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Memory nodes (KG)",
+      "item": [
+        {
+          "name": "List memory nodes",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/memory-nodes?user_id={{user_id}}&node_type=memory&limit=50&offset=0",
+              "host": ["{{base_url}}"],
+              "path": ["memory-nodes"],
+              "query": [
+                { "key": "user_id",   "value": "{{user_id}}" },
+                { "key": "node_type", "value": "memory" },
+                { "key": "q",         "value": "",          "disabled": true },
+                { "key": "limit",     "value": "50" },
+                { "key": "offset",    "value": "0" }
+              ]
+            },
+            "header": [{ "key": "X-Agentic-Private-Key", "value": "{{private_key}}" }],
+            "description": "node_type: memory | topic | emotion | session | assessment."
+          }
+        },
+        {
+          "name": "List memory relations",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/memory-nodes/relations?user_id={{user_id}}&limit=150",
+              "host": ["{{base_url}}"],
+              "path": ["memory-nodes", "relations"],
+              "query": [
+                { "key": "user_id", "value": "{{user_id}}" },
+                { "key": "limit",   "value": "150" }
+              ]
+            },
+            "header": [{ "key": "X-Agentic-Private-Key", "value": "{{private_key}}" }]
+          }
+        },
+        {
+          "name": "Update memory node",
+          "request": {
+            "method": "PATCH",
+            "url": "{{base_url}}/memory-nodes/memory/<node_id>",
+            "header": [
+              { "key": "Content-Type",          "value": "application/json" },
+              { "key": "X-Agentic-Private-Key", "value": "{{private_key}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"user_id\": \"{{user_id}}\",\n  \"properties\": {\n    \"content\": \"updated content\",\n    \"importance\": 0.6\n  }\n}"
+            },
+            "description": "node_type segment: memory | topic | emotion | session | assessment."
+          }
+        },
+        {
+          "name": "Archive memory node",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{base_url}}/memory-nodes/memory/<node_id>?user_id={{user_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["memory-nodes", "memory", "<node_id>"],
+              "query": [{ "key": "user_id", "value": "{{user_id}}" }]
+            },
+            "header": [{ "key": "X-Agentic-Private-Key", "value": "{{private_key}}" }]
+          }
+        },
+        {
+          "name": "Reset user memory (destructive)",
+          "request": {
+            "method": "DELETE",
+            "url": "{{base_url}}/memory-nodes/users/{{user_id}}/reset",
+            "header": [{ "key": "X-Agentic-Private-Key", "value": "{{private_key}}" }],
+            "description": "Deletes all KG nodes + pgvector rows for this user. Use with care."
+          }
+        },
+        {
+          "name": "Purge session memory",
+          "request": {
+            "method": "DELETE",
+            "url": "{{base_url}}/memory-nodes/sessions/{{session_id}}/purge",
+            "header": [
+              { "key": "Content-Type",          "value": "application/json" },
+              { "key": "X-Agentic-Private-Key", "value": "{{private_key}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"message_ids\": []\n}"
+            },
+            "description": "Purge KG content related to a session. Pass message_ids to scope the purge to specific messages."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Negative tests",
+      "item": [
+        {
+          "name": "Missing private key → 401",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/chat/invoke",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"user_id\": \"{{user_id}}\",\n  \"session_id\": \"{{session_id}}\",\n  \"current_message\": \"this should be rejected\",\n  \"messages\": [],\n  \"session_turn\": 1\n}"
+            },
+            "description": "Confirms the gateway is private. Expected status: 401 (or 503 if AGENTIC_GATEWAY_PRIVATE_KEY is not set on the server)."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('private route rejects missing key', function () {",
+                  "  pm.expect([401, 503]).to.include(pm.response.code);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,158 @@
+name: input_validation_rules
+description: Layer 2 input validation rule set. Consumed by the Go gateway via shared YAML.
+layer: guardrail
+language: bilingual
+version: 1.1
+tags: [layer2, gateway, deterministic]
+notes: |
+  This file is also read by the Go gateway via a shared parser. Keep
+  CRISIS_KEYWORDS_ID/EN and JAILBREAK_PATTERNS keys stable — renaming
+  them requires a Go-side update. New keys (TIER1_CRISIS_KEYWORDS_*,
+  RATE_LIMITS) are Python-only and ignored by the Go parser.
+
+  Tier classification (Python-only, not used by Go gateway):
+    TIER1 — active / explicit intent: keywords that express a direct,
+            immediate intent to act. Triggers the deterministic crisis
+            response (always safe, always resources-first).
+    TIER2 — passive ideation / self-harm: distress signals that do not
+            necessarily imply immediate action. Triggers an LLM-generated
+            empathetic response followed by deterministic resource block.
+            Based on AFSP Safe Messaging Guidelines (2023).
+
+  CRISIS_KEYWORDS_ID/EN remain the union of tier1 + tier2. The Go gateway
+  and Layer 2 input_guardrail_node route ALL of them to crisis handling.
+  The tier split is used only inside crisis_triage_node to choose the
+  response style.
+system: |
+  CRISIS_KEYWORDS_ID:
+    - ingin mati
+    - mau bunuh diri
+    - bunuh diri
+    - ingin bunuh diri
+    - pengen bunuh diri
+    - tidak mau hidup lagi
+    - menyakiti diri
+    - nggak mau hidup
+    - tidak sanggup lagi
+    - mau mengakhiri hidup
+    - ingin mengakhiri hidup
+    - udah mau mati aja
+    - nyakitin diri sendiri
+    - mau mati
+    - pengen mati
+    - pingin mati
+    - ingin mati saja
+    - lebih baik mati
+    - mau cutting
+    - pengen cutting
+    # Method-specific (explicit method = high-risk active intent)
+    - gantung diri
+    - mau gantung diri
+    - pengen gantung diri
+    - ingin gantung diri
+    - hang diri
+    - mau hang diri
+    - loncat dari
+    - mau loncat
+    - pengen loncat
+    - minum racun
+    - mau minum racun
+    - overdosis
+    - mau overdosis
+    - menyilet
+    - mau menyilet
+    # Overdose-specific: explicit plan to take all medication
+    - mau kuminum semua
+    - kuminum semua
+    - minum obat semua
+    - mau minum obat semua
+
+  CRISIS_KEYWORDS_EN:
+    - want to die
+    - kill myself
+    - suicide
+    - end my life
+    - hurt myself
+    - self harm
+    - cant go on
+    - no reason to live
+
+  # Tier 1 — active/explicit intent (subset of CRISIS_KEYWORDS_*)
+  # These are direct statements of intent to end one's life.
+  # Response: deterministic warm template + resources (never LLM).
+  TIER1_CRISIS_KEYWORDS_ID:
+    - mau bunuh diri
+    - bunuh diri
+    - ingin bunuh diri
+    - pengen bunuh diri
+    - mau mengakhiri hidup
+    - ingin mengakhiri hidup
+    - mau mati
+    - pengen mati
+    - pingin mati
+    - lebih baik mati
+    - mau cutting
+    - pengen cutting
+    # Method-specific phrases are tier 1 (explicit method = imminent risk)
+    - gantung diri
+    - mau gantung diri
+    - pengen gantung diri
+    - ingin gantung diri
+    - hang diri
+    - mau hang diri
+    - loncat dari
+    - mau loncat
+    - pengen loncat
+    - minum racun
+    - mau minum racun
+    - overdosis
+    - mau overdosis
+    - menyilet
+    - mau menyilet
+    # Overdose-specific: explicit plan with specific method = imminent risk
+    - mau kuminum semua
+    - kuminum semua
+    - minum obat semua
+    - mau minum obat semua
+
+  TIER1_CRISIS_KEYWORDS_EN:
+    - kill myself
+    - suicide
+    - end my life
+    - end my life
+
+  # Tier 2 — passive ideation / self-harm (remainder of CRISIS_KEYWORDS_*)
+  # These express distress and ideation but not necessarily immediate intent.
+  # Response: LLM-generated empathy (safe messaging guidelines) + resources.
+  # Derived at runtime as: CRISIS_KEYWORDS - TIER1_CRISIS_KEYWORDS.
+
+  JAILBREAK_PATTERNS:
+    - ignore (your|all|previous) instructions
+    - pretend (you are|youre|to be) (a |an )?(doctor|psychologist|therapist|psychiatrist)
+    - jailbreak|DAN mode|developer mode
+    - forget (your|the) (system )?prompt
+    - act as (a |an )?(unrestricted|uncensored|clinical)
+
+  # OFF_SCOPE_PATTERNS — hard-block only requests that ask AXIS to do
+  # a deliverable for the user. Casual student-life topics, light
+  # translation, simple facts, recipes, or "I'm stressed about coding"
+  # should stay allowed so AXIS still feels like a companion.
+  # Each entry is a full regex (re.IGNORECASE). Group naming convention:
+  #   off_scope_<category> for the audit log reason.
+  OFF_SCOPE_PATTERNS:
+    # coding deliverables or direct code work
+    - (tolong\s+)?(buat(kan|in)?|bikin(kan|in)?|generate|write|create|build|make)\s+(kan\s+)?(aku|saya|me\s+)?\s*(potongan\s+)?(kode|code|program|script|fungsi|function|algoritma|algorithm|class|snippet|regex)\b
+    - (debug|fix|review|optimize|refactor)\s+(my|this|the|kode|code|program|script|function|fungsi)\b
+    - solve\s+this\s+(coding|programming|leetcode|algorithm)\s+(problem|challenge|question)
+    # direct homework or exam answer requests
+    - (tolong\s+)?(kerjakan|selesaikan|jawab(kan|in)?|bantu(in|kan)?\s+(jawab|ngerjain|mengerjakan))\s+(soal|pr|homework|assignment|ujian|quiz|kuis|take\s*home)\b
+    - (solve|calculate|compute|evaluate)\s+(this|the|for\s+me)?\s*(homework|assignment|exam|quiz|test|problem)\b
+    - (kasih|beri|give\s+me)\s+(jawaban|answer|solution)\s+(soal|homework|assignment|exam|quiz|test)\b
+    # academic writing deliverables
+    - (tolong\s+)?(tulis(kan|in)?|buat(kan|in)?|bikin(kan|in)?|draft)\s+(saya\s+|aku\s+)?(esai|essay|artikel|skripsi|makalah|paper|thesis|laporan)\b
+    - (write|compose|draft)\s+(me\s+)?(a|an|the)?\s*(essay|article|thesis|paper|report)\b
+
+  RATE_LIMITS:
+    max_turns_per_hour: 30
+    max_sessions_per_day: 8
+    max_sessions_per_week: 20

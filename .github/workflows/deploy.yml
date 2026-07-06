@@ -1,0 +1,201 @@
+# .github/workflows/deploy.yml
+#
+# CI/CD Pipeline — AXIS CompanionshipChatBot
+#
+# Flow:
+#   1. Build 3 Docker images (backend, agentic, frontend_v2) in parallel
+#   2. Push to GitHub Container Registry (GHCR) tagged with the commit SHA
+#   3. SSH into the production server and deploy with rollback support
+#
+# Required GitHub Secrets (Settings → Secrets → Actions):
+#   SSH_HOST          → production host or IP
+#   SSH_USER          → deploy user
+#   SSH_PRIVATE_KEY   → private key for the deploy user
+#   API_PUBLIC_URL    → https://api.example.com/api
+#   GOOGLE_CLIENT_ID  → OAuth Client ID for "Sign in with Google" (not a
+#                       secret value itself -- it's baked into the public
+#                       JS bundle -- but stored as a secret here anyway so
+#                       it isn't hardcoded in this file)
+#
+# Optional Secrets (for environment-specific overrides):
+#   DEPLOY_ENV      → production (default)
+
+name: CI/CD — Build & Deploy
+
+on:
+  push:
+    branches: [production]
+  workflow_dispatch:
+    inputs:
+      skip_build:
+        description: "Skip image build (re-deploy current images)"
+        type: boolean
+        default: false
+
+env:
+  REGISTRY: ghcr.io
+
+jobs:
+  # ──────────────────────────────────────────────────────────────────
+  # Job 1: Build & push images (parallel matrix)
+  # ──────────────────────────────────────────────────────────────────
+  build:
+    name: Build ${{ matrix.service }}
+    if: ${{ github.event.inputs.skip_build != 'true' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - service: backend
+            context: ./backend
+            dockerfile: ./backend/Dockerfile
+
+          - service: agentic
+            context: .
+            dockerfile: ./agentic/Dockerfile
+
+          - service: frontend-v2
+            context: ./frontend_v2
+            dockerfile: ./frontend_v2/Dockerfile
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract image metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository_owner }}/axis-${{ matrix.service }}
+          tags: |
+            type=sha,prefix=,format=short
+            type=raw,value=latest,enable=${{ github.ref == 'refs/heads/production' }}
+
+      - name: Build and push ${{ matrix.service }}
+        uses: docker/build-push-action@v6
+        with:
+          context: ${{ matrix.context }}
+          file: ${{ matrix.dockerfile }}
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          # Pass API URL + Google Client ID as build args so Next.js bakes
+          # them into the bundle
+          build-args: |
+            NEXT_PUBLIC_API_URL=${{ secrets.API_PUBLIC_URL }}
+            NEXT_PUBLIC_GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}
+          # Layer cache backed by GitHub Actions cache (free, per-service)
+          cache-from: type=gha,scope=axis-${{ matrix.service }}
+          cache-to: type=gha,mode=max,scope=axis-${{ matrix.service }}
+
+  # ──────────────────────────────────────────────────────────────────
+  # Job 2: Deploy to production server
+  # ──────────────────────────────────────────────────────────────────
+  deploy:
+    name: Deploy to Production
+    needs: build
+    # Run deploy even if build was skipped (workflow_dispatch with skip_build)
+    if: always() && (needs.build.result == 'success' || needs.build.result == 'skipped')
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - name: Checkout (for compose files)
+        uses: actions/checkout@v4
+
+      - name: Compute short SHA
+        id: sha
+        run: echo "short=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        env:
+          IMAGE_TAG: ${{ steps.sha.outputs.short }}
+          GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_ACTOR: ${{ github.actor }}
+          # lowercase owner required for GHCR image names
+          REPO_OWNER: ${{ github.repository_owner }}
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          envs: IMAGE_TAG,GHCR_TOKEN,GITHUB_ACTOR,REPO_OWNER
+          timeout: 600s
+          script: |
+            set -euo pipefail
+
+            DEPLOY_DIR="/opt/axis/CompanionshipChatBot"
+            COMPOSE_BASE="$DEPLOY_DIR/docker-compose.prod.yml"
+            COMPOSE_DEPLOY="$DEPLOY_DIR/docker-compose.deploy.yml"
+            OWNER="$(echo "$REPO_OWNER" | tr '[:upper:]' '[:lower:]')"
+
+            echo "==> [1/6] Login to GHCR"
+            echo "$GHCR_TOKEN" | docker login ghcr.io -u "$GITHUB_ACTOR" --password-stdin
+
+            echo "==> [2/6] Pull latest code"
+            cd "$DEPLOY_DIR"
+            git fetch origin production
+            git reset --hard origin/production
+
+            echo "==> [3/6] Save current image digests for rollback"
+            ROLLBACK_TAG=""
+            if docker inspect "ghcr.io/$OWNER/axis-backend:current" &>/dev/null 2>&1; then
+              docker tag "ghcr.io/$OWNER/axis-backend:current" "ghcr.io/$OWNER/axis-backend:rollback" || true
+              docker tag "ghcr.io/$OWNER/axis-agentic:current" "ghcr.io/$OWNER/axis-agentic:rollback" || true
+              docker tag "ghcr.io/$OWNER/axis-frontend-v2:current" "ghcr.io/$OWNER/axis-frontend-v2:rollback" || true
+              ROLLBACK_TAG="rollback"
+            fi
+
+            echo "==> [4/6] Pull new images ($IMAGE_TAG)"
+            export REPO_OWNER="$OWNER"
+            export IMAGE_TAG="$IMAGE_TAG"
+
+            REPO_OWNER="$OWNER" IMAGE_TAG="$IMAGE_TAG" \
+              docker compose -f "$COMPOSE_BASE" -f "$COMPOSE_DEPLOY" pull \
+                agentic backend-auth backend-chat backend-memory backend-gateway frontend
+
+            # Tag newly pulled images as 'current' for next rollback cycle
+            docker tag "ghcr.io/$OWNER/axis-backend:$IMAGE_TAG"  "ghcr.io/$OWNER/axis-backend:current"  || true
+            docker tag "ghcr.io/$OWNER/axis-agentic:$IMAGE_TAG"  "ghcr.io/$OWNER/axis-agentic:current"  || true
+            docker tag "ghcr.io/$OWNER/axis-frontend-v2:$IMAGE_TAG" "ghcr.io/$OWNER/axis-frontend-v2:current" || true
+
+            echo "==> [5/6] Start services (rolling update)"
+            REPO_OWNER="$OWNER" IMAGE_TAG="$IMAGE_TAG" \
+              docker compose -f "$COMPOSE_BASE" -f "$COMPOSE_DEPLOY" up -d \
+                --no-build --remove-orphans
+
+            echo "==> Waiting 30s for health checks..."
+            sleep 30
+
+            # Verify gateway and frontend are healthy
+            if ! docker compose -f "$COMPOSE_BASE" -f "$COMPOSE_DEPLOY" ps \
+                  --filter "status=running" | grep -q "backend-gateway"; then
+              echo "ERROR: backend-gateway not healthy — initiating rollback"
+              if [ -n "$ROLLBACK_TAG" ]; then
+                REPO_OWNER="$OWNER" IMAGE_TAG="rollback" \
+                  docker compose -f "$COMPOSE_BASE" -f "$COMPOSE_DEPLOY" up -d \
+                    --no-build --remove-orphans
+              fi
+              exit 1
+            fi
+
+            echo "==> [6/6] Cleanup old images (keep < 72h)"
+            docker image prune -f --filter "until=72h" || true
+
+            echo ""
+            echo "Deploy complete — tag: $IMAGE_TAG"

@@ -1,0 +1,37 @@
+# infra/caddy/Caddyfile
+#
+# Reverse proxy for AXIS production. Deployed to /etc/caddy/Caddyfile on the
+# VPS. Caddy obtains and renews HTTPS certificates automatically — no
+# certbot, no manual renewal cron.
+#
+# axis-chatbot.my.id / www.axis-chatbot.my.id -- real owned domain, DNS A
+# records already point at this server's IP, so Let's Encrypt's HTTP-01
+# challenge succeeds and Caddy issues a real, browser-trusted certificate
+# for both names in this one site block.
+#
+# Previously served on 103-93-135-167.sslip.io (free wildcard-DNS) before
+# this domain was acquired.
+
+axis-chatbot.my.id, www.axis-chatbot.my.id {
+	encode gzip
+
+	# Gateway's own healthcheck is registered as bare "GET /health" (no /api
+	# prefix) — strip_prefix only for this one path so the conventional
+	# public "/api/health" still reaches it.
+	handle /api/health {
+		uri strip_prefix /api
+		reverse_proxy 127.0.0.1:3001
+	}
+
+	# Every other backend route (auth/conversations/mood/memories/...) is
+	# registered in the Go mux WITH the /api prefix included — do NOT strip
+	# it here, unlike a typical nginx proxy_pass setup.
+	handle /api/* {
+		reverse_proxy 127.0.0.1:3001
+	}
+
+	# Next.js frontend (v2)
+	handle {
+		reverse_proxy 127.0.0.1:3000
+	}
+}

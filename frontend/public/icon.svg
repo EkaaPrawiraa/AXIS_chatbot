@@ -1,0 +1,28 @@
+<svg width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    .paper { fill: #f7f1e8; }
+    .ink { fill: #17130f; }
+    .line { stroke: #17130f; }
+    .warm { fill: #c9764b; }
+    .mist { stroke: #d9c8b5; }
+    @media (prefers-color-scheme: dark) {
+      .paper { fill: #17130f; }
+      .ink { fill: #f7f1e8; }
+      .line { stroke: #f7f1e8; }
+      .warm { fill: #e0a06f; }
+      .mist { stroke: #6e5f52; }
+    }
+  </style>
+  <rect class="paper" width="180" height="180" rx="42"/>
+  <circle class="mist" cx="90" cy="88" r="58" stroke-width="2"/>
+  <circle class="mist" cx="90" cy="88" r="42" stroke-width="2" stroke-dasharray="6 9"/>
+  <path class="line" d="M46 92c0-24.3 19.7-44 44-44 14.2 0 26.8 6.7 34.8 17.1" stroke-width="7" stroke-linecap="round"/>
+  <path class="line" d="M134 84c0 24.3-19.7 44-44 44-14.2 0-26.8-6.7-34.8-17.1" stroke-width="7" stroke-linecap="round"/>
+  <circle class="warm" cx="128" cy="68" r="7"/>
+  <circle class="warm" cx="52" cy="108" r="7"/>
+  <rect class="ink" x="75" y="55" width="30" height="48" rx="15"/>
+  <rect class="paper" x="84" y="64" width="12" height="30" rx="6"/>
+  <path class="line" d="M64 86c0 14.4 11.6 26 26 26s26-11.6 26-26" stroke-width="8" stroke-linecap="round"/>
+  <rect class="ink" x="86" y="111" width="8" height="19" rx="4"/>
+  <rect class="ink" x="73" y="128" width="34" height="8" rx="4"/>
+</svg>

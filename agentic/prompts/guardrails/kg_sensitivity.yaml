@@ -1,0 +1,35 @@
+name: kg_sensitivity_policy
+description: Layer 4 retrieval policy. Encodes the sensitivity tier behavior used by context_builder.
+layer: guardrail
+language: en
+version: 1.0
+tags: [layer4, kg, sensitivity]
+notes: |
+  This file describes policy. The actual filtering is implemented in
+  agentic/memory/context_builder.py. Updating this file is the safe path
+  to change retrieval thresholds without touching code.
+system: |
+  SENSITIVITY_TIERS:
+    0:
+      label: public
+      retrieval: full_text
+      max_items: 5
+    1:
+      label: personal
+      retrieval: full_text
+      max_items: 5
+      importance_floor: 0.5
+    2:
+      label: sensitive
+      retrieval: summary_only
+      max_items: 3
+      importance_floor: 0.7
+    3:
+      label: trauma
+      retrieval: category_only
+      max_items: 2
+      importance_floor: 0.8
+
+  SUPPRESS_FLAG_REQUIRED: true
+  BITEMPORAL_VALIDITY_REQUIRED: true
+  USER_OVERRIDE_HONORED: true

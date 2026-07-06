@@ -1,0 +1,129 @@
+# config/crisis_resources.yaml
+#
+# Deterministic crisis resource lookup. Loaded once at startup into an
+# in-memory map. Never goes through the RAG vector index.
+#
+# Review every 3 months to verify contact validity.
+# Last verified: 2026-04-30
+# Reviewer: Eka
+
+primary:
+  name: "Healing119.id Hotline"
+  contact: "119"
+  contact_methods:
+    - "Call"
+    - "WhatsApp"
+  availability: "Nasional, Indonesia"
+  audience: "Everyone"
+  support_type:
+    - "Counselors"
+    - "Volunteers"
+  scope:
+    - "Suicide"
+    - "Anxiety"
+    - "Bullying"
+    - "Depression"
+    - "Loneliness"
+    - "Self-harm"
+    - "Stress"
+    - "Supporting others"
+    - "Trauma & PTSD"
+  url: "https://findahelpline.com/organizations/healing119-id-hotline"
+
+secondary:
+  name: "LISA Suicide Prevention Helpline"
+  contact:
+    id: "+62 811 3855 472"
+    en: "+62 811 3815 472"
+  contact_methods:
+    - "WhatsApp"
+  availability: "24 jam, bahasa Indonesia dan English"
+  audience: "Everyone"
+  scope:
+    - "Dukungan kesehatan mental"
+    - "Self-harm"
+    - "Ide atau percobaan bunuh diri"
+    - "Rujukan layanan kesehatan mental"
+  url: "https://www.intothelightid.org/tentang-bunuh-diri/hotline-bunuh-diri-di-indonesia/"
+
+women_and_children:
+  name: "SAPA Service 129"
+  contact: "08111 129 129"
+  contact_methods:
+    - "Call"
+    - "WhatsApp"
+  availability: "Nasional, Indonesia"
+  audience:
+    - "Women"
+    - "Children"
+  support_type:
+    - "Counselors"
+  scope:
+    - "Abuse & domestic violence"
+    - "Sexual abuse"
+  url: "https://findahelpline.com/organizations/sapa-service-129"
+
+women_crisis_center:
+  name: "Women's Crisis Center Jombang Helpline"
+  contact: "081 235 020 62"
+  contact_methods:
+    - "Call"
+    - "WhatsApp"
+  availability: "Nasional, Indonesia"
+  audience:
+    - "Women"
+    - "Children"
+  support_type:
+    - "Counselors"
+  scope:
+    - "Abuse & domestic violence"
+    - "Sexual abuse"
+    - "Konsultasi hukum"
+    - "Konsultasi psikologi"
+    - "Pendampingan kasus kekerasan berbasis gender"
+  url: "https://findahelpline.com/organizations/women-s-crisis-center-jombang-helpline"
+
+campus:
+  name: "Bimbingan Konseling Direktorat Kemahasiswaan ITB"
+  contact:
+    email: "bk@kemahasiswaan.itb.ac.id"
+    phone: "(022) 2534275"
+    fax_or_phone: "(022) 2504814"
+  availability: "Jam kerja kampus"
+  address: "Gedung CC Timur, Lantai 2, Jalan Ganesa No. 10, Bandung"
+  scope:
+    - "Layanan konseling mahasiswa ITB"
+  url: "https://kemahasiswaan.itb.ac.id/counseling"
+
+additional_counseling:
+  name: "Yayasan Pulih"
+  contact:
+    whatsapp_admin: "+62 811 843 6633"
+    phone: "+62 21 7884 2580"
+    email: "pulihfoundation@gmail.com"
+  availability: "Jam kerja, pendaftaran melalui admin WhatsApp"
+  scope:
+    - "Konseling psikologis"
+    - "Pemulihan trauma"
+    - "Bukan layanan darurat 24 jam"
+  url: "https://www.yayasanpulih.org/our-services/layanan-konseling-psikologi"
+
+emergency:
+  name: "Layanan Darurat Medis / PSC 119"
+  contact: "119"
+  availability: "24 jam"
+  scope:
+    - "Keadaan darurat medis"
+    - "Ancaman keselamatan nyawa"
+    - "Cedera aktif"
+    - "Kondisi yang membutuhkan ambulans atau IGD"
+  url: "https://kemkes.go.id/id/akses-darurat-medis-119-kini-bisa-melalui-satusehat-mobile"
+
+reference:
+  name: "Find A Helpline Indonesia"
+  contact: "https://findahelpline.com/countries/id"
+  availability: "Direktori online"
+  scope:
+    - "Direktori helpline Indonesia"
+    - "Menampilkan layanan berdasarkan topik seperti suicide, anxiety, depression, self-harm, abuse, stress, dan trauma"
+  url: "https://findahelpline.com/countries/id"

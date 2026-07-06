@@ -1,0 +1,29 @@
+name: guardrail_pre_gen
+description: Layer 3 pre-generation guardrail. Crisis signal detection that backs up Layer 2.
+layer: guardrail
+language: bilingual
+version: 1.1
+tags: [layer3, pre_gen, semantic]
+notes: |
+  Uses Jaccard token-overlap detector with a low threshold (0.6)
+  so short utterances can still match. Calibrate with at least 50
+  labeled Indonesian student utterances.
+system: |
+  CRISIS_SIGNAL_PHRASES:
+    - ingin mengakhiri hidupnya
+    - mau bunuh diri
+    - tidak ada harapan lagi
+    - gak ada harapan lagi
+    - ga ada harapan lagi
+    - hidupku sudah tidak ada artinya
+    - semua tidak berarti bagiku
+    - semua sudah tidak berarti
+    - aku ingin pergi selamanya
+    - want to end it all
+    - no point in living
+    - better off dead
+    - I cant do this anymore
+
+  CRISIS_SEMANTIC_THRESHOLD: 0.6
+
+  ON_MATCH_ACTION: route_to_crisis_escalation

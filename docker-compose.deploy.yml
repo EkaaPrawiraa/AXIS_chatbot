@@ -1,0 +1,32 @@
+# docker-compose.deploy.yml
+#
+# CI/CD image override — replaces local build: directives with pre-built
+# images from GitHub Container Registry (GHCR).
+#
+# Usage (on production server):
+#   REPO_OWNER=<github-username-lowercase> IMAGE_TAG=<sha> \
+#     docker compose -f docker-compose.prod.yml -f docker-compose.deploy.yml \
+#     up -d --no-build
+#
+# Environment variables:
+#   REPO_OWNER   → GitHub username or org (lowercase)
+#   IMAGE_TAG    → Git commit SHA short (7 chars) or 'latest'
+
+services:
+  agentic:
+    image: ghcr.io/${REPO_OWNER}/axis-agentic:${IMAGE_TAG:-latest}
+
+  backend-auth:
+    image: ghcr.io/${REPO_OWNER}/axis-backend:${IMAGE_TAG:-latest}
+
+  backend-chat:
+    image: ghcr.io/${REPO_OWNER}/axis-backend:${IMAGE_TAG:-latest}
+
+  backend-memory:
+    image: ghcr.io/${REPO_OWNER}/axis-backend:${IMAGE_TAG:-latest}
+
+  backend-gateway:
+    image: ghcr.io/${REPO_OWNER}/axis-backend:${IMAGE_TAG:-latest}
+
+  frontend:
+    image: ghcr.io/${REPO_OWNER}/axis-frontend-v2:${IMAGE_TAG:-latest}

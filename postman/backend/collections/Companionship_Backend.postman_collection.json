@@ -1,0 +1,592 @@
+{
+  "info": {
+    "name": "Companionship — Go Backend Gateway",
+    "_postman_id": "backend-gw-v3-2026",
+    "description": "Public Go API gateway for Companionship at http://localhost:3001.\n\nGateway strips the leading `/api` prefix when forwarding to internal services:\n  /api/auth/*           → auth   (HTTP_PORT_AUTH, default 8083)\n  /api/profile, /api/profile/* → auth\n  /api/conversations[/...]    → chat   (HTTP_PORT_CHAT, default 8081)\n  /api/voice/options          → chat\n  /api/voice/synthesize       → chat\n  /api/memories[/...]         → memory (HTTP_PORT_MEMORY, default 8082)\n  /agentic/*                  → agentic FastAPI (only when PUBLIC_AGENTIC_PROXY_ENABLED=1)\n\nAuth automation:\n  • Register/Login captures `user_id`, `token`, and `csrf_token` (parsed from the axis_csrf Set-Cookie header) into collection variables.\n  • Collection-level pre-request script auto-injects `Authorization: Bearer {{token}}` and `X-CSRF-Token: {{csrf_token}}` on every request. This means the Bearer path bypasses CSRF when token is present, and the cookie path still validates correctly if you intentionally remove Authorization.\n  • Start session captures `conversation_id`. Send message captures `message_id`. Create memory captures `memory_id`.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "gateway_url",     "value": "http://localhost:3001", "type": "string" },
+    { "key": "user_id",         "value": "",                      "type": "string" },
+    { "key": "token",           "value": "",                      "type": "string" },
+    { "key": "csrf_token",      "value": "",                      "type": "string" },
+    { "key": "conversation_id", "value": "",                      "type": "string" },
+    { "key": "message_id",      "value": "",                      "type": "string" },
+    { "key": "memory_id",       "value": "",                      "type": "string" }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Auto-inject Authorization + X-CSRF-Token on every request that doesn't already set them.",
+          "// Bearer bypasses CSRF in the server middleware; X-CSRF-Token is the fallback for cookie-only flows.",
+          "const token = pm.collectionVariables.get('token');",
+          "const csrf  = pm.collectionVariables.get('csrf_token');",
+          "const hasAuth = pm.request.headers.has('Authorization');",
+          "const hasCsrf = pm.request.headers.has('X-CSRF-Token');",
+          "if (!hasAuth && token) {",
+          "  pm.request.headers.upsert({ key: 'Authorization', value: 'Bearer ' + token });",
+          "}",
+          "if (!hasCsrf && csrf) {",
+          "  pm.request.headers.upsert({ key: 'X-CSRF-Token', value: csrf });",
+          "}"
+        ]
+      }
+    }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "Gateway liveness",
+          "request": {
+            "method": "GET",
+            "url": "{{gateway_url}}/health",
+            "description": "Unauthenticated gateway liveness probe."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Auth & Profile",
+      "item": [
+        {
+          "name": "Register",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const r = pm.response.json();",
+                  "if (r.data && r.data.user) {",
+                  "  pm.collectionVariables.set('user_id', r.data.user.id);",
+                  "  if (r.data.token) pm.collectionVariables.set('token', r.data.token);",
+                  "  // Parse axis_csrf from Set-Cookie headers (server emits it as non-HttpOnly).",
+                  "  const setCookies = pm.response.headers.all().filter(h => h.key.toLowerCase() === 'set-cookie');",
+                  "  for (const h of setCookies) {",
+                  "    const m = String(h.value).match(/(?:^|;\\s*)axis_csrf=([^;]+)/);",
+                  "    if (m) { pm.collectionVariables.set('csrf_token', m[1]); break; }",
+                  "  }",
+                  "  console.log('Registered:', r.data.user.id, 'token?', !!r.data.token, 'csrf?', !!pm.collectionVariables.get('csrf_token'));",
+                  "} else {",
+                  "  console.warn('Register: no user in response — token/csrf NOT captured');",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "url": "{{gateway_url}}/api/auth/register",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"test@example.com\",\n  \"password\": \"testpassword123\",\n  \"displayName\": \"Test User\",\n  \"preferredLanguage\": \"id\",\n  \"safetyTermsAccepted\": true,\n  \"safetyTermsVersion\": \"2025-01\"\n}"
+            },
+            "description": "Register a new user. Auto-captures user_id and token. The server also sets HttpOnly session + axis_csrf cookies for browser flows."
+          }
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const r = pm.response.json();",
+                  "if (r.data && r.data.user) {",
+                  "  pm.collectionVariables.set('user_id', r.data.user.id);",
+                  "  if (r.data.token) pm.collectionVariables.set('token', r.data.token);",
+                  "  const setCookies = pm.response.headers.all().filter(h => h.key.toLowerCase() === 'set-cookie');",
+                  "  for (const h of setCookies) {",
+                  "    const m = String(h.value).match(/(?:^|;\\s*)axis_csrf=([^;]+)/);",
+                  "    if (m) { pm.collectionVariables.set('csrf_token', m[1]); break; }",
+                  "  }",
+                  "  console.log('Logged in:', r.data.user.id, 'token?', !!r.data.token, 'csrf?', !!pm.collectionVariables.get('csrf_token'));",
+                  "} else {",
+                  "  console.warn('Login: no user in response — token/csrf NOT captured');",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "url": "{{gateway_url}}/api/auth/login",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"test@example.com\",\n  \"password\": \"testpassword123\"\n}"
+            },
+            "description": "Login and auto-capture user_id + token."
+          }
+        },
+        {
+          "name": "Current session",
+          "request": {
+            "method": "GET",
+            "url": "{{gateway_url}}/api/auth/session",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "description": "Returns the user behind the active session/token."
+          }
+        },
+        {
+          "name": "Get profile",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{gateway_url}}/api/profile?userId={{user_id}}",
+              "host": ["{{gateway_url}}"],
+              "path": ["api", "profile"],
+              "query": [{ "key": "userId", "value": "{{user_id}}" }]
+            },
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }]
+          }
+        },
+        {
+          "name": "Update profile",
+          "request": {
+            "method": "PUT",
+            "url": "{{gateway_url}}/api/profile",
+            "header": [
+              { "key": "Content-Type",  "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"{{user_id}}\",\n  \"displayName\": \"Updated Name\",\n  \"preferredLanguage\": \"id\",\n  \"preferredVoiceId\": \"\",\n  \"preferredTtsModel\": \"v2_5_turbo\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Personality insights",
+          "request": {
+            "method": "GET",
+            "url": "{{gateway_url}}/api/profile/personality-insights",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "description": "Returns Big Five personality scores (stub baseline until enough conversation history is available)."
+          }
+        },
+        {
+          "name": "Generate insights",
+          "request": {
+            "method": "POST",
+            "url": "{{gateway_url}}/api/profile/generate-insights",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "description": "Trigger a (re)compute of personality insights. Same handler as GET in this build."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Chat — Conversations",
+      "item": [
+        {
+          "name": "List conversations",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{gateway_url}}/api/conversations?userId={{user_id}}&page=1&pageSize=20",
+              "host": ["{{gateway_url}}"],
+              "path": ["api", "conversations"],
+              "query": [
+                { "key": "userId",   "value": "{{user_id}}" },
+                { "key": "page",     "value": "1" },
+                { "key": "pageSize", "value": "20" }
+              ]
+            },
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }]
+          }
+        },
+        {
+          "name": "Start session",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const r = pm.response.json();",
+                  "if (r.data && r.data.id) {",
+                  "  pm.collectionVariables.set('conversation_id', r.data.id);",
+                  "  console.log('Captured conversation_id:', r.data.id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "url": "{{gateway_url}}/api/conversations",
+            "header": [
+              { "key": "Content-Type",  "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"{{user_id}}\",\n  \"title\": \"Sesi Baru\",\n  \"channel\": \"text\"\n}"
+            },
+            "description": "Create a new conversation. Rate limited (sessions/day) by gateway. Auto-captures conversation_id."
+          }
+        },
+        {
+          "name": "Update conversation title",
+          "request": {
+            "method": "PATCH",
+            "url": "{{gateway_url}}/api/conversations/{{conversation_id}}",
+            "header": [
+              { "key": "Content-Type",  "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Updated Title\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete conversation",
+          "request": {
+            "method": "DELETE",
+            "url": "{{gateway_url}}/api/conversations/{{conversation_id}}",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Chat — Messages",
+      "item": [
+        {
+          "name": "List messages",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{gateway_url}}/api/conversations/{{conversation_id}}/messages?page=1&pageSize=50",
+              "host": ["{{gateway_url}}"],
+              "path": ["api", "conversations", "{{conversation_id}}", "messages"],
+              "query": [
+                { "key": "page",     "value": "1" },
+                { "key": "pageSize", "value": "50" }
+              ]
+            },
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }]
+          }
+        },
+        {
+          "name": "Send message — text",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const r = pm.response.json();",
+                  "if (r.data && r.data.messageId) {",
+                  "  pm.collectionVariables.set('message_id', r.data.messageId);",
+                  "  console.log('Captured message_id:', r.data.messageId);",
+                  "}",
+                  "if (r.data && r.data.conversationId) {",
+                  "  pm.collectionVariables.set('conversation_id', r.data.conversationId);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "url": "{{gateway_url}}/api/conversations/{{conversation_id}}/messages/send",
+            "header": [
+              { "key": "Content-Type",  "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"{{user_id}}\",\n  \"content\": \"Halo, aku merasa sedikit cemas hari ini.\",\n  \"language_pref\": \"id\"\n}"
+            },
+            "description": "Send a text message. Chat → agentic /chat/invoke → LangGraph. Rate limited per turn by the gateway. Captures message_id (the assistant reply id)."
+          }
+        },
+        {
+          "name": "Send message — with PHQ-9 state",
+          "request": {
+            "method": "POST",
+            "url": "{{gateway_url}}/api/conversations/{{conversation_id}}/messages/send",
+            "header": [
+              { "key": "Content-Type",  "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"{{user_id}}\",\n  \"content\": \"hampir tidak pernah\",\n  \"language_pref\": \"id\",\n  \"phq9_state\": {\n    \"phase\": \"in_progress\",\n    \"active_item\": 1,\n    \"awaiting_clarification\": false,\n    \"responses\": {},\n    \"back_count\": 0\n  }\n}"
+            },
+            "description": "Continues an in-flight PHQ-9 assessment. Send phq9_state from the previous turn's response back here."
+          }
+        },
+        {
+          "name": "Send message — voice",
+          "request": {
+            "method": "POST",
+            "url": "{{gateway_url}}/api/conversations/{{conversation_id}}/messages/send",
+            "header": [
+              { "key": "Content-Type",  "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"{{user_id}}\",\n  \"content\": \"\",\n  \"language_pref\": \"id\",\n  \"voice\": {\n    \"output_modality\": \"both\",\n    \"audio_input_base64\": \"<base64-audio>\",\n    \"audio_input_mime\": \"audio/webm\",\n    \"voice_id\": \"\",\n    \"tts_model\": \"v2_5_turbo\"\n  }\n}"
+            },
+            "description": "Voice turn. STT → LangGraph → TTS. Replace audio_input_base64 with a real recording. output_modality: text | voice | both."
+          }
+        },
+        {
+          "name": "Stream message (SSE)",
+          "request": {
+            "method": "POST",
+            "url": "{{gateway_url}}/api/conversations/{{conversation_id}}/messages/stream",
+            "header": [
+              { "key": "Content-Type",  "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Accept",        "value": "text/event-stream" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"{{user_id}}\",\n  \"content\": \"ceritakan sedikit tentang dirimu\",\n  \"language_pref\": \"id\"\n}"
+            },
+            "description": "SSE streaming variant of /messages/send. Events: token (text chunk), done (full SendMessageOutput JSON), error. Voice turns are not supported on this path."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Voice catalog",
+      "item": [
+        {
+          "name": "List voice options",
+          "request": {
+            "method": "GET",
+            "url": "{{gateway_url}}/api/voice/options",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "description": "Returns the ElevenLabs voice catalog available to this deployment."
+          }
+        },
+        {
+          "name": "Synthesize speech",
+          "request": {
+            "method": "POST",
+            "url": "{{gateway_url}}/api/voice/synthesize",
+            "header": [
+              { "key": "Content-Type",  "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"text\": \"Halo, ini contoh suara AXIS.\",\n  \"voice_id\": \"\",\n  \"tts_model\": \"v2_5_turbo\",\n  \"language_pref\": \"id\"\n}"
+            },
+            "description": "Play back arbitrary text via TTS (used for the 'play message' button outside a chat turn)."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Memories",
+      "item": [
+        {
+          "name": "List memories",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{gateway_url}}/api/memories?userId={{user_id}}&page=1&pageSize=20",
+              "host": ["{{gateway_url}}"],
+              "path": ["api", "memories"],
+              "query": [
+                { "key": "userId",   "value": "{{user_id}}" },
+                { "key": "page",     "value": "1" },
+                { "key": "pageSize", "value": "20" }
+              ]
+            },
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }]
+          }
+        },
+        {
+          "name": "Create memory",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const r = pm.response.json();",
+                  "if (r.data && r.data.id) {",
+                  "  pm.collectionVariables.set('memory_id', r.data.id);",
+                  "  console.log('Captured memory_id:', r.data.id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "url": "{{gateway_url}}/api/memories",
+            "header": [
+              { "key": "Content-Type",  "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"{{user_id}}\",\n  \"title\": \"Cemas presentasi\",\n  \"content\": \"Pengguna menyebutkan merasa cemas saat presentasi di kantor.\",\n  \"tags\": [\"anxiety\", \"work\"],\n  \"source\": \"manual\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get memory",
+          "request": {
+            "method": "GET",
+            "url": "{{gateway_url}}/api/memories/{{memory_id}}",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }]
+          }
+        },
+        {
+          "name": "Update memory",
+          "request": {
+            "method": "PATCH",
+            "url": "{{gateway_url}}/api/memories/{{memory_id}}",
+            "header": [
+              { "key": "Content-Type",  "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Cemas presentasi (revised)\",\n  \"isPinned\": true\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete memory",
+          "request": {
+            "method": "DELETE",
+            "url": "{{gateway_url}}/api/memories/{{memory_id}}",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Knowledge graph (via /api/memories/kg)",
+      "item": [
+        {
+          "name": "List KG nodes",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{gateway_url}}/api/memories/kg?userId={{user_id}}&nodeType=memory&limit=50&offset=0",
+              "host": ["{{gateway_url}}"],
+              "path": ["api", "memories", "kg"],
+              "query": [
+                { "key": "userId",   "value": "{{user_id}}" },
+                { "key": "nodeType", "value": "memory" },
+                { "key": "limit",    "value": "50" },
+                { "key": "offset",   "value": "0" }
+              ]
+            },
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "description": "List user-scoped KG nodes. nodeType: memory | topic | emotion | session | assessment."
+          }
+        },
+        {
+          "name": "List KG relations",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{gateway_url}}/api/memories/kg/relations?userId={{user_id}}&limit=150",
+              "host": ["{{gateway_url}}"],
+              "path": ["api", "memories", "kg", "relations"],
+              "query": [
+                { "key": "userId", "value": "{{user_id}}" },
+                { "key": "limit",  "value": "150" }
+              ]
+            },
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }]
+          }
+        },
+        {
+          "name": "Update KG node",
+          "request": {
+            "method": "PATCH",
+            "url": "{{gateway_url}}/api/memories/kg/memory/<node_id>",
+            "header": [
+              { "key": "Content-Type",  "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"{{user_id}}\",\n  \"properties\": {\n    \"content\": \"updated content\",\n    \"importance\": 0.6\n  }\n}"
+            },
+            "description": "Replace <node_id> with a KG node id. node_type segment is one of: memory | topic | emotion | session | assessment."
+          }
+        },
+        {
+          "name": "Delete (archive) KG node",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{gateway_url}}/api/memories/kg/memory/<node_id>?userId={{user_id}}",
+              "host": ["{{gateway_url}}"],
+              "path": ["api", "memories", "kg", "memory", "<node_id>"],
+              "query": [{ "key": "userId", "value": "{{user_id}}" }]
+            },
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "description": "Soft-archive a KG node and its pgvector row."
+          }
+        },
+        {
+          "name": "Reset user KG",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{gateway_url}}/api/memories/kg/reset?userId={{user_id}}",
+              "host": ["{{gateway_url}}"],
+              "path": ["api", "memories", "kg", "reset"],
+              "query": [{ "key": "userId", "value": "{{user_id}}" }]
+            },
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "description": "Destructive: deletes all KG nodes + pgvector rows scoped to this user."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Agentic proxy (optional)",
+      "item": [
+        {
+          "name": "Agentic health (via gateway)",
+          "request": {
+            "method": "GET",
+            "url": "{{gateway_url}}/agentic/health",
+            "description": "Requires PUBLIC_AGENTIC_PROXY_ENABLED=1 in backend/.env. Otherwise returns 404."
+          }
+        },
+        {
+          "name": "Agentic chat invoke (via gateway)",
+          "request": {
+            "method": "POST",
+            "url": "{{gateway_url}}/agentic/chat/invoke",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"user_id\": \"{{user_id}}\",\n  \"session_id\": \"proxy-test-001\",\n  \"current_message\": \"halo dari proxy\",\n  \"messages\": [],\n  \"session_turn\": 1,\n  \"language_pref\": \"id\"\n}"
+            },
+            "description": "Direct LangGraph call through gateway. Bypasses chat service (no DB persistence). The gateway injects AGENTIC_GATEWAY_PRIVATE_KEY itself, so Postman does not need it."
+          }
+        }
+      ]
+    }
+  ]
+}

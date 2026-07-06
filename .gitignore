@@ -1,0 +1,94 @@
+# ===== Companionship ChatBot .gitignore =====
+
+# ---------- Environment / Secrets ----------
+.env
+.env.dev
+.env.local
+.env.*.local
+!.env.example
+!**/.env.example
+
+# Google Cloud Console's own download filename for OAuth client
+# credentials (contains client_secret in plaintext) -- never commit.
+client_secret_*.json
+
+# ---------- Python ----------
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+*.egg
+
+# ---------- Go ----------
+# Compiled binary (backend/api)
+backend/api
+*.exe
+*.out
+
+# ---------- Node / Frontend ----------
+node_modules/
+/.next/
+frontend/.next/
+/out/
+.pnp
+.pnp.js
+
+
+# ---------- IDE / Editor ----------
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ---------- OS ----------
+.DS_Store
+Thumbs.db
+*.pem
+
+# ---------- Docker ----------
+docker-compose.override.yml
+
+# ---------- Postman (local state) ----------
+.postman/
+
+# ---------- Markdown (only commit README.md) ----------
+*.md
+!README.md
+*.docx
+
+# ---------- Local-only docs (kept on disk, not pushed) ----------
+docs/
+
+# ---------- Dev/debug scratch scripts ----------
+frontend_v2/scripts/
+agentic/tmp/
+agentic/agentic/tmp/
+
+# ---------- Synthetic Chat Eval Output ----------
+utility/synthetic_chat_eval/output/
+
+# ---------- Misc ----------
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+/coverage
+*.tsbuildinfo
+next-env.d.ts
+.vercel
+dashboard.txt
+
+# ---------- WhatsApp Bot (local session) ----------
+whatsapp_bot/auth/
+
+
+.webui_secret_key
+schema.sql
+.testing
+.dump
+bab1_reference
