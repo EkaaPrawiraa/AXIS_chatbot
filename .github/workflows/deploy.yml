@@ -12,10 +12,7 @@
 #   SSH_USER          → deploy user
 #   SSH_PRIVATE_KEY   → private key for the deploy user
 #   API_PUBLIC_URL    → https://api.example.com/api
-#   GOOGLE_CLIENT_ID  → OAuth Client ID for "Sign in with Google" (not a
-#                       secret value itself -- it's baked into the public
-#                       JS bundle -- but stored as a secret here anyway so
-#                       it isn't hardcoded in this file)
+#   GOOGLE_CLIENT_ID  → OAuth Client ID for "Sign in with Google"
 #
 # Optional Secrets (for environment-specific overrides):
 #   DEPLOY_ENV      → production (default)

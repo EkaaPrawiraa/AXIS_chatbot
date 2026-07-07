@@ -20,20 +20,7 @@ function isCrisisTopicName(name: string): boolean {
   return CRISIS_TOPIC_KEYWORDS.some((keyword) => normalized.includes(keyword));
 }
 
-/**
- * The dashboard's "Terakhir kamu cerita soal X" card is derived from real KG
- * data: the most-recently-touched Topic node (backend already sorts
- * `/memories/kg?nodeType=topic` by updated_at DESC) gives the topic name,
- * and an Experience/Emotion/Thought connected to it via a RELATED_TO_TOPIC
- * "about" relation supplies a real one-line description — Topic nodes
- * themselves don't carry descriptive text (schema only gives them a `name`).
- *
- * Topics are skipped entirely (not just their body text) if the topic name
- * itself reads as crisis-related, or if ALL its connected content is flagged
- * sensitive/trauma (`sensitivity_level`, same flag Memories/KG pages already
- * hide by default) — this card is a casual conversation-starter, not a place
- * to resurface sensitive disclosures.
- */
+
 export function deriveLatestTopicInsight(
   topics: MemoryNode[],
   relations: MemoryGraphRelation[],

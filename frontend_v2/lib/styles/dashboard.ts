@@ -60,7 +60,9 @@ export const dashboardStyles = {
   insightCardIcon: "h-4 w-4 text-[var(--v2-olive-deep)] shrink-0",
   insightCardTitle: "text-[13px] font-bold uppercase tracking-wider text-[var(--v2-muted)] line-clamp-1",
   insightCardDescription: "line-clamp-2 leading-relaxed",
-  insightCardLink: "mt-1 inline-flex w-fit items-center gap-1.5 text-[13.5px] font-bold text-[var(--v2-olive-deep)] transition-opacity hover:opacity-75",
+  // insightCardLink: "mt-1 inline-flex w-fit items-center gap-1.5 text-[13.5px] font-bold text-[var(--v2-olive-deep)] transition-opacity hover:opacity-75",
+  insightCardLink:
+  "mt-1 self-end pr-0.5 inline-flex w-fit items-center gap-1.5 text-[13.5px] font-bold text-[var(--v2-olive-deep)] transition-opacity hover:opacity-75",
   insightCardLinkIcon: "h-4 w-4",
 
   // Layout

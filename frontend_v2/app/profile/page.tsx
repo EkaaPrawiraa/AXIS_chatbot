@@ -125,8 +125,7 @@ function ProfileContent() {
 		navigator.clipboard.writeText(userId);
 		setSavedField("userid");
 		window.setTimeout(
-			() =>
-				setSavedField((current) => (current === "userid" ? null : current)),
+			() => setSavedField((current) => (current === "userid" ? null : current)),
 			2000,
 		);
 		addToast("User ID berhasil disalin!", "success");
