@@ -40,5 +40,3 @@ export const APP_CONFIG = {
     toastDuration: 4000,
   },
 };
-
-export * from './theme';

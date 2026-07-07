@@ -11,7 +11,7 @@ type MessageRepository interface {
 	UpdateContent(ctx context.Context, messageID string, content string) (entity.Message, error)
 	UpdateRegeneratedContent(ctx context.Context, messageID string, content string, safetyFlag *string, crisisTier *string) (entity.Message, error)
 	UpdateStatusAndContent(ctx context.Context, messageID, status, content string) error
-	UpdateStatusContentAndMetadata(ctx context.Context, messageID, status, content string, metadata map[string]any) error
+	UpdateStatusContentAndMetadata(ctx context.Context, messageID, status, content string, safetyFlag *string, crisisTier *string, metadata map[string]any) error
 	NextTurnIndex(ctx context.Context, sessionID string) (int, error)
 	ListBySession(ctx context.Context, sessionID string, limit int, offset int) ([]entity.Message, error)
 	ListIDsBySession(ctx context.Context, sessionID string) ([]string, error)

@@ -1,7 +1,6 @@
 'use client';
 
-import Image from 'next/image';
-import { ILLUSTRATIONS, ShieldCheck, Trash2, X } from '@/lib/assets';
+import { ShieldCheck, Trash2, X } from '@/lib/assets';
 import { useMemo, useState } from 'react';
 import { animationClasses } from '@/lib/animations';
 import type { MemoryNode } from '@/models';
@@ -16,13 +15,6 @@ function asText(value: unknown): string {
   return value === null || value === undefined ? '' : String(value);
 }
 
-/**
- * "Edit memori" bottom sheet per the v3 design (07_memory_edit_keyboard):
- * book illustration + judul field, isi textarea with 500-char counter,
- * Sensitif toggle (sensitivity_level), and Hapus / Batal / Simpan actions.
- * Any remaining editable fields render as compact inputs so the full v1
- * editing contract is preserved.
- */
 export function MemoryEditSheet({
   node,
   onSave,
@@ -75,9 +67,9 @@ export function MemoryEditSheet({
     <div className={`fixed inset-0 z-[80] bg-black/35 ${animationClasses.sheetBackdropIn}`} onClick={onClose}>
       <aside
         onClick={(event) => event.stopPropagation()}
-        className={`absolute inset-x-0 bottom-0 mx-auto max-h-[88dvh] w-[min(100%,540px)] overflow-y-auto rounded-t-[26px] bg-[#f7f1e8] px-4 pb-5 pt-2 shadow-2xl ${animationClasses.sheetUp}`}
+        className={`absolute inset-x-0 bottom-0 mx-auto max-h-[88dvh] w-[min(100%,540px)] overflow-y-auto rounded-t-[26px] bg-[var(--v2-bg-light-9)] px-4 pb-5 pt-2 shadow-2xl ${animationClasses.sheetUp}`}
       >
-        <span className="mx-auto block h-[5px] w-12 rounded-full bg-[#cfc8b8]" aria-hidden />
+        <span className="mx-auto block h-[5px] w-12 rounded-full bg-[var(--v2-line-border)]" aria-hidden />
 
         <div className="mt-3 flex items-center justify-between">
           <h2 className="text-[24px] font-bold text-[var(--v2-ink)]">Edit memori</h2>
@@ -87,11 +79,8 @@ export function MemoryEditSheet({
         </div>
 
         <div className="mt-4 flex gap-3">
-          <span className="grid h-[88px] w-[104px] shrink-0 place-items-center rounded-[16px] border border-[#e7dfcd] bg-[#fbf7ee]">
-            <Image src={ILLUSTRATIONS.memoryBook} alt="" width={140} height={155} className="h-[64px] w-auto" />
-          </span>
           {titleField ? (
-            <label className="min-w-0 flex-1 rounded-[16px] border border-[#e3dbc8] bg-[#fbf7ee] px-3.5 py-2.5">
+            <label className="min-w-0 flex-1 rounded-[16px] border border-[var(--v2-line-lighter)] bg-[var(--v2-bg-light-1)] px-3.5 py-2.5">
               <span className="block text-[12px] font-medium text-[var(--v2-muted)]">Judul memori</span>
               <input
                 value={form[titleField] || ''}
@@ -100,7 +89,7 @@ export function MemoryEditSheet({
               />
             </label>
           ) : (
-            <div className="min-w-0 flex-1 rounded-[16px] border border-[#e3dbc8] bg-[#fbf7ee] px-3.5 py-2.5">
+            <div className="min-w-0 flex-1 rounded-[16px] border border-[var(--v2-line-lighter)] bg-[var(--v2-bg-light-1)] px-3.5 py-2.5">
               <span className="block text-[12px] font-medium text-[var(--v2-muted)]">Judul memori</span>
               <p className="mt-1 truncate text-[15px] font-semibold text-[var(--v2-ink)]">
                 {node.title || node.label}
@@ -110,7 +99,7 @@ export function MemoryEditSheet({
         </div>
 
         {contentField ? (
-          <label className="mt-3 block rounded-[16px] border border-[#e3dbc8] bg-[#fbf7ee] px-3.5 py-2.5">
+          <label className="mt-3 block rounded-[16px] border border-[var(--v2-line-lighter)] bg-[var(--v2-bg-light-1)] px-3.5 py-2.5">
             <span className="block text-[12px] font-medium text-[var(--v2-muted)]">Isi memori</span>
             <textarea
               value={contentValue}
@@ -130,7 +119,7 @@ export function MemoryEditSheet({
             {extraFields.map((field) => {
               const options = node.enumFields?.[field];
               return (
-                <label key={field} className="rounded-[14px] border border-[#e3dbc8] bg-[#fbf7ee] px-3 py-2">
+                <label key={field} className="rounded-[14px] border border-[var(--v2-line-lighter)] bg-[var(--v2-bg-light-1)] px-3 py-2">
                   <span className="block text-[11px] font-medium capitalize text-[var(--v2-muted)]">
                     {field.replace(/_/g, ' ')}
                   </span>
@@ -160,9 +149,9 @@ export function MemoryEditSheet({
         ) : null}
 
         {hasSensitivity ? (
-          <div className="mt-3 flex items-center justify-between rounded-[16px] border border-[#e7dfcd] bg-[#fbf7ee] px-3.5 py-2.5">
+          <div className="mt-3 flex items-center justify-between rounded-[16px] border border-[var(--v2-c-e7dfcd)] bg-[var(--v2-bg-light-1)] px-3.5 py-2.5">
             <div className="flex items-center gap-3">
-              <span className="grid h-[38px] w-[38px] place-items-center rounded-full bg-[#71805c] text-white">
+              <span className="grid h-[38px] w-[38px] place-items-center rounded-full bg-[var(--v2-c-71805c)] text-white">
                 <ShieldCheck className="h-[18px] w-[18px]" />
               </span>
               <span className="text-[14.5px] font-semibold text-[var(--v2-ink)]">Sensitif</span>
@@ -173,7 +162,7 @@ export function MemoryEditSheet({
               aria-checked={sensitive}
               onClick={() => setField('sensitivity_level', sensitive ? 'normal' : 'sensitive')}
               className={`relative h-[28px] w-[50px] rounded-full transition-colors ${
-                sensitive ? 'bg-[var(--v2-olive)]' : 'bg-[#ddd5c4]'
+                sensitive ? 'bg-[var(--v2-olive)]' : 'bg-[var(--v2-c-ddd5c4)]'
               }`}
             >
               <span
@@ -189,21 +178,15 @@ export function MemoryEditSheet({
           <button
             onClick={onDelete}
             disabled={isBusy}
-            className="v2-anim-pressable flex h-[46px] flex-1 items-center justify-center gap-2 rounded-full border border-[#e3dbc8] bg-[#fbf7ee] text-[14.5px] font-bold text-[var(--v2-clay)] disabled:opacity-50"
+            className="v2-anim-pressable flex h-[46px] flex-1 items-center justify-center gap-2 rounded-full border border-[var(--v2-line-lighter)] bg-[var(--v2-bg-light-1)] text-[14.5px] font-bold text-[var(--v2-clay)] disabled:opacity-50"
           >
             <Trash2 className="h-[16px] w-[16px]" /> Hapus
           </button>
-          <button
-            onClick={onClose}
-            disabled={isBusy}
-            className="v2-anim-pressable h-[46px] flex-1 rounded-full border border-[#e3dbc8] bg-[#fbf7ee] text-[14.5px] font-bold text-[var(--v2-ink)] disabled:opacity-50"
-          >
-            Batal
-          </button>
+          
           <button
             onClick={submit}
             disabled={isBusy}
-            className="v2-anim-pressable h-[46px] flex-1 rounded-full bg-[var(--v2-clay)] text-[14.5px] font-bold text-white shadow-[0_12px_22px_-12px_rgba(195,108,69,0.9)] disabled:opacity-50"
+            className="v2-anim-pressable h-[46px] flex-1 rounded-full bg-[var(--v2-clay)] text-[14.5px] font-bold text-white shadow-[0_12px_22px_-12px_rgba(var(--v2-rgb-c36c45),0.9)] disabled:opacity-50"
           >
             Simpan
           </button>

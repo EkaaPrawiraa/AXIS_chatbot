@@ -781,7 +781,7 @@ func (u *ChatUsecase) StreamMessage(ctx context.Context, input StreamMessageInpu
 	assistantMessage.CrisisTier = crisisTier
 	assistantMessage.Status = "complete"
 	assistantMessage.Metadata = responseMetadata(resp.PHQ9State)
-	if err := u.messages.UpdateStatusContentAndMetadata(bgCtx, assistantMessage.ID, "complete", reply, assistantMessage.Metadata); err != nil {
+	if err := u.messages.UpdateStatusContentAndMetadata(bgCtx, assistantMessage.ID, "complete", reply, assistantMessage.SafetyFlag, assistantMessage.CrisisTier, assistantMessage.Metadata); err != nil {
 		return SendMessageOutput{}, err
 	}
 

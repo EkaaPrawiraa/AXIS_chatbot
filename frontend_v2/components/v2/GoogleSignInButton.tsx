@@ -3,8 +3,6 @@
 import Script from 'next/script';
 import { useEffect, useRef, useState } from 'react';
 
-// Google Identity Services' own global shape -- intentionally loose since
-// this is a third-party script, not something we control the types for.
 interface GoogleCredentialResponse {
   credential: string;
 }
@@ -35,12 +33,6 @@ interface GoogleSignInButtonProps {
   disabled?: boolean;
 }
 
-// Renders the real, official "Sign in with Google" button via Google
-// Identity Services (GIS) -- not a custom-styled lookalike -- and hands
-// the resulting ID token (a JWT signed by Google, verified server-side in
-// AuthUsecase.GoogleLogin) back via onCredential. Requires
-// NEXT_PUBLIC_GOOGLE_CLIENT_ID; renders nothing if it isn't configured
-// (e.g. a local dev checkout without Google credentials set up yet).
 export function GoogleSignInButton({ onCredential, disabled }: GoogleSignInButtonProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [scriptReady, setScriptReady] = useState(false);
@@ -61,11 +53,6 @@ export function GoogleSignInButton({ onCredential, disabled }: GoogleSignInButto
       text: 'continue_with',
       shape: 'pill',
     });
-    // onCredential is passed fresh each render from the parent's submit
-    // closure, but re-initializing on every keystroke elsewhere on the
-    // page would be wasteful and Google's own button doesn't need it --
-    // only re-run when the script/client actually become available.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [scriptReady, clientId]);
 
   if (!clientId) return null;

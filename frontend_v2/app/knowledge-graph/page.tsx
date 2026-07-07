@@ -93,10 +93,10 @@ function KnowledgeGraphContent() {
           </p>
         </div>
 
-        <section className="rounded-[24px] border border-[#ece4d3] bg-[#f8f2e7] px-3 pb-4 pt-3">
+        <section className="rounded-[24px] border border-[var(--v2-line-light)] bg-[var(--v2-c-f8f2e7)] px-3 pb-4 pt-3">
           <button
             onClick={() => setHideSensitive((value) => !value)}
-            className="v2-anim-pressable flex items-center gap-2 rounded-full border border-[#e0d8c5] bg-[#fbf6ec] px-3.5 py-1.5 text-[12px] font-semibold text-[var(--v2-ink)]"
+            className="v2-anim-pressable flex items-center gap-2 rounded-full border border-[var(--v2-c-e0d8c5)] bg-[var(--v2-c-fbf6ec)] px-3.5 py-1.5 text-[12px] font-semibold text-[var(--v2-ink)]"
           >
             {hideSensitive ? <EyeOff className="h-[14px] w-[14px]" /> : <Eye className="h-[14px] w-[14px]" />}
             {hideSensitive ? 'Sembunyikan yang sensitif' : 'Tampilkan yang sensitif'}
@@ -118,12 +118,12 @@ function KnowledgeGraphContent() {
 
           <button
             onClick={() => router.push('/knowledge-graph/expanded')}
-            className="v2-anim-pressable mx-auto mt-3 flex h-[44px] w-[min(100%,210px)] items-center justify-center gap-2.5 rounded-full bg-[var(--v2-clay)] text-[15.5px] font-bold text-white shadow-[0_14px_26px_-14px_rgba(195,108,69,0.9)]"
+            className="v2-anim-pressable mx-auto mt-3 flex h-[44px] w-[min(100%,210px)] items-center justify-center gap-2.5 rounded-full bg-[var(--v2-clay)] text-[15.5px] font-bold text-white shadow-[0_14px_26px_-14px_rgba(var(--v2-rgb-c36c45),0.9)]"
           >
             Perbesar peta <MoveDiagonal className="h-[16px] w-[16px]" />
           </button>
 
-          <p className="mt-3 flex items-center justify-center gap-2 text-[12px] font-medium text-[#6f6a5e]">
+          <p className="mt-3 flex items-center justify-center gap-2 text-[12px] font-medium text-[var(--v2-muted-tertiary)]">
             <Smartphone className="h-[15px] w-[15px] -rotate-90" />
             Lebih nyaman dilihat saat HP dimiringkan.
           </p>

@@ -135,11 +135,11 @@ const HELP_ITEMS: HelpItem[] = [
 ];
 
 const TONE_CLASS = {
-	olive: "bg-[#eef0e4] text-[var(--v2-olive-deep)]",
-	gold: "bg-[#f7ead0] text-[#d59f2e]",
-	clay: "bg-[#f7e3d8] text-[var(--v2-clay)]",
-	sage: "bg-[#ecebe1] text-[var(--v2-olive-deep)]",
-  rose: "bg-[#f5e1df] text-[#a85f5d]",
+	olive: "bg-[var(--v2-c-eef0e4)] text-[var(--v2-olive-deep)]",
+	gold: "bg-[var(--v2-c-f7ead0)] text-[var(--v2-c-d59f2e)]",
+	clay: "bg-[var(--v2-c-f7e3d8)] text-[var(--v2-clay)]",
+	sage: "bg-[var(--v2-c-ecebe1)] text-[var(--v2-olive-deep)]",
+  rose: "bg-[var(--v2-c-f5e1df)] text-[var(--v2-c-a85f5d)]",
 } as const;
 
 export default function HelpPage() {
@@ -168,14 +168,14 @@ export default function HelpPage() {
 						style={motionStyleVars({ delayMs: 50 })}
 					>
 						<h1 className="v2-mobile-title mt-1">Bantuan</h1>
-						<p className="v2-mobile-description mt-1 w-full text-[#55524a]">
+						<p className="v2-mobile-description mt-1 w-full text-[var(--v2-gray-dark-1)]">
 							Temukan bantuan dan pahami fitur AXIS agar kamu nyaman
 							menggunakannya.
 						</p>
 					</section>
 
 					<label
-						className={`flex h-[48px] items-center gap-3 rounded-[18px] border border-[var(--v2-line)] bg-[#fffaf3]/88 px-4 shadow-[0_10px_28px_rgb(83_67_46_/_0.04)] ${animationClasses.staggerItem}`}
+						className={`flex h-[48px] items-center gap-3 rounded-[18px] border border-[var(--v2-line)] bg-[var(--v2-bg-light-2)]/88 px-4 shadow-[0_10px_28px_rgba(var(--v2-rgb-53432e),0.04)] ${animationClasses.staggerItem}`}
 						style={motionStyleVars({ delayMs: 100 })}
 					>
 						<Search
@@ -205,7 +205,7 @@ export default function HelpPage() {
 							/>
 						))}
 						{visibleItems.length === 0 ? (
-							<div className="rounded-[19px] border border-[var(--v2-line)] bg-[#fffaf3]/74 px-4 py-5 text-center text-[14px] font-medium text-[var(--v2-muted)]">
+							<div className="rounded-[19px] border border-[var(--v2-line)] bg-[var(--v2-bg-light-2)]/74 px-4 py-5 text-center text-[14px] font-medium text-[var(--v2-muted)]">
 								Belum ada bantuan yang cocok dengan pencarianmu.
 							</div>
 						) : null}
@@ -231,7 +231,7 @@ function HelpCard({
 
 	return (
 		<article
-			className={`overflow-hidden rounded-[19px] border border-[var(--v2-line)] bg-[#fffaf3]/74 shadow-[0_12px_30px_rgb(83_67_46_/_0.055)] ${animationClasses.cardEnter}`}
+			className={`overflow-hidden rounded-[19px] border border-[var(--v2-line)] bg-[var(--v2-bg-light-2)]/74 shadow-[0_12px_30px_rgba(var(--v2-rgb-53432e),0.055)] ${animationClasses.cardEnter}`}
 			style={motionStyleVars({ delayMs: 145 + index * 38 })}
 		>
 			<button
@@ -250,7 +250,7 @@ function HelpCard({
 					<h2 className="text-[17px] font-bold leading-tight text-[var(--v2-ink)]">
 						{item.title}
 					</h2>
-					<p className="mt-1 text-[13px] font-medium leading-[1.4] text-[#5f5b52]">
+					<p className="mt-1 text-[13px] font-medium leading-[1.4] text-[var(--v2-text-subdued)]">
 						{item.summary}{" "}
 						{item.helper ? (
 							<span className="font-bold text-[var(--v2-olive-link)] underline underline-offset-4">
@@ -286,7 +286,7 @@ function HelpCard({
 function DefaultHelpDetail({ item }: { item: HelpItem }) {
 	return (
 		<>
-			<p className="whitespace-pre-line text-[13px] font-medium leading-[1.6] text-[#514d46]">
+			<p className="whitespace-pre-line text-[13px] font-medium leading-[1.6] text-[var(--v2-gray-dark-2)]">
 				{item.body}
 			</p>
 			<HelpDetailActions item={item} />
@@ -319,7 +319,7 @@ function ThinkingPracticeDetail({ item }: { item: HelpItem }) {
 
 	return (
 		<div className="space-y-4">
-			<p className="text-[13px] font-medium leading-[1.62] text-[#514d46]">
+			<p className="text-[13px] font-medium leading-[1.62] text-[var(--v2-gray-dark-2)]">
 				{item.body}
 			</p>
 
@@ -331,9 +331,9 @@ function ThinkingPracticeDetail({ item }: { item: HelpItem }) {
 					{examples.map((example) => (
 						<li
 							key={example.label}
-							className="flex gap-3 text-[13px] font-medium leading-[1.55] text-[#514d46]"
+							className="flex gap-3 text-[13px] font-medium leading-[1.55] text-[var(--v2-gray-dark-2)]"
 						>
-							<span className="mt-[0.55em] h-1.5 w-1.5 shrink-0 rounded-full bg-[#d59f2e]" />
+							<span className="mt-[0.55em] h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--v2-c-d59f2e)]" />
 							<span>
 								<span className="font-bold text-[var(--v2-ink)]">
 									{example.label}:{" "}

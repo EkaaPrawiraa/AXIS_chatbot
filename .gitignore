@@ -22,6 +22,8 @@ build/
 .venv/
 venv/
 *.egg
+.pytest_cache
+backups/
 
 # ---------- Go ----------
 # Compiled binary (backend/api)
@@ -68,6 +70,7 @@ docs/
 frontend_v2/scripts/
 agentic/tmp/
 agentic/agentic/tmp/
+frontend/
 
 # ---------- Synthetic Chat Eval Output ----------
 utility/synthetic_chat_eval/output/

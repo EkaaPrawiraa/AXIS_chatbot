@@ -5,13 +5,13 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { Fragment, Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import { AuthRequired } from '@/components/session';
 import { V2Shell } from '@/components/v2/V2Shell';
-import { AssistantBubble } from '@/components/v2/chat/AssistantBubble';
-import { ChatComposer } from '@/components/v2/chat/ChatComposer';
-import { ChatHeader } from '@/components/v2/chat/ChatHeader';
-import { formatChatDateDivider, isDifferentCalendarDay } from '@/components/v2/chat/format';
-import { HotlineWarningCard } from '@/components/v2/chat/HotlineWarningCard';
+import { AssistantBubble } from '@/components/v2/chat/bubbles/AssistantBubble';
+import { ChatComposer } from '@/components/v2/chat/composer/ChatComposer';
+import { ChatHeader } from '@/components/v2/chat/header/ChatHeader';
+import { formatChatDateDivider, isDifferentCalendarDay } from '@/components/v2/chat/utils/format';
+import { HotlineWarningCard } from '@/components/v2/chat/cards/HotlineWarningCard';
 import { SessionListView } from '@/components/v2/chat/SessionList';
-import { UserBubble } from '@/components/v2/chat/UserBubble';
+import { UserBubble } from '@/components/v2/chat/bubbles/UserBubble';
 import { chatAPI } from '@/lib/api/chat';
 import { voiceAPI } from '@/lib/api/voice';
 import { animationClasses, motionStyleVars } from '@/lib/animations';
@@ -25,6 +25,8 @@ import { usePreferencesStore } from '@/stores/preferences';
 import { useSessionStore } from '@/stores';
 import { useMessageLimitStore } from '@/stores/messageLimit';
 import { useUIStore } from '@/stores/ui';
+
+import { chatRoomStyles } from '@/lib/styles/chatRoom';
 
 function ChatPageContent() {
   const router = useRouter();
@@ -109,8 +111,7 @@ function ChatPageContent() {
     return null;
   }, [answeredPhqMessageIds, messages]);
 
-  // "Buat ulang" only ever applies to the most recent assistant reply, and
-  // only once it has actually finished (not the empty streaming placeholder).
+
   const lastAssistantMessageId = useMemo(() => {
     for (let index = messages.length - 1; index >= 0; index -= 1) {
       const message = messages[index];
@@ -283,13 +284,6 @@ function ChatPageContent() {
   const playMessage = async (message: Message) => {
     if (playingMessageId) return;
     setPlayingMessageId(message.id);
-    // Primed synchronously, still inside this click's user gesture — the
-    // synthesize() fetch below takes a real network round-trip, and by the
-    // time it resolves the browser no longer considers a *new* Audio's
-    // play() call to be gesture-triggered. Safari (and sometimes Chrome)
-    // then silently rejects it, which is why "Putar" could appear to do
-    // nothing at all with no visible error. Reusing this same, already-
-    // unlocked element for the real playback avoids that.
     const audioElement = primeAudioElement();
     try {
       const result = await voiceAPI.synthesize({
@@ -303,9 +297,6 @@ function ChatPageContent() {
       const handle = createAudioPlayer(src, undefined, audioElement);
       await handle.done;
     } catch (error) {
-      // "Putar" is a nice-to-have; a failed playback shouldn't interrupt
-      // the conversation with an alarming error, but it must not be
-      // silently invisible either — see console for diagnosis.
       console.warn('Chat: message playback failed', error);
     } finally {
       setPlayingMessageId(null);
@@ -325,9 +316,6 @@ function ChatPageContent() {
       if (response.cbt_state !== undefined) cbtStateByConversationRef.current[conversationId] = response.cbt_state;
       setMessages((items) => items.map((item) => (item.id === message.id ? response.assistantMessage : item)));
     } catch (error) {
-      // The pill just stops spinning and the old reply stays visible, but a
-      // daily-limit rejection specifically is worth surfacing (not silent)
-      // since the user would otherwise just think the button is broken.
       setSendError(friendlyErrorMessage(error, 'Gagal membuat ulang balasan, coba lagi ya.'));
     } finally {
       setRegeneratingMessageId(null);
@@ -351,7 +339,7 @@ function ChatPageContent() {
   return (
     <V2Shell showTopbar={false} showBottomNav={false}>
       <main
-        className={`fixed inset-0 z-10 flex h-[100dvh] flex-col ${animationClasses.pageEnter}`}
+        className={`${chatRoomStyles.pageContainer} ${animationClasses.pageEnter}`}
         style={{ ...motionStyleVars({ durationMs: 300 }), height: `calc(100dvh - ${keyboardInset}px)` }}
       >
         <ChatHeader
@@ -361,7 +349,7 @@ function ChatPageContent() {
           onDelete={() => void deleteCurrentConversation()}
         />
 
-        <section data-chat-rail className="min-h-0 flex-1 space-y-3 overflow-y-auto px-1 pb-4">
+        <section data-chat-rail className={chatRoomStyles.chatRail}>
           <DateDivider label={formatChatDateDivider(messages[0]?.createdAt ?? Date.now())} delayMs={130} />
 
           {messages.length === 0 || messages[0]?.role === 'user' ? (
@@ -421,7 +409,7 @@ function ChatPageContent() {
         </section>
 
         {sendError ? (
-          <p className="-mx-[22px] px-[22px] pb-1 text-[12px] font-semibold text-[#a7462e]">{sendError}</p>
+          <p className="-mx-[22px] px-[22px] pb-1 text-[12px] font-semibold text-[var(--v2-clay-subtle)]">{sendError}</p>
         ) : null}
         {messageLimit.limit !== null && messageLimit.remaining !== null ? (
           <p className="-mx-[22px] px-[22px] pb-1 text-[11px] font-medium text-[var(--v2-muted)]">
@@ -452,7 +440,7 @@ export default function ChatPage() {
 function DateDivider({ label, delayMs = 0 }: { label: string; delayMs?: number }) {
   return (
     <p
-      className={`mx-auto w-fit rounded-full bg-[#efe9dc] px-3.5 py-1 text-[11px] font-semibold text-[#8d8880] ${animationClasses.staggerItem}`}
+      className={`mx-auto w-fit rounded-full bg-[var(--v2-bg-light-10)] px-3.5 py-1 text-[11px] font-semibold text-[var(--v2-c-8d8880)] ${animationClasses.staggerItem}`}
       style={motionStyleVars({ delayMs })}
     >
       {label}

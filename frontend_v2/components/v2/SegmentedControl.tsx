@@ -31,7 +31,7 @@ export function SegmentedControl<T extends string>({
   return (
     <div
       className={cn(
-        'relative grid overflow-hidden rounded-[12px] border border-[var(--v2-line)] bg-[#f8f1e5] p-1',
+        'relative grid overflow-hidden rounded-[12px] border border-[var(--v2-line)] bg-[var(--v2-c-f8f1e5)] p-1',
         className
       )}
       style={{ gridTemplateColumns: `repeat(${options.length}, 1fr)` }}
@@ -40,7 +40,7 @@ export function SegmentedControl<T extends string>({
       <span
         aria-hidden="true"
         className={cn(
-          'absolute bottom-1 left-1 top-1 rounded-[11px] bg-[var(--v2-olive)] shadow-[0_10px_22px_rgb(83_67_46_/_0.14)]',
+          'absolute bottom-1 left-1 top-1 rounded-[11px] bg-[var(--v2-olive)] shadow-[0_10px_22px_rgba(var(--v2-rgb-53432e),0.14)]',
           animationClasses.segmentIndicator
         )}
         style={{

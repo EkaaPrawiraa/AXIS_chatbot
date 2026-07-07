@@ -6,6 +6,7 @@ export interface TopicInsight {
   title: string;
   body: string;
   topicId: string;
+  conversationId?: string;
 }
 
 // Defense-in-depth: even a topic node whose connected content isn't flagged
@@ -44,8 +45,12 @@ export function deriveLatestTopicInsight(
     const aboutRelations = relations.filter(
       (relation) => relation.label === 'about' && relation.targetId === topic.id && relation.sourceTitle
     );
+    let conversationId: string | undefined;
     const hasSensitiveConnection = aboutRelations.some((relation) => {
       const sourceNode = connectedNodesById.get(relation.sourceId);
+      if (sourceNode && !conversationId && sourceNode.properties?.conversationId) {
+        conversationId = sourceNode.properties.conversationId;
+      }
       return sourceNode ? isSensitiveNode(sourceNode) : false;
     });
     if (hasSensitiveConnection) continue;
@@ -54,6 +59,7 @@ export function deriveLatestTopicInsight(
       topicId: topic.id,
       title: `Terakhir kamu cerita soal ${humanizeSnakeCase(topic.title)}`,
       body: aboutRelations[0]?.sourceTitle || 'Yuk lanjutkan lagi ceritanya, AXIS masih inget obrolan kita.',
+      conversationId,
     };
   }
   return null;

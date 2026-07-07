@@ -1,10 +1,9 @@
 'use client';
 
-import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import Avatar from 'boring-avatars';
 import { AxisWordmark } from '@/components/v2/AxisMark';
-import { avatarSrcForUser } from '@/lib/avatar';
 import { CONCEPT_ICONS } from '@/lib/assets';
 import { useSessionStore } from '@/stores';
 
@@ -20,7 +19,6 @@ export function MobileAppHeader() {
   const pathname = usePathname();
   const user = useSessionStore((state) => state.user);
   const profile = useSessionStore((state) => state.profile);
-  const avatarSrc = avatarSrcForUser(user?.id ?? profile?.userId);
   const isProfile = pathname === '/profile' || pathname?.startsWith('/profile/');
   const isHelp = pathname === '/help' || pathname?.startsWith('/help/');
   const isMemories = pathname === '/memories' || pathname?.startsWith('/memories/');
@@ -41,13 +39,11 @@ export function MobileAppHeader() {
           <UtilityIcon className="h-[23px] w-[23px]" strokeWidth={2.2} />
         </Link>
         <Link href="/profile" aria-label="Profil" className="block overflow-hidden rounded-full">
-          <Image
-            src={avatarSrc}
-            alt="Avatar"
-            width={93}
-            height={93}
-            unoptimized
-            className="h-[38px] w-[38px] rounded-full object-cover"
+          <Avatar
+            size={38}
+            name={user?.id ?? profile?.userId ?? "AXIS User"}
+            variant="beam"
+            colors={["#F2EFE8", "#D8DDC2", "#84A971", "#E7DFCC", "#F2D8C8"]}
           />
         </Link>
       </div>

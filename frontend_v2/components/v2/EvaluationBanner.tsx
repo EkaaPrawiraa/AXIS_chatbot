@@ -6,12 +6,6 @@ import { evaluationFormUrl } from '@/lib/evaluationForm';
 
 const DISMISS_KEY = 'axis-eval-banner-dismissed';
 
-/**
- * Nudges users to fill the TA evaluation questionnaire. Mirrors the original
- * frontend's EvaluationBanner: shown on every page until dismissed, and the
- * dismissal is permanent (localStorage, not per-session) since re-nagging a
- * user who already closed it once would be annoying, not helpful.
- */
 export function EvaluationBanner() {
   const [visible, setVisible] = useState(false);
 

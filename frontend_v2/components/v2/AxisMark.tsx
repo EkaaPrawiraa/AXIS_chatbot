@@ -30,7 +30,7 @@ export function AxisMark({ className, size = 44 }: { className?: string; size?: 
 export function AxisMonogram({ className, size = 44 }: { className?: string; size?: number }) {
   return (
     <span
-      className={cn('block shrink-0 overflow-hidden rounded-[13px] shadow-[0_10px_24px_rgb(83_67_46_/_0.10)]', className)}
+      className={cn('block shrink-0 overflow-hidden rounded-[13px] shadow-[0_10px_24px_rgba(var(--v2-rgb-53432e),0.10)]', className)}
       style={{ width: size, height: size }}
     >
       <Image src={ILLUSTRATIONS.appIcon} alt="AXIS" width={size} height={size} className="h-full w-full object-cover" priority />

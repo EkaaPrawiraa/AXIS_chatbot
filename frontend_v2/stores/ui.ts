@@ -1,7 +1,8 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { ThemeMode } from '@/lib/config/theme';
 import { LOCAL_STORAGE_KEYS } from '@/lib/constants';
+
+type ThemeMode = 'light' | 'dark' | 'system';
 
 interface UIState {
   themeMode: ThemeMode;

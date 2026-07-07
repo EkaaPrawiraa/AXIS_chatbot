@@ -71,7 +71,7 @@ func (f *fakeMessageRepo) UpdateRegeneratedContent(ctx context.Context, messageI
 func (f *fakeMessageRepo) UpdateStatusAndContent(ctx context.Context, messageID, status, content string) error {
 	return nil
 }
-func (f *fakeMessageRepo) UpdateStatusContentAndMetadata(ctx context.Context, messageID, status, content string, metadata map[string]any) error {
+func (f *fakeMessageRepo) UpdateStatusContentAndMetadata(ctx context.Context, messageID, status, content string, safetyFlag *string, crisisTier *string, metadata map[string]any) error {
 	return nil
 }
 func (f *fakeMessageRepo) NextTurnIndex(ctx context.Context, sessionID string) (int, error) {

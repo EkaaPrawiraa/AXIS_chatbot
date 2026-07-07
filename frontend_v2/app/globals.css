@@ -1,28 +1,268 @@
 @import "tailwindcss";
 
 :root {
-  /* Sampled directly from docs/axis_mobile_v3 reference PNGs */
-  --v2-cream: #faf4eb;
-  --v2-cream-2: #f4ebe0;
-  --v2-paper: #fbf7f0;
-  --v2-ink: #2a2924;
-  --v2-muted: #8d8880;
-  --v2-placeholder: #b9b4ae;
-  --v2-line: #e7dccb;
-  --v2-olive: #6e7b59;
-  --v2-olive-deep: #5c684a;
-  --v2-olive-link: #636e50;
-  --v2-olive-soft: #e9eee1;
-  --v2-clay: #c36c45;
-  --v2-clay-deep: #b25e39;
-  --v2-gold: #d59f2e;
+  /* ===== SEMANTIC COLOR TOKENS ===== */
+  /* coffee shop soft brown theme */
+
+  /* Base neutrals */
+  --v2-ink: #2d2119;
+  --v2-paper: #fffaf4;
+  --v2-cream: #f7efe5;
+  --v2-cream-2: #efe1d1;
+
+  /* Text & Muted */
+  --v2-muted: #8a7667;
+  --v2-muted-secondary: #8a8477;
+  --v2-muted-tertiary: #6f6a5e;
+  --v2-placeholder: #b9a899;
+  --v2-text-subdued: #5f5b52;
+
+  /* Borders & Lines */
+  --v2-line: #e5d4c3;
+  --v2-line-light: #ece4d3;
+  --v2-line-lighter: #e3dbc8;
+  --v2-line-border: #cfc8b8;
+
+  /* Primary Accent (Coffee Brown) */
+  --v2-olive: #7b4f35;
+  --v2-olive-deep: #4f3424;
+  --v2-olive-link: #6f462f;
+  --v2-olive-soft: #f0dfcf;
+
+  /* Secondary Accent (Clay/Warm) */
+  --v2-clay: #8b5438;
+  --v2-clay-deep: #6f3f2a;
+  --v2-clay-accent: #c05b33;
+  --v2-clay-subtle: #a7462e;
+
+  /* Tertiary (Gold) */
+  --v2-gold: #c8924f;
+
+  /* Backgrounds - Light shades */
+  --v2-bg-light-1: #fbf7ee;
+  --v2-bg-light-2: #fffaf3;
+  --v2-bg-light-3: #f6efe3;
+  --v2-bg-light-4: #f3ede0;
+  --v2-bg-light-5: #f6e3d3;
+  --v2-bg-light-6: #efe6d4;
+  --v2-bg-light-7: #e5d6c2;
+  --v2-bg-light-8: #fbf6ee;
+  --v2-bg-light-9: #f7f1e8;
+  --v2-bg-light-10: #efe9dc;
+
+  /* Coffee status accents */
+  --v2-green-primary: #8b5a3c;
+  --v2-green-secondary: #5f3d2b;
+  --v2-green-tertiary: #8a735d;
+  --v2-green-accent: #7a6049;
+  --v2-green-muted: #806852;
+  --v2-green-light: #9a704d;
+
+  /* Dark grays */
+  --v2-gray-dark-1: #55524a;
+  --v2-gray-dark-2: #514d46;
+  --v2-gray-dark-3: #4c4a45;
+  --v2-gray-dark-4: #34312d;
+
+  /* Spacing & Sizing */
   --v2-radius-xl: 30px;
   --v2-radius-lg: 24px;
   --v2-radius-md: 18px;
-  --v2-shadow: 0 20px 50px rgb(83 67 46 / 0.13);
+
+  /* Shadows */
+  --v2-shadow: 0 20px 50px rgba(var(--v2-rgb-4a301d), 0.14);
+
+  /* Motion */
   --v2-motion-duration: 240ms;
   --v2-motion-delay: 0ms;
   --v2-motion-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  /* ===== AUTO-COLLECTED (uncurated, one var per raw hex still in use) ===== */
+  --v2-c-0d0d0d: #0d0d0d;
+  --v2-c-0ea5e9: #9a6a43;
+  --v2-c-10a37f: #8b5a3c;
+  --v2-c-151210: #151210;
+  --v2-c-1a1a1b: #1a1a1b;
+  --v2-c-424245: #424245;
+  --v2-c-4d453d: #4d453d;
+  --v2-c-565869: #565869;
+  --v2-c-5a5648: #5a5648;
+  --v2-c-5c8a4e: #8b5a3c;
+  --v2-c-657154: #7a6049;
+  --v2-c-6a7258: #806852;
+  --v2-c-6b6a63: #6b6a63;
+  --v2-c-6f8f5b: #9a704d;
+  --v2-c-717b5e: #8a735d;
+  --v2-c-71805c: #8a735d;
+  --v2-c-7b8467: #9a856e;
+  --v2-c-7d7869: #7d7869;
+  --v2-c-7d8f61: #9c7a55;
+  --v2-c-838c70: #9a856e;
+  --v2-c-8b9370: #a28b73;
+  --v2-c-8d8880: #8d8880;
+  --v2-c-8d897f: #8d897f;
+  --v2-c-8f9c72: #b08a5f;
+  --v2-c-9aa77e: #b99a78;
+  --v2-c-a09a8d: #a09a8d;
+  --v2-c-a0a287: #b8a38b;
+  --v2-c-a34a28: #a34a28;
+  --v2-c-a85f5d: #a85f5d;
+  --v2-c-a88350: #a88350;
+  --v2-c-a8854a: #a8854a;
+  --v2-c-a9a291: #a9a291;
+  --v2-c-adb694: #c7b39a;
+  --v2-c-b1502a: #b1502a;
+  --v2-c-b3b89d: #d1bea6;
+  --v2-c-b4b4b8: #b4b4b8;
+  --v2-c-b7ae99: #b7ae99;
+  --v2-c-b98213: #b98213;
+  --v2-c-b98f2e: #b98f2e;
+  --v2-c-b9ac97: #b9ac97;
+  --v2-c-bf4f33: #bf4f33;
+  --v2-c-c04f2f: #c04f2f;
+  --v2-c-c21807: #c21807;
+  --v2-c-c26b4b: #c26b4b;
+  --v2-c-c9c2b2: #c9c2b2;
+  --v2-c-cbbc9e: #d2b27e;
+  --v2-c-cd7434: #cd7434;
+  --v2-c-cd8465: #cd8465;
+  --v2-c-d1d5db: #d1d5db;
+  --v2-c-d59f2e: #d59f2e;
+  --v2-c-d5a02e: #d5a02e;
+  --v2-c-d5c8ae: #d5c8ae;
+  --v2-c-d84f45: #d84f45;
+  --v2-c-d8cfba: #d8cfba;
+  --v2-c-d8ddc2: #e4d3bd;
+  --v2-c-d9971d: #d9971d;
+  --v2-c-d99f2c: #d99f2c;
+  --v2-c-d9a13d: #d9a13d;
+  --v2-c-d9a514: #d9a514;
+  --v2-c-d9b264: #d9b264;
+  --v2-c-dbd5c4: #dbd5c4;
+  --v2-c-ddd3bd: #ddd3bd;
+  --v2-c-ddd5c4: #ddd5c4;
+  --v2-c-dde3cd: #e6d8c4;
+  --v2-c-dfe4cd: #e8dac6;
+  --v2-c-e07b39: #e07b39;
+  --v2-c-e0d8c5: #e0d8c5;
+  --v2-c-e2e5cf: #eadccb;
+  --v2-c-e3d6bf: #e3d6bf;
+  --v2-c-e3dcc9: #e3dcc9;
+  --v2-c-e3dccb: #e3dccb;
+  --v2-c-e4e4d0: #eadfce;
+  --v2-c-e5dbc6: #e5dbc6;
+  --v2-c-e5e5ea: #e5e5ea;
+  --v2-c-e5e7d4: #ece1d0;
+  --v2-c-e7dfcc: #e7dfcc;
+  --v2-c-e7dfcd: #e7dfcd;
+  --v2-c-e7e0d0: #e7e0d0;
+  --v2-c-e8cdc0: #e8cdc0;
+  --v2-c-e8dcc8: #e8dcc8;
+  --v2-c-e8ddca: #e8ddca;
+  --v2-c-e8e0cd: #e8e0cd;
+  --v2-c-e9d9ae: #e9d9ae;
+  --v2-c-e9dcbf: #e9dcbf;
+  --v2-c-e9ead9: #efe5d7;
+  --v2-c-e9ecdb: #f0e5d6;
+  --v2-c-eadfcb: #eadfcb;
+  --v2-c-eae6da: #eae6da;
+  --v2-c-ebdab9: #f4dfb69c;
+  --v2-c-ece5d6: #ece5d6;
+  --v2-c-ecebe1: #efe6d8;
+  --v2-c-ecece1: #f0e7d9;
+  --v2-c-ececf1: #ececf1;
+  --v2-c-ede6d5: #ede6d5;
+  --v2-c-eec5b7: #eec5b7;
+  --v2-c-eee5d4: #eee5d4;
+  --v2-c-eee6d6: #eee6d6;
+  --v2-c-eeeede: #f2e8d9;
+  --v2-c-eef0e2: #f2e8d9;
+  --v2-c-eef0e4: #f2e9db;
+  --v2-c-ef4444: #ef4444;
+  --v2-c-efc8b6: #efc8b6;
+  --v2-c-efe8d9: #efe8d9;
+  --v2-c-efe9db: #efe9db;
+  --v2-c-efeae0: #efeae0;
+  --v2-c-f0ddcd: #f0ddcd;
+  --v2-c-f0ede0: #f0ede0;
+  --v2-c-f0eee0: #f0eee0;
+  --v2-c-f1ead9: #f1ead9;
+  --v2-c-f1ecdf: #f1ecdf;
+  --v2-c-f2d8c8: #f2d8c8;
+  --v2-c-f2e6bf: #f2e6bf;
+  --v2-c-f2eddf: #f2eddf;
+  --v2-c-f2eee0: #f2eee0;
+  --v2-c-f3ded0: #f3ded0;
+  --v2-c-f4eee0: #f4eee0;
+  --v2-c-f4efe3: #f4efe3;
+  --v2-c-f4f1e6: #f4f1e6;
+  --v2-c-f5e1df: #f5e1df;
+  --v2-c-f6e3da: #f6e3da;
+  --v2-c-f6ead2: #f6ead2;
+  --v2-c-f6ead9: #f6ead9;
+  --v2-c-f6ecd2: #f6ecd2;
+  --v2-c-f6efe2: #f6efe2;
+  --v2-c-f7d774: #f7d774;
+  --v2-c-f7ddd0: #f7ddd0;
+  --v2-c-f7e3d8: #f7e3d8;
+  --v2-c-f7e5da: #f7e5da;
+  --v2-c-f7ead0: #f7ead0;
+  --v2-c-f7f2eb: #f7f2eb;
+  --v2-c-f7f3e8: #f7f3e8;
+  --v2-c-f7f7f8: #f7f7f8;
+  --v2-c-f8f1e5: #f8f1e5;
+  --v2-c-f8f1e7: #f8f1e7;
+  --v2-c-f8f2e7: #f8f2e7;
+  --v2-c-f97316: #f97316;
+  --v2-c-f9ecd2: #f9ecd2;
+  --v2-c-f9f2e8: #f9f2e8;
+  --v2-c-f9f2e9: #f9f2e9;
+  --v2-c-f9f4ea: #f9f4ea;
+  --v2-c-fae4d7: #fae4d7;
+  --v2-c-faf5ec: #faf5ec;
+  --v2-c-fbecdf: #fbecdf;
+  --v2-c-fbf3ea: #fbf3ea;
+  --v2-c-fbf5ec: #fbf5ec;
+  --v2-c-fbf5ed: #fbf5ed;
+  --v2-c-fbf6ec: #fbf6ec;
+  --v2-c-fbf7ef: #fbf7ef;
+  --v2-c-fdf8f0: #fdf8f0;
+  --v2-c-fdf9f2: #fdf9f2;
+  --v2-c-fdfaf3: #fdfaf3;
+  --v2-c-fdfbf4: #fdfbf4;
+  --v2-c-fff4ec: #fff4ec;
+  --v2-c-fff8f1: #fff8f1;
+
+  /* ===== more raw hex still used directly in utility classes below ===== */
+  --v2-c-5c4a3d: #5c4a3d;
+  --v2-c-744832: #744832;
+  --v2-c-7a5038: #7a5038;
+  --v2-c-9b4630: #9b4630;
+  --v2-c-9c6848: #9c6848;
+  --v2-c-b27a56: #b27a56;
+  --v2-c-b9855d: #b9855d;
+  --v2-c-c29061: #c29061;
+  --v2-c-f1c997: #f1c997;
+  --v2-c-f3ddd3: #f3ddd3;
+  --v2-c-f4eadf: #f4eadf;
+
+  /* ===== RGB triplets for rgb()/rgba() with alpha, comma form on purpose ===== */
+  --v2-rgb-464035: 70, 64, 53;
+  --v2-rgb-000000: 0, 0, 0;
+  --v2-rgb-c36c45: 195, 108, 69;
+  --v2-rgb-9a5d40: 154, 93, 64;
+  --v2-rgb-c05c37: 192, 92, 55;
+  --v2-rgb-eecab7: 238, 202, 183;
+  --v2-rgb-faf4eb: 250, 244, 235;
+  --v2-rgb-53432e: 83, 67, 46;
+  --v2-rgb-5d6949: 93, 105, 73;
+  --v2-rgb-8b5438: 139, 84, 56;
+  --v2-rgb-f7efe5: 247, 239, 229;
+  --v2-rgb-fff8f0: 255, 248, 240;
+  --v2-rgb-fffaf4: 255, 250, 244;
+  --v2-rgb-4a301d: 74, 48, 29;
+  --v2-rgb-f4c87b: 214, 193, 161;
+  --v2-rgb-79826a: 121, 130, 106;
+
 }
 
 * {
@@ -94,12 +334,20 @@ body {
   max-width: 540px;
   margin: 0 auto;
   position: relative;
-  background: transparent;
+  
+  /* background-color: var(--v2-cream);
+  background-image: url("/illustrations/background.png");
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat; */
+
+  box-shadow: 0 18px 60px rgba(74, 48, 29, 0.14);
 }
 
 .v2-app-content {
   min-height: 100dvh;
   padding: 10px 22px 0;
+  
 }
 
 .v2-app-content--with-bottom-nav {
@@ -114,7 +362,7 @@ body {
   align-items: center;
   justify-content: space-between;
   padding: 18px 22px 10px;
-  background: linear-gradient(180deg, rgb(255 248 237 / 0.96), rgb(255 248 237 / 0.82));
+  background: linear-gradient(180deg, rgba(var(--v2-rgb-f7efe5), 0.96), rgba(var(--v2-rgb-f7efe5), 0.82));
   backdrop-filter: blur(18px);
 }
 
@@ -127,9 +375,9 @@ body {
   height: 42px;
   border: 1px solid var(--v2-line);
   border-radius: 999px;
-  background: rgb(255 253 248 / 0.72);
+  background: rgba(var(--v2-rgb-fffaf4), 0.78);
   color: var(--v2-ink);
-  box-shadow: 0 10px 24px rgb(83 67 46 / 0.07);
+  box-shadow: 0 10px 24px rgba(var(--v2-rgb-4a301d), 0.08);
 }
 
 .v2-avatar {
@@ -152,8 +400,8 @@ body {
   gap: 2px;
   padding: 8px 8px calc(12px + env(safe-area-inset-bottom));
   border-radius: 16px 16px 0 0;
-  background: #fdf8f3;
-  box-shadow: 0 -12px 30px rgb(83 67 46 / 0.10);
+  background: #fff8f0;
+  box-shadow: 0 -12px 30px rgba(var(--v2-rgb-4a301d), 0.10);
 }
 
 .v2-bottom-nav::after {
@@ -166,7 +414,7 @@ body {
   height: 4px;
   transform: translateX(-50%);
   border-radius: 999px;
-  background: #1d1c19;
+  background: var(--v2-ink);
 }
 
 .v2-bottom-nav-item {
@@ -177,7 +425,7 @@ body {
   align-items: center;
   justify-content: center;
   gap: 4px;
-  color: #3f3c35;
+  color: var(--v2-c-5c4a3d);
   font-size: 10.5px;
   font-weight: 600;
 }
@@ -210,8 +458,8 @@ body {
 .v2-card {
   border: 1px solid var(--v2-line);
   border-radius: var(--v2-radius-lg);
-  background: rgb(255 253 248 / 0.76);
-  box-shadow: 0 14px 34px rgb(83 67 46 / 0.08);
+  background: rgba(var(--v2-rgb-fffaf4), 0.82);
+  box-shadow: 0 14px 34px rgba(var(--v2-rgb-4a301d), 0.09);
 }
 
 .v2-page-title {
@@ -314,8 +562,8 @@ body {
 }
 
 .v2-button-danger {
-  background: #f7e6df;
-  color: #a7462e;
+  background: var(--v2-c-f3ddd3);
+  color: var(--v2-c-9b4630);
 }
 
 .v2-field {
@@ -330,8 +578,8 @@ body {
 }
 
 .v2-field:focus {
-  border-color: rgb(99 118 87 / 0.58);
-  box-shadow: 0 0 0 4px rgb(99 118 87 / 0.12);
+  border-color: rgba(var(--v2-rgb-8b5438), 0.58);
+  box-shadow: 0 0 0 4px rgba(var(--v2-rgb-8b5438), 0.12);
 }
 
 /* Custom classes beat Tailwind layer utilities, so icon padding lives here. */
@@ -355,8 +603,8 @@ body {
   overflow: hidden;
   border-radius: 30px;
   background:
-    radial-gradient(circle at 76% 38%, rgb(255 248 237 / 0.4), transparent 34%),
-    linear-gradient(135deg, #809174, #5f7356);
+    radial-gradient(circle at 76% 38%, rgba(var(--v2-rgb-fff8f0), 0.42), transparent 34%),
+    linear-gradient(135deg, var(--v2-c-b9855d), var(--v2-c-7a5038));
   color: white;
   box-shadow: var(--v2-shadow);
 }
@@ -370,10 +618,10 @@ body {
   height: 170px;
   opacity: 0.84;
   background:
-    radial-gradient(ellipse at 50% 82%, #9b7348 0 24%, transparent 25%),
-    radial-gradient(ellipse at 52% 64%, #6c7f5f 0 18%, transparent 19%),
-    radial-gradient(ellipse at 35% 50%, #738766 0 12%, transparent 13%),
-    radial-gradient(ellipse at 66% 42%, #536d4b 0 11%, transparent 12%);
+    radial-gradient(ellipse at 50% 82%, var(--v2-c-c29061) 0 24%, transparent 25%),
+    radial-gradient(ellipse at 52% 64%, var(--v2-c-9c6848) 0 18%, transparent 19%),
+    radial-gradient(ellipse at 35% 50%, var(--v2-c-b27a56) 0 12%, transparent 13%),
+    radial-gradient(ellipse at 66% 42%, var(--v2-c-744832) 0 11%, transparent 12%);
 }
 
 .v2-soft-illustration {
@@ -382,8 +630,8 @@ body {
   width: 86px;
   height: 86px;
   border-radius: 28px;
-  background: radial-gradient(circle at 30% 20%, #f3d7a5, #eef2e7 70%);
-  color: var(--v2-olive-deep);
+  background: radial-gradient(circle at 30% 20%, var(--v2-c-f1c997), var(--v2-c-f4eadf) 70%);
+  color: var(--v2-clay-deep);
 }
 
 .v2-anim-page-enter {

@@ -147,16 +147,16 @@ func (r *MessageRepository) UpdateStatusAndContent(ctx context.Context, messageI
 	return nil
 }
 
-func (r *MessageRepository) UpdateStatusContentAndMetadata(ctx context.Context, messageID, status, content string, metadata map[string]any) error {
+func (r *MessageRepository) UpdateStatusContentAndMetadata(ctx context.Context, messageID, status, content string, safetyFlag *string, crisisTier *string, metadata map[string]any) error {
 	metadataJSON, err := marshalMetadata(metadata)
 	if err != nil {
 		return err
 	}
 	_, err = r.db.ExecContext(ctx, `
 		UPDATE messages
-		SET status = $2, content = $3, metadata = $4
+		SET status = $2, content = $3, safety_flag = $4, crisis_tier = $5, metadata = $6
 		WHERE id = $1
-	`, messageID, status, content, metadataJSON)
+	`, messageID, status, content, safetyFlag, crisisTier, metadataJSON)
 	if err != nil {
 		return fmt.Errorf("message update status metadata: %w", err)
 	}

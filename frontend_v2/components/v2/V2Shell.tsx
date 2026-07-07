@@ -45,7 +45,7 @@ export function V2Shell({
       <SafetyConsentGate />
 
       {showBottomNav ? (
-        <nav className="v2-bottom-nav" aria-label="Navigasi utama">
+        <nav className="v2-bottom-nav" aria-label="Navigasi utama" style={{ backgroundColor: '#fff8f0' }}>
           {navItems.map((item) => {
             const Icon = item.icon;
             const active = pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href));

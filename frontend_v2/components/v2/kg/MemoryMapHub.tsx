@@ -18,13 +18,13 @@ export const SPOKE_STYLES: Record<
   string,
   { Icon: ComponentType<{ className?: string; style?: React.CSSProperties }>; bg: string; icon: string }
 > = {
-  experience: { Icon: MEMORY_TYPE_ICONS.experience, bg: '#dfe4cd', icon: '#5c7345' },
-  thought: { Icon: MEMORY_TYPE_ICONS.thought, bg: '#f2eddf', icon: '#6a7258' },
-  memory: { Icon: MEMORY_TYPE_ICONS.memory, bg: '#e9dcbf', icon: '#a8854a' },
-  emotion: { Icon: MEMORY_TYPE_ICONS.emotion, bg: '#eec5b7', icon: '#c04f2f' },
-  topic: { Icon: MEMORY_TYPE_ICONS.topic, bg: '#dde3cd', icon: '#4f6138' },
-  behaviour: { Icon: MEMORY_TYPE_ICONS.behaviour, bg: '#f2e6bf', icon: '#b98f2e' },
-  trigger: { Icon: MEMORY_TYPE_ICONS.trigger, bg: '#dfe4cd', icon: '#5c7345' },
+  experience: { Icon: MEMORY_TYPE_ICONS.experience, bg: 'var(--v2-c-dfe4cd)', icon: 'var(--v2-green-light)' },
+  thought: { Icon: MEMORY_TYPE_ICONS.thought, bg: 'var(--v2-c-f2eddf)', icon: 'var(--v2-c-6a7258)' },
+  memory: { Icon: MEMORY_TYPE_ICONS.memory, bg: 'var(--v2-c-e9dcbf)', icon: 'var(--v2-c-a8854a)' },
+  emotion: { Icon: MEMORY_TYPE_ICONS.emotion, bg: 'var(--v2-c-eec5b7)', icon: 'var(--v2-c-c04f2f)' },
+  topic: { Icon: MEMORY_TYPE_ICONS.topic, bg: 'var(--v2-c-dde3cd)', icon: 'var(--v2-green-secondary)' },
+  behaviour: { Icon: MEMORY_TYPE_ICONS.behaviour, bg: 'var(--v2-c-f2e6bf)', icon: 'var(--v2-c-b98f2e)' },
+  trigger: { Icon: MEMORY_TYPE_ICONS.trigger, bg: 'var(--v2-c-dfe4cd)', icon: 'var(--v2-green-light)' },
 };
 
 // connector relation labels per node type
@@ -73,7 +73,7 @@ export function MemoryMapHub({
           const midX = (pos.x + next.x) / 2;
           const midY = (pos.y + next.y) / 2;
           return (
-            <g key={index} stroke="#d5c8ae" strokeWidth="1.6" fill="#cbbc9e">
+            <g key={index} stroke="var(--v2-c-d5c8ae)" strokeWidth="1.6" fill="var(--v2-c-cbbc9e)">
               <line x1={center} y1={center} x2={pos.x} y2={pos.y} />
               <line x1={pos.x} y1={pos.y} x2={next.x} y2={next.y} />
               <circle cx={midX} cy={midY} r="3.2" stroke="none" />
@@ -96,7 +96,7 @@ export function MemoryMapHub({
             key={spoke.type}
             type="button"
             onClick={() => onSelect?.(spoke.type)}
-            className="v2-anim-pressable absolute z-10 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-full text-center shadow-[0_10px_20px_-14px_rgba(70,64,53,0.5)]"
+            className="v2-anim-pressable absolute z-10 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-full text-center shadow-[0_10px_20px_-14px_rgba(var(--v2-rgb-464035),0.5)]"
             style={{ left: pos.x, top: pos.y, width: satellite, height: satellite, backgroundColor: style.bg }}
           >
             <style.Icon
@@ -105,7 +105,7 @@ export function MemoryMapHub({
               {...(spoke.type === 'emotion' ? { fill: 'currentColor' } : {})}
             />
             <span className="mt-0.5 text-[12px] font-bold leading-tight text-[var(--v2-ink)]">{spoke.label}</span>
-            <span className="text-[10px] font-medium text-[#7d7869]">{spoke.count} memori</span>
+            <span className="text-[10px] font-medium text-[var(--v2-c-7d7869)]">{spoke.count} memori</span>
           </button>
         );
       })}
@@ -116,7 +116,7 @@ export function MemoryMapHub({
       >
         <div className="relative">
           <span
-            className="block overflow-hidden rounded-full bg-[#f6efe2] shadow-[0_14px_26px_-16px_rgba(70,64,53,0.6)] ring-4 ring-white/90"
+            className="block overflow-hidden rounded-full bg-[var(--v2-c-f6efe2)] shadow-[0_14px_26px_-16px_rgba(var(--v2-rgb-464035),0.6)] ring-4 ring-white/90"
             style={{ width: size * 0.24, height: size * 0.24 }}
           >
             <Image

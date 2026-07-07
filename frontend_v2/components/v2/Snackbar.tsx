@@ -8,9 +8,9 @@ import { useUIStore } from '@/stores/ui';
 const AUTO_DISMISS_MS = 4200;
 
 const TYPE_STYLE = {
-  success: { bg: '#eef0e2', text: '#4f6138', Icon: CheckCircle2 },
-  error: { bg: '#f6e3d3', text: '#a34a28', Icon: AlertCircle },
-  info: { bg: '#eae6da', text: '#5a5648', Icon: Info },
+  success: { bg: 'var(--v2-c-eef0e2)', text: 'var(--v2-green-secondary)', Icon: CheckCircle2 },
+  error: { bg: 'var(--v2-bg-light-5)', text: 'var(--v2-c-a34a28)', Icon: AlertCircle },
+  info: { bg: 'var(--v2-c-eae6da)', text: 'var(--v2-c-5a5648)', Icon: Info },
 } as const;
 
 /** Global toast stack, anchored top-right, for errors/confirmations with no dedicated inline UI. */
@@ -47,7 +47,7 @@ function ToastItem({
 
   return (
     <div
-      className={`pointer-events-auto flex items-start gap-2.5 rounded-[14px] px-3.5 py-3 shadow-[0_14px_28px_-16px_rgba(70,64,53,0.5)] ${animationClasses.softPop}`}
+      className={`pointer-events-auto flex items-start gap-2.5 rounded-[14px] px-3.5 py-3 shadow-[0_14px_28px_-16px_rgba(var(--v2-rgb-464035),0.5)] ${animationClasses.softPop}`}
       style={{ backgroundColor: style.bg }}
     >
       <style.Icon className="mt-0.5 h-[17px] w-[17px] shrink-0" style={{ color: style.text }} />

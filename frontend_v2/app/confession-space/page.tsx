@@ -5,7 +5,7 @@ import { ArrowLeft, Info, Mic, Square } from '@/lib/assets';
 import { useEffect, useRef, useState } from 'react';
 import { AuthRequired } from '@/components/session';
 import { V2Shell } from '@/components/v2/V2Shell';
-import { HotlineWarningCard } from '@/components/v2/chat/HotlineWarningCard';
+import { HotlineWarningCard } from '@/components/v2/chat/cards/HotlineWarningCard';
 import { chatAPI } from '@/lib/api/chat';
 import { voiceAPI } from '@/lib/api/voice';
 import {
@@ -55,34 +55,14 @@ function ConfessionSpaceContent() {
   const revealTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const phq9StateRef = useRef<Record<string, unknown> | undefined>(undefined);
   const cbtStateRef = useRef<Record<string, unknown> | undefined>(undefined);
-  // Primed the moment the user taps mic to stop (a real gesture) — AXIS's
-  // spoken reply is only ready several awaits and one full network round
-  // trip later (sendTurn), by which point browsers no longer treat a
-  // freshly-created Audio's play() as gesture-triggered and can reject it
-  // silently. Reusing this same, pre-unlocked element for the real
-  // playback avoids that; see primeAudioElement's own comment in lib/audio.
+
   const primedAudioRef = useRef<HTMLAudioElement | null>(null);
 
-  // Live captioning runs a SECOND MediaRecorder on the same stream,
-  // independent from `recorderRef` (which keeps recording the whole
-  // utterance uninterrupted for the final, authoritative send). A single
-  // continuous recorder can't be periodically re-transcribed mid-recording:
-  // MediaRecorder's webm output has no duration/Cues until `stop()` finalizes
-  // it, so decoding (blobToWavBlob's decodeAudioData) or the STT providers
-  // themselves intermittently reject that still-open container — which is
-  // why interim captions previously just never appeared. Restarting a fresh,
-  // short-lived recorder every INTERIM_TRANSCRIBE_INTERVAL_MS instead means
-  // every clip handed to /voice/transcribe is a complete, valid file.
   const interimRecorderRef = useRef<MediaRecorder | null>(null);
   const interimChunksRef = useRef<BlobPart[]>([]);
   const interimActiveRef = useRef(false);
   const confirmedCaptionRef = useRef('');
 
-  // Confession Space conversations are created with channel="confession" so
-  // the backend flags the session's Channel accordingly; everything else
-  // (PHQ-9 bypass, no long-term memory write, raised max tokens) follows
-  // server-side from that single flag — the frontend does not need to send
-  // per-turn mode flags itself.
   const ensureConversation = async () => {
     if (conversationIdRef.current) return conversationIdRef.current;
     if (!userId) return null;
@@ -105,15 +85,6 @@ function ConfessionSpaceContent() {
         ? 'audio/webm'
         : 'audio/mp4';
 
-  // Approximates real-time captioning without a dedicated streaming-ASR
-  // service: runs a short-lived MediaRecorder segment (self-contained,
-  // properly finalized on stop) every INTERIM_TRANSCRIBE_INTERVAL_MS via
-  // the existing stateless /voice/transcribe endpoint, then immediately
-  // starts the next segment. Each segment's text is appended to the
-  // running caption rather than replacing it, so the full spoken-so-far
-  // sentence stays visible. Best-effort only — the authoritative
-  // transcript still comes from the final full-recording call once the
-  // user taps mic again to stop.
   const runInterimSegment = (stream: MediaStream) => {
     if (!interimActiveRef.current) return;
     let segmentRecorder: MediaRecorder;
@@ -158,7 +129,7 @@ function ConfessionSpaceContent() {
             console.warn('Confession Space: interim transcribe segment failed', error);
           }
         }
-        // Keep cycling as long as we're still actively recording.
+        
         if (interimActiveRef.current) runInterimSegment(stream);
       })();
     };
@@ -219,10 +190,6 @@ function ConfessionSpaceContent() {
     recorder.stop();
   };
 
-  // Captions aren't phoneme-aligned to the synthesized speech — instead the
-  // final reply text is revealed word-by-word over the audio's real
-  // duration (or an estimate if duration is unknown yet), which reads as
-  // "in sync" without needing word-level TTS timing data from the backend.
   const revealCaptionOverAudio = (text: string, durationMs: number) => {
     clearRevealTimer();
     const words = text.split(/\s+/).filter(Boolean);
@@ -277,10 +244,7 @@ function ConfessionSpaceContent() {
       }
 
       const rawAssistantText = response.assistantMessage?.content || response.reply || '';
-      // The dedicated HotlineWarningCard below already surfaces the hotline
-      // contact list visually, so strip the redundant raw bullet block from
-      // the on-screen caption (the actual synthesized audio is unaffected —
-      // it was already rendered server-side from the full reply).
+
       const assistantText = stripCrisisResourceBlock(rawAssistantText);
       const spokenText = response.voice?.speech_response || rawAssistantText;
       const source = response.voice?.audio_output_base64
@@ -348,16 +312,7 @@ function ConfessionSpaceContent() {
 
   return (
     <V2Shell showTopbar={false} showBottomNav={false}>
-      {/* Cinematic full-bleed black screen for this page only. `fixed inset-0`
-          pins directly to the real visual viewport instead of stacking a
-          `min-h-[100dvh]`-plus-negative-margin box inside .v2-app-shell/
-          .v2-app-content, which ALSO each independently compute their own
-          100dvh — on real iOS Safari (dynamic address bar), those three
-          separately-computed 100dvh values can drift out of sync by a few
-          px, leaving a sliver of the shell's cream background exposed
-          below the black canvas and making the whole page scrollable. A
-          fixed, viewport-pinned element sidesteps that entirely. */}
-      <main className="fixed inset-0 z-40 flex flex-col items-center overflow-y-auto bg-[#151210] px-5 pb-[calc(1.5rem+env(safe-area-inset-bottom))] pt-[calc(1rem+env(safe-area-inset-top))] text-center">
+      <main className="fixed inset-0 z-40 flex flex-col items-center overflow-y-auto bg-[var(--v2-c-151210)] px-5 pb-[calc(1.5rem+env(safe-area-inset-bottom))] pt-[calc(1rem+env(safe-area-inset-top))] text-center">
         <div className="flex w-full items-center justify-between">
           <button
             onClick={() => router.push('/')}
@@ -376,7 +331,7 @@ function ConfessionSpaceContent() {
             onClick={onMicClick}
             disabled={phase === 'processing' || phase === 'speaking'}
             aria-label={micLabel}
-            className={`v2-anim-pressable grid h-[92px] w-[92px] place-items-center rounded-full shadow-[0_18px_34px_-16px_rgba(0,0,0,0.6)] disabled:opacity-60 ${
+            className={`v2-anim-pressable grid h-[92px] w-[92px] place-items-center rounded-full shadow-[0_18px_34px_-16px_rgba(var(--v2-rgb-000000),0.6)] disabled:opacity-60 ${
               phase === 'recording' ? 'bg-[var(--v2-clay)]' : 'bg-white'
             }`}
           >
@@ -390,15 +345,12 @@ function ConfessionSpaceContent() {
           <p className="text-[12.5px] font-medium text-white/60">{micLabel}</p>
         </div>
 
-        {/* Movie-subtitle band: fixed height so the mic above never shifts
-            as caption text wraps to more lines, centered both axes like a
-            real subtitle track. AXIS in yellow reads as the "cinematic"
-            voice-over color; the user's own words stay white. */}
+
         <div className="flex min-h-[110px] w-full items-center justify-center px-4">
           {caption ? (
             <p
               className={`text-center text-[19px] font-semibold leading-snug ${
-                captionSpeaker === 'axis' ? 'text-[#f7d774]' : 'text-white'
+                captionSpeaker === 'axis' ? 'text-[var(--v2-c-f7d774)]' : 'text-white'
               }`}
             >
               {caption}

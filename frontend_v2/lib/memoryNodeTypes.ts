@@ -14,7 +14,7 @@ export const NODE_TYPES: Array<{
   {
     type: 'subject',
     label: 'Subjek',
-    description: 'Subjek adalah tema besar yang memori kamu bahas. Contoh: sekolah, keluarga, persahabatan, diri sendiri.',
+    description: 'Subjek adalah "pihak" yang terkait dalam memorimu. Contoh: sekolah, keluarga, teman, diri sendiri.',
   },
   {
     type: 'experience',
@@ -44,7 +44,7 @@ export const NODE_TYPES: Array<{
   {
     type: 'memory',
     label: 'Memori',
-    description: 'Memori adalah ringkasan konteks yang membantu percakapan berikutnya tetap nyambung.',
+    description: 'Memori adalah ringkasan konteks yang membantu percakapan berikutnya tetap berkesinambungan.',
   },
   {
     type: 'emotion',

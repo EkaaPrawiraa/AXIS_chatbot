@@ -8,7 +8,7 @@ import { animationClasses, motionStyleVars } from '@/lib/animations';
 import { friendlyErrorMessage } from '@/lib/errorMessages';
 import { useSessionStore } from '@/stores';
 import { usePreferencesStore } from '@/stores/preferences';
-import { AuthHero } from '@/components/v2/AuthHero';
+import { AuthHero } from '@/components/v2/auth/AuthHero';
 import { GoogleSignInButton } from '@/components/v2/GoogleSignInButton';
 import { SegmentedControl } from '@/components/v2/SegmentedControl';
 import { SelectField } from '@/components/v2/SelectField';

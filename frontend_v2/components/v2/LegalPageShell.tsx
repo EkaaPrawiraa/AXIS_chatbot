@@ -27,7 +27,7 @@ export function LegalPageShell({
         Terakhir diperbarui: {lastUpdated}
       </p>
 
-      <div className="mt-6 space-y-6 text-[14px] leading-relaxed text-[#34312d] [&_h2]:text-[16px] [&_h2]:font-bold [&_h2]:tracking-[-0.01em] [&_h2]:text-[var(--v2-ink)] [&_p]:mt-2 [&_ul]:mt-2 [&_ul]:list-disc [&_ul]:space-y-1 [&_ul]:pl-5 [&_li]:leading-relaxed [&_a]:font-semibold [&_a]:text-[var(--v2-olive-link)] [&_a]:underline">
+      <div className="mt-6 space-y-6 text-[14px] leading-relaxed text-[var(--v2-gray-dark-4)] [&_h2]:text-[16px] [&_h2]:font-bold [&_h2]:tracking-[-0.01em] [&_h2]:text-[var(--v2-ink)] [&_p]:mt-2 [&_ul]:mt-2 [&_ul]:list-disc [&_ul]:space-y-1 [&_ul]:pl-5 [&_li]:leading-relaxed [&_a]:font-semibold [&_a]:text-[var(--v2-olive-link)] [&_a]:underline">
         {children}
       </div>
     </main>

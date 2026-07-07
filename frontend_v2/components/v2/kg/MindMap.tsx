@@ -27,12 +27,12 @@ interface GroupDef {
 
 /** Six life-area groups per the v3 expanded-map mock, fed by real topic categories. */
 const GROUPS: GroupDef[] = [
-  { key: 'diri', label: 'Kesehatan Diri', categories: ['health'], Icon: Leaf, pill: '#838c70', iconColor: '#5c7345', chipBg: '#e9ecdb', chipBorder: '#d8ddc2', line: '#9aa77e', side: 'left', y: 108 },
-  { key: 'hubungan', label: 'Hubungan', categories: ['social', 'family'], Icon: Heart, pill: '#c26b4b', iconColor: '#c04f2f', chipBg: '#f6e3da', chipBorder: '#e8cdc0', line: '#cd8465', side: 'left', y: 258 },
-  { key: 'karier', label: 'Karier & Pendidikan', categories: ['academic', 'career'], Icon: Briefcase, pill: '#d9a13d', iconColor: '#b98213', chipBg: '#f6ecd2', chipBorder: '#e9d9ae', line: '#d9b264', side: 'left', y: 408 },
-  { key: 'mental', label: 'Kesehatan Mental', categories: ['mental_health'], Icon: Flower2, pill: '#a0a287', iconColor: '#5c7345', chipBg: '#e9ecdb', chipBorder: '#d8ddc2', line: '#9aa77e', side: 'right', y: 108 },
-  { key: 'tujuan', label: 'Tujuan & Impian', categories: ['identity'], Icon: Star, pill: '#d9a13d', iconColor: '#b98213', chipBg: '#f6ecd2', chipBorder: '#e9d9ae', line: '#d9b264', side: 'right', y: 258 },
-  { key: 'lingkungan', label: 'Lingkungan & Kehidupan', categories: ['financial', 'other'], Icon: Home, pill: '#b3b89d', iconColor: '#5c7345', chipBg: '#e9ecdb', chipBorder: '#d8ddc2', line: '#9aa77e', side: 'right', y: 408 },
+  { key: 'diri', label: 'Kesehatan Diri', categories: ['health'], Icon: Leaf, pill: 'var(--v2-c-838c70)', iconColor: 'var(--v2-green-light)', chipBg: 'var(--v2-c-e9ecdb)', chipBorder: 'var(--v2-c-d8ddc2)', line: 'var(--v2-c-9aa77e)', side: 'left', y: 108 },
+  { key: 'hubungan', label: 'Hubungan', categories: ['social', 'family'], Icon: Heart, pill: 'var(--v2-c-c26b4b)', iconColor: 'var(--v2-c-c04f2f)', chipBg: 'var(--v2-c-f6e3da)', chipBorder: 'var(--v2-c-e8cdc0)', line: 'var(--v2-c-cd8465)', side: 'left', y: 258 },
+  { key: 'karier', label: 'Karier & Pendidikan', categories: ['academic', 'career'], Icon: Briefcase, pill: 'var(--v2-c-d9a13d)', iconColor: 'var(--v2-c-b98213)', chipBg: 'var(--v2-c-f6ecd2)', chipBorder: 'var(--v2-c-e9d9ae)', line: 'var(--v2-c-d9b264)', side: 'left', y: 408 },
+  { key: 'mental', label: 'Kesehatan Mental', categories: ['mental_health'], Icon: Flower2, pill: 'var(--v2-c-a0a287)', iconColor: 'var(--v2-green-light)', chipBg: 'var(--v2-c-e9ecdb)', chipBorder: 'var(--v2-c-d8ddc2)', line: 'var(--v2-c-9aa77e)', side: 'right', y: 108 },
+  { key: 'tujuan', label: 'Tujuan & Impian', categories: ['identity'], Icon: Star, pill: 'var(--v2-c-d9a13d)', iconColor: 'var(--v2-c-b98213)', chipBg: 'var(--v2-c-f6ecd2)', chipBorder: 'var(--v2-c-e9d9ae)', line: 'var(--v2-c-d9b264)', side: 'right', y: 258 },
+  { key: 'lingkungan', label: 'Lingkungan & Kehidupan', categories: ['financial', 'other'], Icon: Home, pill: 'var(--v2-c-b3b89d)', iconColor: 'var(--v2-green-light)', chipBg: 'var(--v2-c-e9ecdb)', chipBorder: 'var(--v2-c-d8ddc2)', line: 'var(--v2-c-9aa77e)', side: 'right', y: 408 },
 ];
 
 const PILL_W = 250;
@@ -86,7 +86,7 @@ export function MindMap({
   return (
     <div className="relative shrink-0" style={{ width: CANVAS_W, height: CANVAS_H }}>
       <svg className="absolute inset-0" width={CANVAS_W} height={CANVAS_H} aria-hidden>
-        <g fill="none" stroke="#e5dbc6" strokeDasharray="5 7" strokeWidth="1.5">
+        <g fill="none" stroke="var(--v2-c-e5dbc6)" strokeDasharray="5 7" strokeWidth="1.5">
           <circle cx={CENTER.x} cy={CENTER.y} r="128" />
           <circle cx={CENTER.x} cy={CENTER.y} r="205" />
         </g>
@@ -120,7 +120,7 @@ export function MindMap({
         return (
           <div key={group.key}>
             <div
-              className="absolute flex items-center gap-3 rounded-full px-2.5 text-white shadow-[0_12px_24px_-14px_rgba(70,64,53,0.55)]"
+              className="absolute flex items-center gap-3 rounded-full px-2.5 text-white shadow-[0_12px_24px_-14px_rgba(var(--v2-rgb-464035),0.55)]"
               style={{ left: pillLeft, top: group.y - PILL_H / 2, width: PILL_W, height: PILL_H, backgroundColor: group.pill }}
             >
               <span className="grid h-[44px] w-[44px] shrink-0 place-items-center rounded-full bg-white">
@@ -159,7 +159,7 @@ export function MindMap({
         className="absolute flex -translate-x-1/2 flex-col items-center"
         style={{ left: CENTER.x, top: CENTER.y - 118 }}
       >
-        <span className="block h-[156px] w-[156px] overflow-hidden rounded-full bg-[#f6efe2] shadow-[0_18px_34px_-18px_rgba(70,64,53,0.6)] ring-8 ring-[#fbf6ec]">
+        <span className="block h-[156px] w-[156px] overflow-hidden rounded-full bg-[var(--v2-c-f6efe2)] shadow-[0_18px_34px_-18px_rgba(var(--v2-rgb-464035),0.6)] ring-8 ring-[var(--v2-c-fbf6ec)]">
           <Image
             src={avatarSrc}
             alt={userName}
@@ -171,9 +171,9 @@ export function MindMap({
         </span>
         <p className="mt-3 text-[28px] font-bold leading-none text-[var(--v2-ink)]">{userName}</p>
         <p className="mt-2 flex items-center gap-1.5 text-[14.5px] font-bold text-[var(--v2-ink)]">
-          <Leaf className="h-[14px] w-[14px] text-[#a8854a]" fill="currentColor" /> Fokus hari ini
+          <Leaf className="h-[14px] w-[14px] text-[var(--v2-c-a8854a)]" fill="currentColor" /> Fokus hari ini
         </p>
-        <p className="mt-0.5 text-[14.5px] font-medium text-[#5f5b52]">{focusText}</p>
+        <p className="mt-0.5 text-[14.5px] font-medium text-[var(--v2-text-subdued)]">{focusText}</p>
       </div>
     </div>
   );
