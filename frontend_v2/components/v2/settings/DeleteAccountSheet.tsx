@@ -6,11 +6,7 @@ import { animationClasses } from '@/lib/animations';
 
 const CONFIRM_WORD = 'HAPUS';
 
-/**
- * Strong double-confirmation sheet for permanent account deletion: the user
- * must both type the confirmation word and enter their password before the
- * "Hapus akun" button is enabled, given this action is irreversible.
- */
+
 export function DeleteAccountSheet({
   onConfirm,
   onClose,

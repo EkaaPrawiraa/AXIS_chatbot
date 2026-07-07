@@ -45,14 +45,21 @@ export function V2Shell({
       <SafetyConsentGate />
 
       {showBottomNav ? (
-        <nav className="v2-bottom-nav" aria-label="Navigasi utama" style={{ backgroundColor: '#fff8f0' }}>
+        // <nav className="v2-bottom-nav" aria-label="Navigasi utama" style={{ backgroundColor: '#fff8f0' }}>
+        <nav className="v2-bottom-nav" aria-label="Navigasi utama">
           {navItems.map((item) => {
             const Icon = item.icon;
             const active = pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href));
             return (
-              <Link key={item.href} href={item.href} className={cn('v2-bottom-nav-item', active && 'is-active')}>
-                <Icon className="h-5 w-5" fill={active ? 'currentColor' : 'none'} />
-                <span>{item.label}</span>
+              <Link
+                key={item.href}
+                href={item.href}
+                className={cn('v2-bottom-nav-item', active && 'is-active')}
+              >
+                <span className="v2-bottom-nav-icon-wrap" aria-hidden="true">
+                  <Icon className="v2-bottom-nav-icon" />
+                </span>
+                <span className="v2-bottom-nav-label">{item.label}</span>
               </Link>
             );
           })}

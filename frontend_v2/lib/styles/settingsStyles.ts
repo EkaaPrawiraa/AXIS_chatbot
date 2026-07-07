@@ -19,7 +19,7 @@ export const settingsStyles = {
 	listWrapper: "flex flex-col gap-2",
 	
 	// List Items (Action Rows / Radio Items)
-	listItem: "v2-anim-pressable flex w-full items-center justify-between gap-3 rounded-[16px] bg-[var(--v2-bg-light-1)] px-4 py-3.5 border border-white/40",
+	listItem: "v2-anim-pressable flex w-full items-center justify-between gap-3 rounded-[16px] bg-[var(--v2-bg-light-3)] px-4 py-3.5 border border-white/40",
 	listItemDanger: "v2-anim-pressable flex w-full items-center justify-between gap-3 rounded-[16px] bg-[var(--v2-c-fbf5ec)] px-4 py-3.5 border border-[var(--v2-c-f0ddcd)]",
 	
 	listItemContent: "min-w-0 flex-1 flex flex-col items-start",

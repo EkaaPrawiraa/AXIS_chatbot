@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { ChevronRight, Heart, Lock, Phone } from '@/lib/assets';
+import { ChevronRight, Heart, Lock, Phone, Headset } from '@/lib/assets';
 import { chatRoomStyles } from '@/lib/styles/chatRoom';
 
 const IMMEDIATE_HELP_TEL = 'tel:119';
@@ -33,7 +33,7 @@ export function HotlineWarningCard() {
       <div className={chatRoomStyles.hotlineDivider}>
         <div className={chatRoomStyles.hotlineRow}>
           <span className={chatRoomStyles.hotlineIconWrapper}>
-            <Phone
+            <Headset
               className="h-[18px] w-[18px] text-[#DC143C]"
               fill="currentColor"
               strokeWidth={2.2}

@@ -171,51 +171,64 @@ export const ZoomIn = createIcon(faMagnifyingGlassPlus);
 
 // all illustration paths, one place to swap an image
 export const ILLUSTRATIONS = {
-	appIcon: "/illustrations/axis-app-icon.png",
-	homeHero: "/illustrations/warm-dashboard-3.jpg",
-	homeInsight: "/illustrations/home-insight.png",
-	homeMood: "/illustrations/home-mood-2.png",
-	homeHeart: "/illustrations/home-heart-4.png",
-	memoryBook: "/illustrations/memory-book.png",
-	memoryLeaf: "/illustrations/memory-leaf.png",
-	memoryEmpty: "/illustrations/memory-empty.png",
-	memoryArtExperience: "/illustrations/memory-art-1.png",
-	memoryArtSubject: "/illustrations/memory-art-2.png",
-	memoryArtEmotion: "/illustrations/memory-art-3.png",
-	phqHeader: "/illustrations/phq-header.png",
-	homeDashboard: "/illustrations/home-dashboard-2.svg",
+  appIcon: "/illustrations/axis-app-icon.png",
+  homeHero: "/illustrations/warm-dashboard-3.jpg",
+  homeInsight: "/illustrations/home-insight.png",
+  homeMood: "/illustrations/home-mood-2.png",
+  homeHeart: "/illustrations/home-heart-4.png",
+  memoryBook: "/illustrations/memory-book.png",
+  memoryLeaf: "/illustrations/memory-leaf.png",
+  memoryEmpty: "/illustrations/memory-empty.png",
+  memoryArtExperience: "/illustrations/memory-art-1.png",
+  memoryArtSubject: "/illustrations/memory-art-2.png",
+  memoryArtEmotion: "/illustrations/memory-art-3.png",
+  phqHeader: "/illustrations/phq-header.png",
+  homeDashboard: "/illustrations/home-dashboard-2.svg",
 } as const;
 
+import {
+  faHouseChimney,
+  faBookBookmark,
+  faHeadset,
+  faCircleUser,
+} from "@fortawesome/free-solid-svg-icons";
+
+export const HouseChimney = createIcon(faHouseChimney);
+export const Comments = createIcon(faComments);
+export const BookBookmark = createIcon(faBookBookmark);
+export const Headset = createIcon(faHeadset);
+export const CircleUser = createIcon(faCircleUser);
+export const Sliders = createIcon(faSliders);
 // icon per top-level concept, shared by bottom nav, header, and dashboard
 export const CONCEPT_ICONS: Record<string, any> = {
-	beranda: Home,
-	chat: MessageCircle,
-	confession: Mic,
-	memori: BookOpen,
-	knowledgeGraph: Network,
-	hotline: PhoneCall,
-	bantuan: HelpCircle,
-	pengaturan: Settings,
-	profil: UserRound,
+  beranda: HouseChimney,
+  chat: Comments,
+  confession: Mic,
+  memori: BookBookmark,
+  knowledgeGraph: Network,
+  hotline: Headset,
+  bantuan: HelpCircle,
+  pengaturan: Sliders,
+  profil: CircleUser,
 };
 
 export const MEMORY_TYPE_ICONS: Record<string, any> = {
-	experience: Sprout,
-	thought: Cloud,
-	memory: Archive,
-	emotion: Heart,
-	topic: BookOpen,
-	behaviour: PersonStanding,
-	trigger: Zap,
+  experience: Sprout,
+  thought: Cloud,
+  memory: Archive,
+  emotion: Heart,
+  topic: BookOpen,
+  behaviour: PersonStanding,
+  trigger: Zap,
 };
 
 export {
-	faLanguage,
-	faMicrophoneLines,
-	faComments,
-	faRightFromBracket,
-	faEnvelopeCircleCheck,
-	faSliders,
+  faLanguage,
+  faMicrophoneLines,
+  faComments,
+  faRightFromBracket,
+  faEnvelopeCircleCheck,
+  faSliders,
 } from "@fortawesome/free-solid-svg-icons";
 
 export type LucideIcon = React.ComponentType<any>;
