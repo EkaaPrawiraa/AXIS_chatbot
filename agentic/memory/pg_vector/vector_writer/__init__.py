@@ -1,4 +1,4 @@
-"""agentic/memory/pg_vector/vector_writer."""
+"""write_to_db"""
 
 from __future__ import annotations
 

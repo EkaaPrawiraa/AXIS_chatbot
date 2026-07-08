@@ -1,15 +1,4 @@
-"""
-Demo: Fetch messages for a user, run the session finalizer pipeline,
-and display the structured KG extraction results.
-
-Usage:
-    cd /Users/ekaaprawira/Downloads/TA/CompanionshipChatBot
-    .venv/bin/python -m agentic.scripts.demo_session_finalizer
-
-This script demonstrates how the Knowledge Graph architecture extracts
-structured, interconnected facts (nodes + relations) from conversation
-history — something a plain vector/semantic search cannot do.
-"""
+"""cd Downloads .venv/bin/python -m scripts.demo_session_finalizer"""
 
 from __future__ import annotations
 
@@ -20,7 +9,7 @@ import sys
 from pathlib import Path
 from typing import Any
 
-# Bootstrap env
+# set env
 ROOT = Path(__file__).resolve().parents[2]
 
 def _load_env(path: Path) -> None:
@@ -51,7 +40,7 @@ def _json_default(v: Any) -> str:
 
 
 async def fetch_sessions(pool: Any, user_id: str) -> list[dict]:
-    """Fetch recent sessions for a user from Postgres."""
+    """ngambil data"""
     async with pool.acquire() as conn:
         rows = await conn.fetch(
             """
@@ -77,7 +66,7 @@ async def fetch_sessions(pool: Any, user_id: str) -> list[dict]:
 
 
 async def fetch_messages(pool: Any, session_id: str) -> list[dict]:
-    """Fetch all messages for a session."""
+    """get msgs"""
     async with pool.acquire() as conn:
         rows = await conn.fetch(
             """
@@ -106,7 +95,7 @@ async def main() -> None:
         print("❌ Cannot connect to Postgres. Check PG_* env vars.")
         sys.exit(1)
 
-    # 1. Fetch sessions
+    # fetch ses
     sessions = await fetch_sessions(pool, USER_ID)
     if not sessions:
         print(f"❌ No sessions found for user {USER_ID}")
@@ -124,7 +113,7 @@ async def main() -> None:
               f"kg_processed={s['kg_processed']}")
     print()
 
-    # 2. For each session, fetch messages
+    # ngambil pesan
     all_session_messages: dict[str, list[dict]] = {}
     for s in sessions:
         sid = s["session_id"]
@@ -139,7 +128,7 @@ async def main() -> None:
     print("  SAMPLE CONVERSATION (first session with messages):")
     print(f"{'─'*80}\n")
 
-    # Show the first session that has messages
+    # get first sess wth msgs
     demo_session_id = None
     demo_messages = []
     for s in sessions:
@@ -162,7 +151,7 @@ async def main() -> None:
         print(f"  [{msg['turn_index']:>3}] {role_label}: {content_preview}")
     print()
 
-    # 3. Run KG extractor on user messages
+    # run kg extractor
     print(f"\n{'='*80}")
     print("  RUNNING KG EXTRACTOR (same prompt as session finalizer)")
     print(f"{'='*80}\n")
@@ -174,7 +163,7 @@ async def main() -> None:
     summarizer = make_summarizer()
     _CONTEXT_WINDOW_MSGS = 6
 
-    # Format transcript for summarizer
+    # summarize transcript
     transcript_parts = []
     for msg in demo_messages:
         role = msg.get("role", "other")
@@ -185,7 +174,7 @@ async def main() -> None:
         transcript_parts.append(f"{label}: {content}")
     transcript = "\n".join(transcript_parts)
 
-    # Run summarizer
+    # run summarizer
     print("  ⏳ Running session summarizer...")
     try:
         summary = await summarizer(transcript=transcript, language="id")
@@ -195,7 +184,7 @@ async def main() -> None:
         print(f"  ❌ Summarizer failed: {exc}")
         summary = ""
 
-    # Run KG extractor on each user message with sliding window
+    # run kg extractor on each user msg w sliding win
     print(f"\n{'─'*80}")
     print("  ⏳ Running KG extractor per user message...")
     print(f"{'─'*80}\n")
@@ -243,7 +232,7 @@ async def main() -> None:
         else:
             print(f"  ⊘  Turn {msg['turn_index']}: no extractable facts (trivial/phatic)")
 
-    # 4. Aggregate and show the full KG structure
+    # show full kg
     print(f"\n{'='*80}")
     print("  AGGREGATED KNOWLEDGE GRAPH EXTRACTION RESULTS")
     print(f"{'='*80}\n")
@@ -251,7 +240,7 @@ async def main() -> None:
     agg = _aggregate_facts(all_extracted)
     print(json.dumps(agg, ensure_ascii=False, indent=2, default=_json_default))
 
-    # 5. Contrast with vector-only approach
+    # `skip vec`
     print(f"\n{'='*80}")
     print("  KNOWLEDGE GRAPH vs VECTOR-ONLY COMPARISON")
     print(f"{'='*80}\n")
@@ -275,7 +264,7 @@ def _count_items(fact: dict) -> int:
 
 
 def _print_fact_summary(fact: dict) -> None:
-    """Print a concise summary of extracted facts."""
+    """print facts"""
     for key in ("thoughts", "emotions", "experiences", "triggers",
                 "behaviors", "subjects", "topics"):
         items = fact.get(key)
@@ -318,7 +307,7 @@ def _print_fact_summary(fact: dict) -> None:
 
 
 def _aggregate_facts(all_extracted: list[dict]) -> dict:
-    """Aggregate all extracted facts into a summary structure."""
+    """summarize facts"""
     agg: dict[str, Any] = {
         "total_extractions": len(all_extracted),
         "node_counts": {},
@@ -366,7 +355,7 @@ def _aggregate_facts(all_extracted: list[dict]) -> dict:
 
 
 def _print_comparison(agg: dict, summary: str, all_extracted: list[dict]) -> None:
-    """Print a comparison between KG approach and vector-only approach."""
+    """print comparison kg vs. vector-only"""
 
     print("  ┌─────────────────────────────────────────────────────────────────┐")
     print("  │              VECTOR/SEMANTIC SEARCH ONLY                        │")
@@ -410,7 +399,7 @@ def _print_comparison(agg: dict, summary: str, all_extracted: list[dict]) -> Non
     print(f"  └─────────────────────────────────────────────────────────────────┘")
     print()
 
-    # Show specific examples from extracted data
+    # show examples
     if agg.get("all_thoughts"):
         print("  🔍 EXAMPLE: Cognitive Distortion Tracking (KG-only capability)")
         print("  ─────────────────────────────────────────────────────────────")

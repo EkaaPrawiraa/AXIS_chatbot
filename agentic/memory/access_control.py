@@ -1,4 +1,4 @@
-"""Layer 4 retrieval policy."""
+"""retrieve policy"""
 
 from __future__ import annotations
 
@@ -82,7 +82,7 @@ def load_policy(*, force_reload: bool = False) -> SensitivityPolicy:
 
 @dataclass
 class MemoryCandidate:
-    """A retrieval candidate from the KG or vector store."""
+    """ambil data"""
 
     id: str
     sensitivity_level: int
@@ -99,7 +99,7 @@ class MemoryCandidate:
 
 @dataclass(frozen=True)
 class RenderedMemory:
-    """One memory item ready to be appended to the prompt."""
+    """append to prompt"""
 
     id: str
     text: str
@@ -115,12 +115,7 @@ async def apply_sensitivity_policy(
     user_id: str | None = None,
     session_id: str | None = None,
 ) -> tuple[RenderedMemory, ...]:
-    """
-    Filter and render retrieval candidates per the sensitivity policy.
-
-    The function is async because it logs to the (potentially Postgres
-    backed) audit sink. The actual filtering is synchronous.
-    """
+    """filter async, render sync"""
     policy = policy or load_policy()
     audit = audit or NullGuardrailLogger()
 
@@ -128,7 +123,7 @@ async def apply_sensitivity_policy(
     counts_per_tier: dict[int, int] = {}
 
     for c in candidates:
-        # Bi-temporal validity hard gate.
+        # hard gate
         if policy.bitemporal_validity_required and not c.valid:
             await audit.log(
                 GuardrailEvent(
@@ -143,7 +138,7 @@ async def apply_sensitivity_policy(
             )
             continue
 
-        # User suppression hard gate.
+        # supgate
         if policy.suppress_flag_required and c.suppressed:
             await audit.log(
                 GuardrailEvent(
@@ -160,7 +155,7 @@ async def apply_sensitivity_policy(
 
         tier = policy.tiers.get(c.sensitivity_level)
         if tier is None:
-            # Unknown tier: be conservative and treat as level 3.
+            # treat as lvl 3
             tier = policy.tiers.get(3)
             if tier is None:
                 continue
@@ -214,7 +209,7 @@ def _render(c: MemoryCandidate, tier: SensitivityTier) -> str | None:
             return c.summary
         if c.category:
             return f"Pola emosional terkait kategori: {c.category}"
-        # As a last resort, pick the first sentence of content.
+        # pick first sent
         snippet = (c.content or "").split(".", 1)[0]
         return snippet.strip() or None
     if tier.retrieval == "category_only":
@@ -225,11 +220,7 @@ def _render(c: MemoryCandidate, tier: SensitivityTier) -> str | None:
 
 
 def serialize_block(rendered: Iterable[RenderedMemory]) -> str:
-    """
-    Convert rendered memories to a prompt-ready block. Groups by tier
-    so the LLM sees a clear distinction between safe context and
-    redacted hints.
-    """
+    """buat block prompt"""
     by_mode: dict[str, list[str]] = {}
     for r in rendered:
         by_mode.setdefault(r.mode, []).append(r.text)

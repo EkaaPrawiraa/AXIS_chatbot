@@ -1,4 +1,4 @@
-"""Storage layer for session activity heartbeats."""
+"""stl for sesh hbts."""
 
 from __future__ import annotations
 
@@ -71,7 +71,7 @@ class SessionActivityRepository(Protocol):
     ) -> int: ...
 
 
-# In-memory implementation (tests + dev)
+# inmem impl (tests + dev)
 
 
 class InMemorySessionActivityRepository:
@@ -107,7 +107,7 @@ class InMemorySessionActivityRepository:
                 existing.ai_was_last_speaker = ai_was_last_speaker
                 existing.latest_turn_index = max(existing.latest_turn_index, turn)
                 existing.updated_at = ts
-                # If we previously finalized but the user came back, reset.
+                # reset on return
                 if existing.finalized_at is not None:
                     existing.finalized_at = None
                     existing.finalize_attempts = 0
@@ -147,7 +147,7 @@ class InMemorySessionActivityRepository:
                 row.finalize_attempts += 1
                 row.last_error = error
                 row.updated_at = datetime.now(timezone.utc)
-                # On error, do not mark as finalized; sweeper will retry.
+                # skip finaliza.
                 return
             row.finalized_at = datetime.now(timezone.utc)
             row.last_finalized_turn_index = max(
@@ -228,7 +228,7 @@ class InMemorySessionActivityRepository:
 
 
 class PostgresSessionActivityRepository:
-    """Production repository backed by the ``session_activity`` table."""
+    """`buat backup`"""
 
     def __init__(self, *, pg_pool: Any) -> None:
         self._pool = pg_pool

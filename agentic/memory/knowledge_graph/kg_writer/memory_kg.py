@@ -1,4 +1,4 @@
-"""Writer for the :Memory node (compressed post-session summary)."""
+"""summary writer"""
 
 from __future__ import annotations
 
@@ -16,12 +16,7 @@ logger = logging.getLogger(__name__)
 
 
 async def write_memory(inp: MemoryInput) -> str:
-    """
-    Write a compressed :Memory node for this user, link it from the
-    User via HAS_MEMORY, and link it from the Session via
-    CONTAINS_MEMORY for provenance. Mirror the embedding into pgvector.
-    Returns the new node id.
-    """
+    """# Compress memory node # Link to user via HAS_MEMORY # Link to session via CONTAINS_MEMORY # Embed into pgvector # Return new node id"""
     _require(inp.summary,    "summary")
     _require(inp.user_id,    "user_id")
     _require(inp.session_id, "session_id")
@@ -75,10 +70,7 @@ async def write_memory(inp: MemoryInput) -> str:
         },
     )
 
-    # Guard: if MATCH found no anchor node, Neo4j skips the CREATE and
-    # returns an empty list. Raising here surfaces the failure explicitly
-    # so the caller (kg_writer in finalizer) can log and skip, rather than
-    # silently writing a ghost ID into pgvector.
+    # skip anchor node fail
     if not rows:
         raise RuntimeError(
             f"write_memory: Neo4j returned no rows for user={inp.user_id} "
@@ -86,9 +78,7 @@ async def write_memory(inp: MemoryInput) -> str:
             "Call _ensure_kg_anchors before writing."
         )
 
-    # Mirror the embedding into pgvector and flip embedding_synced on
-    # success. Failures are logged but never raised: the retry job
-    # reconciles stuck nodes via the embedding_synced=false predicate.
+    # Mirror into pgvector, flip embedding_synced, log failures, retry on failure.
     await sync_embedding_to_pgvector(
         label="Memory",
         node_id=node_id,

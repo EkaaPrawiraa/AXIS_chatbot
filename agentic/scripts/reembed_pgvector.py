@@ -1,12 +1,4 @@
-"""Re-embed all pgvector rows with the current embedding provider.
-
-This script reads every active row from memory_embeddings and
-experience_embeddings, calls embed_text() (currently Gemini/local),
-and overwrites the stored vector in-place.
-
-Run from agentic/ directory:
-    python scripts/reembed_pgvector.py
-"""
+"""reembed pgvector rows"""
 
 from __future__ import annotations
 

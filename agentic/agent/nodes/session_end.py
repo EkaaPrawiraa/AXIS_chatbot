@@ -1,4 +1,4 @@
-"""Last node in the per-turn graph."""
+"""last node"""
 
 from __future__ import annotations
 
@@ -22,11 +22,7 @@ logger = logging.getLogger(__name__)
 
 
 def _build_phq9_metadata(state: ConversationState) -> dict[str, Any] | None:
-    """
-    Build the metadata.phq9 payload for the assistant message when a PHQ-9
-    session is active. Returns None for idle / offer_pending phases so that
-    plain messages are unaffected.
-    """
+    """ngbuild payload"""
     phq9 = state.get("phq9_state") or {}
     phase = phq9.get("phase", "idle")
     language: str = phq9.get("language") or state.get("resolved_language") or "id"
@@ -65,7 +61,7 @@ def _build_phq9_metadata(state: ConversationState) -> dict[str, Any] | None:
         payload["progress"] = {"current": item_id, "total": NUM_ITEMS}
         return payload
 
-    # completed / declined / deferred_crisis → plain chat bubble, no chips
+    # plain chat, no chips
     payload["active"] = False
     payload["progress"] = {"current": NUM_ITEMS, "total": NUM_ITEMS}
     return payload
@@ -80,10 +76,7 @@ def _now() -> datetime:
 
 
 def _append_messages(state: ConversationState) -> bool:
-    """
-    Append the user message and the assistant reply into history.
-    Returns True if an assistant reply was appended.
-    """
+    """append to history"""
     history: list[dict[str, Any]] = list(state.get("messages") or [])
     appended_user = False
     user_msg = (state.get("current_message") or "").strip()
@@ -116,15 +109,7 @@ def _append_messages(state: ConversationState) -> bool:
 
 
 async def _persist_thought_record(state: ConversationState) -> None:
-    """
-    Write a completed CBT thought record to Neo4j.
-
-    Silently no-ops when:
-    - ``cbt_state`` is absent or has no ``thought_record``
-    - ``thought_record["step"]`` is not ``"done"``
-    - ``user_id`` or ``session_id`` is missing
-    - Neo4j write fails (logged as warning, not re-raised)
-    """
+    """# Write CBT # No ops w/o cbt_state or thought_record # No ops w/ missing user_id or session_id # No ops w/ write failure (log warning)"""
     cbt_state = state.get("cbt_state") or {}
     thought_record = cbt_state.get("thought_record")
     if not thought_record:
@@ -160,28 +145,16 @@ async def session_end_node(
     activity_repo: SessionActivityRepository | None = None,
     audit: GuardrailLogger | None = None,
 ) -> ConversationState:
-    """
-    Update the message history, persist a completed thought record (if
-    any), and record the session activity heartbeat.
-
-    Safe to no-op when no ``activity_repo`` is wired (test bot or
-    bootstrap scenarios). The thought record write is independently
-    guarded and never raises.
-    """
+    """update msg hist, persist record, record session activity."""
     audit = audit or NullGuardrailLogger()
 
     ai_replied = _append_messages(state)
     state["session_turn"] = int(state.get("session_turn") or 0) + 1
 
-    # Persist completed CBT thought record to Neo4j (non-blocking on
-    # failure — a failed write must not abort the chat response).
+    # buat nyimpen CBT record Neo4j (non-blocking failure)
     await _persist_thought_record(state)
 
-    # Confession Space keeps short-term/in-session context (messages were
-    # already appended above) but must never enter the long-term KG/pgvector
-    # pipeline — the activity heartbeat below is exactly what makes a
-    # session eligible for SessionSweeper.finalize(), so skipping it here
-    # is what makes the "no long-term memory" guarantee real.
+    # skip klo error
     if (
         not state.get("confession_mode")
         and activity_repo is not None

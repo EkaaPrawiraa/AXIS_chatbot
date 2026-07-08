@@ -1,24 +1,4 @@
-"""
-Regression test: build_graph() must actually compile.
-
-This caught a real production incident: the graph registered a node
-named "input_guardrail" (agent/graph.py), which is also a top-level
-ConversationState key (agent/state.py). LangGraph's StateGraph.add_node
-rejects any node name that collides with a state schema key --
-`ValueError: 'input_guardrail' is already being used as a state key`.
-
-Because this is a lazy, cached compile (ChatGraphService._build_graph_once
-only runs on the first request and memoizes the result), the failure
-never showed up at import time or in unit tests that mock the graph --
-only on the first real /chat/stream request in production, after the SSE
-response had already started. Every chat message failed until fixed.
-
-This test exercises the two things that would have caught it:
-1. build_graph() actually compiles without raising.
-2. No ConversationState key is ever reused as a node name -- a general
-   invariant so this exact class of bug can't silently reappear if a
-   future state field happens to match a future node name.
-"""
+"""build_graph() compiles."""
 from __future__ import annotations
 
 from agentic.agent.graph import build_graph

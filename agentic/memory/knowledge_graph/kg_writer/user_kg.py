@@ -1,4 +1,4 @@
-"""Writer for the :User node — the graph anchor that every other KG node."""
+"""User node"""
 
 from __future__ import annotations
 
@@ -15,30 +15,12 @@ async def ensure_user_node(
     user_id: str,
     pg_pool: Any,
 ) -> bool:
-    """
-    Read user record from Postgres and MERGE the Neo4j User node with
-    current profile data (display_name, preferred_language).
-
-    Parameters
-    ----------
-    user_id:
-        UUID of the user — must match ``users.id`` in Postgres.
-    pg_pool:
-        asyncpg connection pool (already initialised by the caller).
-
-    Returns
-    -------
-    True  — Neo4j node was created or confirmed to exist.
-    False — either Postgres read or Neo4j write failed (warning logged).
-
-    The function is idempotent: calling it multiple times per session is
-    safe; Neo4j will hit the ON MATCH branch after the first call.
-    """
+    """read_from_pg_and_merge_neo4j()"""
     if not user_id:
         logger.warning("ensure_user_node: user_id is empty — skipping")
         return False
 
-    # Step 1: read current profile from Postgres.
+    # `db read`
     display_name: str = ""
     preferred_language: str = "id"
 
@@ -65,7 +47,7 @@ async def ensure_user_node(
             exc,
         )
 
-    # Step 2: MERGE Neo4j User node with fresh profile data.
+    # merge node with data
     try:
         await get_client().execute_write(
             """

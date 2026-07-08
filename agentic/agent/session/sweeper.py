@@ -1,4 +1,4 @@
-"""Background task that finalizes expired sessions."""
+"""bg task finalize expired sessions"""
 
 from __future__ import annotations
 
@@ -53,14 +53,14 @@ class SessionSweeper:
     _last_decay_at: datetime | None = None
 
     def start(self) -> None:
-        """Start the background poll loop."""
+        """bg poll loop di mulai"""
         if self._task is not None:
             return
         self._stop_event.clear()
         self._task = asyncio.create_task(self._loop(), name="session_sweeper")
 
     async def stop(self) -> None:
-        """Signal stop and wait for the loop to exit."""
+        """wait for loop to exit"""
         if self._task is None:
             return
         self._stop_event.set()
@@ -92,9 +92,7 @@ class SessionSweeper:
                 return
         self._last_decay_at = now
         try:
-            # Lazy import: a module-level import creates a circular chain
-            # (kg_algorithm.__init__ -> lifecycle -> kg_writer.__init__ ->
-            # kg_algorithm.lifecycle) when the sweeper is imported first.
+            # lazy import: kg_algorithm -> kg_writer
             from agentic.memory.knowledge_graph.kg_algorithm.decay import (
                 run_memory_decay,
             )
@@ -141,7 +139,7 @@ class SessionSweeper:
         return recovered
 
     async def run_once(self) -> list[SessionActivity]:
-        """Process one batch and return the list of sessions handled."""
+        """handle sessions, return list."""
         handled: list[SessionActivity] = []
         checkpoint_ready = await self.repo.find_checkpoint_ready(
             message_threshold=self.config.checkpoint_message_threshold,

@@ -1,4 +1,4 @@
-"""Tests for Layer 3 pre-generation crisis check and the deterministic."""
+"""test layer 3 pre-gen crisis"""
 
 from __future__ import annotations
 
@@ -20,7 +20,7 @@ from agentic.agent.state import empty_conversation_state, empty_phq9_state
 class TestPreGenCheck:
     def test_phrase_overlap_triggers(self) -> None:
         rules = load_pregen_rules(force_reload=True)
-        # Use a phrase that overlaps strongly with one of the seeds.
+        # skip to next
         msg = "ingin mengakhiri hidupnya sekarang"
         verdict = evaluate_pregen(msg, rules=rules)
         assert verdict.crisis is True
@@ -50,11 +50,7 @@ class TestPreGenNode:
 
     @pytest.mark.asyncio
     async def test_phq9_in_progress_defers_crisis(self, audit) -> None:
-        """
-        While PHQ-9 is mid-flight, the crisis flag is deferred. PHQ-9
-        delivery completes the questionnaire and routes to crisis if
-        item 9 is non-zero.
-        """
+        """`while phq9_in_flight`"""
         state = empty_conversation_state(user_id="u1", session_id="s1")
         state["current_message"] = "ingin mengakhiri hidupnya"
         phq = empty_phq9_state()
@@ -66,7 +62,7 @@ class TestPreGenNode:
         assert state.get("safety_flag") != "crisis", (
             "crisis must defer while PHQ-9 is active"
         )
-        # The deferral must still be audited so the trail is honest.
+        # audit trail
         assert any(
             e.event_type == "semantic_crisis_deferred_phq9"
             for e in audit.events
@@ -97,7 +93,7 @@ class TestPreGenNode:
         state["phq9_state"] = phq
 
         await crisis_guardrail_node(state, audit=audit)
-        # PHQ-9 must finish first.
+        # finish PHQ-9
         assert state.get("safety_flag") != "crisis"
 
 
@@ -125,7 +121,7 @@ class TestCrisisEscalation:
         assert "LISA Suicide Prevention Helpline" in text
         assert "119" in text
         assert "+62 811 3855 472" in text
-        # No template placeholder leakage
+        # skip template leak
         assert "{primary_contact}" not in text
         assert "{campus_name}" not in text
         assert "{resource_lines}" not in text

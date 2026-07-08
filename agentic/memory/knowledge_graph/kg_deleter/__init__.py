@@ -1,4 +1,4 @@
-"""agentic/memory/kg_deleter."""
+"""del mem"""
 
 from __future__ import annotations
 

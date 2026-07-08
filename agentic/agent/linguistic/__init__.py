@@ -1,4 +1,4 @@
-"""Corpus-driven linguistic enrichment for the per-turn conversation."""
+"""enrich lang with corpus"""
 
 from agentic.agent.linguistic.corpus import (
     CorpusEntry,

@@ -1,4 +1,4 @@
-"""Thin wrapper around the configured embedding model."""
+"""wrappin' embdngs"""
 
 from __future__ import annotations
 
@@ -33,7 +33,7 @@ EMBED_MODEL: str = os.getenv(
 )
 
 
-# Online: OpenAI text-embedding-3-small
+# emb3-small
 
 _openai_client = None
 _gemini_client = None
@@ -41,7 +41,7 @@ _online_disabled: bool = False
 
 
 def _try_get_openai_client():
-    """Lazy-load the OpenAI client. Returns None if unavailable."""
+    """lazy-load OpenAI client, returns None if unavailable."""
     global _openai_client, _online_disabled
     if _online_disabled:
         return None
@@ -64,7 +64,7 @@ def _try_get_openai_client():
 
 
 def _try_get_gemini_client():
-    """Lazy-load Google GenAI client. Returns None if unavailable."""
+    """lazy-load None if unavailable."""
     global _gemini_client, _online_disabled
     if _online_disabled:
         return None
@@ -153,8 +153,7 @@ def _embed_ollama(text: str) -> list[float] | None:
             if values:
                 return _fit_dimension(values, source="ollama")
         except urllib.error.HTTPError as exc:
-            # Older Ollama versions may not support /api/embed. Try the legacy
-            # endpoint before falling back to the deterministic local stub.
+            # fallback to stub
             if path == "/api/embed" and exc.code == 404:
                 continue
             logger.warning("Ollama embed call failed (%s). Falling back to stub.", exc)
@@ -232,16 +231,10 @@ def _fit_dimension(vector: list[float], *, source: str) -> list[float]:
     return vector + [0.0] * (EMBED_DIM - len(vector))
 
 
-# Offline: deterministic stub vector
+# offline: stub
 
 def _embed_offline(text: str) -> list[float]:
-    """
-    Deterministic, unit-norm vector derived from the SHA-256 of the
-    input. Used only when the OpenAI path is unavailable. Different
-    texts produce different vectors; identical texts produce identical
-    vectors. Useful enough for local development and CI; not useful
-    for production semantic retrieval.
-    """
+    """buat vector"""
     seed = hashlib.sha256(text.encode("utf-8")).digest()
     raw: list[float] = []
     for i in range(EMBED_DIM):
@@ -254,12 +247,7 @@ def _embed_offline(text: str) -> list[float]:
 
 
 async def embed_text(text: str) -> list[float]:
-    """
-    Return an embedding vector of length EMBED_DIM for ``text``.
-
-    Tries OpenAI first; falls back to the offline stub on any failure
-    so callers never have to handle None.
-    """
+    """return [emb] * EMBED_DIM"""
     if not text or not text.strip():
         return [0.0] * EMBED_DIM
 
@@ -270,5 +258,5 @@ async def embed_text(text: str) -> list[float]:
 
 
 async def embed_many(texts: Iterable[str]) -> list[list[float]]:
-    """Convenience wrapper for batch embeds; one call per text."""
+    """wrp batch embeds"""
     return [await embed_text(t) for t in texts]

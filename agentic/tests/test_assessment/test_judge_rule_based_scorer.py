@@ -1,14 +1,4 @@
-"""Regression tests for the rule-based fast path in `judge.py`.
-
-Guards against the prefix-match over-reach found in
-docs/importantS/analisis_phq9_subgraph.md (Temuan #1): a long free-text
-reply that merely opens with a word that is also a canonical option
-label ("kadang", "sering", "jarang", "selalu", "tidak") must NOT get a
-score locked in from that one word alone -- it has to fall through to
-the full LLM judge, which sees the whole sentence and the scoring
-rubric. This matters most on item 9 (self-harm ideation), where a
-qualifier later in the sentence changes the meaning entirely.
-"""
+"""buat regression"""
 
 from agentic.agent.phq9.judge import _rule_based_score
 
@@ -38,7 +28,7 @@ def test_casual_sentence_with_context_falls_through_to_llm():
 
 
 def test_short_filler_after_label_still_matches_deterministically():
-    """A label plus a couple of short filler words is still a direct pick."""
+    """buat label"""
     for reply, expected_score in [
         ("kadang deh", 1),
         ("kadang sih", 1),

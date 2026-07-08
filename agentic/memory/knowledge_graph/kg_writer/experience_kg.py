@@ -1,4 +1,4 @@
-"""Writer for the :Experience node (CBT Situation) and its two anchor edges:."""
+"""write edges"""
 
 from __future__ import annotations
 
@@ -20,10 +20,7 @@ logger = logging.getLogger(__name__)
 
 
 async def write_experience(inp: ExperienceInput) -> str:
-    """
-    Write an :Experience node (CBT Situation) with cosine dedup.
-    Returns the node id of the merged or newly-created node.
-    """
+    """cosine-dedupe-node"""
     _require(inp.description,  "description")
     _require(inp.occurred_at,  "occurred_at")
     _require(inp.extracted_at, "extracted_at")
@@ -32,7 +29,7 @@ async def write_experience(inp: ExperienceInput) -> str:
 
     client = get_client()
 
-    # 1. Dedup lookup (pgvector cosine, not in-graph).
+    # dedup lookup
     existing = await find_similar_node(
         label="Experience",
         embedding=inp.embedding,
@@ -40,10 +37,7 @@ async def write_experience(inp: ExperienceInput) -> str:
     )
 
     if existing and existing["similarity"] >= MERGE_THRESHOLD:
-        # Reinforce significance; cap at 1.0. Also append the new
-        # message id to the user-anchor edge's provenance list so a
-        # later edit/delete on this message can find every fact it
-        # contributed to.
+        # reinforce sig, cap at 1.0, append msg id, add to edge provenance
         await client.execute_write(
             """
             MATCH (e:Experience {id: $id})
@@ -67,7 +61,7 @@ async def write_experience(inp: ExperienceInput) -> str:
         logger.debug("Experience merged: %s", existing["id"])
         return existing["id"]
 
-    # 2. CREATE path.
+    # buat nyimpen config
     node_id = _new_id()
     rows = await client.execute_write(
         """
@@ -122,7 +116,7 @@ async def write_experience(inp: ExperienceInput) -> str:
             f"session={inp.session_id} — User or Session anchor node missing."
         )
 
-    # Mirror vector into pgvector and flip embedding_synced on success.
+    # mirrors into pgvector, flip on success.
     await sync_embedding_to_pgvector(
         label="Experience",
         node_id=node_id,

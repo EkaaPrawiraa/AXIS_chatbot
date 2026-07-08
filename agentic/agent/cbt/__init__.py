@@ -1,4 +1,4 @@
-"""CBT toolkit."""
+"""init state"""
 
 from agentic.agent.cbt.distortions import (
     DISTORTIONS,

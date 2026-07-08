@@ -1,4 +1,4 @@
-"""Generic surgical-patch helper for any derived node."""
+"""buat patch node"""
 
 from __future__ import annotations
 
@@ -19,19 +19,7 @@ async def update_node_property(
     node_id: str,
     updates: dict[str, Any],
 ) -> int:
-    """
-    Surgically update one or more properties on an existing derived
-    node. Returns the number of nodes affected (0 on miss, 1 on hit).
-
-    Args:
-        label:    Neo4j label, validated against ``DERIVED_LABELS``.
-        node_id:  Stable UUID4 of the node.
-        updates:  property -> new-value. Only keys in
-                  ``UPDATABLE_PROPERTIES[label]`` are accepted.
-
-    Raises:
-        ValueError: bad label, empty / illegal updates, missing id.
-    """
+    """surgically update node props"""
     label = validate_label(label)
     if not node_id:
         raise ValueError("node_id is required")
@@ -39,8 +27,7 @@ async def update_node_property(
 
     client = get_client()
 
-    # The property names come from the closed allow-list above so they
-    # are safe to interpolate. The values flow through parameters.
+    # `skip param`
     set_clauses = ", ".join(
         f"n.{prop} = $updates.{prop}" for prop in updates
     )

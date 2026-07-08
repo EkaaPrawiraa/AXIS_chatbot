@@ -1,4 +1,4 @@
-"""Pure scoring core for PHQ-9."""
+"""scoring core PHQ-9"""
 
 from __future__ import annotations
 
@@ -58,7 +58,7 @@ OPTION_LABELS_EN: tuple[str, ...] = (
 )
 
 
-# Item indexing is 1-based externally. Internally we use 0-based.
+# skp klo error
 NUM_ITEMS: int = 9
 ITEM9_INDEX_ZERO_BASED: int = 8
 ITEM9_INDEX_ONE_BASED: int = 9
@@ -66,7 +66,7 @@ ITEM9_INDEX_ONE_BASED: int = 9
 
 
 class PHQ9Severity(str, Enum):
-    """Standard PHQ-9 severity bands per Kroenke et al. (2001)."""
+    """set bands"""
 
     MINIMAL = "minimal"
     MILD = "mild"
@@ -85,7 +85,7 @@ _SEVERITY_BANDS: tuple[tuple[int, int, PHQ9Severity], ...] = (
 
 
 def compute_severity(total: int) -> PHQ9Severity:
-    """Map a 0..27 total score into a severity band."""
+    """map 0..27 to severity band"""
     if not 0 <= total <= 27:
         raise ValueError(f"PHQ-9 total must be in [0, 27], got {total}")
     for low, high, band in _SEVERITY_BANDS:
@@ -96,7 +96,7 @@ def compute_severity(total: int) -> PHQ9Severity:
 
 
 class ResponseSource(str, Enum):
-    """How a particular item was answered."""
+    """answ"""
 
     BUTTON = "button"
     TEXT_LLM = "text_llm"
@@ -105,7 +105,7 @@ class ResponseSource(str, Enum):
 
 @dataclass(frozen=True)
 class PHQ9Response:
-    """A single item response."""
+    """res[0]"""
 
     item_id: int  # 1-based
     score: int
@@ -126,7 +126,7 @@ class PHQ9Response:
 
 @dataclass(frozen=True)
 class PHQ9Result:
-    """Final result for one administration."""
+    """buat admin"""
 
     user_id: str
     session_id: str
@@ -152,7 +152,7 @@ class PHQ9Result:
 
     @property
     def item9_flagged(self) -> bool:
-        """True when item 9 score is non-zero (any suicidal ideation)."""
+        """score != 0"""
         return self.item9_score >= 1
 
 
@@ -166,17 +166,7 @@ def score_phq9(
     previous_total: int | None = None,
     administered_at: datetime | None = None,
 ) -> PHQ9Result:
-    """
-    Aggregate per-item responses into a final :class:`PHQ9Result`.
-
-    Parameters
-    ----------
-    responses:
-        Iterable of nine :class:`PHQ9Response`. Each ``item_id`` from
-        1..9 must appear exactly once.
-    previous_total:
-        Optional previous total score for delta computation.
-    """
+    """aggregate responses"""
     by_item: dict[int, PHQ9Response] = {}
     for r in responses:
         if r.item_id in by_item:
@@ -213,12 +203,12 @@ DEFAULT_LANGUAGE: str = "id"
 
 
 def get_items(language: str) -> tuple[str, ...]:
-    """Return the nine item prompts for the requested language."""
+    """ret prompts 9"""
     return ITEMS_ID if _normalize_lang(language) == "id" else ITEMS_EN
 
 
 def get_option_labels(language: str) -> tuple[str, ...]:
-    """Return the four option labels (0..3) for the requested language."""
+    """ret four lbls 0..3"""
     return (
         OPTION_LABELS_ID
         if _normalize_lang(language) == "id"
@@ -248,15 +238,7 @@ _ID_HINT_TOKENS: frozenset[str] = frozenset(
 
 
 def detect_language_lightweight(text: str) -> str:
-    """
-    Cheap heuristic detector. Returns ``"id"`` or ``"en"``.
-
-    The heuristic looks for common Indonesian function words in the
-    message and falls back to English when none match. Designed for
-    short chat utterances where a full ML detector is overkill. Use
-    the LLM-based detector in :mod:`agentic.config.llm_models` when
-    confidence matters.
-    """
+    """en" or "id"""
     if not text or not text.strip():
         return DEFAULT_LANGUAGE
     tokens = set(re.findall(r"[a-zA-ZÀ-ÿ]+", text.lower()))
@@ -268,15 +250,7 @@ def resolve_language(
     user_pref: str | None,
     recent_messages: Sequence[str] | None = None,
 ) -> str:
-    """
-    Pick the language for PHQ-9 delivery.
-
-    Priority order:
-
-    1.  Explicit user preference if it is one of :data:`SUPPORTED_LANGUAGES`.
-    2.  Lightweight detector against the most recent user message.
-    3.  :data:`DEFAULT_LANGUAGE`.
-    """
+    """`set lang`"""
     if user_pref:
         normalized = _normalize_lang(user_pref)
         if normalized in SUPPORTED_LANGUAGES:
@@ -290,20 +264,20 @@ def resolve_language(
 
 
 def item_text(item_id: int, language: str) -> str:
-    """Return the prompt for one item (1-based id)."""
+    """ret prompt 1"""
     if not 1 <= item_id <= NUM_ITEMS:
         raise ValueError(f"item_id must be in [1, {NUM_ITEMS}]")
     return get_items(language)[item_id - 1]
 
 
 def options_with_scores(language: str) -> tuple[tuple[int, str], ...]:
-    """Return ``((0, label0), (1, label1), ...)`` for UI rendering."""
+    """return ((0, label0), (1, label1), ...)"""
     labels = get_option_labels(language)
     return tuple((i, labels[i]) for i in range(4))
 
 
 def to_storage_payload(result: PHQ9Result) -> Mapping[str, object]:
-    """Serialize a :class:`PHQ9Result` for the ``assessments`` table."""
+    """serialize PHQ9Result to assessments table"""
     return {
         "user_id": result.user_id,
         "session_id": result.session_id,

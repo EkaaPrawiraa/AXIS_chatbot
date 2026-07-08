@@ -1,6 +1,4 @@
-"""
-Tests for Layer 4 KG access control (sensitivity policy + suppression).
-"""
+"""test access control"""
 
 from __future__ import annotations
 
@@ -60,7 +58,7 @@ class TestPolicyApplication:
         assert len(out) == 1
         assert out[0].mode == "full_text"
         assert out[0].text == "kerja kelompok lancar"
-        # No redaction event for full text.
+        # redact seluruh teks
         assert not any(e.event_type == "redacted_memory" for e in audit.events)
 
     @pytest.mark.asyncio
@@ -112,7 +110,7 @@ class TestPolicyApplication:
 
     @pytest.mark.asyncio
     async def test_importance_floor_filters(self, audit) -> None:
-        # Level 3 floor is 0.8; importance 0.5 should be filtered.
+        # filter 0.8, 0.5
         items = [_candidate(level=3, importance=0.5, category="trauma")]
         out = await apply_sensitivity_policy(items, audit=audit)
         assert out == ()
@@ -121,7 +119,7 @@ class TestPolicyApplication:
     async def test_max_items_cap(self, audit) -> None:
         items = [_candidate(id_=f"m{i}", level=0) for i in range(20)]
         out = await apply_sensitivity_policy(items, audit=audit)
-        # Tier 0 cap is 5.
+        # cap 5
         assert len(out) <= 5
 
 

@@ -1,24 +1,4 @@
-"""
-Regression tests for kg_deleter/hard_delete.py's purge_user and
-purge_user_memory.
-
-Found via live production verification of the account-deletion fix:
-both queries used `UNWIND sessions AS sess` where `sessions` was a
-collected list that could be empty. Cypher's UNWIND silently drops the
-entire row when the input list is empty (unlike OPTIONAL MATCH, which
-preserves nulls) -- so any user with zero Session nodes made the whole
-query return no rows, meaning nothing was deleted, not even the User
-node. purge_user additionally combined the User match with the session
-lookup in a single `OPTIONAL MATCH (u:User {id: ...})-[:HAD_SESSION]->(s)`,
-which has the same failure mode independent of the UNWIND: when a
-newly-introduced variable's OPTIONAL MATCH pattern can't match at all,
-every variable in it -- including u -- becomes null, not just the
-relationship/session end.
-
-A user with zero completed sessions is an entirely ordinary case (anyone
-who registers, sends a couple of messages, and deletes their account
-before a session ever finalizes), so this wasn't an exotic edge case.
-"""
+"""`reg tests`"""
 from __future__ import annotations
 
 import uuid
@@ -40,12 +20,7 @@ pytestmark = [pytest.mark.asyncio, neo4j_required]
 
 @pytest_asyncio.fixture
 async def user_with_no_sessions(neo4j_client: nc.Neo4jClient) -> AsyncIterator[dict]:
-    """
-    A User node with one directly-attached Experience but zero Session
-    nodes -- the exact shape that triggered the bug. No test_namespace
-    fixture reuse here on purpose: that fixture always attaches 2
-    Sessions, which would never exercise this regression.
-    """
+    """buat nyimpen config"""
     ns = f"pytest-nosession-{uuid.uuid4()}"
     user_id = f"{ns}-user"
     exp_id = f"{ns}-exp"

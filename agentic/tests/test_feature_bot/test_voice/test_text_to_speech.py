@@ -1,4 +1,4 @@
-"""Tests for the TTS node with ElevenLabs primary and OpenAI fallback."""
+"""test tts node"""
 
 from __future__ import annotations
 
@@ -18,17 +18,7 @@ def _voice_ready(state, *, mode="v2_5_turbo", text="hai aku denger kamu"):
 
 @pytest.fixture(autouse=True)
 def _pin_openai_second_tier(monkeypatch):
-    """
-    This file's tests assert on the legacy openai-second/gemini-third
-    ordering and several don't pass a fake gemini_tts client at all.
-    Without pinning LLM_PROVIDER explicitly, whatever value happens to
-    be in the real ambient environment decides the order (see
-    test_provider_ordering.py for the tests that actually exercise
-    LLM_PROVIDER-driven ordering) -- on a dev machine with a real
-    LLM_PROVIDER=gemini and real Gemini credentials in .env, that meant
-    a live network call to the real Gemini TTS API from inside a test
-    that thought it was fully hermetic.
-    """
+    """`skip`"""
     monkeypatch.setenv("LLM_PROVIDER", "openai")
 
 
@@ -77,16 +67,7 @@ class TestNode:
     async def test_v25_streaming_generator_is_materialized_to_bytes(
         self, audit, fake_openai_tts, voice_catalog,
     ) -> None:
-        """The real ElevenLabsClient (unlike FakeElevenLabsTTS above, which
-        always returns plain bytes regardless of `streaming`) returns a
-        GENERATOR of byte chunks when streaming=True -- the default for
-        v2_5_turbo mode, ElevenLabs' own primary tier. The gateway's
-        response serializer only base64-encodes bytes/bytearray, so a
-        generator silently vanished into a None audio_output_base64
-        further downstream: every full chat-turn voice reply (used by
-        Confession Space) that succeeded via ElevenLabs' streaming tier
-        played no audio at all, while transcript/captions -- unaffected by
-        this -- still showed up fine. This fake reproduces that shape."""
+        """None"""
 
         class StreamingElevenLabsFake:
             def __init__(self) -> None:
@@ -136,7 +117,7 @@ class TestNode:
             mode="v3",
             text="[softly] Tarik napas pelan-pelan.",
         )
-        # The TTS node prefers speech_response_tags when in v3 mode.
+        # prefers speech_response_tags in v3 mode
         state["voice_state"]["speech_response_tags"] = state["voice_state"][
             "speech_response"
         ]
@@ -152,7 +133,7 @@ class TestNode:
         assert voice["audio_output_blob"]
         assert fake_elevenlabs.calls[0]["model"] == "eleven_v3"
         assert fake_elevenlabs.calls[0]["streaming"] is False
-        # The tagged text reaches ElevenLabs verbatim.
+        # reached verbatim
         assert "[softly]" in fake_elevenlabs.calls[0]["text"]
 
     @pytest.mark.asyncio
@@ -228,8 +209,7 @@ class TestNode:
         voice = out["voice_state"]
         assert voice["voice_error"] is None
         assert voice["tts_provider"] == "gemini_tts"
-        # "v2_5_turbo" (the default test mode) isn't a Gemini tier id, so
-        # resolve_gemini_tier falls back to the default tier's model.
+        # v2_5_turbo" ngga Gemini tier id, jadi resolve_gemini_tier ngikutin tier default.
         assert voice["tts_model"] == "gemini-2.5-flash-preview-tts"
         assert voice["audio_output_blob"] == fake_gemini_tts.blob
         assert voice["audio_output_format"] == "wav"
@@ -245,12 +225,12 @@ class TestNode:
             mode="v3",
             text="[softly] Tarik napas. [pause] Pelan saja.",
         )
-        # Plain version is what the adapter would have stored alongside.
+        # plain version is stored alongside.
         state["voice_state"]["speech_response"] = "Tarik napas. Pelan saja."
         state["voice_state"]["speech_response_tags"] = state["voice_state"][
             "speech_response"
         ]
-        # Force v3 path by setting tags equal to a tagged version.
+        # set tags to tagged version
         state["voice_state"]["speech_response_tags"] = "[softly] Tarik napas. [pause]"
         out = await text_to_speech_node(
             state,
@@ -259,7 +239,7 @@ class TestNode:
             catalog=voice_catalog,
             audit=audit,
         )
-        # Fallback OpenAI must have received plain text without tags.
+        # `skip tags`
         sent = fake_openai_tts.calls[0]["text"]
         assert "[softly]" not in sent
         assert "[pause]" not in sent

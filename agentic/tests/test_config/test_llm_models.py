@@ -117,9 +117,7 @@ def test_local_provider_preserves_explicit_mlx_model(monkeypatch):
 
 
 def test_gemini_provider_forwards_extra_kwargs_like_streaming(monkeypatch):
-    """RESPONSE_GENERATOR's extra_kwargs={"streaming": True} used to be
-    silently dropped for the gemini provider (only the openai/local
-    branches forwarded spec.extra_kwargs at all)."""
+    """extra_kwargs["streaming"] = True"""
     llm_models = _reload_llm_models(monkeypatch, "gemini", GOOGLE_API_KEY="test-key")
 
     import langchain_google_genai

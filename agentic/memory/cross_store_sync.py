@@ -1,4 +1,4 @@
-"""Orchestration seam between the two memory backends."""
+"""orchestrate mem backends"""
 
 from __future__ import annotations
 
@@ -7,7 +7,7 @@ from typing import Any, Iterable
 
 from agentic.memory.neo4j_client import get_client
 
-# Knowledge graph side (Neo4j is the source of truth for structure)
+# side: Neo4j.
 from agentic.memory.knowledge_graph.kg_modifier import mark_embedding_synced
 from agentic.memory.knowledge_graph.kg_deleter import (
     invalidate_message as _kg_invalidate_message,
@@ -39,16 +39,13 @@ from agentic.memory.pg_vector import (
 logger = logging.getLogger(__name__)
 
 
-# Deduplication thresholds (DevNotes v1.1, Section 2; v1.3 Section 1.4)
-# Re-exported from kg_writer/_common for callers that prefer to import
-# them next to the seam they actually use.
+# dedup v1.1 2 1.3 1.4
 
 MERGE_THRESHOLD:  float = 0.85
 REVIEW_THRESHOLD: float = 0.65
 
 
-# Per-label config: how to read each unsynced row out of Neo4j and
-# which upsert / searcher to call. Mirrors what the writers know natively.
+# `per-label config: read unsynced rows, upsert, searcher`
 
 _LABEL_CONFIG: dict[str, dict[str, Any]] = {
     "Memory": {
@@ -98,7 +95,7 @@ def _upserter_for(label: str):
     return _LABEL_CONFIG[label]["upsert"]
 
 
-# 1. Writer bridge: mirror a freshly created Neo4j node into pgvector.
+# mirror node into pgvector
 
 async def sync_embedding_to_pgvector(
     *,
@@ -109,24 +106,12 @@ async def sync_embedding_to_pgvector(
     embedding: list[float] | None,
     importance: float = 0.5,
 ) -> bool:
-    """
-    Mirror a freshly-CREATEd Neo4j node into its pgvector table and,
-    on success, flip ``embedding_synced`` to true on the Neo4j node.
-
-    Returns True when the pair is in sync, False when the embedding
-    was None or the pgvector write failed (the Neo4j node remains
-    ``embedding_synced = false`` and the retry sweep reconciles).
-
-    Errors are swallowed after logging so a transient PostgreSQL
-    hiccup never blocks the primary KG write path.
-    """
+    """mirror_node_to_pgvector() sync_embedding() return sync_status() handle_errors()"""
     if label not in _LABEL_CONFIG:
         raise ValueError(f"label {label!r} is not embeddable")
 
     if embedding is None:
-        # No vector to mirror; node stays embedding_synced=false on
-        # purpose so the retry job knows it has work to do once the
-        # embedder comes online.
+        # `no vec; node stays sync=false`
         return False
 
     upsert = _upserter_for(label)
@@ -152,7 +137,7 @@ async def sync_embedding_to_pgvector(
         return False
 
 
-# 1b. Cosine dedup probe used by the writers.
+# cosine_dedup_probe
 
 async def find_similar_node(
     *,
@@ -161,21 +146,7 @@ async def find_similar_node(
     user_id: str,
     min_similarity: float = REVIEW_THRESHOLD,
 ) -> dict[str, Any] | None:
-    """
-    Return the single closest active node of ``label`` for ``user_id``
-    whose cosine similarity to ``embedding`` is at or above
-    ``min_similarity``, or None if nothing qualifies.
-
-    This is the writer-side dedup seam. It used to live inside
-    ``kg_writer/_common.py`` but was moved here so the writer package
-    no longer imports from pg_vector. Writers call this helper, decide
-    merge vs create, and never know which storage answered the probe.
-
-    On any pgvector failure (offline, mis-configured, embedding None)
-    the function returns None and the caller falls through to a fresh
-    CREATE. The 0.85 / 0.65 thresholds are unaffected; only the storage
-    backing them has moved.
-    """
+    """return closest_active_node(embedding, min_similarity)"""
     if embedding is None:
         return None
 
@@ -198,23 +169,14 @@ async def find_similar_node(
     }
 
 
-# 2. Soft delete bridge.
+# sdbr
 
 async def invalidate_message_full(
     message_id: str,
     *,
     reason: str = "user_deleted_message",
 ) -> dict[str, int]:
-    """
-    Run ``kg_deleter.invalidate_message`` then archive every embeddable
-    row that the deleter deactivated. Returns the combined report::
-
-        {
-            "edges_touched":     int,
-            "nodes_deactivated": int,
-            "pgvector_archived": int,
-        }
-    """
+    """archive_embedded_rows()"""
     kg_report = await _kg_invalidate_message(message_id, reason=reason)
 
     archived = 0
@@ -232,13 +194,10 @@ async def invalidate_message_full(
     }
 
 
-# 3. Hard delete bridges.
+# hard delete 3
 
 async def purge_message_full(message_id: str) -> dict[str, int]:
-    """
-    Run ``kg_deleter.purge_message`` then purge every embeddable row
-    it physically deleted from Neo4j. Returns the combined report.
-    """
+    """purge embeddables"""
     kg_report = await _kg_purge_message(message_id)
 
     purged = 0
@@ -262,10 +221,7 @@ async def purge_session_full(
     *,
     message_ids: Iterable[str] | None = None,
 ) -> dict[str, Any]:
-    """
-    Purge facts by message provenance first, then remove any remaining
-    session-scoped KG facts and mirror deleted embeddable nodes to pgvector.
-    """
+    """purge msg provenance, remove session-scoped facts, mirror nodes to pgvector."""
     message_reports = []
     for message_id in message_ids or []:
         if not message_id:
@@ -293,10 +249,7 @@ async def purge_session_full(
 
 
 async def purge_user_memory_full(user_id: str) -> dict[str, Any]:
-    """
-    Drop all memory graph and pgvector rows for a user while preserving
-    the User node.
-    """
+    """`drop mem & pgvec`"""
     kg_report = await _kg_purge_user_memory(user_id)
     pg_deleted = await _pg_purge_user(user_id)
     return {
@@ -310,11 +263,7 @@ async def purge_user_memory_full(user_id: str) -> dict[str, Any]:
 
 
 async def purge_user_full(user_id: str) -> dict[str, Any]:
-    """
-    Run ``kg_deleter.purge_user`` then drop every pgvector row tied
-    to the user across all four mirror tables. Returns the combined
-    report.
-    """
+    """``purge_user`` & drop pgvector rows"""
     kg_report = await _kg_purge_user(user_id)
     pg_deleted = await _pg_purge_user(user_id)
     return {
@@ -326,21 +275,14 @@ async def purge_user_full(user_id: str) -> dict[str, Any]:
     }
 
 
-# 4. Retry sweep.
+# retry
 
 async def _read_unsynced_batch(
     label: str,
     *,
     batch_size: int,
 ) -> list[dict[str, Any]]:
-    """
-    Return up to ``batch_size`` active, unsynced rows of ``label``.
-
-    Reads only the fields the upsert needs. ``user_id`` comes from the
-    anchor edge because the user is not stored as a property on the
-    derived node. Rows with no live anchor edge are skipped: they are
-    orphans and the soft-delete pass should mark them inactive.
-    """
+    """return active_rows"""
     cfg            = _LABEL_CONFIG[label]
     content_fld    = cfg["content_field"]
     importance_fld = cfg["importance_field"]
@@ -375,7 +317,7 @@ async def _read_unsynced_batch(
 
 
 async def _reconcile_row(label: str, row: dict[str, Any]) -> bool:
-    """Embed, upsert, flip the flag. Returns True iff the row is in sync."""
+    """async def sync_check():     # code     return True"""
     cfg     = _LABEL_CONFIG[label]
     upsert  = cfg["upsert"]
 
@@ -428,11 +370,7 @@ async def sweep_unsynced(
     batch_size: int = 100,
     label_filter: Iterable[str] | None = None,
 ) -> dict[str, dict[str, int]]:
-    """
-    Reconcile up to ``batch_size`` unsynced rows per embeddable label.
-    Returns a dict keyed by label with ``scanned`` / ``synced`` /
-    ``failed`` counts. Failed = scanned - synced.
-    """
+    """reconcile, batch, embed, label"""
     if label_filter is None:
         labels = sorted(_LABEL_CONFIG.keys())
     else:
@@ -479,11 +417,7 @@ async def sweep_until_drained(
     max_passes: int = 10,
     label_filter: Iterable[str] | None = None,
 ) -> dict[str, dict[str, int]]:
-    """
-    Repeatedly call ``sweep_unsynced`` until every label reports
-    ``scanned == 0`` or ``max_passes`` is hit. Useful for backfills
-    and tests. Returns the cumulative tally across passes.
-    """
+    """sweep_unsynced untill max_passes"""
     cumulative: dict[str, dict[str, int]] = {}
     for _ in range(max(1, int(max_passes))):
         pass_report = await sweep_unsynced(
@@ -504,19 +438,19 @@ async def sweep_until_drained(
 
 
 __all__ = [
-    # Dedup thresholds (re-exported for writer convenience)
+    # dedup thresholds
     "MERGE_THRESHOLD",
     "REVIEW_THRESHOLD",
-    # Writer seams
+    # skip
     "sync_embedding_to_pgvector",
     "find_similar_node",
-    # Lifecycle bridges
+    # bridge lifecycles
     "invalidate_message_full",
     "purge_message_full",
     "purge_session_full",
     "purge_user_memory_full",
     "purge_user_full",
-    # Retry sweep
+    # retry
     "sweep_unsynced",
     "sweep_until_drained",
 ]

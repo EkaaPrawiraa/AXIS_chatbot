@@ -1,4 +1,4 @@
-"""Request/response schemas for serving ConversationState turns."""
+"""init state"""
 
 from __future__ import annotations
 
@@ -11,7 +11,7 @@ from agentic.agent.state import OutputModality, TTSModelChoice
 
 
 class ChatMessage(BaseModel):
-    """One persisted chat message from the backend history store."""
+    """get last msg"""
 
     role: Literal["user", "assistant", "system"]
     content: str
@@ -19,7 +19,7 @@ class ChatMessage(BaseModel):
 
 
 class VoiceTurnRequest(BaseModel):
-    """Voice-related inputs that map to ``VoiceState``."""
+    """VoiceInputs: VoiceState."""
 
     output_modality: OutputModality = "text"
     audio_input_base64: str | None = None
@@ -40,14 +40,14 @@ class VoiceTurnRequest(BaseModel):
         return self
 
     def decoded_audio_input(self) -> bytes | str | None:
-        """Return bytes for base64 audio, URL/path string, or None."""
+        """ret bytes audio, url/path, or None."""
         if self.audio_input_base64:
             return base64.b64decode(self.audio_input_base64)
         return self.audio_input_url
 
 
 class ChatTurnRequest(BaseModel):
-    """A single backend-authorized user turn sent to the LangGraph service."""
+    """backend-authorized user to LangGraph"""
 
     model_config = ConfigDict(extra="forbid")
 
@@ -87,7 +87,7 @@ class ChatTurnRequest(BaseModel):
 
 
 class VoiceTurnResponse(BaseModel):
-    """Voice-related outputs from ``VoiceState`` after graph execution."""
+    """ngambil grafik"""
 
     transcript: str | None = None
     transcript_confidence: float | None = None
@@ -97,13 +97,7 @@ class VoiceTurnResponse(BaseModel):
     voice_provider_id: str | None = None
     speech_response: str | None = None
     speech_response_tags: str | None = None
-    # Deliberately `str`, not `TTSModelChoice`: this reports whichever
-    # provider-specific model id actually produced the audio (e.g. the
-    # resolved Gemini tier, or an ElevenLabs/OpenAI model string), which
-    # is a strict superset of the request-side "which mode did the user
-    # ask for" literal. Constraining it to that literal is what caused
-    # every response where the Gemini fallback tier fired to fail
-    # pydantic validation with a 400 on /chat/invoke.
+    # `str`, not `TTSModelChoice`: restrict to `which mode`.
     tts_model: str | None = None
     tts_provider: str | None = None
     tts_streaming: bool | None = None
@@ -114,7 +108,7 @@ class VoiceTurnResponse(BaseModel):
 
 
 class SynthesizeSpeechRequest(BaseModel):
-    """Text-to-speech request for message playback outside a chat turn."""
+    """play msg outside chat turn"""
 
     text: str
     voice_id: str | None = None
@@ -123,7 +117,7 @@ class SynthesizeSpeechRequest(BaseModel):
 
 
 class SynthesizeSpeechResponse(BaseModel):
-    """JSON-safe synthesized speech response."""
+    """buat json respon"""
 
     audio_output_base64: str | None = None
     audio_output_url: str | None = None
@@ -136,9 +130,7 @@ class SynthesizeSpeechResponse(BaseModel):
 
 
 class TranscribeSpeechRequest(BaseModel):
-    """Speech-to-text-only request — used by the chat composer's mic button
-    to fill the textarea with a transcript, without running a full chat turn
-    (no LLM reply, no message persisted)."""
+    """skip llm reply"""
 
     audio_base64: str
     audio_mime: str | None = None
@@ -146,7 +138,7 @@ class TranscribeSpeechRequest(BaseModel):
 
 
 class TranscribeSpeechResponse(BaseModel):
-    """JSON-safe transcript-only response."""
+    """buat json"""
 
     text: str
     language: str | None = None
@@ -155,7 +147,7 @@ class TranscribeSpeechResponse(BaseModel):
 
 
 class ChatTurnResponse(BaseModel):
-    """Backend-facing response for one graph turn."""
+    """res grafik."""
 
     user_id: str
     session_id: str

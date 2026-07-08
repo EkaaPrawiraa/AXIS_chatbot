@@ -1,4 +1,4 @@
-"""Tests for the conditional routing helpers in agentic.agent.graph."""
+"""test routing"""
 
 from __future__ import annotations
 
@@ -11,7 +11,7 @@ from agentic.agent.graph import (
 from agentic.agent.state import empty_phq9_state
 
 
-# route_after_dialogue
+# route
 
 
 class TestRouteAfterDialogue:
@@ -37,7 +37,7 @@ class TestRouteAfterDialogue:
         assert route_after_dialogue({}) == "response_generator"
 
 
-# route_after_guardrail
+# guard rail after
 
 
 class TestRouteAfterGuardrail:

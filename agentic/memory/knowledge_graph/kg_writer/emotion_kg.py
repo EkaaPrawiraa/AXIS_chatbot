@@ -1,4 +1,4 @@
-"""Writer for the :Emotion node and its two anchor edges:."""
+"""write node & edges"""
 
 from __future__ import annotations
 
@@ -12,15 +12,7 @@ logger = logging.getLogger(__name__)
 
 
 async def write_emotion(inp: EmotionInput) -> str:
-    """
-    Write an :Emotion node and link it to User (FELT) and Session
-    (RECORDED_EMOTION). Returns the new node id.
-
-    Both edges carry Graphiti bi-temporal properties
-    (t_valid, t_invalid, confidence, source_session) so downstream
-    queries can reason about "what the user felt at time T" even after
-    the emotion has been superseded.
-    """
+    """write emotion node link to user return node id use bi-temporal props"""
     _require(inp.label,       "label")
     _require(inp.source_text, "source_text")
     _require(inp.user_id,     "user_id")

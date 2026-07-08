@@ -1,4 +1,4 @@
-"""Layer 2 input validation."""
+"""validate 2nd layer input"""
 
 from __future__ import annotations
 
@@ -43,34 +43,21 @@ class InputDecision:
 
 @dataclass(frozen=True)
 class InputRules:
-    # Each keyword is pre-compiled as a word-boundary pattern.
-    # Using compiled patterns instead of raw strings keeps evaluate_input()
-    # free of per-call compilation overhead and makes the boundary logic
-    # a single point of truth.
+    # pre-compile keywords
     crisis_keywords_id: tuple[re.Pattern[str], ...]
     crisis_keywords_en: tuple[re.Pattern[str], ...]
     jailbreak_patterns: tuple[re.Pattern[str], ...]
     off_scope_patterns: tuple[re.Pattern[str], ...]
 
 
-# Character class covering Latin + extended Latin (covers Indonesian,
-# most European loanwords, and common diacritics). Used as the
-# word-boundary anchor so the pattern does not rely on \\b, which
-# treats accented chars as non-word in some Python/ICU configurations.
+# char class
 _LETTER = r"[A-Za-zÀ-ɏḀ-ỿ]"
 _BOUND_PRE = rf"(?<!{_LETTER})"
 _BOUND_POST = rf"(?!{_LETTER})"
 
 
 def _compile_keyword(kw: str) -> re.Pattern[str]:
-    """
-    Compile a crisis keyword with Unicode-aware word boundaries.
-
-    A keyword matches only when it is not immediately preceded or
-    followed by a letter character. This prevents "mati" from
-    matching "matematika" while still matching "mati lah" or
-    "pengen mati".
-    """
+    """compile crisis with unicode boundaries"""
     return re.compile(
         _BOUND_PRE + re.escape(kw.lower()) + _BOUND_POST,
         re.IGNORECASE,
@@ -81,15 +68,13 @@ _RULES_CACHE: InputRules | None = None
 
 
 def load_input_rules(*, force_reload: bool = False) -> InputRules:
-    """Read and parse guardrails/input_validation.yaml."""
+    """`yaml parse`"""
     global _RULES_CACHE
     if _RULES_CACHE is not None and not force_reload:
         return _RULES_CACHE
 
     bundle = load_prompt_bundle("guardrails/input_validation")
-    # The "system" block is YAML-shaped text. Parse it as YAML to
-    # extract the structured lists. This keeps a single editable YAML
-    # file rather than mixing prose and structure.
+    # parse yaml, extract lists, keep yaml file.
     try:
         parsed = yaml.safe_load(bundle.system) or {}
     except yaml.YAMLError as exc:
@@ -128,15 +113,7 @@ def load_input_rules(*, force_reload: bool = False) -> InputRules:
 
 
 def evaluate_input(message: str, rules: InputRules | None = None) -> InputDecision:
-    """
-    Evaluate one user message. Crisis takes precedence over jailbreak;
-    jailbreak takes precedence over allow.
-
-    Crisis keywords are matched with word-boundary anchors (see module
-    docstring) so substrings inside longer words do not trigger false
-    positives. Jailbreak patterns already use full regex and are
-    unchanged.
-    """
+    """evaluate, crisis, jailbreak, allow"""
     rules = rules or load_input_rules()
     if not message:
         return InputDecision(decision="allow", reason="empty_message")
@@ -167,10 +144,7 @@ def evaluate_input(message: str, rules: InputRules | None = None) -> InputDecisi
                 matched=m.group(0)[:120],
             )
 
-    # Off-scope deliverable requests.
-    # Crisis and jailbreak take precedence; off-scope is the lowest-
-    # priority block so a distress signal embedded in a coding request
-    # still routes to the crisis path.
+    # distress signal
     for pat in rules.off_scope_patterns:
         m = pat.search(message)
         if m:
@@ -217,7 +191,7 @@ async def input_guardrail_node(
     audit: GuardrailLogger | None = None,
     rules: InputRules | None = None,
 ) -> ConversationState:
-    """Layer 2 entry-point node."""
+    """init state"""
     audit = audit or NullGuardrailLogger()
     started = time.perf_counter()
 
@@ -227,9 +201,7 @@ async def input_guardrail_node(
 
     state["input_guardrail"] = verdict.to_dict()
 
-    # Off-scope refusal is fully deterministic — write the response now
-    # so the graph can short-circuit the LLM-bearing nodes downstream.
-    # crisis_escalated tells output_guardrail to pass through unchanged.
+    # response now graph LLM-bearing downstream crisis_escalated output_guardrail unchanged
     if verdict.decision == "block" and verdict.reason == "off_scope":
         state["final_response"] = _off_scope_refusal_text(state)
         state["crisis_escalated"] = True

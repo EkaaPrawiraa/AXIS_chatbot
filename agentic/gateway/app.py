@@ -1,4 +1,4 @@
-"""FastAPI application factory for the Agentic runtime gateway."""
+"""fastapi app factory"""
 
 from __future__ import annotations
 
@@ -34,7 +34,7 @@ startup_logger = logging.getLogger("uvicorn.error")
 
 
 def _seconds_until_next_decay_run(hour_utc: int = 2) -> float:
-    """Return seconds until the next daily UTC run."""
+    """get next daily utc run"""
     now = datetime.datetime.utcnow()
     target = now.replace(hour=hour_utc, minute=0, second=0, microsecond=0)
     if target <= now:
@@ -43,7 +43,7 @@ def _seconds_until_next_decay_run(hour_utc: int = 2) -> float:
 
 
 async def _memory_decay_loop() -> None:
-    """Run memory decay daily and keep retrying after failures."""
+    """run decay daily retry fail."""
     while True:
         wait_s = _seconds_until_next_decay_run(hour_utc=2)
         logger.info(
@@ -67,7 +67,7 @@ async def _memory_decay_loop() -> None:
 
 
 async def _pgvector_sync_loop() -> None:
-    """Retry unsynced KG embeddings at a steady interval."""
+    """retry unsynced kg embeddings"""
     interval_s = float(os.getenv("PGVECTOR_SYNC_INTERVAL_SECONDS", "300"))
     batch_size = int(os.getenv("PGVECTOR_SYNC_BATCH_SIZE", "100"))
     while True:
@@ -92,7 +92,7 @@ async def _pgvector_sync_loop() -> None:
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    """Start graph services and background workers."""
+    """start graph serv & bg workers"""
     startup_logger.info(
         "agentic gateway starting up; graph_state_log=%s",
         os.getenv("AXIS_GRAPH_STATE_LOG", "").strip() or "off",
@@ -214,7 +214,7 @@ async def lifespan(app: FastAPI):
 
 
 def create_app() -> FastAPI:
-    """Create and configure the FastAPI application."""
+    """buat config FastAPI"""
     app = FastAPI(
         title="Companionship Agentic Gateway",
         version="2.0.0",
@@ -261,12 +261,12 @@ def create_app() -> FastAPI:
 
     @app.get("/health", include_in_schema=False)
     async def root_health() -> dict[str, str]:
-        """Unauthenticated root liveness probe for load balancers."""
+        """`skip`"""
         return {"status": "ok"}
 
     @app.get("/metrics", include_in_schema=False)
     async def metrics() -> dict[str, dict[str, int]]:
-        """Private metrics snapshot. Requires the Agentic private key."""
+        """snap private metrics, agentic key needed."""
         return metrics_snapshot()
 
     return app

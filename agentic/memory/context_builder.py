@@ -1,4 +1,4 @@
-"""Hybrid retrieval strategy."""
+"""skip klo error"""
 
 from __future__ import annotations
 
@@ -31,11 +31,11 @@ EXPERIENCE_FLOOR:      float = 0.5
 SUBJECTS_TOP_K:          int   = 3    # signal 5: how many subjects to surface per turn
 SUBJECTS_EXPERIENCE_CAP: int   = 3   # signal 5: experiences attached per subject
 
-# backward compat aliases
+# skip compat alias
 PEOPLE_TOP_K          = SUBJECTS_TOP_K
 PEOPLE_EXPERIENCE_CAP = SUBJECTS_EXPERIENCE_CAP
 
-# Dynamic deepening (bounded graph expansion)
+# expands graph
 FOCUSED_TOP_K:         int   = 5
 FOCUSED_FLOOR:         float = 0.4
 FOCUSED_CHAR_BUDGET:   int   = 1600
@@ -45,16 +45,10 @@ FOCUSED_EMOTION_CAP:   int   = 5
 FOCUSED_THOUGHT_CAP:   int   = 5
 FOCUSED_BEHAVIOR_CAP:  int   = 5
 
-# Benchmark retrieval mode (RM3: none / vector_only / full)
-# none       : skip all retrieval, return empty context
-# vector_only: run only pgvector signals (semantic_memory + semantic_experience)
-# full       : full hybrid pipeline (default)
+# skip no signals, run pgvector, full pipeline
 RETRIEVAL_MODE: str = os.getenv("RETRIEVAL_MODE", "full")
 
-# Sensitivity tier retrieval policy (III.5.5)
-# personal : full text, importance >= 0.5
-# sensitive: description redacted, relations shown, importance >= 0.7, max 3
-# trauma   : category-only (no descriptions), importance >= 0.8, max 2
+# sensitivity tier, policy, III.5.5
 SENSITIVITY_IMPORTANCE_PERSONAL  = 0.5
 SENSITIVITY_IMPORTANCE_SENSITIVE = 0.7
 SENSITIVITY_IMPORTANCE_TRAUMA    = 0.8
@@ -95,7 +89,7 @@ _GENERIC_MEMORY_RE = re.compile(
     re.IGNORECASE,
 )
 
-# Dynamic deepening (III.7.2): Tier 1 = back-reference, Tier 2 = clarification
+# `skp tier 1`
 _BACK_REFERENCE_RE = re.compile(
     r"\b("
     r"yang\s+(?:waktu|tadi|kemarin|dulu|sebelumnya|pernah)\s+(?:itu|kamu|lu|lo|aku|gue|gua|cerita)|"
@@ -130,18 +124,18 @@ _CLARIFICATION_RE = re.compile(
 
 
 def _is_back_reference(query_text: str | None) -> bool:
-    """True when the user explicitly references something said in a prior session."""
+    """true when ref'd prior."""
     return bool(_BACK_REFERENCE_RE.search(query_text or ""))
 
 
 def _is_clarification_request(query_text: str | None) -> bool:
-    """True when the user asks for deeper elaboration on a previously-mentioned topic."""
+    """true when user asks for more."""
     text = (query_text or "").strip()
     if not text or _is_generic_memory_query(text):
         return False
     if not _CLARIFICATION_RE.search(text):
         return False
-    # Must have non-trivial content beyond just a clarification phrase
+    # skip klo error
     terms = _query_terms(text)
     return len(terms) >= 1
 
@@ -171,12 +165,6 @@ def _truncate(text: str, budget: int) -> str:
 
 
 def _unwrap_json_text(value: str | None) -> str:
-    """Extract plain text from legacy summaries stored as JSON blobs.
-
-    Older sessions persisted `{"summary": "..."}` strings before the
-    session_summarizer plain-prose rule existed. Retrieval must not leak
-    that JSON into the LLM system prompt.
-    """
     stripped = (value or "").strip()
     if not stripped.startswith("{"):
         return stripped
@@ -201,7 +189,7 @@ def _unwrap_all(items: list[str]) -> list[str]:
 
 
 def _to_iso_string(val: Any) -> str | None:
-    """Safely convert a Neo4j DateTime or any datetime-like value to ISO-8601."""
+    """iso8601"""
     if val is None:
         return None
     if isinstance(val, str):
@@ -228,7 +216,7 @@ def _query_terms(query_text: str | None) -> list[str]:
 
 
 def _is_generic_memory_query(query_text: str | None) -> bool:
-    """True when the user asks broadly what AXIS remembers."""
+    """remember everything"""
     text = (query_text or "").strip().lower()
     if not text:
         return False
@@ -296,7 +284,7 @@ def _filter_dicts_by_terms(
 
 
 def _specific_anchor_terms(query_text: str | None) -> list[str]:
-    """Terms that should anchor topic-specific recall, excluding affect words."""
+    """skip affect words"""
     return [
         term for term in _query_terms(query_text)
         if term not in _LOW_SPECIFICITY_RECALL_TERMS
@@ -308,15 +296,7 @@ def _apply_sensitivity_redaction(
     sensitivity_level: str,
     importance: float,
 ) -> dict[str, Any] | None:
-    """
-    Apply sensitivity tier policy (III.5.5) to a rehydrated node dict.
-
-    - normal / public : pass through unchanged
-    - personal        : full text only if importance >= 0.5; else None
-    - sensitive       : redact description, keep relations, only if importance >= 0.7
-    - trauma          : keep trigger categories only, no descriptions, only if importance >= 0.8
-    Returns None when the node should be excluded entirely.
-    """
+    """`sensitivity tier` to `rehydrated node`."""
     tier = (sensitivity_level or "normal").lower()
     if tier in ("normal", "public"):
         return rec
@@ -327,7 +307,7 @@ def _apply_sensitivity_redaction(
     if tier == "sensitive":
         if importance < SENSITIVITY_IMPORTANCE_SENSITIVE:
             return None
-        # Redact the main text, keep relational context only
+        # redact text, keep rel. context
         redacted = dict(rec)
         for text_key in ("description", "summary", "content"):
             if text_key in redacted:
@@ -339,7 +319,7 @@ def _apply_sensitivity_redaction(
     if tier == "trauma":
         if importance < SENSITIVITY_IMPORTANCE_TRAUMA:
             return None
-        # Keep only trigger categories and emotion labels (no text content)
+        # keep trigger only
         redacted = dict(rec)
         for text_key in ("description", "summary", "content"):
             if text_key in redacted:
@@ -347,14 +327,14 @@ def _apply_sensitivity_redaction(
         redacted["experiences"] = []
         redacted["thoughts"] = []
         redacted["subjects"] = []
-        # Keep triggers (category only) and emotions (label only)
+        # keep triggers & emotions
         redacted["behaviors"] = []
         return redacted
     return rec
 
 
 async def _rehydrate_experience(user_id: str, exp_id: str) -> dict[str, Any] | None:
-    """Return a bounded view of an Experience with sensitivity-tier policy applied."""
+    """retreive exp view with sensitivity tier policy applied"""
     records = await get_client().execute_read(
         """
         MATCH (u:User {id: $user_id})-[:EXPERIENCED]->(e:Experience {id: $exp_id})
@@ -418,14 +398,7 @@ async def _rehydrate_experience(user_id: str, exp_id: str) -> dict[str, Any] | N
 
 
 async def _rehydrate_memory(user_id: str, mem_id: str) -> dict[str, Any] | None:
-    """Return a bounded view of a Memory with sensitivity-tier policy applied.
-
-    Expands beyond the bare Memory summary to the experiences, emotions,
-    thoughts, behaviours, triggers, and subjects captured in the SAME
-    session (via the CONTAINS_MEMORY → Session anchor). Sensitivity tier
-    policy (III.5.5) is applied post-fetch so redaction logic stays in Python
-    rather than being duplicated across multiple Cypher branches.
-    """
+    """return bounded view mem summary w/sensitivity tier policy"""
     records = await get_client().execute_read(
         """
         MATCH (u:User {id: $user_id})-[:HAS_MEMORY]->(m:Memory {id: $mem_id})
@@ -501,13 +474,7 @@ async def _fetch_keyword_experiences(
     *,
     limit: int = FOCUSED_TOP_K,
 ) -> list[dict[str, Any]]:
-    """Fallback graph recall when embedding similarity does not anchor a hit.
-
-    This keeps the knowledge graph useful even when embedding providers
-    changed or old rows were embedded in a different vector space. It is
-    intentionally bounded and only returns Experience ids whose own text
-    or immediate relational ring matches query terms.
-    """
+    """skip klo error"""
     terms = _specific_anchor_terms(query_text) or _query_terms(query_text)
     if not terms:
         return []
@@ -645,9 +612,7 @@ def _format_focused_recall(items: list[dict[str, Any]], *, char_budget: int = FO
                 lines.append(f"  - {header}: {summary}")
             else:
                 lines.append(f"  - {header}")
-            # Session-neighbourhood expansion (see _rehydrate_memory) —
-            # show only the bullets that have content so the prompt stays
-            # tight on sparse memories.
+            # show only content bullets
             experiences = [e for e in (it.get("experiences") or []) if e]
             if experiences:
                 lines.append("      * Experiences: " + "; ".join(experiences))
@@ -716,15 +681,11 @@ class RetrievedContext:
     active_distortions:   list[dict[str, Any]] = field(default_factory=list)
     recurring_triggers:   list[dict[str, Any]] = field(default_factory=list)
     recurring_themes:     list[dict[str, Any]] = field(default_factory=list)
-    # Structured retrieval context for audit / Phase-3 bucket access
+    # audit / Phase-3 / access
     retrieval_context_dict: dict[str, Any] = field(default_factory=dict)
 
     def as_prompt_block(self) -> str:
-        """
-        Format the retrieved context as a structured text block for injection
-        into the LLM system prompt. This is what memory_injection.md
-        references as ``{kg_context}``.
-        """
+        """`inject context`"""
         lines: list[str] = ["=== Long-term memory context ==="]
 
         if self.recency_summaries:
@@ -819,7 +780,7 @@ class RetrievedContext:
 
     @property
     def important_people(self) -> list[dict[str, Any]]:
-        """Backward-compat alias for ``important_subjects``."""
+        """`alias "important_subjects"`"""
         return self.important_subjects
 
     @important_people.setter
@@ -827,10 +788,10 @@ class RetrievedContext:
         self.important_subjects = value
 
 
-# Signal 1: Recency
+# skip klo error
 
 async def _fetch_recency(user_id: str) -> list[str]:
-    """Always retrieve last 2 session summaries regardless of topic."""
+    """get last 2 summaries"""
     records = await get_client().execute_read(
         """
         MATCH (u:User {id: $user_id})-[:HAD_SESSION]->(s:Session)
@@ -848,17 +809,10 @@ async def _fetch_recency(user_id: str) -> list[str]:
     return _without_phq_noise_strings([r["summary"] for r in records])
 
 
-# Signal 2: Semantic similarity (pgvector)
+# smtg 2: sembangan semantik (pgvector)
 
 async def _touch_neo4j_access(node_ids: list[str]) -> None:
-    """
-    Bump ``last_accessed`` and ``access_count`` on the Neo4j Memory
-    nodes that pgvector handed back. The Neo4j-side counters still
-    drive the decay job; pgvector only tracks its own copy for retrieval.
-
-    Failures here never propagate: a missed touch on access stats just
-    delays decay, it does not corrupt retrieval.
-    """
+    """bump stats, fail ok"""
     if not node_ids:
         return
     try:
@@ -882,15 +836,7 @@ async def _fetch_semantic(
     *,
     prefetched_hits: list[SearchHit] | None = None,
 ) -> list[str]:
-    """
-    Top-K active Memory summaries by cosine similarity to the current
-    message embedding, retrieved via pgvector. Refreshes the Neo4j-side
-    access stats for the hits we return.
-
-    ``prefetched_hits`` lets ``build_context`` share a single pgvector
-    probe between this signal and the focused-recall pass so we don't
-    hit Postgres twice per turn.
-    """
+    """prefetch hits, refresh stats, pgvector, Neo4j"""
     if prefetched_hits is None:
         hits: list[SearchHit] = await search_memory(
             user_id,
@@ -899,9 +845,7 @@ async def _fetch_semantic(
             min_similarity=SEMANTIC_FLOOR,
         )
     else:
-        # Re-apply the stricter SEMANTIC_FLOOR/TOP_K on the shared list
-        # so this signal stays semantically identical to the standalone
-        # call. Sorting was already done by search_memory.
+        # reapply SEMANTIC_FLOOR/TOP_K, keep sig identical. sorting done by search_memory.
         hits = [h for h in prefetched_hits if h.similarity >= SEMANTIC_FLOOR][:SEMANTIC_TOP_K]
     if not hits:
         return []
@@ -911,15 +855,10 @@ async def _fetch_semantic(
     return [h.content for h in filtered_hits]
 
 
-# Signal 4: Past experiences (pgvector cosine on Experience nodes)
+# cosine on Experience nodes
 
 async def _touch_neo4j_experience_access(node_ids: list[str]) -> None:
-    """
-    Bump ``last_accessed`` and ``access_count`` on Experience nodes the
-    pgvector probe surfaced. Same shape as the Memory touch helper, but
-    against the :Experience label so the decay job can drop stale ones
-    without affecting Memory counters. Failures never propagate.
-    """
+    """bump last_accessed, access_count same shape as memory touch against experience label decay job drops stale ones failures never propagate"""
     if not node_ids:
         return
     try:
@@ -943,14 +882,7 @@ async def _fetch_semantic_experiences(
     *,
     prefetched_hits: list[SearchHit] | None = None,
 ) -> list[str]:
-    """
-    Top-K Experience descriptions by cosine similarity. This is the
-    surface that fixes the "bot remembers the subject but not what they
-    did" gap: Experience nodes were always written, just never read.
-
-    Accepts ``prefetched_hits`` so the focused-recall pass can reuse the
-    same pgvector probe (see :func:`build_context`).
-    """
+    """cosine_sim top-K exp descriptions. prefetched_hits. reuse pgvector probe."""
     if prefetched_hits is None:
         hits: list[SearchHit] = await search_experience(
             user_id,
@@ -970,21 +902,10 @@ async def _fetch_semantic_experiences(
     return [h.content for h in filtered_hits]
 
 
-# Signal 5: Important subjects + their experiences (Neo4j graph traversal)
+# traverse neo4j
 
 async def _fetch_subjects(user_id: str) -> list[dict[str, Any]]:
-    """
-    Top-K :Subject nodes (people, pets, objects, places, etc.) ranked by
-    ``mention_count`` and absolute sentiment, each annotated with up to
-    ``SUBJECTS_EXPERIENCE_CAP`` Experience descriptions reached through
-    ``:INVOLVES_SUBJECT``.
-
-    The traversal uses ``OPTIONAL MATCH`` so subjects with no recorded
-    experience still surface (they will just render without bullet
-    children). Both the relationship and the Experience are filtered
-    on ``t_invalid IS NULL`` and ``active = true`` to honour soft
-    deletion.
-    """
+    """``rank nodes``"""
     rows = await get_client().execute_read(
         """
         MATCH (u:User {id: $user_id})-[r:HAS_SUBJECT|HAS_RELATIONSHIP_WITH]->(p)
@@ -1023,18 +944,14 @@ async def _fetch_subjects(user_id: str) -> list[dict[str, Any]]:
     return out
 
 
-# backward compat alias
+# alias for backward compat
 _fetch_people = _fetch_subjects
 
 
-# Signal 3: Salience
+# cek sali
 
 async def _fetch_salient(user_id: str, emotion_label: str | None) -> list[str]:
-    """
-    Top-5 Memory nodes with importance > 0.5. ``emotion_label`` is
-    accepted for API stability; the affective re-rank is applied later
-    in the pipeline so this query stays a pure salience cut.
-    """
+    """top_nodes = [node for node in nodes if node['importance'] > 0.5]"""
     del emotion_label  # reserved for downstream affective re-ranker
     records = await get_client().execute_read(
         """
@@ -1056,10 +973,10 @@ async def _fetch_salient(user_id: str, emotion_label: str | None) -> list[str]:
     return _without_phq_noise_strings([r["summary"] for r in records])
 
 
-# Supplementary KG reads (active emotions, distortions, triggers)
+# sup KG reads (emotions, distortions, triggers)
 
 async def _fetch_active_emotions(user_id: str) -> list[dict[str, Any]]:
-    """Recent active emotions from the last 7 days."""
+    """ngambil data"""
     return await get_client().execute_read(
         """
         MATCH (u:User {id: $user_id})-[:FELT]->(em:Emotion)
@@ -1077,15 +994,7 @@ async def _fetch_active_emotions(user_id: str) -> list[dict[str, Any]]:
 
 
 async def _fetch_active_distortions(user_id: str) -> list[dict[str, Any]]:
-    """
-    Unchallenged cognitive distortions plus core beliefs -- top 3.
-
-    Core-belief thoughts (``thought_type == 'core_belief'``) are surfaced
-    even without an attached distortion, since they are the most stable,
-    identity-level thoughts a user holds and are otherwise invisible to
-    every other retrieval signal. They are ranked ahead of ordinary
-    (automatic/intermediate) distortions, then by recency within each tier.
-    """
+    """core beliefs"""
     return await get_client().execute_read(
         """
         MATCH (u:User {id: $user_id})-[:HAS_THOUGHT]->(th:Thought)
@@ -1106,7 +1015,7 @@ async def _fetch_active_distortions(user_id: str) -> list[dict[str, Any]]:
 
 
 async def _fetch_recurring_triggers(user_id: str) -> list[dict[str, Any]]:
-    """Top-3 most frequent active triggers."""
+    """hitung frekuensi"""
     return await get_client().execute_read(
         """
         MATCH (u:User {id: $user_id})-[:HAS_TRIGGER]->(t:Trigger)
@@ -1123,14 +1032,7 @@ async def _fetch_recurring_triggers(user_id: str) -> list[dict[str, Any]]:
 
 
 async def _fetch_themes(user_id: str) -> list[dict[str, Any]]:
-    """
-    Top-5 recurring themes ranked by times_reinforced.
-
-    Extends the base ``fetch_recurring_themes`` signal with ``category``
-    and ``avg_sentiment`` so the prompt block can render richer labels.
-    Topic nodes are not embeddable (no pgvector mirror), so this is a
-    pure graph traversal — fast and always available.
-    """
+    """Top-5 themes ranked."""
     return await get_client().execute_read(
         """
         MATCH (u:User {id: $user_id})-[r:HAS_RECURRING_THEME]->(top:Topic)
@@ -1154,35 +1056,20 @@ def _build_retrieval_context_dict(
     query_text: str | None,
     generic_memory_query: bool,
 ) -> dict[str, Any]:
-    """Convert a RetrievedContext + ranked candidates into a structured dict.
-
-    Bucket semantics (from design doc):
-      focused_recall   — top candidates with causal KG chains; primary CBT context.
-      recent_context   — most recent session summaries.
-      semantic_context — semantic-only hits not covered by focused_recall.
-      identity_context — stable identity signals: subjects, themes.
-      safety_context   — crisis / safety-flagged candidates (empty on normal turns).
-      assessment_context — PHQ-9 screening results (populated by assessment_repo).
-      debug            — metadata about the ranking run for evaluation auditability.
-
-    This structure enables:
-    1. Evaluation auditability (which candidate scored how, why).
-    2. Future Phase-3 where response_generator reads buckets instead of one string.
-    3. Thesis Bab IV metrics: context_relevance@k, noise_rate, redundancy_rate.
-    """
+    """# convert to dict"""
     focused: list[dict[str, Any]] = [c.to_dict() for c in ranked_candidates]
 
-    # Focused recall ids to avoid duplicating in semantic_context.
+    # `skip dup ids`
     focused_ids: set[str] = {c.id for c in ranked_candidates}
 
-    # recent_context: deduplicated recency summaries.
+    # skip klo dup
     recent: list[dict[str, Any]] = [
         {"text": s, "source": "recency"}
         for s in ctx.recency_summaries
         if s
     ]
 
-    # semantic_context: semantic memories + experiences not already in focused.
+    # memori & pengalaman
     semantic_texts: set[str] = {c.get("text", "") for c in focused}
     semantic: list[dict[str, Any]] = []
     for s in ctx.semantic_memories:
@@ -1241,27 +1128,8 @@ async def build_context(
     current_emotion_label: str | None = None,
     query_text: str | None = None,
 ) -> RetrievedContext:
-    """
-    Run every retrieval signal in parallel and assemble RetrievedContext.
-
-    Args:
-        user_id: The user whose context to retrieve.
-        query_embedding: Embedding of the current user message. If None,
-                         signals 2 and 4 (semantic Memory and Experience)
-                         are skipped because both rely on cosine similarity.
-                         When present, focused recall (bounded subgraph
-                         expansion) also fires unconditionally.
-        current_emotion_label: Detected emotion label for salience boost.
-        query_text: Used for dynamic deepening detection (back-reference and
-                    clarification triggers per III.7.2) and query-aware gating.
-
-    Returns:
-        RetrievedContext with all signals populated. Call .as_prompt_block()
-        to get the formatted string for LLM injection.
-    """
-    # Dynamic deepening (III.7.2): expand subgraph when back-reference or
-    # clarification is detected. Conservative gate: only fires when query
-    # has non-trivial content, never on generic memory queries.
+    """run retrieval in par"""
+    # expand subgraph, gate: non-trivial content, generic queries.
     deepening_back_ref    = _is_back_reference(query_text)
     deepening_clarif      = _is_clarification_request(query_text)
     dynamic_deepening     = deepening_back_ref or deepening_clarif
@@ -1274,7 +1142,7 @@ async def build_context(
             user_id, deepening_back_ref, deepening_clarif,
         )
 
-    # Retrieval mode gate (benchmark RM3)
+    # buat nyimpen config
     _mode = RETRIEVAL_MODE.lower()
     if _mode == "none":
         logger.debug("RETRIEVAL_MODE=none: returning empty context for user=%s", user_id)
@@ -1305,10 +1173,7 @@ async def build_context(
             semantic_experiences=_sem_exp,
         )
 
-    # Single pgvector probe per kind. We fetch enough to satisfy BOTH
-    # the standalone semantic signals (TOP_K=3, floor 0.5) AND the
-    # focused-recall pass (TOP_K=2, floor 0.4) in one round trip. Each
-    # downstream consumer re-applies its own floor + top-k.
+    # `pgvector probe`
     pooled_top_k = max(SEMANTIC_TOP_K, effective_focused_top_k) + 2
     pooled_floor = min(SEMANTIC_FLOOR, FOCUSED_FLOOR)
     pooled_mem_hits: list[SearchHit] = []
@@ -1374,19 +1239,7 @@ async def build_context(
     query_terms = _query_terms(query_text)
     generic_memory_query = _is_generic_memory_query(query_text)
 
-    # Focused recall — bounded subgraph expansion with RRF + graph reranker + MMR.
-    #
-    # Pipeline:
-    #   1. RRF fuses semantic-memory and semantic-experience ranked lists so
-    #      a candidate appearing in both signals rises above single-signal hits.
-    #      (Cormack, Clarke & Buettcher, 2009)
-    #   2. Graph reranker boosts candidates via importance, KG relation richness,
-    #      and recency after rehydration delivers the full neighbourhood.
-    #      (design doc: kg_context_structuring_and_ranking_strategy.md)
-    #   3. MMR deduplicates the reranked pool so no two selected candidates
-    #      convey the same information. (Carbonell & Goldstein, 1998)
-    #
-    # These sets feed the selective overlap removal further down.
+    # focus on RRF, graph reranker, MMR
     focused_memory_summaries: set[str] = set()
     focused_experience_descriptions: set[str] = set()
     _ranked_candidates: list[Candidate] = []   # for retrieval_context_dict
@@ -1396,13 +1249,12 @@ async def build_context(
             mem_hits = [h for h in pooled_mem_hits if h.similarity >= FOCUSED_FLOOR]
             exp_hits = [h for h in pooled_exp_hits if h.similarity >= FOCUSED_FLOOR]
 
-            # Stage 1: RRF fusion
-            # Each signal provides a ranked list of node ids (best → first).
+            # `stage 1: rrf fusion`
             mem_ranked = [h.neo4j_node_id for h in mem_hits]
             exp_ranked = [h.neo4j_node_id for h in exp_hits]
             rrf_scores = rrf_fuse([mem_ranked, exp_ranked])
 
-            # Build a lookup so we can retrieve SearchHit metadata per node id.
+            # build lookup for node id
             hit_lookup: dict[str, tuple[str, SearchHit]] = {}
             for h in mem_hits:
                 hit_lookup.setdefault(h.neo4j_node_id, ("Memory", h))
@@ -1410,7 +1262,7 @@ async def build_context(
                 if h.neo4j_node_id not in hit_lookup:
                     hit_lookup[h.neo4j_node_id] = ("Experience", h)
 
-            # Order by RRF score, deduplicate, and cap at FOCUSED_TOP_K.
+            # rrf, dup, cap
             picked_ids: list[str] = []
             seen_ids: set[str] = set()
             for nid in sorted(rrf_scores, key=rrf_scores.__getitem__, reverse=True):
@@ -1421,7 +1273,7 @@ async def build_context(
                 if len(picked_ids) >= effective_focused_top_k:
                     break
 
-            # Stage 2: Rehydrate and build Candidates
+            # hydrate build
             hydrated: list[dict[str, Any]] = []
             ranking_candidates: list[Candidate] = []
 
@@ -1464,17 +1316,17 @@ async def build_context(
                             hydrated=rec,
                         ))
 
-            # Stage 3: Graph reranker
+            # rere rank graf
             if ranking_candidates:
                 ranking_candidates = graph_rerank(ranking_candidates, rrf_scores)
 
-                # Stage 4: MMR deduplication
+                # dedup 4
                 final_selected = mmr_select(
                     ranking_candidates, top_n=effective_focused_top_k
                 )
                 _ranked_candidates = final_selected
 
-                # Re-order hydrated to match MMR selection (best first).
+                # re-order 2nd 1st
                 selected_id_set = {c.id for c in final_selected}
                 id_to_hydrated: dict[str, dict[str, Any]] = {
                     h.get("neo4j_node_id", ""): h for h in hydrated
@@ -1514,9 +1366,7 @@ async def build_context(
                 hydrated = await _fetch_keyword_experiences(user_id, query_text)
                 if hydrated:
                     ctx.focused_recall = _format_focused_recall(hydrated, char_budget=effective_focused_budget)
-                    # Keyword fallback candidates still go through the
-                    # graph reranker (no RRF, but importance + richness boost)
-                    # so they appear in retrieval_context_dict.focused_recall.
+                    # Keyword fallbacks go through graph reranker.
                     kb_candidates: list[Candidate] = []
                     for h in hydrated:
                         d = (h.get("description") or "").strip()
@@ -1535,7 +1385,7 @@ async def build_context(
                             hydrated=h,
                         ))
                     if kb_candidates:
-                        # keyword_score acts as proxy for RRF; normalise 0-1
+                        # keyword_score ~ RRF
                         max_ks = max((h.get("keyword_score") or 1) for h in hydrated)
                         kb_rrf = {
                             c.id: (h.get("keyword_score") or 0) / max(max_ks, 1)
@@ -1566,12 +1416,7 @@ async def build_context(
         ("topic", "category"),
     )
 
-    # Query-aware gating for static graph signals. Recency, salience,
-    # subjects, emotions, distortions, triggers, and themes are useful
-    # identity/background signals, but they should not flood every
-    # specific turn. A broad "what do you remember about me?" query keeps
-    # the full profile-like view; otherwise static signals must overlap
-    # with the user's current retrieval terms.
+    # query-aware gating
     if query_terms and not generic_memory_query:
         ctx.recency_summaries = _filter_strings_by_terms(
             ctx.recency_summaries, query_terms
@@ -1597,12 +1442,7 @@ async def build_context(
             ctx.recurring_themes, query_terms, ("topic", "category")
         )
 
-    # Selective overlap removal — skip Memory summaries and Experience
-    # descriptions that already appear in the [Focused recall] section
-    # to avoid the same fact repeating across 3-4 sections of the prompt.
-    # Identity-layer signals (themes, people, distortions, triggers,
-    # emotions) are NOT filtered here: they're orthogonal to focused
-    # recall and carry information that subgraph expansion never covers.
+    # skip Memory, Experience, Identity-layer signals
     if focused_memory_summaries:
         ctx.recency_summaries = [
             s for s in ctx.recency_summaries
@@ -1622,10 +1462,7 @@ async def build_context(
             if (s or "").strip() not in focused_experience_descriptions
         ]
 
-    # Cross-section dedup among the surviving Memory-pool signals so a
-    # single summary doesn't surface in both recency AND semantic AND
-    # salient. Side-effect trick: ``not seen.add(s)`` always evaluates
-    # True (set.add returns None), so it both filters and accumulates.
+    # `skip dup`
     seen: set[str] = set(ctx.recency_summaries)
     ctx.semantic_memories = [
         s for s in ctx.semantic_memories if s not in seen and not seen.add(s)  # type: ignore[func-returns-value]
@@ -1635,10 +1472,7 @@ async def build_context(
     ]
 
 
-    # Build structured retrieval_context_dict for Phase-1/2 auditability.
-    # This does NOT change what the response generator receives (kg_context
-    # string stays identical); it only adds a structured parallel view of
-    # the same data for evaluation tooling and future Phase-3 bucket access.
+    # build_structured_context
     ctx.retrieval_context_dict = _build_retrieval_context_dict(
         ctx=ctx,
         ranked_candidates=_ranked_candidates,

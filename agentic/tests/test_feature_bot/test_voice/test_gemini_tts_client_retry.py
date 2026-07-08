@@ -1,7 +1,4 @@
-"""GeminiTTSClient retries once on Gemini's own transient empty-response
-failures -- confirmed by live testing to be real, non-deterministic
-Gemini-preview-model flakiness (finish_reason=OTHER, no candidate
-content), not a fixed voice/model incompatibility."""
+"""retry once on gmx's empty resp failures"""
 
 from __future__ import annotations
 

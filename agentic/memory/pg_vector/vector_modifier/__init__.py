@@ -1,4 +1,4 @@
-"""agentic/memory/pg_vector/vector_modifier."""
+"""mod pg_vector"""
 
 from __future__ import annotations
 

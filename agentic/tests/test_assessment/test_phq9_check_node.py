@@ -1,4 +1,4 @@
-"""Tests for the PHQ-9 trigger node."""
+"""test node PHQ-9"""
 
 from __future__ import annotations
 
@@ -68,8 +68,7 @@ class TestTier1:
     async def test_acute_distress_suppresses_and_schedules_retry(
         self, fake_repo
     ) -> None:
-        # Per-turn PAD was removed in 2026-05; drive acute via the KG
-        # distress snapshot instead.
+        # skip klo error
         fake_repo.state.distress = DistressSnapshot(
             high_distress_session_count_7d=0,
             avg_emotion_valence_7d=-0.8,
@@ -142,7 +141,7 @@ class TestTier2:
     async def test_event_cluster_with_high_distress_count(
         self, fake_repo
     ) -> None:
-        # Tier 1 must not fire so we put the last admin within 14 days.
+        # limit admin tier 1 14 days
         fake_repo.state.last = LastPHQ9Snapshot(
             administered_at=datetime.now(timezone.utc) - timedelta(days=5),
             total_score=8,
@@ -180,9 +179,7 @@ class TestTier2:
         assert phq9["phase"] == "offer_pending"
         assert phq9["tier"] == "event"
 
-    # test_sustained_low_valence_history removed in 2026-05: the helper
-    # depended on per-turn emotion_pad in message history, which was
-    # deleted along with the emotion_detection node.
+    # removed in 2026-05: helper depen'd on per-turn emo' pad.
 
     @pytest.mark.asyncio
     async def test_event_acute_distress_suppresses(self, fake_repo) -> None:
@@ -192,7 +189,7 @@ class TestTier2:
             severity=PHQ9Severity.MINIMAL,
             item_scores=(0,) * 9,
         )
-        # Per-turn PAD gone; rely on the KG aggregate to drive acute.
+        # pad gone; rely on kg
         fake_repo.state.distress = DistressSnapshot(
             high_distress_session_count_7d=3,
             avg_emotion_valence_7d=-0.8,
@@ -211,7 +208,7 @@ class TestIdempotence:
         self, fake_repo
     ) -> None:
         state = _state(last_user_message="halo")
-        # Pretend we are mid-questionnaire already.
+        # qanda
         state["phq9_state"] = empty_phq9_state()
         state["phq9_state"]["phase"] = "in_progress"
         state["phq9_state"]["active_item"] = 4

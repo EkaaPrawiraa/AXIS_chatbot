@@ -1,4 +1,4 @@
-"""End-to-end style tests for the PHQ-9 delivery state machine."""
+"""end-to-end tests"""
 
 from __future__ import annotations
 
@@ -56,7 +56,7 @@ async def _run(
     )
 
 
-# Phase: offer_pending and offered
+# offered
 
 
 class TestOfferPhases:
@@ -79,7 +79,7 @@ class TestOfferPhases:
     async def test_event_tier_holds_until_session_ending(self, fake_repo) -> None:
         state = _bootstrap_state(tier="event")
         out = await _run(state, repo=fake_repo)
-        # Without session_ending the offer waits.
+        # skip session_ending
         assert out["phq9_state"]["phase"] == "offer_pending"
 
     @pytest.mark.asyncio
@@ -109,7 +109,7 @@ class TestOfferPhases:
         assert "Pertanyaan 1" in out["response_draft"]
 
 
-# Phase: in_progress (item-by-item)
+# in_progress
 
 
 class TestItemByItem:
@@ -130,8 +130,7 @@ class TestItemByItem:
     async def test_text_answer_uses_llm_scorer(
         self, fake_repo, scorer_llm_factory
     ) -> None:
-        # Use natural phrasing that does not match a label exactly so
-        # the button parser falls through to the LLM scorer.
+        # use llm scorer
         state = _bootstrap_state(
             phase="in_progress", user_message="iya, hampir setiap hari banget"
         )
@@ -151,27 +150,27 @@ class TestItemByItem:
         phq9 = out["phq9_state"]
         assert phq9["phase"] == "awaiting_clar"
         assert phq9["awaiting_clarification"] is True
-        # Active item should not advance during a clarification.
+        # skip clarif.
         assert phq9["active_item"] == 4
 
     @pytest.mark.asyncio
     async def test_clarification_eventually_accepts_best_guess(
         self, fake_repo, scorer_llm_factory
     ) -> None:
-        # First turn produces low confidence and asks for clarification.
+        # low conf asks clar
         state = _bootstrap_state(phase="in_progress", user_message="ambig answer")
         state["phq9_state"]["active_item"] = 4
         out = await _run(state, repo=fake_repo, scorer_llm=scorer_llm_factory())
         assert out["phq9_state"]["phase"] == "awaiting_clar"
 
-        # Second turn is also ambiguous; node accepts best guess.
+        # second turn ambiguous; node guesses best.
         out["current_message"] = "ambig again"
         out2 = await _run(out, repo=fake_repo, scorer_llm=scorer_llm_factory())
         assert out2["phq9_state"]["active_item"] == 5
         assert 4 in out2["phq9_state"]["responses"]
 
 
-# Phase: completed and finalize
+# finalize
 
 
 class TestFinalize:
@@ -193,9 +192,7 @@ class TestFinalize:
             )
 
         phq9 = state["phq9_state"]
-        # Item 9 == 1 flags safety, so phase ends in deferred_crisis.
-        # The graph routes through crisis_guardrail before session_end
-        # based on route_to_crisis_after.
+        # Item 9 == 1, safety, phase ends deferred_crisis. Routes via crisis_guardrail to session_end.
         assert phq9["phase"] == "deferred_crisis"
         assert phq9["last_total"] == NUM_ITEMS  # all answered with 1
         assert phq9["last_severity"] == "mild"
@@ -211,7 +208,7 @@ class TestFinalize:
     ) -> None:
         state = _bootstrap_state(phase="in_progress")
         for item_id in range(1, NUM_ITEMS + 1):
-            # Answer all items with 0 ("tidak sama sekali") so total = 0
+            # 0
             state["current_message"] = "0"
             state["phq9_state"]["active_item"] = item_id
             state = await _run(

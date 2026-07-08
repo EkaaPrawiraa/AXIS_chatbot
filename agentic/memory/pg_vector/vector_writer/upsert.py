@@ -1,4 +1,4 @@
-"""Idempotent UPSERTs into the four pgvector mirror tables."""
+"""UPSERT into pgvector mirrors."""
 
 from __future__ import annotations
 
@@ -27,10 +27,7 @@ async def _upsert(
     embedding: list[float],
     importance: float,
 ) -> bool:
-    """
-    Insert or update a single row in the mirror table for ``label``.
-    Returns True on success, False if the database is unavailable.
-    """
+    """update_mirror"""
     require_str(user_id,       "user_id")
     require_str(neo4j_node_id, "neo4j_node_id")
     require_str(content,       "content")
@@ -82,7 +79,7 @@ async def _upsert(
         return False
 
 
-# Per-label thin wrappers
+# buat thin wrappers
 
 async def upsert_memory(
     *,

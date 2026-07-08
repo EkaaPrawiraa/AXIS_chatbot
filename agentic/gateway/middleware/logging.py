@@ -1,4 +1,4 @@
-"""Request ID injection and structured per-request timing log."""
+"""req id" "log timing"""
 
 from __future__ import annotations
 
@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 
 
 class RequestLoggingMiddleware(BaseHTTPMiddleware):
-    """Attach a request ID and emit a structured access log line."""
+    """ekstrak id permintaan"""
 
     async def dispatch(
         self, request: Request, call_next: RequestResponseEndpoint

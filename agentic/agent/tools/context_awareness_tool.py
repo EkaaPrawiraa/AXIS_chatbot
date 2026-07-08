@@ -1,4 +1,4 @@
-"""LangGraph-ready context awareness tools."""
+"""init state"""
 
 from __future__ import annotations
 
@@ -19,12 +19,12 @@ logger = logging.getLogger(__name__)
 
 
 def _local_now() -> datetime:
-    # Avoid optional runtime deps (tzlocal) and just use system tz.
+    # `tzlocal` ngga dipakai, jgn pakai. Gunakan `pytz` atau `datetime` langsung.
     return datetime.now().astimezone()
 
 
 def _safe_locale() -> tuple[str | None, str | None]:
-    # locale.getdefaultlocale() is deprecated on newer Python.
+    # skip deprecation warning
     try:
         loc = locale.getlocale()
         if isinstance(loc, tuple) and len(loc) == 2:
@@ -36,7 +36,7 @@ def _safe_locale() -> tuple[str | None, str | None]:
 
 @tool("current_context")
 def current_context() -> dict[str, Any]:
-    """Return current datetime/timezone/locale metadata."""
+    """get metadata"""
     now = _local_now()
     lang, encoding = _safe_locale()
     return {
@@ -62,7 +62,7 @@ _openai_disabled: bool = False
 
 
 def _try_get_openai_client():
-    """Lazy-load OpenAI client. Returns None if unavailable."""
+    """lazy-load OpenAI client. Returns None if unavailable."""
     global _openai_client, _openai_disabled
     if _openai_disabled:
         return None
@@ -102,7 +102,7 @@ def _as_dict(obj: Any) -> dict[str, Any] | None:
 
 
 def _normalize_openai_web_results(payload: Any) -> list[dict[str, Any]]:
-    """Best-effort normalization for OpenAI web search tool results."""
+    """best-effort norm OpenAI search results"""
     results: list[dict[str, Any]] = []
     if payload is None:
         return results
@@ -134,16 +134,13 @@ def _normalize_openai_web_results(payload: Any) -> list[dict[str, Any]]:
 
 
 def _extract_json_from_text(text: str) -> dict[str, Any] | None:
-    """Extract a JSON object from a model response.
-
-    Search-preview models sometimes wrap JSON in Markdown code fences.
-    """
+    """extract json from model response"""
     if not text:
         return None
 
     candidate = text.strip()
 
-    # Prefer fenced JSON blocks.
+    # prefer fenced json.
     m = re.search(r"```(?:json)?\s*(\{.*?\})\s*```", candidate, re.DOTALL | re.IGNORECASE)
     if m:
         candidate = m.group(1).strip()
@@ -154,7 +151,7 @@ def _extract_json_from_text(text: str) -> dict[str, Any] | None:
     except Exception:
         pass
 
-    # Fallback: parse the outermost object.
+    # fallback: parse outer obj
     start = candidate.find("{")
     end = candidate.rfind("}")
     if start == -1 or end == -1 or end <= start:
@@ -182,7 +179,7 @@ def _extract_markdown_links(text: str, max_results: int) -> list[dict[str, Any]]
             continue
         seen.add(url)
 
-        # Best-effort snippet: the line containing the link.
+        # find link line
         start = text.rfind("\n", 0, match.start())
         end = text.find("\n", match.end())
         line = text[(start + 1 if start != -1 else 0) : (end if end != -1 else len(text))].strip()
@@ -205,7 +202,7 @@ _gemini_disabled: bool = False
 
 
 def _try_get_gemini_client():
-    """Lazy-load a google-genai client. Returns None if unavailable."""
+    """lazy-load google-genai client"""
     global _gemini_client, _gemini_disabled
     if _gemini_disabled:
         return None
@@ -226,16 +223,7 @@ def _try_get_gemini_client():
 
 
 def _normalize_gemini_grounding_chunks(grounding_metadata: Any) -> list[dict[str, Any]]:
-    """
-    Normalize Gemini's grounding_metadata.grounding_chunks into the same
-    {title, url, content} shape _normalize_openai_web_results produces, so
-    callers don't need to know which provider actually answered.
-
-    Each chunk only carries {web: {uri, title}} -- no snippet/content field
-    -- so `content` is left None. The model's own answer text (returned
-    separately as the tool result's `answer` field) is where the actual
-    substance lives; the chunks are citation metadata.
-    """
+    """normalize_gemini"""
     results: list[dict[str, Any]] = []
     chunks = getattr(grounding_metadata, "grounding_chunks", None) or []
     for chunk in chunks:
@@ -251,18 +239,7 @@ def _normalize_gemini_grounding_chunks(grounding_metadata: Any) -> list[dict[str
 
 
 def _gemini_web_search(query: str, max_results: int) -> dict[str, Any]:
-    """
-    Search the web using Gemini's built-in Google Search grounding tool.
-
-    This is a deliberately ISOLATED call using ONLY the google_search tool
-    -- Gemini's API rejects combining its built-in tools with custom
-    function-calling tools in the same request (see response_generator.py's
-    _maybe_bind_tools for the production bug this caused when they were
-    bound together). Keeping this call self-contained, with no other tools
-    attached, is what makes it safe to use from inside a custom tool
-    (web_search) that the main response-generation call also exposes as
-    one of ITS custom function tools -- the two never mix in one request.
-    """
+    """search web using google_search"""
     client = _try_get_gemini_client()
     if client is None:
         return {
@@ -304,7 +281,7 @@ def _gemini_web_search(query: str, max_results: int) -> dict[str, Any]:
 
 
 def _openai_web_search(query: str, max_results: int) -> dict[str, Any]:
-    """Search the web using OpenAI's web-search-preview model."""
+    """search web openai web-search-preview"""
     client = _try_get_openai_client()
     if client is None:
         return {
@@ -363,19 +340,13 @@ def _openai_web_search(query: str, max_results: int) -> dict[str, Any]:
 
 @tool("web_search")
 def web_search(query: str, max_results: int = 5) -> dict[str, Any]:
-    """Search the web and return normalized results."""
+    """search web, return normalized results"""
     if not query or not query.strip():
         return {"query": query, "results": [], "error": "empty query"}
 
     max_results = max(1, min(int(max_results), 10))
 
-    # Ordered by LLM_PROVIDER -- whichever provider backs the text LLM is
-    # tried first (its own API key is the one this deployment is actually
-    # provisioned/paid for), the other is the fallback. Mirrors the same
-    # ordering already applied to TTS/STT. Gemini's google_search needs no
-    # separate API budget beyond the existing Gemini key, so preferring it
-    # when LLM_PROVIDER=gemini also keeps this tool off OpenAI's quota
-    # entirely in that deployment.
+    # ordered, fallback, TTS/STT, LLM_PROVIDER, Gemini, OpenAI, quota
     from agentic.config.llm_models import llm_provider
 
     if llm_provider() == "openai":
@@ -388,9 +359,7 @@ def web_search(query: str, max_results: int = 5) -> dict[str, Any]:
         fb = fallback(query, max_results)
         if not fb.get("error") or fb.get("results"):
             return fb
-        # Both failed -- surface the primary's error (closer to what the
-        # deployment is actually configured to use) but note the fallback
-        # was attempted too.
+        # `surface error`
         result["fallback_error"] = fb.get("error")
     return result
 
@@ -422,7 +391,7 @@ def _parse_time_token(token: str) -> tuple[int, int] | None:
     if t == "midnight":
         return 0, 0
 
-    # 24-hour clock: HH:MM
+    # `jam 24x`
     m = re.fullmatch(r"(?P<h>\d{1,2}):(?P<m>\d{2})", t)
     if m:
         hour = int(m.group("h"))
@@ -431,7 +400,7 @@ def _parse_time_token(token: str) -> tuple[int, int] | None:
             return hour, minute
         return None
 
-    # 12-hour clock: H, H:MM with am/pm suffix
+    # `12h:MM am/pm`
     m = re.fullmatch(r"(?P<h>\d{1,2})(?::(?P<m>\d{2}))?\s*(?P<ap>am|pm)", t)
     if not m:
         return None
@@ -492,7 +461,7 @@ def _subtract_time(dt: datetime, value: int, unit: str) -> datetime:
 
 @tool("resolve_relative_time")
 def resolve_relative_time(text: str, timezone: str | None = None) -> dict[str, Any]:
-    """Resolve relative/natural language time into an ISO datetime."""
+    """iso datetime"""
     tz = ZoneInfo(timezone) if timezone else _local_now().tzinfo
     now = datetime.now(tz) if tz else _local_now()
     normalized = (text or "").lower().strip()
@@ -500,14 +469,14 @@ def resolve_relative_time(text: str, timezone: str | None = None) -> dict[str, A
     if not normalized:
         return {"input": text, "error": "empty input"}
 
-    # Allow a trailing time component, e.g. "tomorrow 5pm", "next monday at 14:30".
+    # allow trailing time
     time_token: str | None = None
     m_time = _TRAILING_TIME_RE.match(normalized)
     if m_time:
         candidate_date = (m_time.group("date") or "").strip()
         candidate_time = (m_time.group("time") or "").strip()
         parsed = _parse_time_token(candidate_time)
-        # Only treat it as a time token if it parses cleanly; otherwise ignore.
+        # treat as token if clean
         if parsed is not None and candidate_date:
             normalized = candidate_date
             time_token = candidate_time
@@ -621,14 +590,14 @@ class _SafeMath(ast.NodeVisitor):
 
 @tool("calculate_math")
 def calculate_math(expression: str) -> dict[str, Any]:
-    """Safely evaluate a basic arithmetic expression (e.g. "(2+3)*4")."""
+    """safe eval expr"""
     if not expression or not expression.strip():
         return {"expression": expression, "error": "empty expression"}
 
     try:
         tree = ast.parse(expression, mode="eval")
         result = _SafeMath().visit(tree)
-        # If it's effectively an integer, return as int for readability.
+        # retur int utk kejujuran
         if abs(result - round(result)) < 1e-12:
             return {"expression": expression, "result": int(round(result))}
         return {"expression": expression, "result": result}

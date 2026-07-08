@@ -1,4 +1,4 @@
-"""Response generation node."""
+"""gen resp"""
 
 from __future__ import annotations
 
@@ -60,7 +60,7 @@ def _looks_like_human_display_name(value: str) -> bool:
 
 
 def _polish_companion_style(text: str) -> str:
-    """Small deterministic cleanup for phrases models overuse despite prompt rules."""
+    """cleanup, rules, prompt, phrases, deterministic, models."""
     cleaned = (text or "").strip()
     cleaned = re.sub(
         r"^\s*wah,\s*",
@@ -243,7 +243,7 @@ def _build_messages(state: ConversationState) -> list[Any]:
             "reply, after one short acknowledgement):\n\n" + bot_prompt
         )
 
-    # Memory context comes before offer overlay so PHQ directive is last / freshest.
+    # mem context dulu, offer overlay, PHQ di belakang
     kg_context = (state.get("kg_context") or "").strip()
     if kg_context and not bot_prompt:
         parts.append(kg_context)
@@ -293,7 +293,7 @@ def _build_messages(state: ConversationState) -> list[Any]:
         except Exception as exc:  # pragma: no cover
             logger.warning("confession_mode overlay load failed: %s", exc)
 
-    # Language policy: mirror the user's latest language.
+    # mirror lang
     signals = state.get("linguistic_signals") or {}
     detected = (
         signals.get("language")
@@ -370,12 +370,7 @@ _URL_RE = re.compile(r"https?://\S+")
 
 
 async def _maybe_fetch_gemini_url_context(message: str) -> str | None:
-    """Fetch page content for a URL the user shared, via Gemini's native
-    ``url_context`` tool. Gemini-only (not supported by langchain_google_genai's
-    bind_tools, so this bypasses LangChain and calls the google-genai SDK
-    directly) — returns None on any failure so a missing key, network error,
-    or non-Gemini provider never blocks the main response.
-    """
+    """ngambil isi url"""
     if llm_provider() != "gemini":
         return None
     if not message or not _URL_RE.search(message):
@@ -452,8 +447,7 @@ async def response_generator_node(
     messages = _build_messages(state)
 
     if len(messages) == 1:
-        # No history and no current message. We cannot call Gemini without contents.
-        # This usually happens if STT drops a hallucination on an empty audio clip.
+        # skip if no hist & msg
         if (state.get("resolved_language") or "id") == "id":
             draft = "Maaf, aku tidak mendengar apa-apa. Bisa diulangi?"
         else:
@@ -483,7 +477,7 @@ async def response_generator_node(
             if mode == "v3":
                 voice["speech_response_tags"] = adapted
                 voice["speech_response"] = _strip_v3_tags(adapted)
-                # Clean the draft for the UI so it doesn't show the v3 tags
+                # skip v3 tags
                 draft = voice["speech_response"]
             else:
                 voice["speech_response"] = adapted

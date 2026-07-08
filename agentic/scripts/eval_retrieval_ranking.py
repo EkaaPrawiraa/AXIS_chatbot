@@ -1,16 +1,4 @@
-"""Evaluation script: compare retrieval quality before and after RRF+reranker+MMR.
-
-Usage (from agentic/ directory):
-    python scripts/eval_retrieval_ranking.py
-
-Outputs a Markdown report comparing:
-  - relation_richness per candidate
-  - final_score per candidate
-  - source_signal distribution
-  - focused_recall candidate count
-
-Users tested come from docs/IMPORTANT/kg_memory_retrieval_evaluation.md.
-"""
+"""eval script"""
 
 from __future__ import annotations
 
@@ -20,7 +8,7 @@ import os
 import sys
 from datetime import datetime
 
-# env
+# skip klo error
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 from dotenv import load_dotenv
 load_dotenv(os.path.join(os.path.dirname(__file__), "..", ".env"))
@@ -178,7 +166,7 @@ def render_md(all_results: dict) -> str:
         "",
     ]
 
-    # Summary table
+    # buat summary
     lines.append("| User | Query | Focused Count | Avg Richness | Avg Final Score | Chain Dims |")
     lines.append("|------|-------|:---:|:---:|:---:|---|")
     for user_key, user_data in all_results.items():

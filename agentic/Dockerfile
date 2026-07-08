@@ -16,11 +16,7 @@ RUN pip install --no-cache-dir --upgrade pip \
 
 COPY agentic ./agentic
 
-# agent/linguistic/corpus.py resolves this path 3 parents up from itself,
-# i.e. relative to the repo root (not the agentic/ subdirectory) --
-# without this the slang/distress-term corpus silently loads empty
-# ("linguistic corpus not found ... using empty") and every corpus-driven
-# signal (register, distress_terms) is unavailable for every message.
+
 COPY utility/languange/data_ready_to_fed ./utility/languange/data_ready_to_fed
 
 EXPOSE 8000

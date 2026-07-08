@@ -1,1 +1,1 @@
-"""Application services for the agentic gateway."""
+"""aplikasi gw gateway"""

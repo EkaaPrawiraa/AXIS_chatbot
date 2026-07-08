@@ -1,4 +1,4 @@
-"""Session lifecycle helpers."""
+"""ngelolat sementara"""
 
 from agentic.agent.session.activity_repo import (
     SessionActivity,

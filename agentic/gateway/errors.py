@@ -1,4 +1,4 @@
-"""Typed exception handlers registered on the FastAPI app."""
+"""register expts on app"""
 
 from __future__ import annotations
 
@@ -15,16 +15,14 @@ logger = logging.getLogger(__name__)
 async def validation_error_handler(
     request: Request, exc: RequestValidationError
 ) -> JSONResponse:
-    """422: Pydantic request body validation failed."""
+    """validasi body error"""
     logger.warning(
         "validation error req_id=%s path=%s errors=%s",
         getattr(request.state, "request_id", "-"),
         request.url.path,
         exc.errors(),
     )
-    # Pydantic v2 errors include field location and message. Surface them
-    # so the Go backend can log which field was wrong without exposing
-    # any server internals.
+    # surface errors" "log field location" "Go backend
     return JSONResponse(
         status_code=422,
         content={"detail": exc.errors()},
@@ -34,7 +32,7 @@ async def validation_error_handler(
 async def value_error_handler(
     request: Request, exc: ValueError
 ) -> JSONResponse:
-    """400: Caller passed invalid data caught at the service boundary."""
+    """invalid data"""
     logger.warning(
         "bad request req_id=%s path=%s: %s",
         getattr(request.state, "request_id", "-"),
@@ -50,7 +48,7 @@ async def value_error_handler(
 async def runtime_error_handler(
     request: Request, exc: RuntimeError
 ) -> JSONResponse:
-    """503: Service dependency unavailable (Postgres, Neo4j, graph not built)."""
+    """skip"""
     logger.error(
         "service unavailable req_id=%s path=%s: %s",
         getattr(request.state, "request_id", "-"),
@@ -66,7 +64,7 @@ async def runtime_error_handler(
 async def unhandled_error_handler(
     request: Request, exc: Exception
 ) -> JSONResponse:
-    """500: Unexpected error. Log fully, return safe message."""
+    """log error, return safe msg"""
     logger.exception(
         "unhandled error req_id=%s path=%s",
         getattr(request.state, "request_id", "-"),

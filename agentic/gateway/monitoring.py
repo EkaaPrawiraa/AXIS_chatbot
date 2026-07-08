@@ -1,4 +1,4 @@
-"""Minimal in-process metrics for the private Agentic gateway."""
+"""metrics minimal"""
 
 from __future__ import annotations
 

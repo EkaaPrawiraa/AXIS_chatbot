@@ -1,11 +1,4 @@
-"""
-Gemini TTS tier -> (model id, per-gender prebuilt voice name) mapping.
-
-Voice pairing per tier is a deliberate user choice (tested by ear in
-Google AI Studio), not derived from Google's own docs -- the official
-docs only describe each of the 30 prebuilt voices with a single
-character adjective (e.g. "Puck: Upbeat"), with no gender attached.
-"""
+"""Gemini TTS tier -> (model id, per-gender prebuilt voice name) mapping. Voice pairing per tier is user choice, not derived from docs."""
 
 from __future__ import annotations
 
@@ -43,14 +36,7 @@ GEMINI_TTS_TIERS: dict[str, GeminiTTSTier] = {
 
 DEFAULT_GEMINI_TTS_TIER = "gemini-2.5-flash-preview-tts"
 
-# The full set of Gemini prebuilt voice names (case-insensitive; Google's
-# API itself returns them lowercase in error messages, but accepts the
-# PascalCase spellings used elsewhere in this codebase, e.g. "Puck").
-# Used to tell apart a deliberately-picked Gemini voice character (from
-# the Settings picker) from some OTHER provider's voice id -- e.g.
-# "alloy", ElevenLabs/OpenAI's own default -- that merely isn't a known
-# catalog persona either. Passing the latter straight through to Gemini
-# as if it were a real voice name gets rejected outright.
+# # case-insensitive voice names # compare to "alloy" or "OpenAI" # filter out non-catalog voices
 GEMINI_PREBUILT_VOICE_NAMES: frozenset[str] = frozenset({
     "achernar", "achird", "algenib", "algieba", "alnilam", "aoede",
     "autonoe", "callirrhoe", "charon", "despina", "enceladus", "erinome",
@@ -64,10 +50,7 @@ GEMINI_PREBUILT_VOICE_NAMES: frozenset[str] = frozenset({
 def is_gemini_prebuilt_voice_name(voice_id: str | None) -> bool:
     return bool(voice_id) and voice_id.strip().lower() in GEMINI_PREBUILT_VOICE_NAMES
 
-# Older/looser tier id spellings a client might still send (the exact
-# ids without "-preview" suffixed in the middle) -- accepted so a
-# slightly-off client value still resolves instead of silently falling
-# back to the default tier.
+# filter_offline
 _TIER_ALIASES: dict[str, str] = {
     "gemini-3.1-flash-tts": "gemini-3.1-flash-tts-preview",
     "gemini-2.5-pro-tts": "gemini-2.5-pro-preview-tts",
@@ -76,24 +59,17 @@ _TIER_ALIASES: dict[str, str] = {
 
 
 def resolve_gemini_tier(tts_model: str | None) -> GeminiTTSTier:
-    """Resolve a requested tier id to its GeminiTTSTier, defaulting when unknown."""
+    """resolusi tier id dan default jika tidak ditemukan"""
     key = _TIER_ALIASES.get(tts_model or "", tts_model or "")
     return GEMINI_TTS_TIERS.get(key, GEMINI_TTS_TIERS[DEFAULT_GEMINI_TTS_TIER])
 
 
 def resolve_gemini_voice_name(tier: GeminiTTSTier, gender: str | None) -> str:
-    """Female is the default when gender is missing/unrecognized."""
+    """default jika gender kosong/terdebat."""
     return tier.male_voice if gender == "pria" else tier.female_voice
 
 
-# "Karakter Suara" (voice character) picker on the profile page -- see
-# VOICE_CHARACTER_MAP in frontend_v2/app/profile/page.tsx, which this
-# mirrors exactly (character x gender -> real Gemini prebuilt voice
-# name). Kept in sync manually; if one changes, change the other.
-# Independent of GEMINI_TTS_TIERS above: tier controls latency/quality
-# (which of the 3 TTS models is called), character controls WHICH voice
-# speaks -- see the profile page's own comment on why these are two
-# orthogonal axes, not one derived from the other.
+# kepkep mirroring VOICE_CHARACTER_MAP
 VOICE_CHARACTER_MAP: dict[str, dict[str, str]] = {
     "hangat": {"female": "Sulafat", "male": "Achird"},
     "tenang": {"female": "Aoede", "male": "Enceladus"},
@@ -109,21 +85,13 @@ _VOICE_NAME_TO_CHARACTER: dict[str, str] = {
 
 
 def resolve_voice_character(voice_id: str | None) -> str | None:
-    """Reverse-lookup which of the 4 voice characters a resolved Gemini
-    voice NAME belongs to (e.g. "Sulafat" -> "hangat"), or None if it
-    isn't one of the 8 character x gender voices (e.g. an old catalog
-    persona's tier-default fallback voice)."""
+    """None"""
     if not voice_id:
         return None
     return _VOICE_NAME_TO_CHARACTER.get(voice_id.strip().lower())
 
 
-# Director's Notes content per character -- see
-# https://ai.google.dev/gemini-api/docs/speech-generation, which
-# recommends steering Gemini TTS delivery via a Style/Accent/Pacing
-# block rather than discrete parameters (none exist). Each description
-# is deliberately about vocal DELIVERY only (how it sounds), not content
-# (what it says) -- content/wording is the speech adapter's job.
+# skip klo error
 _CHARACTER_STYLE_NOTES: dict[str, dict[str, str]] = {
     "hangat": {
         "style": (
@@ -163,12 +131,7 @@ _EMPATHETIC_MODIFIER = (
 
 
 def build_gemini_director_notes(character_id: str | None, *, empathetic: bool) -> str:
-    """Build the Style/Accent/Pacing Director's Notes block Gemini TTS
-    reads as plain text prepended to what it speaks (see GeminiTTSClient
-    .synthesize). ``character_id`` is resolved via
-    ``resolve_voice_character`` and falls back to a neutral default when
-    the active voice isn't one of the 4 known characters (e.g. an old
-    catalog persona resolving to a tier-default voice)."""
+    """build block synthesize resolve_voice_character fallback"""
     style = _CHARACTER_STYLE_NOTES.get(character_id or "", _CHARACTER_STYLE_NOTES[_DEFAULT_CHARACTER])
     lines = [
         "### DIRECTOR'S NOTES",

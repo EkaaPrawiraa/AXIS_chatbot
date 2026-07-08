@@ -1,4 +1,4 @@
-"""agentic/memory/kg_algorithm."""
+"""buat ngambil data"""
 
 from __future__ import annotations
 

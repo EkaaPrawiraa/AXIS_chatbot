@@ -1,4 +1,4 @@
-"""Bridges the text response into a TTS-ready spoken-style script."""
+"""tts script"""
 
 from __future__ import annotations
 
@@ -33,10 +33,7 @@ from agentic.gateway.monitoring import observe_langchain_usage
 logger = logging.getLogger(__name__)
 
 
-# Techniques that benefit from v3 pre-rendered delivery with audio
-# tags. Grounding scripts, breathing, and meditation are deliberate
-# and benefit from prosodic cues; conversational replies are
-# real-time-bounded.
+# v3 pre-render, audio tags, scripts, grounding, breathing, meditation, prosodic cues, conversational
 V3_TECHNIQUES: frozenset[str] = frozenset(
     {
         CBTTechnique.GROUNDING.value,
@@ -44,7 +41,7 @@ V3_TECHNIQUES: frozenset[str] = frozenset(
 )
 
 
-# Message classes (langchain or fallback)
+# langchain, fallback
 
 
 try:  # pragma: no cover
@@ -66,7 +63,7 @@ except Exception:  # pragma: no cover - sandbox fallback
 
 
 def select_mode(state: ConversationState) -> TTSModelChoice:
-    """Pick v3 for grounding-style techniques, otherwise v2.5 Turbo."""
+    """v3 atau v2.5"""
     technique = state.get("cbt_node_active") or ""
     if technique in V3_TECHNIQUES:
         return "v3"
@@ -78,7 +75,7 @@ def _select_spec(mode: TTSModelChoice) -> LLMSpec:
 
 
 def _safe_fallback(text: str) -> str:
-    """Cheap rule-based adaptation when the LLM call fails."""
+    """adapt fail llm"""
     out = text.strip()
     out = out.replace(" — ", " ")
     out = out.replace("—", " ")
@@ -94,22 +91,17 @@ async def speech_adapter_node(
     llm_v25: Any | None = None,
     llm_v3: Any | None = None,
 ) -> ConversationState:
-    """
-    Adapt ``state["final_response"]`` (preferred) or
-    ``state["response_draft"]`` for the TTS layer. Stores the result
-    on ``voice_state.speech_response`` (and ``speech_response_tags``
-    in v3 mode). Sets ``tts_model``.
-    """
+    """store speech_response set tts_model"""
     audit = audit or NullGuardrailLogger()
     voice = dict(state.get("voice_state") or empty_voice_state())
 
     if voice.get("output_modality") not in ("voice", "both"):
-        # Text-only turn. Nothing to do.
+        # `skip`
         state["voice_state"] = voice  # type: ignore[typeddict-item]
         return state
 
     if voice.get("speech_adapted_in_generator"):
-        # The response_generator_node already handled the rewrite in a single pass.
+        # skip pass
         return state
 
     source_text = (state.get("final_response") or state.get("response_draft") or "").strip()
@@ -138,8 +130,7 @@ async def speech_adapter_node(
                 _HumanMessage(content=human_payload),
             ]
         )
-        # print(human_payload)
-        # print(ai.content)
+        # print(human, ai)
         observe_langchain_usage(ai, fallback_model=spec.model)
         raw = ai.content if isinstance(ai.content, str) else str(ai.content)
         adapted = (raw or "").strip()
@@ -155,7 +146,7 @@ async def speech_adapter_node(
 
     if mode == "v3":
         voice["speech_response_tags"] = adapted
-        # Also keep a plain version as a safety net for any non-v3 client.
+        # keep plain version as safety net
         voice["speech_response"] = _strip_v3_tags(adapted)
     else:
         voice["speech_response"] = adapted
@@ -182,7 +173,7 @@ async def speech_adapter_node(
     return state
 
 
-# v3 tag scrubber for fallback paths
+# tag scrubber
 
 
 import re

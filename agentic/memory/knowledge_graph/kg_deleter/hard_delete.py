@@ -1,4 +1,4 @@
-"""Hard delete: physically remove edges and nodes."""
+"""hard delete: edges, nodes."""
 
 from __future__ import annotations
 
@@ -11,31 +11,16 @@ from agentic.memory.knowledge_graph.kg_deleter._common import DERIVED_LABELS
 logger = logging.getLogger(__name__)
 
 
-# Per-message hard delete
+# delete msg
 
 async def purge_message(message_id: str) -> dict[str, Any]:
-    """
-    Hard-delete every KG fact whose provenance includes ``message_id``.
-
-    Returns::
-
-        {
-            "edges_with_pruned_provenance": int,
-            "nodes_deleted":                int,
-            "deleted_rows": list[{"id": str, "label": str}],
-        }
-
-    ``deleted_rows`` is what ``cross_store_sync`` consumes to mirror
-    the hard delete into pgvector. Callers that do not care about the
-    cross-store cascade can ignore the field.
-    """
+    """hard_delete_every KG_fact_with_message_id()"""
     if not message_id:
         raise ValueError("message_id is required")
 
     client = get_client()
 
-    # Step 1: collect destination node ids before we delete edges, so
-    # step 3 can decide which nodes are now orphaned.
+    # buat list node
     candidates = await client.execute_read(
         """
         MATCH (src)-[r]->(dst)
@@ -47,9 +32,7 @@ async def purge_message(message_id: str) -> dict[str, Any]:
     )
     candidate_ids = [row["id"] for row in candidates]
 
-    # Step 2: delete every edge whose source_messages list, after
-    # removing this message id, would be empty. Edges shared with
-    # other messages only have the message id removed from their list.
+    # for e in edges:     e['source_messages'] = [m for m in e['source_messages'] if m != msg_id]
     edge_report = await client.execute_write(
         """
         MATCH (src)-[r]->(dst)
@@ -71,10 +54,7 @@ async def purge_message(message_id: str) -> dict[str, Any]:
         if edge_report else 0
     )
 
-    # Step 3: collect (id, label) for every node about to be deleted so
-    # the cross-store cascade can target the right pgvector mirror, then
-    # DETACH DELETE every previously-touched derived node that has zero
-    # remaining incoming edges of any kind.
+    # buat ngambil id label node
     deleted_rows: list[dict[str, Any]] = []
     if candidate_ids:
         deleted_rows = await client.execute_write(
@@ -107,13 +87,10 @@ async def purge_message(message_id: str) -> dict[str, Any]:
     return report
 
 
-# Session-scoped hard delete
+# delete sesi
 
 async def purge_session(session_id: str) -> dict[str, Any]:
-    """
-    Hard-delete KG facts that came from ``session_id`` and remove the
-    Session anchor while preserving the User node.
-    """
+    """hard delete facts from session and remove session anchor. preserve user node."""
     if not session_id:
         raise ValueError("session_id is required")
 
@@ -192,10 +169,7 @@ async def purge_session(session_id: str) -> dict[str, Any]:
 
 
 async def purge_user_memory(user_id: str) -> dict[str, int]:
-    """
-    Hard-delete all memory graph data for ``user_id`` while preserving
-    the User node and its properties.
-    """
+    """hard-delete mem graph data for `user_id` while preserving `User` node."""
     if not user_id:
         raise ValueError("user_id is required")
 
@@ -272,26 +246,7 @@ async def purge_user_memory(user_id: str) -> dict[str, int]:
 
 
 async def purge_user(user_id: str) -> dict[str, int]:
-    """
-    Hard-delete every node owned by ``user_id`` and the User node
-    itself. GDPR Article 17 / UU PDP path: destructive, irreversible,
-    intended for the rare case where the user closes their account and
-    asks for a full data wipe.
-
-    What it covers in Neo4j:
-      * All derived nodes reachable from the User via any edge type.
-      * Subject nodes scoped to ``owner_user_id = user_id``.
-      * Every Session node owned by the User and every node reachable
-        from those Sessions.
-      * The User node itself.
-
-    Topic nodes are NOT removed because Topic is a shared catalog
-    owned by the Go service. Only the User-scoped edges into Topic
-    get removed via DETACH DELETE.
-
-    The pgvector wipe is handled by ``cross_store_sync.purge_user_full``;
-    this function is the Neo4j half only.
-    """
+    """hard-delete"""
     if not user_id:
         raise ValueError("user_id is required")
 

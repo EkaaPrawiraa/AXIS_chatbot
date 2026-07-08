@@ -1,6 +1,4 @@
-"""
-Tests for Layer 3 post-generation output guardrail (regex + rewrite).
-"""
+"""test regex rewrite"""
 
 from __future__ import annotations
 
@@ -91,7 +89,7 @@ class TestNode:
         )
         assert clean_rewrite_llm.calls, "rewrite must be invoked"
         assert state["final_response"] != state["response_draft"]
-        # And the rewritten output must be clean.
+        # clean.
         assert find_violations(state["final_response"]) == ()
         assert any(e.event_type == "rewrite_success" for e in audit.events)
 
@@ -103,7 +101,7 @@ class TestNode:
         await output_guardrail_node(
             state, audit=audit, rewrite_llm=stubborn_rewrite_llm
         )
-        # Safe fallback message uses standard scope-out phrasing.
+        # fallback msg uses standard phrasing.
         assert state["final_response"]
         assert "konselor" in state["final_response"].lower() or \
                "profesional" in state["final_response"].lower()
@@ -122,7 +120,7 @@ class TestNode:
 
     @pytest.mark.asyncio
     async def test_crisis_response_skipped(self, audit, clean_rewrite_llm) -> None:
-        """Already-set crisis responses are exempt from rewriting."""
+        """exempt from rewriting"""
         state = _state_with_draft("Kamu mengalami depresi sedang.")
         state["crisis_escalated"] = True  # type: ignore[typeddict-unknown-key]
         state["final_response"] = "deterministic crisis text"

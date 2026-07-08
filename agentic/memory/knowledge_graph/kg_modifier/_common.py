@@ -1,4 +1,4 @@
-"""Shared allow-lists for the modifier package."""
+"""allow-lists"""
 
 from __future__ import annotations
 
@@ -16,13 +16,7 @@ DERIVED_LABELS: frozenset[str] = frozenset({
 })
 
 
-#
-# ``embedding_synced`` (DevNotes v1.3, Section 1.4) is patchable on every
-# embeddable label so the writers and the retry job can flip it from
-# false to true once the matching pgvector row has been written. It is
-# the only flag that is allowed to be set programmatically without LLM
-# review.
-#
+# ``set to true
 UPDATABLE_PROPERTIES: dict[str, frozenset[str]] = {
     "Experience": frozenset({
         "description", "valence", "significance", "sensitivity_level",
@@ -62,7 +56,7 @@ UPDATABLE_PROPERTIES: dict[str, frozenset[str]] = {
 
 
 def validate_label(label: str) -> str:
-    """Raise unless ``label`` is in the modifier allow-list."""
+    """raise unless 'label' in allow-list"""
     if label not in DERIVED_LABELS:
         raise ValueError(
             f"label {label!r} not in modifier allow-list {sorted(DERIVED_LABELS)}"
@@ -71,12 +65,7 @@ def validate_label(label: str) -> str:
 
 
 def validate_updates(label: str, updates: dict) -> None:
-    """
-    Raise unless every key in ``updates`` is patchable on ``label``.
-
-    Empty ``updates`` also raises -- a no-op call is almost always a
-    bug somewhere upstream.
-    """
+    """raise empty updates"""
     if not updates:
         raise ValueError("updates dict cannot be empty")
     allowed = UPDATABLE_PROPERTIES[label]

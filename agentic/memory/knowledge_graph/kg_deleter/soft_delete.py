@@ -1,4 +1,4 @@
-"""Soft delete: invalidate every fact whose provenance includes a given."""
+"""invalidate every fact"""
 
 from __future__ import annotations
 
@@ -16,37 +16,13 @@ async def invalidate_message(
     *,
     reason: str = "user_deleted_message",
 ) -> dict[str, Any]:
-    """
-    Soft-delete every KG fact whose provenance includes ``message_id``.
-
-    Returns a report dict::
-
-        {
-            "edges_touched":     int,
-            "nodes_deactivated": int,
-            "deactivated_rows":  list[{"id": str, "label": str}],
-        }
-
-    ``deactivated_rows`` is what ``cross_store_sync`` consumes to mirror
-    the archive into pgvector. Callers that do not care about the
-    cross-store cascade can ignore the field.
-
-    ``reason`` is stamped on every invalidated edge as
-    ``invalidation_reason`` and on every deactivated node as
-    ``deactivation_reason``. Common values:
-      "user_deleted_message"  -- default for chat-side deletes
-      "user_edited_message"   -- the message was rewritten and the
-                                 extractor will re-run
-      "moderation_redaction"  -- staff-side redaction
-    """
+    """Soft-delete every KG fact with `message_id`.     Returns report dict with node counts."""
     if not message_id:
         raise ValueError("message_id is required")
 
     client = get_client()
 
-    # Phase 1: prune source_messages and possibly invalidate the edge.
-    # We capture the touched destination node ids so phase 2 can scope
-    # its check.
+    # prune, touch, ids, scope, check.
     phase1 = await client.execute_write(
         """
         MATCH (src)-[r]->(dst)
@@ -72,11 +48,7 @@ async def invalidate_message(
     )
     edges_touched: int = phase1[0]["edges_touched"] if phase1 else 0
 
-    # Phase 2: deactivate orphaned derived nodes. We scope strictly to
-    # the nodes touched in phase 1 so we do not sweep up nodes that
-    # were already inactive for another reason. We also return the
-    # primary label for each row so the cross-store cascade can find
-    # the matching pgvector table.
+    # deactivate orphaned nodes, scope to phase 1 nodes, return primary label.
     deactivated_rows: list[dict[str, Any]] = []
     if touched_node_ids:
         deactivated_rows = await client.execute_write(

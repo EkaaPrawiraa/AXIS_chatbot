@@ -1,4 +1,4 @@
-"""Cosine top-k search against the four pgvector mirror tables."""
+"""cosine_search_k_top"""
 
 from __future__ import annotations
 
@@ -38,15 +38,7 @@ async def _search(
     importance_weighted_rank: bool = False,
     touch_last_accessed: bool = False,
 ) -> list[SearchHit]:
-    """
-    Return the top-k active rows of ``label`` for ``user_id`` ordered
-    by cosine similarity descending. Optionally filter on a minimum
-    similarity floor.
-
-    When ``touch_last_accessed`` is True, the matched rows have their
-    ``last_accessed`` updated. Used by the Memory retrieval path so
-    decay calculations reflect actual usage.
-    """
+    """return top_k_active_rows(label, user_id, min_sim_floor)"""
     require_str(user_id,  "user_id")
     require_vector(embedding, EMBED_DIM)
     if top_k <= 0:
@@ -110,7 +102,7 @@ async def _search(
         return []
 
 
-# Per-label thin wrappers
+# buat thin wrappers
 
 async def search_memory(
     user_id: str,
@@ -120,12 +112,7 @@ async def search_memory(
     min_similarity: float | None = 0.5,
     min_importance: float | None = 0.5,
 ) -> list[SearchHit]:
-    """
-    Hybrid retrieval signal 2: top-k Memory rows by cosine similarity.
-    Defaults match DevNotes v1.3 Section 2.2 (top-5, threshold 0.5),
-    with an additional Memory-specific importance floor so low-quality
-    summaries do not crowd out durable context.
-    """
+    """memrows koreksi"""
     return await _search(
         "Memory",
         user_id=user_id,
@@ -145,7 +132,7 @@ async def search_experience(
     top_k: int = 1,
     min_similarity: float | None = None,
 ) -> list[SearchHit]:
-    """Write-time dedup probe for Experience."""
+    """write-time-dedup"""
     return await _search(
         "Experience",
         user_id=user_id,
@@ -162,7 +149,7 @@ async def search_thought(
     top_k: int = 1,
     min_similarity: float | None = None,
 ) -> list[SearchHit]:
-    """Write-time dedup probe for Thought."""
+    """write-time-dedup"""
     return await _search(
         "Thought",
         user_id=user_id,
@@ -179,7 +166,7 @@ async def search_trigger(
     top_k: int = 1,
     min_similarity: float | None = None,
 ) -> list[SearchHit]:
-    """Write-time dedup probe for Trigger (slow path after keyword miss)."""
+    """write, dedup, probe, trigger, slow, path, miss"""
     return await _search(
         "Trigger",
         user_id=user_id,
@@ -196,7 +183,7 @@ async def search_behavior(
     top_k: int = 1,
     min_similarity: float | None = None,
 ) -> list[SearchHit]:
-    """Write-time dedup probe for Behavior."""
+    """write-time-dedup"""
     return await _search(
         "Behavior",
         user_id=user_id,

@@ -1,4 +1,4 @@
-"""Trigger node for PHQ-9 administration."""
+"""`trigger phq-9`"""
 
 from __future__ import annotations
 
@@ -37,15 +37,11 @@ SCHEDULED_INTERVAL_DAYS: int = 14
 RETRY_DAYS_FOR_DISTRESS: int = 3
 RETRY_DAYS_FOR_WORSENING: int = 7
 EVENT_TIER_MIN_DISTRESS_SESSIONS: int = 2
-# Number of completed conversations a brand-new user must have before the
-# first PHQ-9 offer is made. Prevents administration in the very first
-# session when rapport has not yet been established.
+# init state
 WARMUP_CONVERSATIONS_BEFORE_FIRST_OFFER: int = 5
 
 
-# Explicit user-initiated PHQ-9 request cues. When the user types one
-# of these, the bot immediately enters PHQ-9 administration without
-# waiting for the 14-day schedule or the warm-up window.
+# init PHQ-9
 import re as _re
 
 USER_REQUEST_PATTERNS: tuple[_re.Pattern[str], ...] = (
@@ -99,19 +95,10 @@ async def phq9_check_node(
     repo: AssessmentRepository,
     audit: GuardrailLogger | None = None,
 ) -> ConversationState:
-    """
-    Evaluate both trigger tiers and update ``state["phq9_state"]``.
-
-    The node is idempotent. It can run on every turn. Once the phase
-    leaves ``idle`` the node short-circuits to avoid clobbering the
-    delivery-side state.
-    """
+    """evaluate, update, idempotent, idle, short-circuit, state"""
     audit = audit or NullGuardrailLogger()
 
-    # Confession Space never engages PHQ-9 — neither the proactive tier-gate
-    # offer nor a user-initiated request ("aku mau isi PHQ-9") — since the
-    # whole point of the mode is a no-record, low-friction space to talk.
-    # Crisis detection is untouched by this and stays fully active elsewhere.
+    # skip PHQ-9
     if state.get("confession_mode"):
         state["phq9_state"] = empty_phq9_state()
         return state
@@ -120,9 +107,7 @@ async def phq9_check_node(
     user_id = state["user_id"]
     session_id = state.get("session_id") or ""
 
-    # Server-side rehydration: reload in-flight progress from Postgres
-    # before evaluating triggers. This protects us from callers that
-    # drop phq9_state between turns and keeps partial scores intact.
+    # reload from db
     try:
         persisted = await repo.load_phq9_progress(
             user_id=user_id,
@@ -175,10 +160,7 @@ async def phq9_check_node(
             if persisted_phase != "offer_pending":
                 return state
 
-    # If the offer is already pending from a previous turn, arm the
-    # response generator's directive when warm-up turns are met. This
-    # is the only state the trigger node touches when phase is
-    # already engaged; everything else is owned by the subgraph.
+    # arm response gen dir" "warm-up turns" "phase engaged" "trigger node" "subgraph
     if phq9.get("phase") == "offer_pending":
         from agentic.agent.phq9.subgraph import WARMUP_TURNS_BEFORE_OFFER
 
@@ -188,22 +170,17 @@ async def phq9_check_node(
         state["phq9_state"] = phq9
         return state
 
-    # Once the assessment is engaged the trigger node steps back.
+    # skip assessment
     if phq9.get("phase") not in (None, "idle"):
         state["phq9_state"] = phq9
         return state
 
-    # Resolve language for this turn. Prefer per-turn resolved_language
-    # (filled by linguistic_enrichment / STT) so the assessment mirrors
-    # the user's current language.
+    # resolve lang
     language = state.get("resolved_language") or _resolve_language_for_state(state)
     state["resolved_language"] = language
     phq9["language"] = language
 
-    # User-initiated path takes precedence: skip 14-day gate, skip
-    # warm-up. Phase moves directly to ``offered`` with the
-    # user_initiated flag so the subgraph decision node treats the
-    # next reply as accept by default.
+    # skip 14-day gate skip warm-up move to offered default accept
     user_msg = (state.get("current_message") or "").strip()
     if _is_user_request(user_msg):
         logger.info(
@@ -240,12 +217,12 @@ async def phq9_check_node(
         state["phq9_state"] = phq9
         return state
 
-    # Tier 1 evaluation runs first because it gates session start.
+    # `run tier 1`
     tier1 = await _evaluate_tier1(state, repo, phq9)
     if tier1 is not None:
         phq9 = tier1
 
-    # Tier 2 only matters when Tier 1 did not already pass the gate.
+    # menghitung tier 2 hanya jika tier 1 gagal.
     if phq9.get("phase") == "idle":
         tier2 = await _evaluate_tier2(state, repo, phq9)
         if tier2 is not None:
@@ -260,7 +237,7 @@ async def phq9_check_node(
             phq9=phq9,
         )
 
-    # Audit trail: log every non-trivial clinical decision made here.
+    # audit: log non-trivial decisions.
     phase = phq9.get("phase") or "idle"
     reason = phq9.get("reason") or ""
     if phase == "offer_pending":
@@ -287,7 +264,7 @@ async def phq9_check_node(
     return state
 
 
-# Tier 1: scheduled 14-day check
+# check every 14 days
 
 
 async def _evaluate_tier1(
@@ -295,7 +272,7 @@ async def _evaluate_tier1(
     repo: AssessmentRepository,
     phq9: PHQ9SessionState,
 ) -> PHQ9SessionState | None:
-    """Return updated sub-state if Tier 1 conditions are satisfied."""
+    """ret sub-state if tier 1 cond. satisfied"""
     user_id = state["user_id"]
 
     pending = await repo.get_pending_retry(user_id)
@@ -307,7 +284,7 @@ async def _evaluate_tier1(
     if last is not None and days_since(last.administered_at) < SCHEDULED_INTERVAL_DAYS:
         return None
 
-    # New users need rapport before the first PHQ-9 offer.
+    # rapport, PHQ-9
     if last is None:
         convo_count = await repo.get_conversation_count(user_id)
         if convo_count < WARMUP_CONVERSATIONS_BEFORE_FIRST_OFFER:
@@ -350,8 +327,7 @@ async def _evaluate_tier1(
         )
         return phq9
 
-    # Conditions met. Mark offer as pending; the delivery node will
-    # surface it after the warm-up turns.
+    # pending; wait for delivery.
     phq9["phase"] = "offer_pending"
     phq9["tier"] = "scheduled"
     phq9["reason"] = "scheduled_14d"
@@ -360,7 +336,7 @@ async def _evaluate_tier1(
     return phq9
 
 
-# Tier 2: event-based KG cluster
+# event-based
 
 
 async def _evaluate_tier2(
@@ -368,10 +344,7 @@ async def _evaluate_tier2(
     repo: AssessmentRepository,
     phq9: PHQ9SessionState,
 ) -> PHQ9SessionState | None:
-    """
-    Tier 2 looks for a cluster of distress signals and flags the
-    session for end-of-session delivery.
-    """
+    """find distress signals, flag end-session."""
     user_id = state["user_id"]
     last = await repo.get_last_phq9(user_id)
     if last is not None and days_since(last.administered_at) < RETRY_DAYS_FOR_DISTRESS:
@@ -387,8 +360,7 @@ async def _evaluate_tier2(
     if not cluster_triggered:
         return None
 
-    # If the KG snapshot shows acute distress, do not run an assessment
-    # mid-conversation. Defer to next session.
+    # skip mid-convo, defer to next.
     if _acute_distress(state, snapshot):
         sched = await repo.schedule_retry(
             user_id=user_id,
@@ -415,13 +387,6 @@ def _acute_distress(
     state: ConversationState,
     snapshot: Any,
 ) -> bool:
-    """
-    True when the KG longitudinal aggregate shows acute distress.
-
-    Per-turn PAD signals (``emotion_pad``) were removed in 2026-05;
-    real-time acute distress is now handled by the crisis_guardrail
-    layer reading the message text directly.
-    """
     del state  # signature kept for backward compat with call sites
     if snapshot is None:
         return False
@@ -432,28 +397,14 @@ def _acute_distress(
 
 
 def _recently_worsened(last: Any) -> bool:
-    """
-    True when the most recent PHQ-9 score worsened by at least
-    ``WORSENING_DELTA_THRESHOLD`` points relative to the prior
-    administration.
-
-    Uses ``delta_from_prev`` stored on the snapshot (positive = worsened).
-    Falls back to a severity-band heuristic only when delta is unavailable
-    (e.g., the very first administration has no prior to compare against).
-
-    Why delta and not severity band: a user who consistently scores in
-    the moderately_severe band would be permanently suppressed under the
-    old severity-only logic, which means the people who most need
-    monitoring get assessed least frequently.
-    """
+    """``WORSENING_DELTA_THRESHOLD``"""
     if last is None:
         return False
     delta = getattr(last, "delta_from_prev", None)
     if delta is not None:
-        # Positive delta means score went up (worsened).
+        # positive delta means score went up (worsened).
         return delta >= WORSENING_DELTA_THRESHOLD
-    # Fallback: no prior administration to compute a delta from.
-    # Do NOT suppress on severity band alone — let the 14-day gate run.
+    # fallback, severity 14, run 14-day gate
     return False
 
 
@@ -469,7 +420,7 @@ def _describe_event_cluster(snapshot: Any) -> str:
 
 
 def _resolve_language_for_state(state: ConversationState) -> str:
-    """Pick the language for the rest of the assessment flow."""
+    """lang seluruh evaluasi."""
     msgs = [
         m.get("content", "")
         for m in (state.get("messages") or [])

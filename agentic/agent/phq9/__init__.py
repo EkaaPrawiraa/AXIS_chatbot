@@ -1,4 +1,4 @@
-"""PHQ-9 administration as its own compiled LangGraph subgraph."""
+"""buat admin"""
 
 from agentic.agent.phq9.judge import (
     JudgeAction,

@@ -1,4 +1,4 @@
-"""Tests for the STT node."""
+"""test stt node"""
 
 from __future__ import annotations
 

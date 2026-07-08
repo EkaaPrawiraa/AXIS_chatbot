@@ -1,10 +1,4 @@
-"""Writer for Subject nodes and relationships.
-
-:Subject supersedes the old :Person node.  The node label, the User edge
-(HAS_SUBJECT), and the Experience edge (INVOLVES_SUBJECT) have all been
-renamed; the logic and Cypher structure are otherwise identical to the
-former person_kg.py.
-"""
+"""Subject supersedes old node. Renamed labels, edges, Cypher."""
 
 from __future__ import annotations
 
@@ -18,15 +12,7 @@ logger = logging.getLogger(__name__)
 
 
 async def write_subject(inp: SubjectInput) -> str:
-    """
-    Upsert a :Subject for this user. On match: sentiment is averaged with
-    the incoming value, mention_count is incremented, and last_mentioned
-    is refreshed. Returns the node id of the merged or newly-created node.
-
-    The (:User)-[:HAS_SUBJECT]->(:Subject) edge carries the coarse
-    relationship quality (supportive | complicated | negative | neutral)
-    plus the standard bi-temporal properties.
-    """
+    """Upsert node w/ subject. On match: avg sentiment, inc mention_count, refresh last_mentioned. Returns merged/new node id."""
     _require(inp.name,       "name")
     _require(inp.role,       "role")
     _require(inp.user_id,    "user_id")

@@ -1,4 +1,4 @@
-"""Voice catalog loader."""
+"""load voicelist"""
 
 from __future__ import annotations
 
@@ -11,7 +11,7 @@ import yaml
 
 
 def _env_default_language() -> str | None:
-    """Read the user-default language from env. Cleared at every call."""
+    """`env read lang`"""
     val = os.getenv("DEFAULT_USER_LANGUAGE")
     return val.strip().lower() if val else None
 
@@ -33,7 +33,7 @@ class VoiceEntry:
 
     @property
     def is_configured(self) -> bool:
-        """True when the ElevenLabs voice id has been filled in."""
+        """true when id filled"""
         return not self.elevenlabs_voice_id.startswith("REPLACE_WITH")
 
 
@@ -49,18 +49,11 @@ class VoiceCatalog:
     openai_tts_instructions: str
 
     def for_language(self, language: str) -> tuple[VoiceEntry, ...]:
-        """Return all voices that speak ``language``."""
+        """ngambil semua suara"""
         return tuple(v for v in self.voices.values() if v.language == language)
 
     def default_for(self, language: str | None) -> VoiceEntry:
-        """
-        Default voice for a given language. Priority:
-
-        1. Explicit ``language`` argument when present in the
-           per-language map.
-        2. ``DEFAULT_USER_LANGUAGE`` env var when present in the map.
-        3. Global ``default_voice``.
-        """
+        """set_voice('en')"""
         candidates = [language, _env_default_language()]
         for cand in candidates:
             if not cand:
@@ -76,15 +69,7 @@ class VoiceCatalog:
         *,
         language: str | None = None,
     ) -> VoiceEntry:
-        """
-        Resolve a voice. Priority:
-
-        1. Explicit ``voice_id`` if it exists in the catalog.
-        2. Explicit unknown ``voice_id`` as a provider voice id. This lets
-           the Go backend pass ElevenLabs voices returned by the account API.
-        3. Default voice for ``language`` when ``voice_id`` is missing.
-        4. Global default voice.
-        """
+        """resolve voice, priority 1-4"""
         if voice_id and voice_id in self.voices:
             return self.voices[voice_id]
         if voice_id:

@@ -1,4 +1,4 @@
-"""Runtime service for chat graph execution."""
+"""chat graph exec"""
 
 from __future__ import annotations
 
@@ -50,11 +50,7 @@ logger = logging.getLogger(__name__)
 state_logger = logging.getLogger("uvicorn.error")
 
 
-# Whitelist of LangGraph nodes whose LLM token stream is forwarded to the
-# client as SSE `token` events. Anything else — PHQ-9 / CBT judges that
-# emit JSON action payloads, KG extractor, session summariser, speech
-# adapter (TTS prep), output guardrail rewriter — is suppressed so its
-# internal text does not bleed into the user-facing subtitle.
+# `whitelist` nodes, `sse` events, `else` nodes, `suppress` nodes.
 _STREAM_TOKEN_NODES = frozenset({
     "response_generator",
     "crisis_empathy",
@@ -82,7 +78,7 @@ def _timing_logging_enabled() -> bool:
 
 
 class _GraphTimingTracker:
-    """Collect and emit per-run wall-time timings from LangChain/LangGraph events."""
+    """ekstrak dan emit durasi langkah-langkah setiap run."""
 
     _START_EVENTS = {
         "on_chain_start",
@@ -186,7 +182,7 @@ class _GraphTimingTracker:
 
 
 class ChatGraphService:
-    """Build once and invoke the production LangGraph for chat turns."""
+    """build prod langgraph invoke"""
 
     def __init__(self) -> None:
         self._graph: Any | None = None
@@ -195,7 +191,7 @@ class ChatGraphService:
     async def invoke(
         self, request: ChatTurnRequest | Mapping[str, Any]
     ) -> ChatTurnResponse:
-        """Run one chat turn through the LangGraph DAG, returning the full response."""
+        """run chat turn through langgraph, return full resp"""
         normalized = self._coerce_request(request)
         graph = await self._get_graph()
         state = self._request_to_state(normalized)
@@ -237,17 +233,7 @@ class ChatGraphService:
     async def synthesize_speech(
         self, request: SynthesizeSpeechRequest | Mapping[str, Any]
     ) -> SynthesizeSpeechResponse:
-        """Synthesize one text snippet without running a full chat turn.
-
-        Pipeline mirrors the chat-turn voice flow:
-            raw text → speech_adapter_node → TTS
-        The adapter rewrites the snippet for natural spoken delivery
-        (strips markdown, expands punctuation into pauses, injects v3
-        prosody tags when applicable) so the standalone synthesize
-        endpoint produces audio that sounds the same as the in-turn
-        voice output. The endpoint stays stateless — we build a
-        throwaway ConversationState only to drive the adapter.
-        """
+        """synthesize text"""
         normalized = self._coerce_synthesize_request(request)
         text = normalized.text.strip()
         if not text:
@@ -269,20 +255,13 @@ class ChatGraphService:
             language=normalized.language_pref,
         )
 
-        # Build a one-shot state, run the adapter, take the rewritten text.
-        # The standalone synthesize endpoint has no real user/session
-        # context — supply zero-UUIDs so the TypedDict shape is satisfied.
+        # build state, run adapter, take text.
         adapter_state: ConversationState = empty_conversation_state(
             user_id="00000000-0000-0000-0000-000000000000",
             session_id="00000000-0000-0000-0000-000000000000",
         )
         adapter_state["final_response"] = text
-        # mode carries the caller's real tts_model choice (ElevenLabs
-        # v2_5_turbo/v3, the "openai_tts1" force-OpenAI sentinel, or a
-        # Gemini tier alias like "gemini-2.5-pro-tts") straight through --
-        # collapsing it to just v3/v2_5_turbo here used to silently
-        # discard any Gemini tier the caller picked (see profile page's
-        # "Suara Percakapan" picker).
+        # mode carries real tts_model choice directly.
         mode = normalized.tts_model or "v2_5_turbo"
         adapter_voice = dict(empty_voice_state())
         adapter_voice["output_modality"] = "voice"
@@ -303,7 +282,7 @@ class ChatGraphService:
         plain_text = (
             str(adapted_voice.get("speech_response") or "").strip() or text
         )
-        # v3 model consumes the tagged variant; everything else uses plain.
+        # v3 model ngisap tag, lain2 ngga.
         spoken_text = plain_text
         if adapted_voice.get("tts_model") == "v3":
             tagged = str(adapted_voice.get("speech_response_tags") or "").strip()
@@ -311,8 +290,7 @@ class ChatGraphService:
                 spoken_text = tagged
 
         if mode == "openai_tts1":
-            # Explicit "force OpenAI" sentinel -- skip ElevenLabs/Gemini
-            # entirely rather than running the normal fallback chain.
+            # skip ElevenLabs/Gemini entirely
             openai_model = os.getenv("OPENAI_TTS_MODEL") or catalog.openai_tts_model
             result = await OpenAITTSClient().synthesize(
                 text=plain_text,
@@ -324,11 +302,7 @@ class ChatGraphService:
                 ),
             )
         else:
-            # Same ElevenLabs -> (Gemini/OpenAI, ordered by LLM_PROVIDER)
-            # chain the in-turn chat voice reply uses -- this endpoint
-            # used to hardcode ElevenLabs -> OpenAI only, so it never
-            # reached Gemini even when the caller picked a Gemini voice
-            # character (e.g. a raw prebuilt voice name like "Sulafat").
+            # skip hardcode
             outcome = await run_tts_fallback_chain(
                 text=spoken_text,
                 voice_entry=voice_entry,
@@ -355,14 +329,7 @@ class ChatGraphService:
     async def transcribe_speech(
         self, request: TranscribeSpeechRequest | Mapping[str, Any]
     ) -> TranscribeSpeechResponse:
-        """Transcribe one audio clip without running a full chat turn.
-
-        Used by the chat composer's mic button: the user reviews/edits the
-        transcript in the textarea before it becomes a real message, so this
-        must NOT invoke the LLM or persist anything — just STT. Mirrors the
-        stateless-throwaway-state pattern used by `synthesize_speech` above,
-        driving `speech_to_text_node` directly instead of the full graph.
-        """
+        """stt"""
         if not isinstance(request, TranscribeSpeechRequest):
             request = TranscribeSpeechRequest.model_validate(dict(request))
 
@@ -394,7 +361,7 @@ class ChatGraphService:
     async def stream(
         self, request: ChatTurnRequest | Mapping[str, Any]
     ) -> AsyncIterator[dict[str, str]]:
-        """Stream tokens and a final response from the production graph."""
+        """ntokens' & 'res' from 'prod' graph."""
         normalized = self._coerce_request(request)
         graph = await self._get_graph()
         state = self._request_to_state(normalized)
@@ -418,11 +385,7 @@ class ChatGraphService:
                 kind: str = event.get("event", "")
 
                 if kind == "on_chat_model_stream":
-                    # Only stream tokens from user-facing nodes. Internal
-                    # nodes (judges, classifiers, summarisers, the speech
-                    # adapter, guardrail rewriter, KG extractor) also emit
-                    # on_chat_model_stream events — without this guard their
-                    # raw JSON/intermediate text leaks into the subtitle.
+                    # limit to user nodes
                     metadata = event.get("metadata") or {}
                     node = metadata.get("langgraph_node") or ""
                     if node not in _STREAM_TOKEN_NODES:
@@ -468,10 +431,7 @@ class ChatGraphService:
             return self._graph
 
     def draw_graph_image(self) -> None:
-        """Persist a nicer Mermaid PNG of the compiled LangGraph.
-
-        This is intended for development/debugging.
-        """
+        """save nice mermaid png langgraph"""
         if self._graph is None:
             return
 
@@ -494,8 +454,7 @@ class ChatGraphService:
             "ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto",
         ).strip()
 
-        # Mermaid frontmatter config. Unknown keys are ignored by Mermaid,
-        # so this stays compatible across Mermaid versions.
+        # ignoring unk keys
         frontmatter_config: dict[str, Any] = {
             "config": {
                 "theme": theme,
@@ -519,7 +478,7 @@ class ChatGraphService:
             logger.warning("Could not generate graph visualization: %s", exc)
 
     async def _build_graph_once(self) -> Any:
-        """Resolve dependencies and compile the graph. Runs once."""
+        """resolve deps & compile graph. runs once."""
         pool = await get_pool()
         if pool is None:
             raise RuntimeError(
@@ -627,25 +586,7 @@ class ChatGraphService:
 
     @staticmethod
     def _build_stt() -> Any | None:
-        """Build the LLM_PROVIDER-preferred transcription provider, or None
-        when neither OpenAI nor Gemini is configured at all.
-
-        STT is optional, exactly like the two TTS providers below --
-        text-only chat never touches it. This used to unconditionally
-        build an OpenAI provider and crashed the ONE-TIME lazy graph
-        build (_build_graph_once) for every request, text or voice,
-        whenever OPENAI_API_KEY was unset (e.g. production running
-        LLM_PROVIDER=gemini with no OpenAI key). The crash surfaced
-        after the SSE response had already started (200 OK sent, then
-        the stream died), which is what the Go client saw as "agentic
-        read stream: unexpected EOF".
-
-        Only returns the PRIMARY provider for logging/diagnostics --
-        speech_to_text_node computes its own LLM_PROVIDER-ordered
-        primary/fallback pair independently (see
-        _default_stt_providers there) whenever this returns None, so
-        transcription still works even when this constructs nothing.
-        """
+        """None"""
         from agentic.agent.nodes.speech_to_text import (
             GeminiTranscriptionProvider,
             OpenAITranscriptionProvider,
@@ -665,15 +606,12 @@ class ChatGraphService:
             return GeminiTranscriptionProvider()
         if not prefer_gemini and has_openai:
             return OpenAITranscriptionProvider()
-        # Preferred provider's key is missing but the other is configured.
+        # missing but configured.
         return GeminiTranscriptionProvider() if has_gemini else OpenAITranscriptionProvider()
 
     @staticmethod
     def _build_tts_providers() -> tuple[Any | None, Any | None]:
-        """Build available TTS providers (ElevenLabs tier 0, OpenAI as one
-        of the two LLM_PROVIDER-ordered fallback tiers -- see
-        text_to_speech_node for the actual ordering logic; the Gemini
-        client is always built lazily via its own internal default)."""
+        """build providers lazy"""
         from agentic.agent.nodes.text_to_speech import (
             ElevenLabsClient,
             OpenAITTSClient,
@@ -694,7 +632,7 @@ class ChatGraphService:
 
     @staticmethod
     def _wrap_context_builder():
-        """Bridge the production context_builder to the node signature."""
+        """bridge to node"""
         async def _bridge(*, user_id, session_id, query, language):
             try:
                 from agentic.memory.context_builder import build_context
@@ -733,7 +671,7 @@ class ChatGraphService:
     def _coerce_request(
         request: ChatTurnRequest | Mapping[str, Any]
     ) -> ChatTurnRequest:
-        """Normalize raw dict input into the typed request schema."""
+        """`normalize input`"""
         if isinstance(request, ChatTurnRequest):
             return request
         return ChatTurnRequest.model_validate(request)
@@ -750,7 +688,7 @@ class ChatGraphService:
     def _request_to_state(
         cls, request: ChatTurnRequest | Mapping[str, Any]
     ) -> ConversationState:
-        """Materialize a fresh ConversationState from the request."""
+        """mf a fresh cs from req."""
         request = cls._coerce_request(request)
         state = empty_conversation_state(
             user_id=request.user_id,
@@ -772,7 +710,7 @@ class ChatGraphService:
         state["cbt_directive"] = request.cbt_directive
         if request.cbt_state is not None:
             state["cbt_state"] = request.cbt_state  # type: ignore[typeddict-item]
-        # Avoid stale PHQ-9 state on the first turn of a new session.
+        # init state
         if request.phq9_state is not None and request.session_turn > 1:
             state["phq9_state"] = request.phq9_state  # type: ignore[typeddict-item]
 
@@ -791,7 +729,7 @@ class ChatGraphService:
     def _state_to_response(
         state: ConversationState, *, include_state: bool,
     ) -> ChatTurnResponse:
-        """Serialize the post-graph state into the response schema."""
+        """serialize state into response"""
         voice = dict(state.get("voice_state") or {})
         audio_blob = voice.get("audio_output_blob")
         audio_output_base64 = None

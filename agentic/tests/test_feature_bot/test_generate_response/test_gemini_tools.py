@@ -1,18 +1,4 @@
-"""Gemini-only additions to response_generator: the url_context helper (a
-separate, isolated google-genai SDK call, additive and provider-gated) and
-a regression guard that the Google Search built-in tool is never bound
-alongside the custom toolset.
-
-The google_search built-in tool was briefly bound on every Gemini call in
-addition to the default custom toolset (current_context, resolve_relative_time,
-calculate_math, web_search — always non-empty). Gemini's API rejects combining
-built-in tools with custom function-calling tools in the same request, so this
-made every single Gemini chat response fail and silently fall back to a
-generic error message. The bug shipped because the original test for this
-passed `tools=[]` explicitly, sidestepping the always-non-empty default
-toolset that every real request actually uses — a request with ONLY
-google_search and no custom tools is valid, so that test never touched the
-actual broken path."""
+"""skip error"""
 
 from types import SimpleNamespace
 
@@ -33,8 +19,7 @@ class _FakeAIMessage:
 
 
 class _FakeClient:
-    """Minimal LangChain-like client: records bind_tools() args, returns a
-    plain-text reply with no tool_calls so the loop resolves in one turn."""
+    """`minimal client`"""
 
     def __init__(self):
         self.bound_tools = None
@@ -49,8 +34,7 @@ class _FakeClient:
 
 @pytest.mark.asyncio
 async def test_response_generator_never_binds_google_search_when_gemini(monkeypatch):
-    """google_search must never be bound, gemini or not -- it's incompatible
-    with the custom toolset every real request already carries."""
+    """skip gemini"""
     monkeypatch.setenv("LLM_PROVIDER", "gemini")
     fake_client = _FakeClient()
     state = {"messages": [], "current_message": "halo, apa kabar?"}
@@ -62,11 +46,7 @@ async def test_response_generator_never_binds_google_search_when_gemini(monkeypa
 
 @pytest.mark.asyncio
 async def test_response_generator_never_binds_google_search_with_default_toolset(monkeypatch):
-    """The real production path: tools=None so response_generator_node
-    resolves the always-non-empty default toolset itself. This is the
-    exact path that was broken -- google_search got appended on top of
-    these 4 tools on every Gemini call, and Gemini's API rejects the
-    combination outright."""
+    """`skip`"""
     monkeypatch.setenv("LLM_PROVIDER", "gemini")
     fake_client = _FakeClient()
     state = {"messages": [], "current_message": "halo, apa kabar?"}
@@ -90,9 +70,7 @@ async def test_response_generator_no_google_search_when_openai(monkeypatch):
 
 @pytest.mark.asyncio
 async def test_tool_loop_returns_content_when_no_tool_calls_present():
-    """Regression guard: a Gemini grounding reply never populates tool_calls
-    (the search happens server-side) — the loop must resolve it on the very
-    first iteration instead of erroring or looping."""
+    """init state"""
     client = _FakeClient()
 
     text, iterations = await _run_tool_loop(

@@ -1,4 +1,4 @@
-"""End-to-end integration tests for the Neo4j knowledge graph writer layer."""
+"""test writer layer"""
 
 from __future__ import annotations
 
@@ -44,31 +44,27 @@ pytestmark = [pytest.mark.asyncio, neo4j_required]
 
 
 def _iso(hours_ago: int = 0) -> str:
-    """Small timestamp helper with an offset, in ISO 8601 UTC form."""
+    """buat tsb helper"""
     from datetime import datetime, timedelta, timezone
     return (datetime.now(timezone.utc) - timedelta(hours=hours_ago)).isoformat()
 
 
 def _emb(dim: int = 1536, base: float = 0.01) -> list[float]:
-    """
-    Cheap deterministic embedding of unit-ish scale so cosine similarity
-    behaves predictably. Real production embeddings are 1536-dim, so we
-    use that to keep the test representative of the actual index.
-    """
+    """cos sim behav predictably. 1536-dim embd for real prod."""
     return [base + (i % 7) * 1e-4 for i in range(dim)]
 
 
 def _emb_similar(base: list[float], jitter: float = 1e-6) -> list[float]:
-    """A near-duplicate embedding for dedup merge-path tests."""
+    """dup-merge-near-dup"""
     return [v + jitter for v in base]
 
 
 def _emb_unrelated(dim: int = 1536) -> list[float]:
-    """An embedding that should not collide with _emb() under cosine."""
+    """emb()"""
     return [0.5 + (i % 3) * 0.1 for i in range(dim)]
 
 
-# 1. Node writers
+# write node writers
 
 class TestExperienceWriter:
     async def test_create_experience_with_bitemporal_edges(
@@ -126,7 +122,7 @@ class TestExperienceWriter:
         )
         first_id = await write_experience(base_inp)
 
-        # Near-identical embedding must collapse into the same node.
+        # near-identical emb must collapse to same node.
         second_id = await write_experience(ExperienceInput(
             description="Failed the thesis rehearsal again",
             occurred_at=_iso(),
@@ -189,10 +185,7 @@ class TestTriggerWriter:
     async def test_trigger_merge_increments_frequency_and_folds_aliases(
         self, neo4j_client: nc.Neo4jClient, test_namespace: dict
     ) -> None:
-        # The trigger writer dedups by checking whether the new description's
-        # first 30-char keyword is *contained in* an existing description in
-        # the same category. So the second insert's description must be a
-        # substring (prefix) of the first for the merge path to fire.
+        # check if new desc is a prefix of an existing desc
         first_id = await write_trigger(TriggerInput(
             category="academic",
             description="Upcoming finals week pressure is overwhelming",
@@ -293,7 +286,7 @@ class TestThoughtWriter:
             session_id=test_namespace["session_id"],
             embedding=emb,
         ))
-        # Manually flip challenged so we can verify the dedup reset behaviour.
+        # flip, verify, reset.
         await neo4j_client.execute_write(
             "MATCH (th:Thought {id: $id}) SET th.challenged = true",
             {"id": first_id},
@@ -417,13 +410,13 @@ class TestMemoryWriter:
         assert row["active"] is True
 
 
-# 2. Relationship builders
+# buat ngbuild relasi
 
 class TestRelationshipBuilders:
     async def _scaffold(
         self, neo4j_client, test_namespace, seed_topic=None
     ) -> dict[str, str]:
-        """Create a mini CBT chain we can wire edges against."""
+        """make CBT chain, wire edges."""
         exp_id = await write_experience(ExperienceInput(
             description="Presentation went badly",
             occurred_at=_iso(hours_ago=1),
@@ -525,7 +518,7 @@ class TestRelationshipBuilders:
         await link_user_recurring_theme(
             test_namespace["user_id"], seed_topic, sid,
         )
-        # Re-running the recurring theme must bump times_reinforced.
+        # bump times_reinforced
         await link_user_recurring_theme(
             test_namespace["user_id"], seed_topic, sid,
         )
@@ -555,7 +548,7 @@ class TestRelationshipBuilders:
             user_id=test_namespace["user_id"],
             session_id=test_namespace["session_id"],
         ))
-        # Re-link twice; MERGE must collapse to a single edge.
+        # re-link 2x; merge to 1 edge.
         await link_session_to_memory(test_namespace["session_id_2"], mem_id)
         await link_session_to_memory(test_namespace["session_id_2"], mem_id)
 
@@ -580,7 +573,7 @@ class TestRelationshipBuilders:
             )
 
 
-# 3. Supersession + invalidation
+# supers, invalid
 
 class TestSupersessionAndInvalidation:
     async def test_supersede_thought_preserves_old_and_creates_new(
@@ -645,7 +638,7 @@ class TestSupersessionAndInvalidation:
         ))
         await link_experience_to_trigger(exp_id, trig_id, test_namespace["session_id"])
 
-        # Confirm the edge is initially valid.
+        # `init edge`
         count = await invalidate_edge(
             "Experience", exp_id,
             "TRIGGERED_BY",
@@ -678,7 +671,7 @@ class TestSupersessionAndInvalidation:
             )
 
 
-# 4. Decay + idle-flush worker
+# decay+flush
 
 class TestDecayAndIdleFlush:
     async def test_memory_decay_halves_and_archives(
@@ -690,7 +683,7 @@ class TestDecayAndIdleFlush:
             user_id=test_namespace["user_id"],
             session_id=test_namespace["session_id"],
         ))
-        # Artificially age the memory so the 60/180 day windows trip.
+        # age mem 60/180
         await neo4j_client.execute_write(
             """
             MATCH (m:Memory {id: $id})
@@ -713,8 +706,7 @@ class TestDecayAndIdleFlush:
     async def test_find_idle_sessions_sees_our_session(
         self, neo4j_client: nc.Neo4jClient, test_namespace: dict
     ) -> None:
-        # The namespace fixture created session_id_2 with last_activity 2.5h
-        # ago, so it is past the default 60-minute idle threshold.
+        # skip cause past idle threshold
         rows = await nc.find_idle_sessions(idle_minutes=60)
         assert any(r["session_id"] == test_namespace["session_id_2"] for r in rows), (
             "session_id_2 (last_activity 2.5h ago) must appear in the idle sweep"
@@ -723,10 +715,7 @@ class TestDecayAndIdleFlush:
     async def test_run_idle_memory_flush_invokes_callback(
         self, neo4j_client: nc.Neo4jClient, test_namespace: dict
     ) -> None:
-        # The namespace creates a second session that is already past the
-        # idle threshold. We supply a flush callback that just records the
-        # call and writes a sentinel memory so mark_session_flushed stays
-        # honest.
+        # flush mem
         called: list[tuple[str, str]] = []
 
         async def flush(user_id: str, session_id: str) -> None:
@@ -748,8 +737,7 @@ class TestDecayAndIdleFlush:
             s == test_namespace["session_id_2"] for _, s in called
         ), "our idle session must have been passed to the callback"
 
-        # Second run must NOT re-flush the same session because the CONTAINS_MEMORY
-        # edge is now present (filter in find_idle_sessions).
+        # skip flush session
         second = await nc.run_idle_memory_flush(flush=flush, idle_minutes=60)
         assert all(
             s != test_namespace["session_id_2"] for _, s in called[len(result):] or []

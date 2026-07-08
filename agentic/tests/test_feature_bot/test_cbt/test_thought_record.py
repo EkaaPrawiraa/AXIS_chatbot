@@ -1,6 +1,4 @@
-"""
-Tests for the five-step thought record state machine.
-"""
+"""state machine tests"""
 
 from __future__ import annotations
 
@@ -20,7 +18,7 @@ async def test_full_run_with_hinted_distortion() -> None:
     sub = ThoughtRecordSubState()
     hint = DISTORTIONS["catastrophizing"]
 
-    # Step 1: opening
+    # open
     turn = await machine.step(
         sub_state=sub, user_reply="", language="id",
         hinted_distortion=hint,
@@ -28,7 +26,7 @@ async def test_full_run_with_hinted_distortion() -> None:
     assert turn.next_state.step is ThoughtRecordStep.CATCH_THOUGHT
     assert "satu kalimat" in turn.bot_prompt.lower()
 
-    # Step 2: capture thought, prompt distortion
+    # prompt distort
     turn = await machine.step(
         sub_state=turn.next_state,
         user_reply="aku pasti gagal final besok",
@@ -39,7 +37,7 @@ async def test_full_run_with_hinted_distortion() -> None:
     assert turn.next_state.thought == "aku pasti gagal final besok"
     assert "bencana" in turn.bot_prompt.lower()
 
-    # Step 3: confirm distortion, prompt evidence_for
+    # check distortion, gather proof
     turn = await machine.step(
         sub_state=turn.next_state, user_reply="iya",
         language="id", hinted_distortion=hint,
@@ -47,7 +45,7 @@ async def test_full_run_with_hinted_distortion() -> None:
     assert turn.next_state.step is ThoughtRecordStep.EVIDENCE_FOR
     assert turn.next_state.distortion == "catastrophizing"
 
-    # Step 4: evidence_for -> evidence_against
+    # evidence_against
     turn = await machine.step(
         sub_state=turn.next_state,
         user_reply="aku belum belajar materi bab terakhir",
@@ -56,7 +54,7 @@ async def test_full_run_with_hinted_distortion() -> None:
     assert turn.next_state.step is ThoughtRecordStep.EVIDENCE_AGAINST
     assert turn.next_state.evidence_for
 
-    # Step 5: evidence_against -> balanced_thought
+    # evidence_against -> balanced_thought
     turn = await machine.step(
         sub_state=turn.next_state,
         user_reply="aku tetap dapat nilai bagus di kuis sebelumnya",
@@ -64,7 +62,7 @@ async def test_full_run_with_hinted_distortion() -> None:
     )
     assert turn.next_state.step is ThoughtRecordStep.BALANCED_THOUGHT
 
-    # Step 6: balanced -> done
+    # done
     turn = await machine.step(
         sub_state=turn.next_state,
         user_reply="aku belum menguasai semua bab tapi masih bisa lulus dengan persiapan ekstra",

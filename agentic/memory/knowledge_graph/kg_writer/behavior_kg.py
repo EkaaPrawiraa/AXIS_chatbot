@@ -1,4 +1,4 @@
-"""Writer for the :Behavior node and the (:User)-[:EXHIBITED]->(:Behavior)."""
+"""buat node writer"""
 
 from __future__ import annotations
 
@@ -13,10 +13,7 @@ logger = logging.getLogger(__name__)
 
 
 async def write_behavior(inp: BehaviorInput) -> str:
-    """
-    MERGE :Behavior by (user_id, category, description prefix).
-    Increments frequency on match. Returns the node id.
-    """
+    """merge:increment freq."""
     _require(inp.category,    "category")
     _require(inp.description, "description")
     _require(inp.user_id,     "user_id")

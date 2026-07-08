@@ -1,20 +1,4 @@
-"""
-Regression tests for ChatGraphService.synthesize_speech (the stateless
-/voice/synthesize endpoint used by the chat "Play" message action and the
-profile page's voice preview).
-
-Context: this endpoint used to duplicate an OLDER, ElevenLabs->OpenAI-only
-version of the TTS fallback chain that never got the LLM_PROVIDER/Gemini
-redesign applied to the in-turn text_to_speech_node -- so a caller picking
-a Gemini voice character (a raw prebuilt voice name like "Enceladus", sent
-straight through as voice_id per VoiceCatalog.get()'s "unknown voice_id"
-fallback path) never actually reached Gemini here: ElevenLabs would reject
-the unknown voice, and it would then always fall to OpenAI. It also
-collapsed any Gemini tts_model alias (e.g. "gemini-2.5-pro-tts") down to a
-hardcoded ElevenLabs "v2_5_turbo" mode, discarding the caller's tier choice
-entirely. Fixed by routing through the same run_tts_fallback_chain the
-chat-turn node uses.
-"""
+"""synthesize_speech"""
 from __future__ import annotations
 
 import pytest
@@ -43,10 +27,7 @@ def _patch_providers(monkeypatch, *, elevenlabs, openai_tts, gemini_tts):
     monkeypatch.setattr(tts_module, "ElevenLabsClient", lambda **_: elevenlabs)
     monkeypatch.setattr(tts_module, "OpenAITTSClient", lambda **_: openai_tts)
     monkeypatch.setattr(tts_module, "GeminiTTSClient", lambda **_: gemini_tts)
-    # Whenever a test's ElevenLabs fake fails and the Gemini tier is
-    # actually reached, _try_gemini now also calls _inject_gemini_audio_tags
-    # (a real LLM call by default) -- stub it out so these tests stay
-    # hermetic and don't hit the network.
+    # try_gemini inject_gemini_audio_tags
     monkeypatch.setattr(tts_module, "_inject_gemini_audio_tags", _no_op_tag_injection)
 
 
@@ -75,8 +56,7 @@ class TestSynthesizeSpeechGeminiVoiceCharacter:
         assert response.tts_provider == "gemini_tts"
         assert response.audio_output_base64 is not None
         assert response.voice_error is None
-        # ElevenLabs was tried and failed, but OpenAI must never have been
-        # reached -- Gemini succeeded first per LLM_PROVIDER=gemini.
+        # gemini
         assert openai_tts.calls == []
         assert gemini_tts.calls
 
@@ -84,8 +64,7 @@ class TestSynthesizeSpeechGeminiVoiceCharacter:
     async def test_gemini_tier_alias_is_not_collapsed_to_elevenlabs_mode(
         self, service, monkeypatch,
     ) -> None:
-        """The tts_model the caller picked (a Gemini tier alias) must reach
-        resolve_gemini_tier as-is, not get discarded as "v2_5_turbo"."""
+        """resolve_gemini_tier"""
         elevenlabs = FakeElevenLabsTTS(error="voice_id_not_configured")
         openai_tts = FakeOpenAITTS(error="should not be needed")
         gemini_tts = FakeGeminiTTS(error=None)
@@ -159,10 +138,7 @@ class TestSynthesizeSpeechGeminiVoiceCharacter:
     async def test_response_is_a_single_audio_blob_not_a_streaming_generator(
         self, service, monkeypatch,
     ) -> None:
-        """streaming must be forced off for this stateless single-shot
-        endpoint -- a generator can't be base64-encoded as a whole, so
-        leaving streaming on (as the in-turn node does for v2_5_turbo)
-        would silently return no audio with no error."""
+        """off streaming"""
         elevenlabs = FakeElevenLabsTTS(error=None)
         openai_tts = FakeOpenAITTS()
         gemini_tts = FakeGeminiTTS()

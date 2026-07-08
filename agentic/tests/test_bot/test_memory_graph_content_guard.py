@@ -1,18 +1,4 @@
-"""
-Tests for the content-safety gate on memory node edits (PATCH
-/memory-nodes/{node_type}/{node_id}).
-
-Context: memory node content is fed back into every future turn's LLM
-context via context_builder, but _sanitize_updates only ever checked the
-field allowlist and enum validity -- there was zero content-based
-validation, so a user could save a prompt-injection payload (e.g.
-"ignore your previous instructions...") as a memory note's description
-or an alias, which would then be re-served as trusted context on a
-later turn. Crisis-related content is deliberately NOT blocked here --
-storing a user's own crisis history as memory is legitimate; that is a
-distinct guardrail (input_guardrail_node) for live chat turns, not for
-what a user is allowed to write into their own memory notes.
-"""
+"""sanitize_updates, allowlist, enum, crisis, history, guardrail"""
 from __future__ import annotations
 
 import pytest
@@ -54,10 +40,7 @@ class TestLegitimateContentStillAllowed:
         assert updates["description"] == "Aku ngerasa capek banget minggu ini karena tugas kuliah numpuk."
 
     def test_crisis_related_content_is_not_blocked_here(self) -> None:
-        """Storing a user's own crisis history as a memory note is
-        legitimate -- this gate only screens for prompt injection, not
-        crisis keywords (that's input_guardrail_node's job for live
-        chat turns, not for editing one's own saved memories)."""
+        """buat nyimpen history krisis"""
         cfg = _cfg("experience")
         updates = _sanitize_updates(
             cfg, {"description": "Waktu itu aku sempat kepikiran ingin bunuh diri, tapi sekarang sudah lebih baik."},

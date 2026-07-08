@@ -1,6 +1,4 @@
-"""
-Tests for the CBT router decision tree. Pure dict-based assertions.
-"""
+"""test cbt decisions"""
 
 from __future__ import annotations
 
@@ -38,10 +36,7 @@ class TestSafety:
         assert d.reason == "phq9_active"
 
 
-# TestAcuteDistress removed in 2026-05: per-turn PAD signals were
-# deleted along with the emotion_detection node. Acute affect is now
-# handled by the LLM judge reading the message text directly; see
-# docs/devnotes/2026-05_emotion_removal_and_linguistic_enrichment.md.
+# per-turn PAD" & "emotion_detection" gone. LLM handles acuteness now. Docs updated.
 
 
 class TestThoughtRecordResume:
@@ -94,10 +89,7 @@ class TestDistortion:
                 }
             },
         ))
-        # Not reframe (topic shift correctly drops the prior distortion
-        # anchor). Falls through to the terminal fallback -- "eating
-        # fried rice" has no emotional content, so it lands on NONE
-        # (ordinary conversation), not VALIDATE.
+        # NONE
         assert d.technique is CBTTechnique.NONE
 
 
@@ -106,8 +98,7 @@ class TestBehaviorActivation:
         d = route(_state(
             current_message="seharian tidur seharian, ga keluar kamar",
         ))
-        # Avoidance cue; the message may also trigger should_statements
-        # via "seharian". One of these supportive techniques should fire.
+        # avoidance cue; trigger msg; support tech; fire.
         assert d.technique in (
             CBTTechnique.BEHAVIOR_ACTIVATION,
             CBTTechnique.REFRAME,
@@ -125,9 +116,7 @@ class TestSelfCompassion:
         d = route(_state(
             current_message="aku payah banget jadi orang",
         ))
-        # "aku payah" is also a labeling distortion; reframe wins by
-        # earlier branch. We assert that one of the supportive
-        # techniques fires.
+        # payah" wins.
         assert d.technique in (
             CBTTechnique.SELF_COMPASSION,
             CBTTechnique.REFRAME,
@@ -142,12 +131,7 @@ class TestPsychoeducation:
 
 class TestDefault:
     def test_casual_greeting_is_none_not_validate(self) -> None:
-        """
-        A plain greeting has no emotional content -- the companion role
-        isn't limited to CBT/validation, so this should land on NONE
-        (ordinary conversation, no overlay) rather than defaulting to
-        VALIDATE for every turn regardless of content.
-        """
+        """NONE"""
         d = route(_state(current_message="halo, hari ini gimana"))
         assert d.technique is CBTTechnique.NONE
         assert d.reason == "casual_no_emotional_content"
@@ -158,10 +142,7 @@ class TestDefault:
         assert d.reason == "default_validate"
 
     def test_distress_term_from_linguistic_signals_forces_validate(self) -> None:
-        """A word with no EMOTION_CUES hit in the message text (e.g. a
-        slang term only the corpus recognizes as distress) should still
-        route to validate via linguistic_signals.distress_terms, not
-        fall through to none just because the hardcoded list missed it."""
+        """validate via linguistic_signals.distress_terms"""
         d = route(_state(
             current_message="gakuat rasanya minggu ini",
             linguistic_signals={"distress_terms": ["gakuat"]},
@@ -178,6 +159,6 @@ class TestOptOutCooldown:
                 "declined_last_offer": True,
             },
         ))
-        # Even though distortion fires, the cooldown demotes to validate.
+        # `skip demote`
         assert d.technique is CBTTechnique.VALIDATE
         assert d.reason == "opt_out_cooldown"

@@ -1,4 +1,4 @@
-"""Hybrid judge for PHQ-9 item responses."""
+"""judge PHQ-9."""
 
 from __future__ import annotations
 
@@ -17,7 +17,7 @@ from agentic.gateway.monitoring import observe_langchain_usage
 logger = logging.getLogger(__name__)
 
 
-# Message classes (langchain or fallback)
+# langchain, fallback
 
 
 try:  # pragma: no cover
@@ -48,7 +48,7 @@ class JudgeAction(str, Enum):
 
 @dataclass(frozen=True)
 class JudgeOutcome:
-    """Parsed structured output from the judge."""
+    """ngambil data"""
 
     score: int
     confidence: float
@@ -59,19 +59,19 @@ class JudgeOutcome:
 
     @property
     def is_actionable(self) -> bool:
-        """True when the outcome can be applied without clarification."""
+        """aplikasikan tanpa klarifikasi."""
         return self.action in (JudgeAction.ADVANCE, JudgeAction.BACK)
 
 
-# Rule-based scorer
+# scorer
 
 
-# Confidence threshold above which the rule-based score is accepted
+# accept score
 RULE_CONFIDENCE_THRESHOLD: float = 0.90
 
-# Canonical option map — Indonesian (id).
+# can map
 _OPTION_MAP_ID: dict[str, int] = {
-    # Score 0 — Tidak sama sekali
+    # score 0
     "tidak sama sekali": 0,
     "tidak": 0,
     "ga sama sekali": 0,
@@ -83,7 +83,7 @@ _OPTION_MAP_ID: dict[str, int] = {
     "ga pernah": 0,
     "tidak pernah": 0,
     "belum pernah": 0,
-    # Score 1 — Beberapa hari
+    # score 1-2 hari
     "beberapa hari": 1,
     "beberapa": 1,
     "kadang": 1,
@@ -92,14 +92,14 @@ _OPTION_MAP_ID: dict[str, int] = {
     "jarang": 1,
     "terkadang": 1,
     "kadang-kadang": 1,
-    # Score 2 — Lebih dari setengah hari
+    # score 2 lama
     "lebih dari setengah hari": 2,
     "lebih dari setengah": 2,
     "sering": 2,
     "cukup sering": 2,
     "lumayan sering": 2,
     "hampir sering": 2,
-    # Score 3 — Hampir setiap hari
+    # setiap hari
     "hampir setiap hari": 3,
     "hampir setiap saat": 3,
     "setiap hari": 3,
@@ -110,9 +110,9 @@ _OPTION_MAP_ID: dict[str, int] = {
     "tiap hari": 3,
 }
 
-# Canonical option map — English (en).
+# can map
 _OPTION_MAP_EN: dict[str, int] = {
-    # Score 0 — Not at all
+    # score 0
     "not at all": 0,
     "not really": 0,
     "no": 0,
@@ -121,7 +121,7 @@ _OPTION_MAP_EN: dict[str, int] = {
     "nah": 0,
     "none": 0,
     "zero": 0,
-    # Score 1 — Several days
+    # score 1-2
     "several days": 1,
     "some days": 1,
     "sometimes": 1,
@@ -130,7 +130,7 @@ _OPTION_MAP_EN: dict[str, int] = {
     "a couple of days": 1,
     "here and there": 1,
     "once in a while": 1,
-    # Score 2 — More than half the days
+    # score 2.
     "more than half the days": 2,
     "more than half": 2,
     "often": 2,
@@ -138,7 +138,7 @@ _OPTION_MAP_EN: dict[str, int] = {
     "frequently": 2,
     "a lot": 2,
     "pretty often": 2,
-    # Score 3 — Nearly every day
+    # score 3 nearly every day
     "nearly every day": 3,
     "almost every day": 3,
     "every day": 3,
@@ -154,22 +154,12 @@ _DIGIT_RE = re.compile(r"^\s*([0-3])\s*$")
 _PUNCT_TAIL_RE = re.compile(r"[.,!?؟]+$")
 _MULTI_SPACE_RE = re.compile(r"\s+")
 
-# Cap on how many extra words are tolerated after a canonical label match
+# limit extra words
 MAX_TRAILING_WORDS_FOR_PREFIX_MATCH: int = 2
 
 
 def _rule_based_score(reply: str, language: str) -> tuple[int | None, float]:
-    """
-    Deterministically map explicit PHQ-9 option text or a bare digit to
-    a score.
-
-    Returns
-    -------
-    (score, confidence):
-        score       — integer 0-3, or None when no match found.
-        confidence  — 1.0 for exact canonical label; 0.95 for prefix
-                      match; 0.0 when unmatched.
-    """
+    """map_score = {0: 0, 1: 1, 2: 2, 3: 3}"""
     if not reply:
         return None, 0.0
 
@@ -180,17 +170,17 @@ def _rule_based_score(reply: str, language: str) -> tuple[int | None, float]:
     if m:
         return int(m.group(1)), 1.0
 
-    # Normalize: lowercase, strip trailing punctuation, collapse whitespace.
+    # `lowercase strip_punctuation collapse_whitespace`
     normalized = _PUNCT_TAIL_RE.sub("", stripped.lower()).strip()
     normalized = _MULTI_SPACE_RE.sub(" ", normalized)
 
     option_map = _OPTION_MAP_ID if language.startswith("id") else _OPTION_MAP_EN
 
-    # Exact canonical match — highest confidence.
+    # skip
     if normalized in option_map:
         return option_map[normalized], 1.0
 
-    # Prefix match in both directions
+    # match both dirs
     for label, score in option_map.items():
         if len(normalized) >= 4 and label.startswith(normalized):
             return score, 0.95
@@ -204,12 +194,7 @@ def _rule_based_score(reply: str, language: str) -> tuple[int | None, float]:
 
 
 def _is_direct_option_reply(reply: str, language: str) -> bool:
-    """True when the user selected a PHQ-9 quick reply / canonical option.
-
-    These inputs come from UI chips or exact option labels, so no LLM routing
-    is needed. Avoiding that call keeps PHQ-9 delivery deterministic, fast, and
-    cheap while preserving free-text scoring for ambiguous answers.
-    """
+    """True when user selects PHQ-9 option."""
     if not reply:
         return False
     stripped = reply.strip()
@@ -222,7 +207,7 @@ def _is_direct_option_reply(reply: str, language: str) -> bool:
 
 
 
-# Full scoring+routing prompt — used when reply is ambiguous.
+# scoring+routing
 _USER_TEMPLATE = (
     "Item {item_id} of 9 (language={language}):\n"
     "\"\"\"\n{question}\n\"\"\"\n\n"
@@ -232,7 +217,7 @@ _USER_TEMPLATE = (
     "Respond with the JSON object only."
 )
 
-# Routing-only prompt — used when the rule-based scorer already fixed the score 
+# routing-only
 _ROUTING_SYSTEM_PROMPT = (
     "You are a PHQ-9 assessment assistant. The user's score for this item "
     "has already been determined by a rule-based scorer. Your role is to:\n"
@@ -263,17 +248,7 @@ async def judge_item_response(
     recent_context: str = "",
     llm: Any | None = None,
 ) -> JudgeOutcome:
-    """
-    Hybrid judge: rule-based score + LLM routing.
-
-    When the user's reply matches a canonical PHQ-9 option label or a
-    bare digit (rule confidence >= RULE_CONFIDENCE_THRESHOLD), the score
-    is fixed deterministically. The LLM is then called only for the
-    routing decision (action / next_item / rationale), which keeps
-    psychometric validity while still producing a natural response.
-
-    For ambiguous replies the full LLM scoring call is used as a fallback.
-    """
+    """rule-based score" + "LLM for routing"""
     client = llm if llm is not None else build_llm(PHQ9_JUDGE)
 
     rule_score, rule_confidence = _rule_based_score(user_reply, language)
@@ -289,7 +264,7 @@ async def judge_item_response(
                 raw="",
             )
 
-        # Score is anchored. Ask LLM only for routing.
+        # ask only for routing
         routing_prompt = _ROUTING_USER_TEMPLATE.format(
             item_id=item_id,
             language=language,
@@ -309,7 +284,7 @@ async def judge_item_response(
             raw = ai.content if isinstance(ai.content, str) else str(ai.content)
         except Exception as exc:
             logger.warning("phq9 routing call failed: %s", exc)
-            # Safe default: advance with the rule score.
+            # safe default: advance score
             return JudgeOutcome(
                 score=rule_score,
                 confidence=rule_confidence,
@@ -337,7 +312,7 @@ async def judge_item_response(
         )
         return outcome
 
-    # Ambiguous reply — fall back to full LLM scoring.
+    # full LLM scoring
     options_block = "\n".join(
         f"  {score}. {label}" for score, label in options_with_scores(language)
     )
@@ -387,10 +362,7 @@ def _parse_routing_output(
     fixed_score: int,
     fixed_confidence: float,
 ) -> JudgeOutcome:
-    """
-    Parse the routing-only LLM response and combine it with the
-    deterministic rule-based score.
-    """
+    """parse+combine"""
     if not raw:
         return JudgeOutcome(
             fixed_score, fixed_confidence, JudgeAction.ADVANCE, None,
@@ -431,7 +403,7 @@ def _parse_routing_output(
 
 
 def _parse_judge_output(raw: str) -> JudgeOutcome:
-    """Parse the full LLM scoring+routing response."""
+    """parse response"""
     if not raw:
         return JudgeOutcome(0, 0.0, JudgeAction.CLARIFY, None, "empty_output", "")
 

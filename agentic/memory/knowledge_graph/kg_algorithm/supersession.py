@@ -1,4 +1,4 @@
-"""Contradiction resolution for :Thought nodes."""
+"""resolusi kontradiksi: thought nodes."""
 
 from __future__ import annotations
 
@@ -18,7 +18,7 @@ async def supersede_thought(
     new_thought:    ThoughtInput,
     reason:         str = "user_reframe",
 ) -> str:
-    """Replace an active Thought with a newer reframed Thought."""
+    """framed new"""
     _require(old_thought_id,         "old_thought_id")
     _require(new_thought.content,    "new_thought.content")
     _require(new_thought.user_id,    "new_thought.user_id")

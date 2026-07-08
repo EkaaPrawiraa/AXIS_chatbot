@@ -1,4 +1,4 @@
-"""Layer 0 cross-cutting telemetry."""
+"""telemetry"""
 
 from agentic.agent.audit.guardrail_events import (
     GuardrailEvent,

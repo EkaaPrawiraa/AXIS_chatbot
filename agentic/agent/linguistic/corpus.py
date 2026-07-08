@@ -1,4 +1,4 @@
-"""Corpus loader for the Indonesian slang / clinical lexicon."""
+"""load slang corpus"""
 
 from __future__ import annotations
 
@@ -26,7 +26,7 @@ _DEFAULT_CORPUS_PATH = (
 
 @dataclass(frozen=True)
 class CorpusEntry:
-    """One canonical entry from the linguistic lexicon."""
+    """buat entry"""
 
     term: str                       # lowercased surface form
     category: str                   # "L1" | "L2" | "L3"
@@ -46,7 +46,7 @@ class CorpusEntry:
 
 
 def _coerce_entry(raw: dict) -> CorpusEntry | None:
-    """Best-effort coercion of one JSONL row into a CorpusEntry."""
+    """jsonl row to corpusentry"""
     term = raw.get("term")
     if not isinstance(term, str) or not term.strip():
         return None
@@ -64,18 +64,7 @@ def _coerce_entry(raw: dict) -> CorpusEntry | None:
 
 @dataclass
 class LinguisticCorpus:
-    """
-    Indexed slang / clinical lexicon optimized for substring matching.
-
-    Two indices are maintained:
-
-    *   ``_single_word``: words that are exactly one token. Matched via
-        a single compiled regex with word boundaries so we do not
-        false-positive on substrings (e.g. "tugas" inside "petugas").
-    *   ``_multi_word``: phrases of 2+ tokens. Matched via direct
-        ``in`` check on the lowered message because regex with many
-        alternations gets expensive.
-    """
+    """_single_word: words exactly one token     _multi_word: phrases two or more tokens"""
 
     entries: tuple[CorpusEntry, ...] = field(default_factory=tuple)
     _single_word: dict[str, CorpusEntry] = field(default_factory=dict, repr=False)
@@ -86,7 +75,7 @@ class LinguisticCorpus:
     def from_entries(cls, entries: Iterable[CorpusEntry]) -> "LinguisticCorpus":
         seen: dict[str, CorpusEntry] = {}
         for e in entries:
-            # Last writer wins on duplicate terms.
+            # win on dup.
             seen[e.term] = e
         all_entries = tuple(seen.values())
 
@@ -111,10 +100,10 @@ class LinguisticCorpus:
             _single_pattern=pattern,
         )
 
-    # lookups.
+    # ngambil data
 
     def matches(self, text: str) -> list[CorpusEntry]:
-        """Return all corpus entries that appear in ``text``."""
+        """retreive corpus entries in ``text``"""
         if not text:
             return []
         lowered = text.lower()
@@ -142,7 +131,7 @@ _corpus_cache: dict[str, LinguisticCorpus] = {}
 
 
 def load_corpus(path: Path) -> LinguisticCorpus:
-    """Load and cache a corpus from a JSONL file."""
+    """load cache corpus JSONL"""
     abs_path = str(path.resolve())
     cached = _corpus_cache.get(abs_path)
     if cached is not None:
@@ -181,12 +170,12 @@ def load_corpus(path: Path) -> LinguisticCorpus:
 
 
 def load_default_corpus() -> LinguisticCorpus:
-    """Load the shipped slang / clinical lexicon."""
+    """load slang"""
     return load_corpus(_DEFAULT_CORPUS_PATH)
 
 
 def clear_cache() -> None:
-    """Used by tests that load fixture corpora."""
+    """load corp"""
     _corpus_cache.clear()
 
 

@@ -71,7 +71,7 @@ frontend_v2/scripts/
 agentic/tmp/
 agentic/agentic/tmp/
 frontend/
-
+scripts/
 # ---------- Synthetic Chat Eval Output ----------
 utility/synthetic_chat_eval/output/
 

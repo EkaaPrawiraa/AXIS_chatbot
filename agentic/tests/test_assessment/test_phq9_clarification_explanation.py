@@ -1,4 +1,4 @@
-"""Tests for PHQ-9 clarification explanations when the user asks meaning."""
+"""clarify meaning"""
 
 from __future__ import annotations
 
@@ -29,7 +29,7 @@ def _state_for_item(*, user_text: str, language: str = "id"):
 
 @pytest.mark.asyncio
 async def test_explanation_request_uses_llm(fake_repo) -> None:
-    # Force judge to choose CLARIFY for this turn.
+    # force judge to choose clarify
     judge_llm = FakeLLM(
         script=[
             json.dumps(

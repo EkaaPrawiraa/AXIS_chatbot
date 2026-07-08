@@ -1,4 +1,4 @@
-"""Full-flow test bot CLI."""
+"""test-cli"""
 
 from __future__ import annotations
 
@@ -12,7 +12,7 @@ from dataclasses import dataclass, field
 from datetime import datetime, timedelta, timezone
 from typing import Any
 
-# Disable real context_builder import to avoid Neo4j connection.
+# disable real context_builder import
 os.environ.setdefault("AGENTIC_DISABLE_CONTEXT_BUILDER", "1")
 
 from agentic.agent.audit.guardrail_events import (
@@ -69,7 +69,7 @@ class _FakeAIMessage:
 
 @dataclass
 class FakeChatLLM:
-    """Generic chat LLM that pretends to be Nura."""
+    """generic chat LLM"""
 
     calls: list[Any] = field(default_factory=list)
 
@@ -188,7 +188,7 @@ class FakeAssessmentRepo:
         self.pending = None
 
 
-# In-process pipeline runner
+# skip klo error
 
 
 @dataclass
@@ -215,7 +215,7 @@ class Bot:
     )
 
     async def turn(self, state: ConversationState) -> ConversationState:
-        # Voice STT first when audio_input is present.
+        # stt first audio_input
         if (state.get("voice_state") or {}).get("audio_input") is not None:
             state = await speech_to_text_node(
                 state, provider=self.stt, audit=self.audit,
@@ -246,10 +246,7 @@ class Bot:
             )
             ran_phq = True
 
-        # When PHQ-9 is in offer_pending and the warm-up window is not
-        # yet satisfied, phq9_delivery stays silent. Fall through to
-        # the regular reply so the user is not greeted with empty
-        # output during the first few turns.
+        # `stay silent`
         if not (state.get("response_draft") or "").strip() and not state.get("final_response"):
             state = await response_generator_node(
                 state, llm=self.chat_llm, audit=self.audit,
@@ -492,7 +489,7 @@ async def _repl() -> None:
                 break
             continue
 
-        # Build a turn-scoped state with the new user input.
+        # init state
         turn_state = dict(state)
         if flags.inject_crisis_next:
             turn_state["current_message"] = "ingin mati aja rasanya"

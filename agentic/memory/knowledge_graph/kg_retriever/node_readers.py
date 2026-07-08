@@ -1,4 +1,4 @@
-"""Per-label point-reads."""
+"""per-label point-reads"""
 
 from __future__ import annotations
 
@@ -11,10 +11,10 @@ from agentic.memory.knowledge_graph.kg_retriever._common import validate_label
 logger = logging.getLogger(__name__)
 
 
-# Generic point-read
+# baca semuanya
 
 async def _read_node(label: str, node_id: str) -> dict[str, Any] | None:
-    """Internal: fetch one node by id, scoped by label."""
+    """`fetch node`"""
     label = validate_label(label)
     rows = await get_client().execute_read(
         f"""
@@ -27,15 +27,15 @@ async def _read_node(label: str, node_id: str) -> dict[str, Any] | None:
     return rows[0]["props"] if rows else None
 
 
-# Per-node readers
+# read node
 
 async def read_emotion(emotion_id: str) -> dict[str, Any] | None:
-    """Return the public properties of an :Emotion node, or None."""
+    """ret 'public' props, None if empty."""
     return await _read_node("Emotion", emotion_id)
 
 
 async def read_thought(thought_id: str) -> dict[str, Any] | None:
-    """Return the public properties of a :Thought node, or None."""
+    """ret 'public' props, None if empty."""
     return await _read_node("Thought", thought_id)
 
 
@@ -52,32 +52,29 @@ async def read_experience(experience_id: str) -> dict[str, Any] | None:
 
 
 async def read_subject(subject_id: str) -> dict[str, Any] | None:
-    """Return the public properties of a :Subject node, or None."""
+    """ret 'public' props, or None."""
     return await _read_node("Subject", subject_id)
 
 
-# backward compat alias
+# alias for backward compat
 async def read_person(person_id: str) -> dict[str, Any] | None:
-    """Backward-compat alias for read_subject. Queries :Subject nodes."""
+    """bkwd-compat' 'queries' 'Subject' 'nodes"""
     return await read_subject(person_id)
 
 
 async def read_memory(memory_id: str) -> dict[str, Any] | None:
-    """Return the public properties of a :Memory node, or None."""
+    """ret 'public' props, None if nil."""
     return await _read_node("Memory", memory_id)
 
 
-# Small list-style readers
+# list readers
 
 async def list_active_thoughts_by_distortion(
     user_id: str,
     distortion: str,
     limit: int = 10,
 ) -> list[dict[str, Any]]:
-    """
-    Return up to ``limit`` active, unchallenged Thought nodes for a
-    user that match the given distortion type. Newest first.
-    """
+    """retire nodes"""
     return await get_client().execute_read(
         """
         MATCH (u:User {id: $user_id})-[:HAS_THOUGHT]->(t:Thought)
@@ -102,11 +99,7 @@ async def list_active_triggers(
     min_frequency: int = 1,
     limit: int = 10,
 ) -> list[dict[str, Any]]:
-    """
-    Return active Trigger nodes for a user, optionally filtered by
-    category. Sorted by frequency descending so the most recurring
-    antecedents come first.
-    """
+    """get active triggers"""
     return await get_client().execute_read(
         """
         MATCH (u:User {id: $user_id})-[:HAS_TRIGGER]->(t:Trigger)

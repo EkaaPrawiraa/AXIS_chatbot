@@ -1,4 +1,4 @@
-"""LLM judge for CBT technique routing."""
+"""judge routing"""
 
 from __future__ import annotations
 
@@ -17,7 +17,7 @@ from agentic.gateway.monitoring import observe_langchain_usage
 logger = logging.getLogger(__name__)
 
 
-# Message classes (langchain or fallback)
+# langchain, fallback
 
 
 try:  # pragma: no cover
@@ -41,29 +41,7 @@ except Exception:  # pragma: no cover
 
 @dataclass(frozen=True)
 class JudgeOutcome:
-    """
-    Parsed structured output from the CBT judge LLM.
-
-    Attributes
-    ----------
-    technique:
-        Chosen CBTTechnique, validated against the enum. ``NONE`` is a
-        legitimate pick here -- it means the judge read the turn as
-        ordinary conversation with no emotional content to respond to,
-        not a routing failure. Defaults to ``VALIDATE`` only when the
-        raw value doesn't parse to any enum member at all.
-    reason:
-        Short snake_case tag for telemetry, max 4 tokens.
-    distortion:
-        Canonical distortion name (matches DISTORTIONS keys) or None.
-    confidence:
-        Self reported confidence 0.0..1.0. Caller may use a threshold
-        to defer to validate or to fall back to rule based route.
-    rationale:
-        Short justification for the audit log, max 200 chars.
-    raw:
-        Raw LLM output for debugging.
-    """
+    """parsed, distortion, confidence"""
 
     technique: CBTTechnique
     reason: str
@@ -77,7 +55,7 @@ class JudgeOutcome:
         return self.confidence < 0.4
 
 
-# User prompt template + formatters
+# buat format
 
 
 _USER_TEMPLATE = (
@@ -106,7 +84,7 @@ def _format_last_directive(cbt_state: dict[str, Any]) -> str:
 
 
 def _format_linguistic_signals(signals: dict[str, Any] | None) -> str:
-    """Render linguistic_signals dict as a compact one-line summary."""
+    """render as str"""
     if not signals:
         return "(unavailable)"
     parts: list[str] = []
@@ -138,7 +116,7 @@ def _format_recent_turns(
         text = (entry.get("content") or entry.get("text") or "").strip()
         if not text:
             continue
-        # Trim each line so the judge input stays compact.
+        # trim lines, keep judge input short.
         snippet = text[:240]
         lines.append(f"[{role}] {snippet}")
     return "\n".join(lines) if lines else "(none)"
@@ -150,25 +128,7 @@ async def judge_technique(
     *,
     llm: Any | None = None,
 ) -> JudgeOutcome | None:
-    """
-    Run one CBT judge LLM call for the current conversation state.
-
-    Parameters
-    ----------
-    state:
-        ConversationState style dict. A small surface is consumed:
-        ``current_message``, ``cbt_state``, ``kg_context``,
-        ``linguistic_signals``, ``conversation_history``,
-        ``resolved_language``.
-    llm:
-        Optional pre-built LangChain client. If absent, one is
-        constructed from :data:`CBT_JUDGE` at call time.
-
-    Returns
-    -------
-    :class:`JudgeOutcome` on success, ``None`` on any failure so the
-    caller can fall back to the rule based router.
-    """
+    """run judge call"""
     client = llm if llm is not None else _build_default_client()
     if client is None:
         return None

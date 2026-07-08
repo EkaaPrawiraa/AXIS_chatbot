@@ -1,4 +1,4 @@
-"""Memory decay job."""
+"""mem decay job"""
 
 from __future__ import annotations
 
@@ -10,14 +10,10 @@ logger = logging.getLogger(__name__)
 
 
 async def run_memory_decay() -> dict[str, int]:
-    """
-    Apply memory decay rules. Returns
-        {"halved": int, "archived": int}
-    for observability.
-    """
+    """mem decay"""
     client = get_client()
 
-    # Step 1: halve importance for stale-but-active memories.
+    # skip inactive mems
     halved_records = await client.execute_write(
         """
         MATCH (m:Memory)
@@ -29,7 +25,7 @@ async def run_memory_decay() -> dict[str, int]:
         """
     )
 
-    # Step 2: archive memories unreferenced for 180 days.
+    # archive mem 180 hari.
     archived_records = await client.execute_write(
         """
         MATCH (m:Memory)

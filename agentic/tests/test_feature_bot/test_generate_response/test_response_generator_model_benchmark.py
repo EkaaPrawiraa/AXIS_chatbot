@@ -1,4 +1,4 @@
-"""Manual benchmark for comparing response_generator OpenAI models."""
+"""bench manual OpenAI models"""
 
 from __future__ import annotations
 

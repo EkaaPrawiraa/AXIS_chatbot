@@ -1,14 +1,4 @@
-"""
-Integration test for context_builder._fetch_active_distortions's
-core_belief prioritization (AGENTIC #4).
-
-Before this fix, core_belief Thought nodes only ever surfaced in the
-retrieval context when they also happened to have a cognitive distortion
-attached -- an ordinary "aku selalu jadi beban" style belief with no
-distortion label was invisible to every retrieval signal. The fix makes
-the query include core_belief thoughts unconditionally and rank them
-ahead of ordinary automatic/intermediate distortions.
-"""
+"""prioritize core_belief"""
 from __future__ import annotations
 
 import uuid

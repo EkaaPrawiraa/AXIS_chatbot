@@ -1,4 +1,4 @@
-"""Layer 3 pre-generation safety + tiered crisis response pipeline."""
+"""init state" "layer 3" "pipeline" "tiered" "response" "pipeline" "safety" "layer 3" "tiered" "pipeline" "safety" "response" "pipeline" "safety" "layer 3" "tiered"""
 
 from __future__ import annotations
 
@@ -28,7 +28,7 @@ from agentic.prompts import load_prompt_bundle
 logger = logging.getLogger(__name__)
 
 
-# Pre-generation crisis check
+# check/pre-gen
 
 
 @dataclass(frozen=True)
@@ -71,13 +71,7 @@ def _tokenize(text: str) -> set[str]:
 
 
 def _dice(a: Iterable[str], b: Iterable[str]) -> float:
-    """Dice coefficient — less penalising for length asymmetry than Jaccard.
-
-    Dice = 2|A∩B| / (|A|+|B|). A short crisis phrase fully embedded in a
-    longer utterance scores ~2n/(n+m) rather than Jaccard's n/(n+m+diff),
-    which keeps short exact matches above the detection threshold even when
-    the user message spans several sentences.
-    """
+    """shorten exact matches"""
     sa, sb = set(a), set(b)
     if not sa or not sb:
         return 0.0
@@ -94,11 +88,7 @@ class PreGenDecision:
 def evaluate_pregen(
     message: str, rules: PreGenRules | None = None
 ) -> PreGenDecision:
-    """
-    Pre-generation crisis detector. Tokenizes the message and each crisis
-    phrase, computes Dice coefficient overlap, and flags when the best match
-    exceeds the configured threshold.
-    """
+    """tokenize, compute Dice, flag high match."""
     rules = rules or load_pregen_rules()
     if not message.strip():
         return PreGenDecision(crisis=False, similarity=0.0, matched_phrase=None)
@@ -119,7 +109,7 @@ def evaluate_pregen(
     )
 
 
-# PHQ-9 routing helper
+# routing
 
 
 _PHQ9_ACTIVE_PHASES = frozenset(
@@ -128,13 +118,7 @@ _PHQ9_ACTIVE_PHASES = frozenset(
 
 
 def _phq9_is_active(state: ConversationState) -> bool:
-    """True when PHQ-9 is mid-administration. Crisis is deferred.
-
-    `offer_pending` is intentionally excluded: at that phase the scheduler
-    has only marked PHQ-9 as ready to offer; the user has not been engaged
-    yet (offer_made_at_turn is None). Deferring crisis here would mask
-    explicit tier-1 intent during free chat.
-    """
+    """`defer crisis`"""
     phq9 = state.get("phq9_state") or {}
     phase = phq9.get("phase", "idle")
     return phase in _PHQ9_ACTIVE_PHASES
@@ -143,13 +127,13 @@ def _phq9_is_active(state: ConversationState) -> bool:
 
 @dataclass(frozen=True)
 class _Tier1Keywords:
-    """Compiled tier 1 keyword patterns (active/explicit intent only)."""
+    """`skip inactive`"""
 
     patterns_id: tuple[re.Pattern[str], ...]
     patterns_en: tuple[re.Pattern[str], ...]
 
     def matches(self, text: str) -> bool:
-        """Return True when ``text`` contains any tier 1 keyword."""
+        """return True if 'text' contains tier 1 keyword"""
         lowered = text.lower()
         return any(
             pat.search(lowered) is not None
@@ -171,14 +155,7 @@ def _compile_kw(kw: str) -> re.Pattern[str]:
 
 
 def _load_tier1_keywords(*, force_reload: bool = False) -> _Tier1Keywords:
-    """
-    Load TIER1_CRISIS_KEYWORDS_ID/EN from guardrails/input_validation.yaml.
-
-    Tier 1 keywords are a strict subset of CRISIS_KEYWORDS and represent
-    explicit active intent (e.g. "mau bunuh diri", "kill myself"). They
-    are compiled with the same Unicode-aware word-boundary anchors used
-    by ``input_guardrail_node``.
-    """
+    """Load TIER1_CRISIS_KEYWORDS_ID/EN from guardrails/input_validation.yaml."""
     global _TIER1_CACHE
     if _TIER1_CACHE is not None and not force_reload:
         return _TIER1_CACHE
@@ -206,17 +183,7 @@ def _classify_crisis_tier(
     state: ConversationState,
     tier1_kws: _Tier1Keywords,
 ) -> str:
-    """
-    Return "1" (explicit active intent) or "2" (passive ideation).
-
-    Decision table:
-    - PHQ-9 item9 route_to_crisis_after -> "2": the questionnaire
-      records ideation frequency, not a live statement of intent.
-    - Layer 2 keyword match -> check matched text against tier1 patterns:
-      "1" if it matches, "2" if it does not.
-    - Layer 3 semantic (Jaccard) detection -> "2": the heuristic is
-      less precise than an exact keyword; default to conservative tier.
-    """
+    """1" or "2"""
     phq9 = state.get("phq9_state") or {}
     if phq9.get("route_to_crisis_after"):
         return "2"
@@ -228,12 +195,12 @@ def _classify_crisis_tier(
     if reason in ("crisis_keyword_id", "crisis_keyword_en") and matched:
         return "1" if tier1_kws.matches(matched) else "2"
 
-    # Semantic or unknown origin -> conservative.
+    # conservative
     return "2"
 
 
 def _clear_handled_phq9_crisis_route(state: ConversationState) -> None:
-    """Mark a deferred PHQ-9 safety follow-up as handled for later turns."""
+    """handled"""
     phq9 = dict(state.get("phq9_state") or {})
     if not phq9.get("route_to_crisis_after"):
         return
@@ -243,7 +210,7 @@ def _clear_handled_phq9_crisis_route(state: ConversationState) -> None:
     state["phq9_state"] = phq9  # type: ignore[typeddict-item]
 
 
-# Pre-generation node
+# gen-node
 
 
 async def crisis_guardrail_node(
@@ -252,16 +219,11 @@ async def crisis_guardrail_node(
     audit: GuardrailLogger | None = None,
     rules: PreGenRules | None = None,
 ) -> ConversationState:
-    """
-    Pre-generation crisis check. Sets ``state["safety_flag"] = "crisis"``
-    when triggered, but defers when PHQ-9 is mid-administration so the
-    questionnaire can finish first; ``phq9_delivery_node`` will set
-    ``route_to_crisis_after`` based on item 9 score.
-    """
+    """check crisis, defer PHQ-9"""
     audit = audit or NullGuardrailLogger()
     started = time.perf_counter()
 
-    # If Layer 2 already escalated, mirror the flag (subject to PHQ-9).
+    # skip layer 2
     input_decision = (state.get("input_guardrail") or {}).get("decision")
     if input_decision == "escalate_crisis":
         if not _phq9_is_active(state):
@@ -275,9 +237,7 @@ async def crisis_guardrail_node(
 
     if verdict.crisis:
         if _phq9_is_active(state):
-            # Mark deferral in state so downstream audit queries and the
-            # session finalizer can see a signal was present but skipped.
-            # _turn_init_node clears this at the start of the next turn.
+            # mark deferral, clear sig, _turn_init_node.
             state["deferred_crisis_signal"] = True
             increment("crisis_guardrail_events_total", tier="semantic", route="deferred_phq9")
             await audit.log(
@@ -314,7 +274,7 @@ async def crisis_guardrail_node(
     return state
 
 
-# Crisis triage (convergence point)
+# triage
 
 
 async def crisis_triage_node(
@@ -323,20 +283,7 @@ async def crisis_triage_node(
     audit: GuardrailLogger | None = None,
     tier1_kws: _Tier1Keywords | None = None,
 ) -> ConversationState:
-    """
-    Convergence node for all crisis signals.
-
-    Reads the trigger origin and matched keyword from state, classifies
-    the signal as Tier 1 (explicit active intent) or Tier 2 (passive
-    ideation / distress), and writes ``state["crisis_tier"]``.
-
-    The graph's conditional edge after this node routes to
-    ``crisis_escalation_node`` for tier 1 and ``crisis_empathy_node``
-    for tier 2.
-
-    This node does NOT produce a response itself -- it is purely a
-    classifier and router.
-    """
+    """reads trigger, classifies signal     writes tier to state     routes to next node"""
     audit = audit or NullGuardrailLogger()
     kws = tier1_kws or _load_tier1_keywords()
     tier = _classify_crisis_tier(state, kws)
@@ -360,11 +307,7 @@ async def crisis_triage_node(
 
 
 def route_after_crisis_triage(state: ConversationState) -> str:
-    """
-    Conditional edge: tier 1 -> crisis_escalation, tier 2 -> crisis_empathy.
-
-    Called by the LangGraph conditional routing after ``crisis_triage_node``.
-    """
+    """tier 1: crisis_escalation tier 2: crisis_empathy"""
     return (
         "crisis_escalation"
         if state.get("crisis_tier") == "1"
@@ -372,16 +315,11 @@ def route_after_crisis_triage(state: ConversationState) -> str:
     )
 
 
-# Crisis empathy (tier 2 LLM response + deterministic resources)
+# crisis empathy tier 2 LLM + deterministic res
 
 
 def _render_hotline_context(resources: CrisisResources | None = None) -> str:
-    """Render a compact `name — contact` listing for LLM grounding.
-
-    Returned as plain text suitable for inlining into a system prompt so the
-    LLM has the canonical hotline names + numbers in context. Not part of the
-    user-facing response — the deterministic resource block handles that.
-    """
+    """name — contact"""
     try:
         cat = resources or load_crisis_resources()
     except Exception:
@@ -399,14 +337,7 @@ def render_resource_block(
     resources: CrisisResources | None = None,
     state: ConversationState | None = None,
 ) -> str:
-    """
-    Build the deterministic resource block appended after the tier 2
-    LLM empathy response.
-
-    The block is intentionally short: a one-line lead-in followed by
-    the selected resource list. Format mirrors the tier 1 template so
-    the user sees a consistent pattern regardless of tier.
-    """
+    """build block llm response"""
     lines = (resources or load_crisis_resources()).selected_lines(state)
     return f"Kontak bantuan dari sistem yang bisa kamu hubungi:\n\n{lines}"
 
@@ -418,27 +349,7 @@ async def crisis_empathy_node(
     audit: GuardrailLogger | None = None,
     resources: CrisisResources | None = None,
 ) -> ConversationState:
-    """
-    Tier 2 crisis response: LLM-generated empathy + deterministic resources.
-
-    The LLM is called with the ``CRISIS_EMPATHY`` system prompt (AFSP
-    Safe Messaging Guidelines). It produces 3-4 sentences that acknowledge
-    the user's specific pain without advice, clinical labels, or resource
-    numbers. The deterministic resource block is appended after -- the
-    LLM never produces hotline numbers (eliminates hallucination risk and
-    guarantees resource accuracy).
-
-    On LLM failure the node falls back to the tier 1 deterministic
-    template so the user always receives a safe response.
-
-    Parameters
-    ----------
-    llm:
-        A LangChain chat model built from ``CRISIS_EMPATHY`` spec.
-        Passed from the graph builder via ``functools.partial`` or a
-        closure -- the node signature follows the LangGraph pattern of
-        injecting dependencies through partial application.
-    """
+    """llm: LangChain     llm = functools.partial(llm, llm_spec="CRISIS_EMPATHY")     llm = llm.partial"""
     audit = audit or NullGuardrailLogger()
     started = time.perf_counter()
 
@@ -455,11 +366,7 @@ async def crisis_empathy_node(
 
     from agentic.config.llm_models import CRISIS_EMPATHY
 
-    # Pass the canonical hotline list as system context so the LLM can ground
-    # any reference to "ada layanan yang bisa membantu" against real names,
-    # rather than confabulating brands or numbers. The LLM is still instructed
-    # by the prompt itself to omit numbers inline (the resource block prints
-    # them deterministically afterward).
+    # pass canonical hotline list as context
     resource_ctx = _render_hotline_context(resources)
     system_prompt = CRISIS_EMPATHY.system_prompt
     if resource_ctx:
@@ -482,8 +389,7 @@ async def crisis_empathy_node(
             exc,
         )
         increment("crisis_guardrail_events_total", tier="2", route="empathy_fallback")
-        # Fall back to the deterministic tier 1 template so the user
-        # always receives a structurally safe response.
+        # fallback to tier 1 template
         state["final_response"] = render_crisis_response(resources, state=state)
         _clear_handled_phq9_crisis_route(state)
         state["crisis_escalated"] = True  # type: ignore[typeddict-unknown-key]
@@ -512,7 +418,7 @@ async def crisis_empathy_node(
     return state
 
 
-# Crisis escalation (tier 1, deterministic)
+# crisis, tier 1, deterministic
 
 
 @dataclass(frozen=True)
@@ -599,7 +505,7 @@ class CrisisResources:
     ) -> dict[str, str]:
         return {
             "resource_lines": self.selected_lines(state),
-            # Backward-compatible placeholders for older templates.
+            # buat placeholders
             "primary_name": self.primary_name,
             "primary_contact": self.primary_contact,
             "primary_availability": self.primary_availability,
@@ -665,14 +571,7 @@ def _contains_any(text: str, terms: Iterable[str]) -> bool:
 def _select_resource_keys(
     state: ConversationState | None = None,
 ) -> tuple[str, ...]:
-    """
-    Choose a short deterministic set of resources.
-
-    Emergency and the primary hotline are always shown. Additional
-    resources are selected from the same YAML based on explicit context
-    so the crisis response stays actionable rather than becoming a full
-    directory dump.
-    """
+    """pilih set data"""
     text = _state_text_for_resource_selection(state)
     keys = ["emergency", "primary", "secondary"]
 
@@ -790,7 +689,7 @@ def render_crisis_response(
     resources: CrisisResources | None = None,
     state: ConversationState | None = None,
 ) -> str:
-    """Render the deterministic crisis response without an LLM."""
+    """render crisis  without llm."""
     bundle = load_prompt_bundle("guardrails/crisis_response")
     template = bundle.system
     args = (resources or load_crisis_resources()).as_template_args(state)
@@ -807,20 +706,7 @@ async def crisis_escalation_node(
     audit: GuardrailLogger | None = None,
     resources: CrisisResources | None = None,
 ) -> ConversationState:
-    """
-    Tier 1 crisis response. Always deterministic -- no LLM involved.
-
-    Called only when ``crisis_triage_node`` classifies the signal as
-    tier 1 (explicit active intent: "mau bunuh diri", "kill myself",
-    etc.). Returns the warm deterministic template from
-    ``guardrails/crisis_response.yaml`` with the resource block rendered
-    from ``config/crisis_resources.yaml``.
-
-    The audit event layer reflects the actual triggering origin:
-    - ``INPUT``   when Layer 2 keyword check triggered escalation.
-    - ``PRE_GEN`` when Layer 3 Jaccard check triggered escalation.
-    - ``PRE_GEN`` when PHQ-9 item 9 triggered deferred escalation.
-    """
+    """tier 1 crisis response"""
     audit = audit or NullGuardrailLogger()
     phq9 = state.get("phq9_state") or {}
     input_decision = state.get("input_guardrail") or {}
@@ -829,7 +715,7 @@ async def crisis_escalation_node(
         reason = "phq9_item9"
         trigger_layer = GuardrailEventLayer.PRE_GEN
     elif input_decision.get("reason"):
-        # Escalation was initiated by Layer 2 (keyword match).
+        # initiate
         reason = input_decision["reason"]
         trigger_layer = GuardrailEventLayer.INPUT
     else:
@@ -857,24 +743,24 @@ async def crisis_escalation_node(
 
 
 __all__ = [
-    # Pre-generation check
+    # check/pre
     "PreGenRules",
     "PreGenDecision",
     "load_pregen_rules",
     "evaluate_pregen",
     "crisis_guardrail_node",
-    # Triage
+    # triage
     "_Tier1Keywords",
     "_load_tier1_keywords",
     "crisis_triage_node",
     "route_after_crisis_triage",
-    # Tier 1 escalation
+    # tier1escalate
     "CrisisResource",
     "CrisisResources",
     "load_crisis_resources",
     "render_crisis_response",
     "crisis_escalation_node",
-    # Tier 2 empathy
+    # empathy tier 2
     "render_resource_block",
     "crisis_empathy_node",
 ]

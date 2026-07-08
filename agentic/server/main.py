@@ -1,4 +1,4 @@
-"""Production entry point for the Agentic gateway."""
+"""entry point"""
 
 from __future__ import annotations
 
@@ -23,8 +23,7 @@ def _load_env_file(env_path: Path) -> None:
 
 def _load_local_env() -> None:
     base_dir = Path(__file__).resolve().parents[1]
-    # .env.local loads first so its values take precedence (kept stable
-    # for local dev/testing while .env is edited for deployment prep).
+    # loads first, values take precedence
     _load_env_file(base_dir / ".env.local")
     _load_env_file(base_dir / ".env")
 
@@ -36,7 +35,7 @@ from agentic.gateway.app import create_app
 
 logger = logging.getLogger(__name__)
 
-# Module-level app object. Uvicorn/gunicorn import this directly.
+# `init obj`
 app = create_app()
 
 

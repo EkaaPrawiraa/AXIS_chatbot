@@ -1,4 +1,4 @@
-"""Back-compat shim."""
+"""skip back-compat"""
 
 from __future__ import annotations
 

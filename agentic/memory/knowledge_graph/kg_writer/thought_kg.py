@@ -1,4 +1,4 @@
-"""Writer for the :Thought node and the (:User)-[:HAS_THOUGHT]->(:Thought)."""
+"""buat nulis relasi"""
 
 from __future__ import annotations
 
@@ -22,29 +22,23 @@ logger = logging.getLogger(__name__)
 
 
 async def write_thought(inp: ThoughtInput) -> str:
-    """
-    Write a :Thought node with cosine deduplication (pgvector backed).
-    Returns the node id of the merged or newly-created node.
-    """
+    """cosine dedup pgvector node id"""
     _require(inp.content,    "content")
     _require(inp.user_id,    "user_id")
     _require(inp.session_id, "session_id")
 
     client = get_client()
 
-    # 1. Deduplication lookup (pgvector).
+    # `skip dup`
     existing = await find_similar_node(
         label="Thought",
         embedding=inp.embedding,
         user_id=inp.user_id,
     )
 
-    # 2a. MERGE path.
+    # merge path
     if existing and existing["similarity"] >= MERGE_THRESHOLD:
-        # Average believability, reset challenged, and append the new
-        # message id to the user-anchor edge's source_messages so the
-        # lifecycle module can trace this thought back to every message
-        # that contributed to it.
+        # append msg id to source_msgs
         await client.execute_write(
             """
             MATCH (th:Thought {id: $id})
@@ -67,7 +61,7 @@ async def write_thought(inp: ThoughtInput) -> str:
         logger.debug("Thought merged into existing: %s", existing["id"])
         return existing["id"]
 
-    # 2b. LLM-review zone: still CREATE a new node but flag the overlap.
+    # flag overlap
     if existing and existing["similarity"] >= REVIEW_THRESHOLD:
         logger.info(
             "Thought similarity %.2f in review zone -- writing new node "
@@ -77,7 +71,7 @@ async def write_thought(inp: ThoughtInput) -> str:
             existing["description"][:60],
         )
 
-    # 3. CREATE path.
+    # buat nyimpen config
     node_id = _new_id()
     await client.execute_write(
         """
@@ -118,7 +112,7 @@ async def write_thought(inp: ThoughtInput) -> str:
         },
     )
 
-    # Mirror vector into pgvector and flip embedding_synced on success.
+    # mirrors into pgvector, flip on success.
     await sync_embedding_to_pgvector(
         label="Thought",
         node_id=node_id,

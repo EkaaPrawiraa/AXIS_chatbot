@@ -1,4 +1,4 @@
-"""CBT-aware dialogue policy node."""
+"""set policy"""
 
 from __future__ import annotations
 
@@ -61,39 +61,14 @@ async def dialogue_policy_node(
     llm: Any | None = None,
     judge_llm: Any | None = None,
 ) -> ConversationState:
-    """
-    Choose the CBT technique for this turn and update sub-state.
-
-    When ``judge_llm`` is provided the node uses the hybrid LLM-judge
-    router; otherwise it falls back to the sync rule based router for
-    backward compat.
-
-    Parameters
-    ----------
-    state:
-        Mutable conversation state.
-    audit:
-        Layer 0 audit logger.
-    machine:
-        Thought record sub-state machine. A default instance is used
-        when omitted.
-    llm:
-        Optional LLM for the thought record reframe step.
-    judge_llm:
-        Optional pre-built LangChain client for the CBT judge. When
-        absent, the node uses the sync rule based router.
-    """
+    """update_substate()"""
     audit = audit or NullGuardrailLogger()
     machine = machine or ThoughtRecordMachine()
     started = time.perf_counter()
 
     cbt_state = dict(state.get("cbt_state") or empty_cbt_state())
 
-    # Detect a NEW decline of the previous offer. The cooldown flag
-    # set by a prior turn is preserved here so the router can honor it
-    # even when the new message is on a different topic. The cooldown
-    # is consumed by the router (see post-routing block below) so it
-    # only applies for one turn at a time.
+    # detect new offer decline, cooldown preserved, route honors flag, cooldown consumed.
     new_decline = False
     if cbt_state.get("last_offered") and _detected_decline(
         state.get("current_message") or ""
@@ -104,7 +79,7 @@ async def dialogue_policy_node(
             cbt_state.get("decline_streak", 0)
         ) + 1
 
-    # Persist decline tracking before routing so the router sees it.
+    # buat nyimpen decline tracking
     state["cbt_state"] = cbt_state  # type: ignore[typeddict-item]
 
     if judge_llm is not None:
@@ -112,20 +87,16 @@ async def dialogue_policy_node(
     else:
         decision = route(state)
 
-    # Consume the cooldown. The flag stays True for exactly one additional
-    # turn after the decline so the router blocks the re-offer on the
-    # NEXT turn as well. Only reset when the cooldown fires in a
-    # subsequent turn (not the same turn where new_decline was detected).
+    # consuming cooldown, resetting on next turn.
     if decision.reason == "opt_out_cooldown":
         if not new_decline:
             cbt_state["declined_last_offer"] = False
-        # else: decline just happened this turn — keep flag True so it
-        # persists to the next turn and the cooldown applies there too.
+        # keep flag True, persis to next turn, cooldown applies.
     elif not new_decline:
-        # Engaged turn that did not invoke cooldown: streak resets.
+        # streak nggak bakal jadi gak.
         cbt_state["decline_streak"] = 0
 
-    # If a thought record is being driven, advance the machine.
+    # driving, advance.
     if decision.technique is CBTTechnique.THOUGHT_RECORD:
         decision = await _advance_thought_record(
             state=state,
@@ -135,7 +106,7 @@ async def dialogue_policy_node(
             llm=llm,
         )
 
-    # Mirror the decision into state for response generator + audit.
+    # mirror into state
     cbt_state["last_directive"] = {
         "technique": decision.technique.value,
         "reason": decision.reason,
@@ -145,7 +116,7 @@ async def dialogue_policy_node(
     if not decision.is_none and decision.technique is not CBTTechnique.VALIDATE:
         cbt_state["last_offered"] = decision.technique.value
     elif decision.is_none:
-        # safety/phq9 path: keep prior last_offered
+        # keep prior last_offered
         pass
 
     state["cbt_state"] = cbt_state  # type: ignore[typeddict-item]
@@ -166,7 +137,7 @@ async def _advance_thought_record(
     base_decision: CBTDecision,
     llm: Any | None,
 ) -> CBTDecision:
-    """Drive the thought record sub-state machine by one step."""
+    """driving thought record sub-state machine by 1st."""
     sub_state_dict = cbt_state.get("thought_record")
     sub_state = ThoughtRecordSubState.from_dict(sub_state_dict)
 

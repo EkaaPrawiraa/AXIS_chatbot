@@ -146,8 +146,7 @@ def _json_safe(value: Any) -> Any:
 
 
 def _unwrap_json_text(value: str) -> str:
-    """If a stored text field is accidentally JSON-wrapped (e.g. '{"summary":"..."}'),
-    extract the actual string value. Returns the original value if it is not JSON."""
+    """parseJSON"""
     stripped = value.strip()
     if not stripped.startswith("{"):
         return stripped
@@ -409,18 +408,7 @@ async def get_memory_node(*, user_id: str, node_type: str, node_id: str) -> Memo
 
 
 def _reject_injection_content(cfg: dict[str, Any], updates: dict[str, Any]) -> None:
-    """
-    Reject free-text edits that match a known jailbreak/prompt-injection
-    pattern (the same JAILBREAK_PATTERNS list input_guardrail_node uses
-    for live chat turns -- see guardrails/input_validation.yaml).
-
-    Memory node content is fed back into every future turn's LLM context
-    via context_builder, so injected instructions saved here would be an
-    indirect prompt-injection vector with no legitimate reason to exist
-    in a personal memory note. Crisis keywords are deliberately NOT
-    checked here -- storing a user's own crisis history as memory is
-    legitimate content, not something to block.
-    """
+    """block jailbreak"""
     enum_fields = set((cfg.get("enums") or {}).keys())
     rules = load_input_rules()
     for key, value in updates.items():
@@ -541,7 +529,7 @@ async def reset_user_memory(*, user_id: str) -> dict[str, Any]:
 
 
 async def purge_user_account(*, user_id: str) -> dict[str, Any]:
-    """Fully remove a user's KG node/relationships and pgvector rows (account deletion)."""
+    """`del kg node/pgvector`"""
     if not user_id:
         raise ValueError("user_id is required")
     return await purge_user_full(user_id)

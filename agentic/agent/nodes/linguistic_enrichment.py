@@ -1,4 +1,4 @@
-"""Corpus-driven linguistic enrichment node."""
+"""enrich node"""
 
 from __future__ import annotations
 
@@ -32,26 +32,13 @@ async def linguistic_enrichment_node(
     audit: GuardrailLogger | None = None,
     corpus: LinguisticCorpus | None = None,
 ) -> ConversationState:
-    """
-    Detect language and surface slang / distress hits from the corpus.
-
-    Parameters
-    ----------
-    state:
-        Conversation state. The current text turn is read from
-        ``current_message``.
-    audit:
-        Layer 0 audit logger. Defaults to :class:`NullGuardrailLogger`.
-    corpus:
-        Optional pre-loaded corpus. Tests pass a fixture corpus; in
-        production we call :func:`load_default_corpus`.
-    """
+    """detect lang, surface slang, corpus"""
     audit = audit or NullGuardrailLogger()
     started = time.perf_counter()
 
     text = (state.get("current_message") or "").strip()
     if not text:
-        # Nothing to enrich; preserve whatever upstream set.
+        # skip
         return state
 
     active_corpus = corpus if corpus is not None else load_default_corpus()
@@ -66,14 +53,9 @@ async def linguistic_enrichment_node(
     )
     state["linguistic_signals"] = signals.to_dict()  # type: ignore[typeddict-item]
 
-    # Refresh resolved_language per turn so the assistant mirrors the
-    # user's latest language. Keep a single-language code in
-    # resolved_language ("id"|"en") and preserve code-switching via the
-    # linguistic_signals payload.
+    # refresh resolved_language, keep single-code, preserve code-switching.
     if signals.language == "mixed":
-        # Prefer Indonesian as the base response language for mixed turns
-        # (L1 for ITB students), but downstream prompts must still preserve
-        # the natural mix.
+        # prefer indonesian base response lan downstream prompts must preserve natural mix.
         state["resolved_language"] = (
             state.get("language_pref")
             or state.get("resolved_language")

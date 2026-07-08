@@ -1,4 +1,4 @@
-"""Reverse lookups: "which KG facts came from this message?"."""
+"""reverse lookup"""
 
 from __future__ import annotations
 
@@ -11,10 +11,7 @@ logger = logging.getLogger(__name__)
 
 
 async def facts_for_message(message_id: str) -> list[dict[str, Any]]:
-    """
-    Return one row per active edge that lists ``message_id`` in its
-    ``source_messages`` array.
-    """
+    """rows := edges for _, edge := range rows {     if edge["source_messages"] != nil {         for _, msg := range edge["source_messages"] {             if msg["message_id"] != nil {                 // process msg             }         }     } }"""
     if not message_id:
         raise ValueError("message_id is required")
 
@@ -38,10 +35,7 @@ async def facts_for_message(message_id: str) -> list[dict[str, Any]]:
 
 
 async def nodes_for_message(message_id: str) -> list[dict[str, Any]]:
-    """
-    Distinct node ids touched by ``message_id``, with their primary
-    label and active flag.
-    """
+    """get node details"""
     if not message_id:
         raise ValueError("message_id is required")
 

@@ -1,17 +1,4 @@
-"""
-End-to-end demo: Retrieval → Context Building → Response Generation
-for user 6aca3b8b-ddcf-4428-824e-997f921d28d3
-
-Usage:
-    cd /Users/ekaaprawira/Downloads/TA/CompanionshipChatBot
-    .venv/bin/python agentic/scripts/demo_full_pipeline.py
-
-This simulates the exact same pipeline that runs in production:
-  1. Retrieval query rewriting
-  2. context_builder.build_context() — fetches from Neo4j + pgvector
-  3. RetrievedContext.as_prompt_block() — formats the KG context
-  4. response_generator — builds system prompt and generates response
-"""
+"""run prod pipeline"""
 
 from __future__ import annotations
 
@@ -22,7 +9,7 @@ import sys
 from pathlib import Path
 from typing import Any
 
-# Bootstrap env
+# set env
 ROOT = Path(__file__).resolve().parents[2]
 
 def _load_env(path: Path) -> None:
@@ -43,7 +30,7 @@ _load_env(ROOT / "agentic" / ".env")
 
 USER_ID = "6aca3b8b-ddcf-4428-824e-997f921d28d3"
 
-# Test queries that demonstrate different retrieval scenarios
+# test queries
 TEST_QUERIES = [
     "aku lagi sedih, temen-temenku ngebully lagi",
     "lu inget apa aja tentang gua?",
@@ -59,12 +46,12 @@ def _json_default(v: Any) -> str:
 
 
 async def fetch_kg_signals_raw(user_id: str) -> dict[str, Any]:
-    """Directly query Neo4j for all KG signals — same queries as context_builder."""
+    """query kg"""
     from agentic.memory.neo4j_client import get_client
 
     result: dict[str, Any] = {}
 
-    # Signal 1: Recency — last 2 session summaries
+    # buat nyimpen last 2 ses
     try:
         records = await get_client().execute_read(
             """
@@ -79,7 +66,7 @@ async def fetch_kg_signals_raw(user_id: str) -> dict[str, Any]:
     except Exception as e:
         result["recency_summaries"] = f"ERROR: {e}"
 
-    # Signal 3: Salience — top-5 Memory nodes with importance > 0.5
+    # filter mem nodes
     try:
         records = await get_client().execute_read(
             """
@@ -94,7 +81,7 @@ async def fetch_kg_signals_raw(user_id: str) -> dict[str, Any]:
     except Exception as e:
         result["salient_memories"] = f"ERROR: {e}"
 
-    # Signal 5: Important subjects (people, pets, etc.)
+    # sig 5: subjek-nya
     try:
         records = await get_client().execute_read(
             """
@@ -117,7 +104,7 @@ async def fetch_kg_signals_raw(user_id: str) -> dict[str, Any]:
     except Exception as e:
         result["important_subjects"] = f"ERROR: {e}"
 
-    # Signal 6: Active emotions (last 7 days)
+    # emotions 6: last 7 days
     try:
         records = await get_client().execute_read(
             """
@@ -132,7 +119,7 @@ async def fetch_kg_signals_raw(user_id: str) -> dict[str, Any]:
     except Exception as e:
         result["active_emotions"] = f"ERROR: {e}"
 
-    # Signal 7: Unchallenged cognitive distortions
+    # skip
     try:
         records = await get_client().execute_read(
             """
@@ -148,7 +135,7 @@ async def fetch_kg_signals_raw(user_id: str) -> dict[str, Any]:
     except Exception as e:
         result["active_distortions"] = f"ERROR: {e}"
 
-    # Signal 8: Recurring triggers
+    # skip
     try:
         records = await get_client().execute_read(
             """
@@ -164,7 +151,7 @@ async def fetch_kg_signals_raw(user_id: str) -> dict[str, Any]:
     except Exception as e:
         result["recurring_triggers"] = f"ERROR: {e}"
 
-    # Signal 9: Recurring themes
+    # skip
     try:
         records = await get_client().execute_read(
             """
@@ -182,7 +169,7 @@ async def fetch_kg_signals_raw(user_id: str) -> dict[str, Any]:
     except Exception as e:
         result["recurring_themes"] = f"ERROR: {e}"
 
-    # Bonus: All experiences for this user
+    # bonus: exp for this user
     try:
         records = await get_client().execute_read(
             """
@@ -198,7 +185,7 @@ async def fetch_kg_signals_raw(user_id: str) -> dict[str, Any]:
     except Exception as e:
         result["all_experiences"] = f"ERROR: {e}"
 
-    # Bonus: All behaviors
+    # all beh
     try:
         records = await get_client().execute_read(
             """
@@ -218,7 +205,7 @@ async def fetch_kg_signals_raw(user_id: str) -> dict[str, Any]:
 
 
 async def fetch_pgvector_data(user_id: str) -> dict[str, Any]:
-    """Check pgvector embedding tables for this user."""
+    """check tables"""
     from agentic.memory.pg_vector.client import get_pool
 
     pool = await get_pool()
@@ -241,7 +228,7 @@ async def fetch_pgvector_data(user_id: str) -> dict[str, Any]:
                     f"SELECT count(*)::int FROM {table} WHERE user_id = $1::uuid AND active = TRUE",
                     user_id,
                 )
-                # Get sample content
+                # get sample content
                 samples = await conn.fetch(
                     f"SELECT content, neo4j_node_id FROM {table} WHERE user_id = $1::uuid AND active = TRUE LIMIT 3",
                     user_id,
@@ -257,10 +244,10 @@ async def fetch_pgvector_data(user_id: str) -> dict[str, Any]:
 
 
 async def run_build_context(user_id: str, query_text: str) -> tuple[str, Any]:
-    """Run the real context_builder.build_context() and return the formatted block."""
+    """build_context()"""
     from agentic.memory.context_builder import build_context
 
-    # Try embedding the query
+    # skip klo error
     query_embedding = None
     try:
         from agentic.memory.pg_vector import embed_text
@@ -284,7 +271,7 @@ async def main() -> None:
     await init_client()
 
     try:
-        # PHASE 1: Raw KG Signal Fetch
+        # `fetch raw kg`
         print(f"\n{'='*80}")
         print(f"  PHASE 1: RAW KG SIGNALS FROM NEO4J (user={USER_ID[:12]}…)")
         print(f"{'='*80}\n")
@@ -292,7 +279,7 @@ async def main() -> None:
         kg_raw = await fetch_kg_signals_raw(USER_ID)
         print(json.dumps(kg_raw, ensure_ascii=False, indent=2, default=_json_default))
 
-        # PHASE 2: pgvector Data
+        # data vector
         print(f"\n{'='*80}")
         print(f"  PHASE 2: PGVECTOR EMBEDDING TABLES")
         print(f"{'='*80}\n")
@@ -300,7 +287,7 @@ async def main() -> None:
         pgv = await fetch_pgvector_data(USER_ID)
         print(json.dumps(pgv, ensure_ascii=False, indent=2, default=_json_default))
 
-        # PHASE 3: build_context() for each test query
+        # build_ctx()
         print(f"\n{'='*80}")
         print(f"  PHASE 3: build_context() → as_prompt_block()")
         print(f"{'='*80}\n")
@@ -316,7 +303,7 @@ async def main() -> None:
                 context_blocks[query] = block
                 print(f"\n{block}\n")
 
-                # Show signal stats
+                # nghitung signal
                 stats = {
                     "recency_summaries": len(ctx.recency_summaries),
                     "semantic_memories": len(ctx.semantic_memories),
@@ -336,7 +323,7 @@ async def main() -> None:
                 import traceback
                 traceback.print_exc()
 
-        # PHASE 4: Full System Prompt Assembly (same as response_generator)
+        # assembling prompt
         print(f"\n{'='*80}")
         print(f"  PHASE 4: ASSEMBLED SYSTEM PROMPT (same as response_generator_node)")
         print(f"{'='*80}\n")

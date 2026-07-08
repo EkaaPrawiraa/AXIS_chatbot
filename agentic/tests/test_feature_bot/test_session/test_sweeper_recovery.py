@@ -1,4 +1,4 @@
-"""Tests for session finalizer recovery."""
+"""test sess fin recovery"""
 
 from __future__ import annotations
 

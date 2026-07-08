@@ -1,4 +1,4 @@
-"""FastAPI router for the LangGraph chat service."""
+"""fastapi router"""
 
 from __future__ import annotations
 
@@ -25,7 +25,7 @@ logger = logging.getLogger(__name__)
 
 
 def _get_service(request: Request) -> ChatGraphService:
-    """Extract the singleton service from app state (set during lifespan)."""
+    """set singleton svc"""
     return request.app.state.chat_service
 
 
@@ -36,7 +36,7 @@ voice_router = APIRouter(prefix="/voice", tags=["voice"])
 
 @router.get("/health", include_in_schema=False)
 async def chat_health() -> dict[str, str]:
-    """Liveness probe for the chat router."""
+    """`liveness probe`"""
     return {"status": "ok"}
 
 
@@ -50,16 +50,7 @@ async def invoke(
     request: Request,
     service: ChatGraphService = Depends(_get_service),
 ) -> ChatTurnResponse:
-    """
-    Execute one turn through the LangGraph DAG and return the full response.
-
-    The caller must supply the complete turn context including the message
-    history (``messages``), the current user input (``current_message`` or
-    voice audio), and any carry-over state (``phq9_state``, ``cbt_state``).
-
-    The response contains the bot reply, updated state fields, and optional
-    voice audio when ``voice.output_modality`` is ``"voice"`` or ``"both"``.
-    """
+    """execute one turn, return full resp."""
     req_id = getattr(request.state, "request_id", "-")
     logger.info(
         "invoke user=%s session=%s req_id=%s",
@@ -97,18 +88,7 @@ async def stream(
     request: Request,
     service: ChatGraphService = Depends(_get_service),
 ) -> EventSourceResponse:
-    """
-    Stream one turn through the LangGraph DAG as Server-Sent Events.
-
-    Token events arrive as the LLM generates text. The final ``done``
-    event carries the complete ``ChatTurnResponse`` as a JSON string so
-    the client can update state (PHQ-9 phase, CBT state, voice output)
-    after the turn completes.
-
-    The connection closes automatically after the ``done`` or ``error``
-    event. Clients must reconnect for each new turn; this is not a
-    persistent session stream.
-    """
+    """const { ChatTurnResponse } = require('langGraph'); const { done, error } = ChatTurnResponse;  done.then((response) => {   // Update state }).catch((err) => {   // Handle error });"""
     req_id = getattr(request.state, "request_id", "-")
     logger.info(
         "stream start user=%s session=%s req_id=%s",
@@ -126,8 +106,7 @@ async def stream(
                 break
 
         if not done_seen:
-            # Graph completed without emitting a done event. This should
-            # not happen in normal operation but is a safe fallback.
+            # done, fallback.
             logger.warning(
                 "stream ended without done event user=%s session=%s req_id=%s",
                 payload.user_id,
@@ -184,10 +163,10 @@ async def transcribe_speech(
     return await service.transcribe_speech(payload)
 
 
-# Registration helper (kept for backward compat with app.py import)
+# keep compat
 
 
 def register_chat_routes(app) -> None:
-    """Include the chat router on the given FastAPI app."""
+    """chat router"""
     app.include_router(router)
     app.include_router(voice_router)

@@ -1,4 +1,4 @@
-"""Cross-cutting relationship builders, the full edge set required by."""
+"""build edge sets"""
 
 from __future__ import annotations
 
@@ -9,9 +9,9 @@ from agentic.memory.neo4j_client import get_client
 logger = logging.getLogger(__name__)
 
 
-# CBT hot-cross bun chain
+# hot-cross bun chain
 
-# 1. Experience -> Trigger
+# `exp`
 
 async def link_experience_to_trigger(
     experience_id: str,
@@ -20,7 +20,7 @@ async def link_experience_to_trigger(
     confidence:    float = 0.85,
     source_message_id: str | None = None,
 ) -> None:
-    """(:Experience)-[:TRIGGERED_BY]->(:Trigger)"""
+    """triggered by"""
     await get_client().execute_write(
         """
         MATCH (e:Experience {id: $exp_id})
@@ -51,7 +51,7 @@ async def link_experience_to_trigger(
     )
 
 
-# 2. Experience -> Emotion
+# feel 2.
 
 async def link_experience_to_emotion(
     experience_id: str,
@@ -60,7 +60,7 @@ async def link_experience_to_emotion(
     confidence:    float = 0.85,
     source_message_id: str | None = None,
 ) -> None:
-    """(:Experience)-[:TRIGGERED_EMOTION]->(:Emotion)"""
+    """trigger emo"""
     await get_client().execute_write(
         """
         MATCH (e:Experience {id: $exp_id})
@@ -91,7 +91,7 @@ async def link_experience_to_emotion(
     )
 
 
-# 3. Emotion -> Thought
+# thx 4 ur thoughts
 
 async def link_emotion_to_thought(
     emotion_id:  str,
@@ -100,7 +100,7 @@ async def link_emotion_to_thought(
     confidence:  float = 0.80,
     source_message_id: str | None = None,
 ) -> None:
-    """(:Emotion)-[:ACTIVATED_THOUGHT]->(:Thought)"""
+    """activated"""
     await get_client().execute_write(
         """
         MATCH (em:Emotion {id: $emo_id})
@@ -131,7 +131,7 @@ async def link_emotion_to_thought(
     )
 
 
-# 4. Thought <-> Emotion  (ASSOCIATED_WITH, bidirectional)
+# thoughts <-> feelings
 
 async def link_thought_emotion_association(
     thought_id:  str,
@@ -141,18 +141,7 @@ async def link_thought_emotion_association(
     confidence:  float = 0.80,
     source_message_id: str | None = None,
 ) -> None:
-    """
-    (:Thought)<-[:ASSOCIATED_WITH]->(:Emotion)
-
-    The CBT vicious cycle: thoughts reinforce emotions and emotions
-    reinforce thoughts. Per the canonical schema this edge is
-    bidirectional, modelled as two directed MERGEs in Neo4j (which has
-    no native bidirectional edge type) so each direction can be matched
-    independently in retrieval.
-
-    ``strength`` is a [0, 1] score for how tightly coupled the pair is;
-    it is exposed on both directions identically.
-    """
+    """Thoughts reinforce emotions, emo reinforce thoughts."""
     await get_client().execute_write(
         """
         MATCH (th:Thought {id: $th_id})
@@ -205,7 +194,7 @@ async def link_thought_emotion_association(
     )
 
 
-# 5. Emotion or Thought -> Behavior
+# beh
 
 async def link_to_behavior(
     source_id:     str,
@@ -215,12 +204,7 @@ async def link_to_behavior(
     confidence:    float = 0.80,
     source_message_id: str | None = None,
 ) -> None:
-    """
-    (:Emotion | :Thought)-[:LED_TO_BEHAVIOR]->(:Behavior)
-
-    ``source_label`` must be hard-coded to "Emotion" or "Thought"; it
-    is interpolated into the Cypher string, so never pass user input.
-    """
+    """hard-coded"""
     if source_label not in ("Emotion", "Thought"):
         raise ValueError(
             f"source_label must be 'Emotion' or 'Thought', got {source_label!r}"
@@ -257,7 +241,7 @@ async def link_to_behavior(
 
 
 
-# 6. Experience -> Subject
+# exp
 
 async def link_experience_to_subject(
     experience_id: str,
@@ -266,7 +250,7 @@ async def link_experience_to_subject(
     confidence:    float = 0.80,
     source_message_id: str | None = None,
 ) -> None:
-    """(:Experience)-[:INVOLVES_SUBJECT]->(:Subject)"""
+    """invokes subj"""
     await get_client().execute_write(
         """
         MATCH (e:Experience {id: $exp_id})
@@ -297,11 +281,11 @@ async def link_experience_to_subject(
     )
 
 
-# backward compat alias — remove once all call sites use link_experience_to_subject
+# skip compat alias
 link_experience_to_person = link_experience_to_subject
 
 
-# 7. Experience | Emotion -> Topic
+# exp | emo
 
 async def link_to_topic(
     source_id:     str,
@@ -311,14 +295,7 @@ async def link_to_topic(
     confidence:    float = 0.75,
     source_message_id: str | None = None,
 ) -> None:
-    """
-    (:Experience | :Emotion)-[:RELATED_TO_TOPIC]->(:Topic)
-
-    ``source_label`` must be hard-coded to "Experience" or "Emotion";
-    it is interpolated into the Cypher string, so never pass user
-    input. Per the canonical schema the same RELATED_TO_TOPIC edge
-    type is used for both source types.
-    """
+    """hard-coded, skip, db, init, req"""
     if source_label not in ("Experience", "Emotion", "Thought"):
         raise ValueError(
             f"source_label must be 'Experience', 'Emotion', or 'Thought', got {source_label!r}"
@@ -354,7 +331,7 @@ async def link_to_topic(
     )
 
 
-# 8. User -> Topic  (HAS_RECURRING_THEME)
+# `check theme`
 
 async def link_user_recurring_theme(
     user_id:    str,
@@ -363,13 +340,7 @@ async def link_user_recurring_theme(
     confidence: float = 0.85,
     source_message_id: str | None = None,
 ) -> None:
-    """
-    (:User)-[:HAS_RECURRING_THEME]->(:Topic)
-
-    A longitudinal pattern link, refreshed each time the topic appears
-    in a new session. ``last_reinforced`` is updated on every match so
-    decay can identify themes that have gone quiet.
-    """
+    """last_reinforced"""
     await get_client().execute_write(
         """
         MATCH (u:User   {id: $user_id})
@@ -405,7 +376,7 @@ async def link_user_recurring_theme(
     )
 
 
-# 9. Session -> Memory  (provenance helper)
+# memori
 
 async def link_session_to_memory(
     session_id:  str,
@@ -413,15 +384,7 @@ async def link_session_to_memory(
     confidence:  float = 1.0,
     source_message_id: str | None = None,
 ) -> None:
-    """
-    (:Session)-[:CONTAINS_MEMORY]->(:Memory)
-
-    memory_kg.write_memory already creates this edge inline at the
-    moment the Memory node is created. This helper exists for backfill
-    scripts and for the rare case where a Memory needs to be attached
-    to an additional session after the fact (e.g. cross-session
-    summarisation).
-    """
+    """write_memory, backfill, cross-session"""
     await get_client().execute_write(
         """
         MATCH (s:Session {id: $session_id})
@@ -443,19 +406,17 @@ async def link_session_to_memory(
     )
 
 
-# Bi-temporal maintenance
+# maintain bi-temporal
 
-# A small allow-list of edge types that this helper will touch. Edge
-# types are interpolated into the Cypher string, so we MUST validate
-# them against this set to keep the call injection-safe.
+# edge_types = ['edge1', 'edge2'] validate_edge_types(edge_types)
 _INVALIDATABLE_EDGES: frozenset[str] = frozenset({
-    # CBT chain
+    # skip
     "TRIGGERED_BY",
     "TRIGGERED_EMOTION",
     "ACTIVATED_THOUGHT",
     "ASSOCIATED_WITH",
     "LED_TO_BEHAVIOR",
-    # User connections
+    # skip klo error
     "EXPERIENCED",
     "FELT",
     "HAS_THOUGHT",
@@ -466,11 +427,11 @@ _INVALIDATABLE_EDGES: frozenset[str] = frozenset({
     "HAS_RECURRING_THEME",
     "HAS_MEMORY",
     "COMPLETED_ASSESSMENT",
-    # Session connections
+    # skip klo db
     "HAD_EXPERIENCE",
     "RECORDED_EMOTION",
     "CONTAINS_MEMORY",
-    # Contextual
+    # skip klo error
     "INVOLVES_SUBJECT",
     "INVOLVES_PERSON",             # kept for backward compat
     "RELATED_TO_TOPIC",
@@ -485,24 +446,13 @@ async def invalidate_edge(
     dst_id:     str,
     reason:     str = "user_correction",
 ) -> int:
-    """
-    Set ``t_invalid = datetime()`` on the matching fact-bearing edge so
-    the relationship stays in the graph for history but drops out of
-    "currently true" queries that filter on ``t_invalid IS NULL``.
-
-    Returns the number of edges that were invalidated (0 if no match).
-
-    All three label/type arguments are validated against allow-lists or
-    a small fixed alphabet because they get interpolated into the
-    Cypher string.
-    """
+    """set_invalid_edge()"""
     if edge_type not in _INVALIDATABLE_EDGES:
         raise ValueError(
             f"edge_type {edge_type!r} not in invalidation allow-list"
         )
 
-    # Restrict labels to identifier characters; defensive even though
-    # callers should be passing well-known node labels.
+    # `limit labels to id chars`
     for arg_name, value in (("src_label", src_label), ("dst_label", dst_label)):
         if not value.isidentifier():
             raise ValueError(f"{arg_name} {value!r} is not a valid Neo4j label")

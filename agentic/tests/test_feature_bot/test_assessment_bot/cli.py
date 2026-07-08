@@ -1,4 +1,4 @@
-"""Assessment CLI bot (feature harness)."""
+"""buat buat buat"""
 
 from __future__ import annotations
 
@@ -16,7 +16,7 @@ from agentic.agent.state import ConversationState, empty_conversation_state, emp
 from agentic.assessment.phq9 import NUM_ITEMS, options_with_scores
 
 
-# In-memory fakes (repo + LLM)
+# fake_repo  llm
 
 
 @dataclass
@@ -41,7 +41,7 @@ class _DistressSnapshot:
 
 
 class InMemoryAssessmentRepository:
-    """Implements the small subset of AssessmentRepository needed by PHQ-9 nodes."""
+    """`PHQ-9`"""
 
     def __init__(self) -> None:
         self.last: _LastPhq9 | None = None
@@ -68,8 +68,7 @@ class InMemoryAssessmentRepository:
         return self.distress
 
     async def schedule_retry(self, *, user_id: str, days: int, reason: str) -> Any:
-        # Keep next_attempt_at "now" for simplicity; the node only checks
-        # whether it is in the future.
+        # keep next_attempt_at "now
         self.pending_retry = _PendingRetry(next_attempt_at=datetime.now(timezone.utc), reason=reason)
 
         class _Schedule:
@@ -94,7 +93,7 @@ class _FakeAIMessage:
 
 
 class FakeLLM:
-    """Tiny stand-in for LangChain chat models (only .ainvoke is used)."""
+    """tiny stand-in"""
 
     def __init__(self, responder) -> None:
         self._responder = responder
@@ -102,7 +101,7 @@ class FakeLLM:
 
     async def ainvoke(self, messages: list[Any]) -> _FakeAIMessage:
         self.calls.append(messages)
-        # conversational_delivery sends [SystemMessage, HumanMessage]
+        # send [SystemMessage, HumanMessage]
         human = None
         for m in reversed(messages):
             if m.__class__.__name__ == "HumanMessage" or getattr(m, "type", None) == "human":
@@ -116,23 +115,23 @@ _USER_ANSWER_RE = re.compile(r"User answer:\n\"\"\"\n(.*?)\n\"\"\"", re.DOTALL)
 
 
 def _extract_user_answer_from_prompt(prompt: str) -> str:
-    """Best-effort extraction of the user answer from the scorer template."""
+    """skips scorer"""
     if not prompt:
         return ""
     m = _USER_ANSWER_RE.search(prompt)
     if m:
         return (m.group(1) or "").strip()
-    # Fallback: if template changes, just use full prompt.
+    # fallback: use full prompt if template changes.
     return prompt.strip()
 
 
 def build_fake_scorer_llm() -> FakeLLM:
     def respond(user_prompt: str) -> str:
         answer = _extract_user_answer_from_prompt(user_prompt).lower()
-        # Low confidence path for clarification testing.
+        # clarify testing
         if "ambig" in answer:
             return json.dumps({"score": 1, "confidence": 0.3})
-        # Simple multilingual heuristics.
+        # heuristics, multilingual
         if "hampir setiap" in answer or "nearly every" in answer:
             return json.dumps({"score": 3, "confidence": 0.95})
         if "lebih dari setengah" in answer or "more than half" in answer:
@@ -141,7 +140,7 @@ def build_fake_scorer_llm() -> FakeLLM:
             return json.dumps({"score": 1, "confidence": 0.9})
         if "tidak sama sekali" in answer or "not at all" in answer:
             return json.dumps({"score": 0, "confidence": 0.95})
-        # Generic default: medium confidence.
+        # default: med.
         return json.dumps({"score": 0, "confidence": 0.6})
 
     return FakeLLM(responder=respond)
@@ -156,7 +155,7 @@ def build_fake_feedback_llm(language: str) -> FakeLLM:
     return FakeLLM(responder=respond)
 
 
-# Metadata simulation (frontend contract)
+# buat frontend
 
 
 def build_phq9_metadata(state: ConversationState) -> dict[str, Any] | None:
@@ -191,7 +190,7 @@ def build_phq9_metadata(state: ConversationState) -> dict[str, Any] | None:
         payload["progress"] = {"current": item_id, "total": NUM_ITEMS}
         return payload
 
-    # completed / declined / deferred_crisis: treat as plain chat
+    # treat as plain chat
     payload["active"] = False
     payload["progress"] = {"current": NUM_ITEMS, "total": NUM_ITEMS}
     return payload
@@ -215,15 +214,15 @@ def _print_assistant(state: ConversationState) -> None:
 
 
 async def _step(state: ConversationState, *, repo: Any, scorer_llm: Any, feedback_llm: Any) -> ConversationState:
-    # PHQ-9 trigger evaluation (idempotent).
+    # `eval idempotent`
     state = await phq9_check_node(state, repo=repo)
 
-    # Route to delivery if assessment is engaged.
+    # engage & route
     phq9 = state.get("phq9_state") or {}
     if phq9.get("phase") in ("offer_pending", "offered", "in_progress", "awaiting_clar"):
         state = await phq9_delivery_node(state, repo=repo, scorer_llm=scorer_llm, feedback_llm=feedback_llm)
 
-    # Persist assistant message to history so future language resolution has context.
+    # buat nyimpan msg ke history
     if state.get("response_draft"):
         state["messages"].append({"role": "assistant", "content": state["response_draft"]})
 
@@ -238,7 +237,7 @@ def _bootstrap_state(*, args: argparse.Namespace) -> ConversationState:
         language_pref=lang_pref,
     )
 
-    # Optional: force a starting PHQ-9 phase for quick testing.
+    # force start phase
     if args.bootstrap_phase and args.bootstrap_phase != "idle":
         phq9 = empty_phq9_state()
         phq9["phase"] = args.bootstrap_phase  # type: ignore[assignment]
@@ -269,7 +268,7 @@ async def main() -> int:
     state = _bootstrap_state(args=args)
 
     scorer_llm = build_fake_scorer_llm()
-    # Feedback language should follow resolved language once set.
+    # set resolved lang
     feedback_llm = build_fake_feedback_llm(args.language if args.language != "auto" else "id")
 
     print("Assessment CLI bot (PHQ-9)")
@@ -288,12 +287,12 @@ async def main() -> int:
             print("Exiting.")
             return 0
 
-        # New turn.
+        # `ngeleste`
         state["session_turn"] = int(state.get("session_turn", 0)) + 1
         state["current_message"] = user_text
         state["messages"].append({"role": "user", "content": user_text})
 
-        # Clear previous response.
+        # clear prev. response
         state.pop("response_draft", None)
 
         state = await _step(state, repo=repo, scorer_llm=scorer_llm, feedback_llm=feedback_llm)

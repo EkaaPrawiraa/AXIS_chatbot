@@ -1,4 +1,4 @@
-"""LangGraph wiring."""
+"""wiring."""
 
 from __future__ import annotations
 
@@ -51,7 +51,7 @@ NodeFn = Callable[[ConversationState], Awaitable[ConversationState]]
 
 
 async def _load_profile_context(user_id: str) -> dict[str, str | None] | None:
-    """Load lightweight personalization fields without changing chat payloads."""
+    """load fields"""
     try:
         from agentic.memory.pg_vector.client import get_pool  # noqa: PLC0415
 
@@ -83,13 +83,7 @@ async def _load_profile_context(user_id: str) -> dict[str, str | None] | None:
 
 
 async def _load_mood_context(pool: Any, user_id: str) -> dict[str, str | None] | None:
-    """Load today's mood score + a short recent trend for prompt personalization.
-
-    Same Postgres pool/database as `_load_profile_context` (`user_moods`
-    table, populated by the dashboard's daily mood check-in) — dates are
-    compared against Asia/Jakarta "today" to match how the chat service
-    itself stores `mood_date`.
-    """
+    """load mood & trend"""
     try:
         rows = await pool.fetch(
             """
@@ -121,7 +115,7 @@ def _today_jakarta_date() -> str:
 
 
 async def _turn_init_node(state: ConversationState) -> ConversationState:
-    """Clear per-turn transient keys so outputs don't carry across turns."""
+    """clear transients"""
     state["response_draft"] = None
     state["final_response"] = None
 
@@ -139,7 +133,7 @@ async def _turn_init_node(state: ConversationState) -> ConversationState:
         if profile_context:
             state["profile_context"] = profile_context
 
-    # Sync profile fields into Neo4j on the first turn when possible.
+    # sync fields into db on first turn
     if (state.get("session_turn") or 0) == 0:
         if user_id:
             try:
@@ -158,7 +152,7 @@ async def _turn_init_node(state: ConversationState) -> ConversationState:
 
 
 def route_entry(state: ConversationState) -> str:
-    """First-hop router: voice or text turn."""
+    """voice or text turn"""
     voice = state.get("voice_state") or {}
     if voice.get("audio_input") is not None:
         return "speech_to_text"
@@ -166,7 +160,7 @@ def route_entry(state: ConversationState) -> str:
 
 
 def route_after_input_guardrail(state: ConversationState) -> str:
-    """Route after input guardrail."""
+    """route guardrail"""
     verdict = state.get("input_guardrail") or {}
     decision = verdict.get("decision")
     reason = verdict.get("reason", "")
@@ -174,17 +168,14 @@ def route_after_input_guardrail(state: ConversationState) -> str:
         return "crisis_triage"
     if decision == "block":
         if reason == "off_scope":
-            # Deterministic refusal already written into final_response by
-            # input_guardrail_node. Skip the LLM entirely and let
-            # output_guardrail (which honors crisis_escalated) pass it
-            # through to the voice/session-end fork.
+            # skip llm, pass to voice/sesend
             return "output_guardrail"
         return "response_generator"  # jailbreak: let LLM compose a safe refusal
     return "linguistic_enrichment"
 
 
 def route_after_output_finalized(state: ConversationState) -> str:
-    """Route into voice output when the turn requested it."""
+    """voice out when req'd."""
     voice = state.get("voice_state") or {}
     if voice.get("output_modality") in ("voice", "both"):
         return "speech_adapter"
@@ -192,14 +183,14 @@ def route_after_output_finalized(state: ConversationState) -> str:
 
 
 def route_after_crisis_check(state: ConversationState) -> str:
-    """Route based on Layer 3 pre-gen verdict."""
+    """route l3 pre-gen"""
     if state.get("safety_flag") == "crisis":
         return "crisis_triage"
     return "memory_retrieval"
 
 
 def route_after_dialogue(state: ConversationState) -> str:
-    """Route PHQ-9 active phases to the PHQ-9 delivery node."""
+    """route to node"""
     phq9 = state.get("phq9_state") or {}
     phase = phq9.get("phase", "idle")
     if phase == "offer_pending":
@@ -210,20 +201,14 @@ def route_after_dialogue(state: ConversationState) -> str:
 
 
 def route_after_phq9_delivery(state: ConversationState) -> str:
-    """Hand PHQ offer declines to the LLM instead of ending the turn.
-
-    When the user declines the offer, _node_decision no longer writes a
-    hardcoded response_draft; it only sets phq9_declined_note. Without
-    this reroute the turn would reach output_guardrail with no draft and
-    fall back to the generic safe reply.
-    """
+    """`skip offer decl`"""
     if state.get("phq9_declined_note") and not state.get("response_draft"):
         return "response_generator"
     return "output_guardrail"
 
 
 def route_after_output_guardrail(state: ConversationState) -> str:
-    """Route post-generation safety outcomes."""
+    """safety outcomes."""
     phq9 = state.get("phq9_state") or {}
     if state.get("safety_flag") in ("crisis", "escalate"):
         return "crisis_triage"
@@ -259,7 +244,7 @@ def build_graph(
     response_generator_node_fn: NodeFn | None = None,
     session_end_node_fn: NodeFn | None = None,
 ) -> Any:
-    """Build and compile the LangGraph DAG."""
+    """build & compile LangGraph DAG"""
     from langgraph.graph import END, StateGraph
 
     audit = audit_logger or NullGuardrailLogger()
@@ -375,7 +360,7 @@ def build_graph(
     g.add_node("phq9_delivery", phq9_delivery_wrapped)
     g.add_node("response_generator", response_wrapped)
     g.add_node("output_guardrail", output_guard_wrapped)
-    # Crisis handlers converge before session end.
+    # converge end
     g.add_node("crisis_triage", crisis_triage_wrapped)
     g.add_node("crisis_escalation", crisis_escalation_wrapped)
     g.add_node("crisis_empathy", crisis_empathy_wrapped)
@@ -476,7 +461,7 @@ def build_graph(
 
 
 async def _noop_node(state: ConversationState) -> ConversationState:
-    """Pass-through used when an upstream module is not wired up yet."""
+    """`pass`"""
     return state
 
 

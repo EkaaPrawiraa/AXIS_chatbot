@@ -1,4 +1,4 @@
-"""Centralized configuration registries that nodes can import without."""
+"""buat nyimpen config"""
 
 from agentic.config.llm_models import (
     LLMSpec,

@@ -1,4 +1,4 @@
-"""Async Neo4j driver wrapper for the Python AI agent."""
+"""async neo4j driver wrapper"""
 
 from __future__ import annotations
 
@@ -25,13 +25,7 @@ class Neo4jConfig:
 
     @classmethod
     def from_env(cls) -> "Neo4jConfig":
-        """Load config from environment variables.
-        Set these in your .env file:
-            NEO4J_URI=bolt://localhost:7687
-            NEO4J_USERNAME=neo4j
-            NEO4J_PASSWORD=yourpassword
-            NEO4J_DATABASE=neo4j
-        """
+        """Load config from env."""
         return cls(
             uri=os.getenv("NEO4J_URI", "bolt://localhost:7687"),
             username=os.getenv("NEO4J_USERNAME", "neo4j"),
@@ -43,37 +37,24 @@ class Neo4jConfig:
 
 
 class Neo4jClient:
-    """
-    Async Neo4j client. Create one instance at agent startup and share it
-    across all LangGraph nodes via dependency injection or a module-level
-    singleton (see get_client() below).
-
-    Usage:
-        client = await Neo4jClient.create()
-        await client.execute_write(query, params)
-        await client.close()
-
-    Or use the async context manager:
-        async with Neo4jClient.lifespan() as client:
-            ...
-    """
+    """client = await Neo4jClient.create()     await client.execute_write(query, params)     await client.close()"""
 
     def __init__(self, driver: AsyncDriver, config: Neo4jConfig) -> None:
         self._driver = driver
         self._config = config
 
-    # Factory.
+    # buat factory
 
     @classmethod
     async def create(cls, config: Neo4jConfig | None = None) -> "Neo4jClient":
-        """Create the client and verify connectivity before returning."""
+        """init client, verify conn."""
         cfg = config or Neo4jConfig.from_env()
         driver = AsyncGraphDatabase.driver(
             cfg.uri,
             auth=(cfg.username, cfg.password),
             max_connection_pool_size=cfg.max_connection_pool_size,
         )
-        # Verify the connection is live.
+        # check conn
         await driver.verify_connectivity()
         logger.info("Neo4j connected: %s (db=%s)", cfg.uri, cfg.database)
         return cls(driver, cfg)
@@ -83,21 +64,21 @@ class Neo4jClient:
     async def lifespan(
         cls, config: Neo4jConfig | None = None
     ) -> AsyncGenerator["Neo4jClient", None]:
-        """Async context manager for use in FastAPI lifespan or test fixtures."""
+        """async lifespan"""
         client = await cls.create(config)
         try:
             yield client
         finally:
             await client.close()
 
-    # Lifecycle.
+    # init state
 
     async def close(self) -> None:
         await self._driver.close()
         logger.info("Neo4j driver closed.")
 
     async def health_check(self) -> bool:
-        """Returns True if the database is reachable."""
+        """db reachable?"""
         try:
             await self._driver.verify_connectivity()
             return True
@@ -105,11 +86,11 @@ class Neo4jClient:
             logger.warning("Neo4j health check failed: %s", exc)
             return False
 
-    # Session helpers.
+    # sess helpers
 
     @asynccontextmanager
     async def write_session(self) -> AsyncGenerator[AsyncSession, None]:
-        """Yields an async write session. Always use as an async context manager."""
+        """async with"""
         async with self._driver.session(
             database=self._config.database,
             default_access_mode="WRITE",
@@ -118,24 +99,21 @@ class Neo4jClient:
 
     @asynccontextmanager
     async def read_session(self) -> AsyncGenerator[AsyncSession, None]:
-        """Yields an async read session."""
+        """initiate read"""
         async with self._driver.session(
             database=self._config.database,
             default_access_mode="READ",
         ) as session:
             yield session
 
-    # Execute helpers.
+    # exec helpers
 
     async def execute_write(
         self,
         query: str,
         params: dict[str, Any] | None = None,
     ) -> list[dict[str, Any]]:
-        """
-        Run a write query and return all records as a list of dicts.
-        Handles transaction management internally.
-        """
+        """run_write_query() return records"""
         async with self.write_session() as session:
             result = await session.run(query, params or {})
             records = await result.data()
@@ -146,9 +124,7 @@ class Neo4jClient:
         query: str,
         params: dict[str, Any] | None = None,
     ) -> list[dict[str, Any]]:
-        """
-        Run a read query and return all records as a list of dicts.
-        """
+        """run read query, return dict list."""
         async with self.read_session() as session:
             result = await session.run(query, params or {})
             records = await result.data()
@@ -159,10 +135,7 @@ class Neo4jClient:
         query: str,
         params: dict[str, Any] | None = None,
     ) -> dict[str, Any] | None:
-        """
-        Run a write query and return only the first record, or None.
-        Useful for MERGE + RETURN patterns.
-        """
+        """write query, return first record, or None."""
         records = await self.execute_write(query, params)
         return records[0] if records else None
 
@@ -171,34 +144,25 @@ class Neo4jClient:
         query: str,
         params: dict[str, Any] | None = None,
     ) -> dict[str, Any] | None:
-        """Run a read query and return only the first record, or None."""
+        """`run read qry & return 1st record or None`"""
         records = await self.execute_read(query, params)
         return records[0] if records else None
 
 
-# Module-level singleton
-# Initialized once in agentic/server/main.py on startup.
-# All LangGraph nodes import get_client() to access the shared instance.
+# singleton agen
 
 _client: Neo4jClient | None = None
 
 
 async def init_client(config: Neo4jConfig | None = None) -> Neo4jClient:
-    """
-    Call once at application startup:
-        from agentic.memory.neo4j_client import init_client
-        client = await init_client()
-    """
+    """init client"""
     global _client
     _client = await Neo4jClient.create(config)
     return _client
 
 
 def get_client() -> Neo4jClient:
-    """
-    Return the shared client instance. Raises RuntimeError if init_client()
-    has not been called yet.
-    """
+    """retornin client instansie. lupa coba init_client() dulu."""
     if _client is None:
         raise RuntimeError(
             "Neo4j client not initialized. "
@@ -208,42 +172,16 @@ def get_client() -> Neo4jClient:
 
 
 async def close_client() -> None:
-    """Call at application shutdown."""
+    """call shutdown"""
     global _client
     if _client is not None:
         await _client.close()
         _client = None
 
 
-# Idle-flush long-term memory worker
-#
-# Design goal: keep the knowledge graph up to date even when a user drifts
-# away from an open session without calling session_end.py. Every hour we
-# scan for sessions whose last activity is older than IDLE_THRESHOLD but
-# that still have ended_at = NULL and no :Memory summary attached, and we
-# hand them to a caller-supplied flush callback.
-#
-# This replaces the earlier implicit assumption that ``session_end`` always
-# fires on the happy path; mobile clients drop connections all the time, so
-# we cannot rely on it. The worker is safe to run alongside a normal
-# session_end call because:
-#
-#   * the memory writer already dedups on (user_id, summary, embedding), so
-#     re-running a flush for a session that already has a Memory is a no-op;
-#   * the worker filters on `s.ended_at IS NULL AND NOT EXISTS { HAS_MEMORY }`
-#     so sessions that completed cleanly are skipped by construction;
-#   * all writes go through execute_write which is transactional per call.
-#
-# The callback signature is intentionally minimal:
-#
-#     async def flush(user_id: str, session_id: str) -> None: ...
-#
-# so that whatever agent-side orchestration owns summarisation (typically
-# ``agentic.agent.nodes.session_end``) can be plugged in without the client
-# taking a hard dependency on the LangGraph layer.
+# Idle-flush long-term mem worker
 
-# Default thresholds. Override via env vars or by passing arguments to
-# start_idle_memory_worker directly.
+# override via env vars or args
 DEFAULT_IDLE_FLUSH_INTERVAL_SECONDS: int = 60 * 60   # run every hour
 DEFAULT_USER_IDLE_THRESHOLD_MINUTES: int = 60        # consider idle after 60 min
 
@@ -255,19 +193,7 @@ async def find_idle_sessions(
     idle_minutes: int = DEFAULT_USER_IDLE_THRESHOLD_MINUTES,
     limit: int = 100,
 ) -> list[dict[str, str]]:
-    """
-    Return sessions whose owner has been idle for at least ``idle_minutes``
-    and that have not yet been summarised into a :Memory node.
-
-    "Idle" is inferred from two signals:
-      * Session.last_activity (refreshed by the chat handler on every
-        inbound message). If the property is missing we fall back to
-        Session.started_at.
-      * Absence of a (:Session)-[:CONTAINS_MEMORY]->(:Memory) edge.
-
-    Sessions with ended_at already set are skipped -- those already flushed
-    through the normal session_end path.
-    """
+    """for s in sessions:     if s.owner.is_idle() and not s.is_summarized():         s.summarize_memory()"""
     client = get_client()
     records = await client.execute_read(
         """
@@ -297,14 +223,7 @@ async def find_idle_sessions(
 
 
 async def mark_session_flushed(session_id: str) -> None:
-    """
-    Stamp ``flushed_at`` on the session so the worker does not re-enqueue
-    it on the next tick even if the caller chose not to set ended_at
-    (e.g. because the user might still come back and add more turns).
-    The dedup filter in ``find_idle_sessions`` leans on the :Memory edge,
-    but ``flushed_at`` is a lightweight belt-and-braces marker for logs
-    and debugging.
-    """
+    """set `flushed_at`"""
     await get_client().execute_write(
         """
         MATCH (s:Session {id: $session_id})
@@ -319,15 +238,7 @@ async def run_idle_memory_flush(
     idle_minutes: int = DEFAULT_USER_IDLE_THRESHOLD_MINUTES,
     batch_size: int = 100,
 ) -> dict[str, int]:
-    """
-    One sweep: find idle sessions and invoke ``flush(user_id, session_id)``
-    for each. Returns observability counters {"found": N, "flushed": M,
-    "failed": K}.
-
-    The callback is awaited sequentially so a burst of idle sessions does
-    not overload whatever downstream summariser is being called. Failures
-    are logged but do not abort the sweep.
-    """
+    """find idle, flush, log failures"""
     sessions = await find_idle_sessions(
         idle_minutes=idle_minutes,
         limit=batch_size,
@@ -353,7 +264,7 @@ async def run_idle_memory_flush(
     return {"found": len(sessions), "flushed": flushed, "failed": failed}
 
 
-# Keep a handle on the worker task so callers can shut it down cleanly.
+# keep track of worker task
 _idle_worker_task: asyncio.Task[None] | None = None
 
 
@@ -363,7 +274,7 @@ async def _idle_memory_worker_loop(
     idle_minutes: int,
     batch_size: int,
 ) -> None:
-    """The long-running loop. Not meant to be awaited directly."""
+    """loop ngikut"""
     logger.info(
         "Idle memory worker started: interval=%ds idle_threshold=%dmin",
         interval_seconds, idle_minutes,
@@ -377,7 +288,7 @@ async def _idle_memory_worker_loop(
                     batch_size=batch_size,
                 )
             except Exception as exc:
-                # Never let one bad sweep kill the whole worker.
+                # skip bad sweep.
                 logger.exception("Idle memory worker sweep errored: %s", exc)
             await asyncio.sleep(interval_seconds)
     except asyncio.CancelledError:
@@ -391,13 +302,7 @@ def start_idle_memory_worker(
     idle_minutes: int = DEFAULT_USER_IDLE_THRESHOLD_MINUTES,
     batch_size: int = 100,
 ) -> asyncio.Task[None]:
-    """
-    Start the idle-flush background worker. Call once at application
-    startup (e.g. from the FastAPI lifespan or agentic.server.main).
-    Returns the asyncio.Task so the caller can cancel it.
-
-    If a worker is already running the existing task is returned unchanged.
-    """
+    """start idle-flush bg worker"""
     global _idle_worker_task
     if _idle_worker_task is not None and not _idle_worker_task.done():
         logger.warning("Idle memory worker already running, returning existing task.")
@@ -416,7 +321,7 @@ def start_idle_memory_worker(
 
 
 async def stop_idle_memory_worker() -> None:
-    """Cancel the idle memory worker if it is running."""
+    """cancel idle mem worker"""
     global _idle_worker_task
     task = _idle_worker_task
     _idle_worker_task = None

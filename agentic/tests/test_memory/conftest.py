@@ -1,4 +1,4 @@
-"""Shared fixtures for the Neo4j KG writer/reader integration tests."""
+"""shared_fixtures"""
 
 from __future__ import annotations
 
@@ -15,10 +15,7 @@ from agentic.memory import neo4j_client as nc
 
 
 def _neo4j_reachable() -> bool:
-    """
-    Cheap reachability probe. We import the driver lazily so the module
-    still collects cleanly if the neo4j package is missing.
-    """
+    """`lazy driver import`"""
     try:
         from neo4j import AsyncGraphDatabase  # noqa: F401
     except Exception:
@@ -50,15 +47,7 @@ neo4j_required = pytest.mark.skipif(
 )
 
 
-# Client fixture
-#
-# We deliberately scope this per-function. pytest-asyncio 0.24 in `auto`
-# mode creates a fresh event loop for every test function, and the Neo4j
-# async driver binds its internal Futures to whichever loop was running
-# when it was constructed. A session-scoped driver therefore ends up
-# attached to a dead loop on the second test and raises
-# "Future attached to a different loop". Re-creating the driver per test
-# costs a few ms but keeps every async primitive on the right loop.
+# `skip klo error`
 
 @pytest_asyncio.fixture
 async def neo4j_client() -> AsyncIterator[nc.Neo4jClient]:
@@ -72,15 +61,11 @@ async def neo4j_client() -> AsyncIterator[nc.Neo4jClient]:
         await nc.close_client()
 
 
-# Per-test namespace with User + Sessions
+# buat ns
 
 @pytest_asyncio.fixture
 async def test_namespace(neo4j_client: nc.Neo4jClient) -> AsyncIterator[dict]:
-    """
-    Create an ephemeral (User, 2 Sessions) triple tagged with a unique
-    namespace id. After the test completes every node carrying the tag is
-    removed along with its edges.
-    """
+    """make tripple ephemeral"""
     ns         = f"pytest-{uuid.uuid4()}"
     user_id    = f"{ns}-user"
     session_id = f"{ns}-sess-01"
@@ -145,8 +130,7 @@ async def test_namespace(neo4j_client: nc.Neo4jClient) -> AsyncIterator[dict]:
             "session_id_2": session_id_2,
         }
     finally:
-        # Blow away everything with our tag, plus any non-tagged nodes we
-        # attached to it via a relationship during the test.
+        # tag blow away, non-tag nodes
         await neo4j_client.execute_write(
             """
             MATCH (n)
@@ -159,11 +143,7 @@ async def test_namespace(neo4j_client: nc.Neo4jClient) -> AsyncIterator[dict]:
 
 @pytest_asyncio.fixture
 async def seed_topic(neo4j_client: nc.Neo4jClient, test_namespace: dict) -> str:
-    """
-    Topic writes are owned by the Go memory service (ADR 002), but our
-    tests for RELATED_TO_TOPIC / HAS_RECURRING_THEME need a Topic to link
-    to. Create one inside the namespace so the cleanup hook reaps it.
-    """
+    """Topic needed."""
     ns = test_namespace["namespace"]
     topic_id = f"{ns}-topic-academic"
     await neo4j_client.execute_write(

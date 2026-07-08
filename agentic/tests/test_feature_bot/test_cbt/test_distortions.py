@@ -1,6 +1,4 @@
-"""
-Tests for the cognitive distortion taxonomy and lightweight detector.
-"""
+"""test distorsiun otak"""
 
 from __future__ import annotations
 

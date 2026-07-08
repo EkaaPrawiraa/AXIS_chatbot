@@ -1,4 +1,4 @@
-"""Tests for the speech_adapter node."""
+"""test node"""
 
 from __future__ import annotations
 
@@ -96,7 +96,7 @@ class TestNode:
         assert voice["tts_model"] == "v3"
         assert voice["speech_response_tags"]
         assert "[softly]" in voice["speech_response_tags"]
-        # Plain version safety net for non-v3 clients
+        # safety_net
         assert voice["speech_response"]
         assert "[" not in voice["speech_response"]
         assert audit.has_type("speech_adapted_v3")

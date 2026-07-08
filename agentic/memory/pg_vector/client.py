@@ -1,4 +1,4 @@
-"""Async PostgreSQL connection pool for the pgvector mirror tables."""
+"""async pg vector mirror tables"""
 
 from __future__ import annotations
 
@@ -37,11 +37,7 @@ _unavailable: bool = False
 
 
 async def get_pool():
-    """
-    Return the singleton asyncpg pool. Returns ``None`` when asyncpg
-    is not installed or the database is unreachable; callers must
-    handle the None case.
-    """
+    """return None"""
     global _pool, _unavailable
 
     if _pool is not None:
@@ -86,7 +82,7 @@ async def get_pool():
 
 
 async def close_pool() -> None:
-    """Close the pool. Safe to call multiple times."""
+    """close pool, safe to call."""
     global _pool, _unavailable
     if _pool is not None:
         try:
@@ -97,7 +93,7 @@ async def close_pool() -> None:
 
 
 async def is_available() -> bool:
-    """Cheap probe so callers can branch without a try / except dance."""
+    """skip try/except"""
     pool = await get_pool()
     return pool is not None
 

@@ -1,6 +1,4 @@
-"""
-Shared fakes for the voice pipeline tests.
-"""
+"""fake data"""
 
 from __future__ import annotations
 
@@ -68,9 +66,7 @@ def fake_stt() -> FakeSTTProvider:
 
 @pytest.fixture
 def fake_gemini_stt() -> FakeSTTProvider:
-    """Fake for the Gemini STT fallback tier — same protocol as fake_stt,
-    kept as a separate fixture/instance so a test can assert on it
-    independently of the primary provider's call count."""
+    """fake_stt_fallback"""
     return FakeSTTProvider(raise_on_call=True)
 
 
@@ -183,9 +179,7 @@ def fake_openai_tts() -> FakeOpenAITTS:
 
 @pytest.fixture
 def fake_gemini_tts() -> FakeGeminiTTS:
-    """Fake for the Gemini TTS fallback tier, mirroring fake_openai_tts —
-    keeps tests hermetic (no real network call) regardless of whether a
-    real GOOGLE_API_KEY happens to be present in the environment."""
+    """fake_openai_tts"""
     return FakeGeminiTTS(error="gemini not configured for this test")
 
 
@@ -202,7 +196,7 @@ class _FakeAIMessage:
 
 @dataclass
 class FakeAdapterLLM:
-    """Fake speech adapter LLM. Either echoes a prepared reply or strips formality."""
+    """fake speech, echo/rekt formality"""
 
     reply: str | None = None
     error: bool = False
@@ -214,7 +208,7 @@ class FakeAdapterLLM:
             raise RuntimeError("simulated adapter failure")
         if self.reply is not None:
             return _FakeAIMessage(self.reply)
-        # Default heuristic: take the user content and convert "saya" -> "aku".
+        # tukar 'saya' ke 'aku
         user_text = ""
         for m in messages:
             cls = m.__class__.__name__

@@ -1,4 +1,4 @@
-"""Lifecycle operations for non-thought memory nodes."""
+"""skip"""
 
 from __future__ import annotations
 
@@ -22,7 +22,7 @@ async def reappraise_experience(
     new_experience: ExperienceInput,
     reason: str = "reappraisal",
 ) -> str:
-    """Append a new interpretation while keeping the old experience."""
+    """append new exp"""
     _require(old_experience_id, "old_experience_id")
     _require(new_experience.description, "new_experience.description")
     _require(new_experience.user_id, "new_experience.user_id")
@@ -112,7 +112,7 @@ async def deactivate_trigger(
     source_message_id: str | None = None,
     reason: str = "resolved",
 ) -> bool:
-    """Deactivate a trigger and archive its vector row."""
+    """deactivate trigger, archive vector row"""
     _require(trigger_id, "trigger_id")
     _require(user_id, "user_id")
     _require(session_id, "session_id")
@@ -156,7 +156,7 @@ async def replace_behavior(
     new_behavior: BehaviorInput,
     reason: str = "replacement",
 ) -> str:
-    """Close an old behavior and link it to the replacement behavior."""
+    """close old behav link to repl."""
     _require(old_behavior_id, "old_behavior_id")
     _require(new_behavior.description, "new_behavior.description")
     _require(new_behavior.user_id, "new_behavior.user_id")

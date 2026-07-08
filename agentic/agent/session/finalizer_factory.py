@@ -1,4 +1,4 @@
-"""Concrete implementations of the four protocols declared in."""
+"""concrete impls"""
 
 from __future__ import annotations
 
@@ -24,7 +24,7 @@ logger = logging.getLogger(__name__)
 
 
 def _strip_thinking(text: str) -> str:
-    """Remove <think>...</think> blocks that some models emit before the answer."""
+    """rm <think>...</think> before ans"""
     text = re.sub(r"<think>.*?</think>", "", text, flags=re.DOTALL)
     return text.strip()
 
@@ -242,7 +242,7 @@ def _should_write_experience(item: Mapping[str, Any]) -> bool:
         return False
     significance = _fact_float(item.get("significance"), 0.0)
     valence = abs(_fact_float(item.get("valence"), 0.0))
-    # Mild events are only useful when they carry clear affective weight.
+    # skip mild events
     return significance >= 0.45 or (significance >= 0.35 and valence >= 0.65)
 
 
@@ -250,12 +250,10 @@ def _should_write_thought(item: Mapping[str, Any]) -> bool:
     content = _lower_compact(item.get("content"))
     if not content or _is_control_memory_text(content):
         return False
-    # Short insults/probes tend to pollute long-term retrieval, while real
-    # automatic thoughts usually include a self/world belief or an object.
+    # skip long-term
     if len(content) < 16 and not re.search(r"\b(?:aku|saya|teman|orang|keluarga)\b", content):
         return False
-    # Near-zero conviction ("mungkin doang", stray hedges the LLM still
-    # tagged as a thought) shouldn't accumulate as durable cognitions.
+    # mungkin nggak" "stray hedges" "LTM" "durable cognitions
     believability = _fact_float(item.get("believability"), 0.5)
     return believability >= 0.3
 
@@ -313,7 +311,7 @@ def _summary_importance(summary: str, extracted: Sequence[Mapping[str, Any]]) ->
 
 
 def make_history_loader() -> HistoryLoader:
-    """Load ordered session messages from Postgres."""
+    """load from postgres"""
 
     async def _loader(
         *,
@@ -356,7 +354,7 @@ def make_history_loader() -> HistoryLoader:
 
 
 def make_session_metadata_loader() -> SessionMetadataLoaderFn:
-    """Return a safe session metadata loader."""
+    """load safe session."""
 
     async def _meta_loader(
         *, session_id: str, user_id: str,
@@ -398,7 +396,7 @@ def make_session_metadata_loader() -> SessionMetadataLoaderFn:
 
 
 def make_user_context_loader() -> UserContextLoaderFn:
-    """Return a safe cross-session KG context loader."""
+    """load safe cross-session KG context"""
 
     async def _ctx_loader(*, user_id: str) -> dict:
         try:
@@ -451,7 +449,7 @@ def make_user_context_loader() -> UserContextLoaderFn:
 
 
 def make_summarizer() -> SummarizerFn:
-    """Build the session summary callable."""
+    """build summary callable"""
 
     async def _summarizer(
         *,
@@ -490,7 +488,7 @@ def make_summarizer() -> SummarizerFn:
 
 
 def make_kg_extractor() -> KGExtractorFn:
-    """Return a safe KG extraction callable."""
+    """safe_extraction()"""
 
     async def _extractor(
         *,
@@ -639,10 +637,10 @@ def make_kg_extractor() -> KGExtractorFn:
 
 
 def make_kg_writer() -> KGWriterFn:
-    """Write Memory, extracted KG nodes, and safe relationship edges."""
+    """write mem, extract kg nodes, safe rel edges"""
 
     async def _ensure_kg_anchors(user_id: str, session_id: str) -> None:
-        """Ensure Neo4j has User and Session anchors before writes."""
+        """ensure anchors before writes"""
         from agentic.memory.knowledge_graph.kg_writer import ensure_user_node
         from agentic.memory.neo4j_client import get_client
         from agentic.memory.pg_vector.client import get_pool
@@ -701,7 +699,7 @@ def make_kg_writer() -> KGWriterFn:
             return None
 
     async def _safe_link(coro: Any, label: str, user_id: str, session_id: str) -> bool:
-        """Execute one relationship write without failing the batch."""
+        """exec one rel write no fail batch"""
         try:
             await coro
             return True
@@ -790,14 +788,7 @@ def make_kg_writer() -> KGWriterFn:
                     user_id, session_id, exc,
                 )
 
-            # Mirror the summary back onto the Session node itself so the
-            # recency signal in context_builder._fetch_recency (which
-            # filters on s.summary IS NOT NULL AND s.ended_at IS NOT NULL)
-            # can surface this session in subsequent turns. Without this
-            # write, the recency block would stay empty forever in
-            # production — the :Memory node alone is invisible to that
-            # query. Safe to run even when the Memory write above failed:
-            # the Session anchor is guaranteed by _ensure_kg_anchors.
+            # Mirror summary onto session node.
             try:
                 from agentic.memory.neo4j_client import get_client as _gc
                 await _gc().execute_write(
@@ -850,8 +841,7 @@ def make_kg_writer() -> KGWriterFn:
                     old_thought_id = _clean_optional_str(
                         item.get("supersedes_thought_id")
                     )
-                    # Embedding-based dedup: if LLM did not flag a supersession
-                    # but a very similar thought already exists, auto-supersede it.
+                    # auto-supersede it if LLM didn't flag a supersession.
                     if not old_thought_id and emb is not None:
                         try:
                             from agentic.memory.pg_vector import search_thought
@@ -1299,7 +1289,7 @@ def make_kg_writer() -> KGWriterFn:
 
 
 def build_session_finalizer() -> SessionFinalizer:
-    """Assemble the production session finalizer."""
+    """finalize production"""
     return SessionFinalizer(
         history_loader=make_history_loader(),
         summarizer=make_summarizer(),

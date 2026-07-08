@@ -1,16 +1,4 @@
-"""
-Tests for the LLM_PROVIDER-driven TTS/STT fallback ordering and the
-auto-selected Gemini TTS style presets.
-
-Context: the voice pipeline used to hardcode ElevenLabs -> OpenAI ->
-Gemini for TTS and OpenAI -> Gemini for STT, completely independent of
-which LLM_PROVIDER the deployment actually runs on. A deployment with
-LLM_PROVIDER=gemini and no OpenAI key configured would always burn a
-guaranteed-to-fail OpenAI attempt before ever reaching Gemini. Per
-AGENTIC voice-fix decisions, ElevenLabs stays tier 0 for TTS (unrelated
-to LLM_PROVIDER); the two tiers behind it are ordered by whichever
-provider backs the text LLM.
-"""
+"""Tests for LLM_PROVIDER-driven TTS/STT and auto-Gemini TTS."""
 from __future__ import annotations
 
 import pytest
@@ -85,7 +73,7 @@ class TestTTSProviderOrdering:
         )
         voice = out["voice_state"]
         assert voice["tts_provider"] == "gemini_tts"
-        # OpenAI must never have been called -- Gemini succeeded first.
+        # skip
         assert fake_openai_tts.calls == []
         assert fake_gemini_tts.calls
 
@@ -107,15 +95,13 @@ class TestTTSProviderOrdering:
         )
         voice = out["voice_state"]
         assert voice["tts_provider"] == "openai_tts1"
-        # Gemini must never have been called -- OpenAI succeeded first.
+        # skip init state
         assert fake_gemini_tts.calls == []
         assert fake_openai_tts.calls
 
 
 class TestSelectTTSStyle:
-    """_select_tts_style now returns a bool -- whether this turn needs the
-    extra empathetic modifier layered on TOP of the active voice
-    character's own base style (see build_gemini_director_notes)."""
+    """select_tts_style bool"""
 
     def test_crisis_safety_flag_is_empathetic(self) -> None:
         state = empty_conversation_state(user_id="u", session_id="s")
@@ -197,20 +183,12 @@ class TestGeminiTierResolution:
         tier = resolve_gemini_tier("gemini-2.5-flash-preview-tts")
         assert resolve_gemini_voice_name(tier, "wanita") == "Leda"
         assert resolve_gemini_voice_name(tier, "pria") == "Charon"
-        # Missing/unrecognized gender defaults to female.
+        # default gender to female
         assert resolve_gemini_voice_name(tier, None) == "Leda"
 
 
 class TestResolveGeminiVoiceEntry:
-    """
-    End-to-end check of the path the Settings tier+gender picker actually
-    exercises: the frontend sends the resolved Gemini prebuilt voice name
-    (e.g. "Enceladus") directly as voice_id. That id isn't a catalog
-    persona, so VoiceCatalog.get() falls into its "unknown voice_id -- use
-    as a raw provider id" path (persona="user-selected"), and
-    _resolve_gemini_voice_entry must then use it AS-IS rather than
-    substituting the tier's default female voice.
-    """
+    """check voice_id"""
 
     def test_raw_voice_id_from_picker_is_used_as_is(self) -> None:
         catalog = load_voice_catalog(force_reload=True)
@@ -236,16 +214,7 @@ class TestResolveGeminiVoiceEntry:
         assert resolved.id == "Puck"  # gemini-3.1-flash-tts's default (female) voice
 
     def test_foreign_provider_voice_id_falls_back_to_tier_default(self) -> None:
-        """"alloy" (ElevenLabs/OpenAI's own default voice_id, and the
-        frontend's literal default for any profile that hasn't touched
-        the voice-character picker yet) isn't a catalog persona either,
-        so it also lands in the "user-selected" fallback path -- but it
-        is NOT a real Gemini voice name, and passing it straight through
-        gets flatly rejected by Gemini's API ("Voice name alloy is not
-        supported"). Live-verified in production: this was the reason a
-        default profile's ElevenLabs-fails -> Gemini-fallback leg always
-        failed too, cascading down to the OpenAI leg on every single
-        request."""
+        """alloy" falls in "user-selected" fallback."""
         catalog = load_voice_catalog(force_reload=True)
         voice_entry = catalog.get("alloy", language="id")
         assert voice_entry.persona == "user-selected"
@@ -255,11 +224,7 @@ class TestResolveGeminiVoiceEntry:
 
 
 class TestGeminiTierGetsDirectorNotesAndTags:
-    """End-to-end check that _try_gemini actually wires the character's
-    Director's Notes (Style/Accent/Pacing) into `instructions`, and runs
-    the plain text through _inject_gemini_audio_tags before handing it to
-    GeminiTTSClient.synthesize -- not just that resolve/build helpers work
-    in isolation (covered above)."""
+    """end-to-end check" "wires director notes" "runs audio" "hands to client"""
 
     @pytest.mark.asyncio
     async def test_director_notes_reflect_the_resolved_character(
@@ -336,8 +301,7 @@ class TestGeminiTierGetsDirectorNotesAndTags:
         self, audit, fake_elevenlabs, fake_openai_tts, fake_gemini_tts, voice_catalog,
         monkeypatch,
     ) -> None:
-        """A broken tag-injection LLM must never block synthesis -- Gemini
-        still gets the plain, untagged text."""
+        """skip block"""
         monkeypatch.setenv("LLM_PROVIDER", "gemini")
         fake_elevenlabs.error = "503 Service Unavailable"
         fake_gemini_tts.error = None

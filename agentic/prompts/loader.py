@@ -1,4 +1,4 @@
-"""Read-side helper that resolves a prompt reference such as."""
+"""resolves prompt"""
 
 from __future__ import annotations
 
@@ -20,17 +20,17 @@ ALLOWED_LAYERS: frozenset[str] = frozenset(
 
 
 class PromptNotFoundError(FileNotFoundError):
-    """Raised when a prompt reference does not resolve to a file."""
+    """file not found"""
 
 
 class PromptSchemaError(ValueError):
-    """Raised when a YAML file does not satisfy the prompt schema."""
+    """yaml error"""
 
 
 
 @dataclass(frozen=True)
 class PromptBundle:
-    """All metadata for one prompt file."""
+    """buat ngambil metadata"""
 
     ref: str
     name: str
@@ -49,18 +49,18 @@ _CACHE: dict[str, PromptBundle] = {}
 
 
 def clear_cache() -> None:
-    """Drop the in-memory cache. Use during development hot reloads."""
+    """drop cache, use dev hot reload."""
     _CACHE.clear()
 
 
 
 def load_prompt(ref: str) -> str:
-    """Return only the rendered system prompt for ``ref``."""
+    """return prompt"""
     return load_prompt_bundle(ref).system
 
 
 def load_prompt_bundle(ref: str) -> PromptBundle:
-    """Return the full bundle (system text + metadata)."""
+    """retire full bundle"""
     normalized = _normalize_ref(ref)
     cached = _CACHE.get(normalized)
     if cached is not None:
@@ -73,11 +73,11 @@ def load_prompt_bundle(ref: str) -> PromptBundle:
 
 
 def list_prompts() -> tuple[str, ...]:
-    """Return every prompt reference available under :data:`PROMPTS_ROOT`."""
+    """`get all prompts`"""
     refs: list[str] = []
     for path in sorted(PROMPTS_ROOT.rglob("*.yaml")):
         if path.parent == PROMPTS_ROOT:
-            # legacy top-level files; expose them under their stem only
+            # expose stem only
             refs.append(path.stem)
             continue
         rel = path.relative_to(PROMPTS_ROOT).with_suffix("")
@@ -96,14 +96,14 @@ def _normalize_ref(ref: str) -> str:
 
 
 def _resolve_path(ref: str) -> Path:
-    """Look up the YAML path for the given normalized reference."""
+    """look up yaml path"""
     candidates = [
         PROMPTS_ROOT / f"{ref}.yaml",
         PROMPTS_ROOT / f"{ref}.yml",
     ]
     for cand in candidates:
         if cand.is_file():
-            # guard against directory traversal outside PROMPTS_ROOT
+            # `skip dir traversal`
             if PROMPTS_ROOT not in cand.resolve().parents:
                 raise PromptNotFoundError(
                     f"resolved path escapes prompts root: {cand}"

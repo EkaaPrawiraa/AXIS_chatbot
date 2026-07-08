@@ -1,4 +1,4 @@
-"""Modular prompt registry."""
+"""modular prompt registry"""
 
 from agentic.prompts.loader import (
     PromptNotFoundError,

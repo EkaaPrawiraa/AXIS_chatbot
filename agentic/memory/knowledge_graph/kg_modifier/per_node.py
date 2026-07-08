@@ -1,4 +1,4 @@
-"""Per-label wrappers around update_node_property."""
+"""wrappers around update_node_property."""
 
 from __future__ import annotations
 
@@ -7,9 +7,7 @@ from typing import Any
 from agentic.memory.knowledge_graph.kg_modifier.update_node import update_node_property
 
 
-# Helper: collapse kwargs into the dict that update_node_property expects.
-# Only kwargs the caller actually passed are forwarded; sentinel ``...``
-# means "left default, do not include in the update".
+# `skip kwargs`
 
 _NOT_GIVEN: Any = object()
 
@@ -18,7 +16,7 @@ def _collect(**kwargs: Any) -> dict[str, Any]:
     return {k: v for k, v in kwargs.items() if v is not _NOT_GIVEN}
 
 
-# Per-label wrappers
+# wrappers
 
 async def update_emotion(
     emotion_id: str,
@@ -29,7 +27,7 @@ async def update_emotion(
     source_text:       Any = _NOT_GIVEN,
     sensitivity_level: Any = _NOT_GIVEN,
 ) -> int:
-    """Patch one or more properties on an :Emotion node."""
+    """patch node's props"""
     return await update_node_property(
         "Emotion",
         emotion_id,
@@ -54,7 +52,7 @@ async def update_thought(
     sensitivity_level: Any = _NOT_GIVEN,
     embedding_synced:  Any = _NOT_GIVEN,
 ) -> int:
-    """Patch one or more properties on a :Thought node."""
+    """patch node"""
     return await update_node_property(
         "Thought",
         thought_id,
@@ -79,7 +77,7 @@ async def update_trigger(
     sensitivity_level: Any = _NOT_GIVEN,
     embedding_synced:  Any = _NOT_GIVEN,
 ) -> int:
-    """Patch one or more properties on a :Trigger node."""
+    """patch node's props"""
     return await update_node_property(
         "Trigger",
         trigger_id,
@@ -101,7 +99,7 @@ async def update_behavior(
     adaptive:          Any = _NOT_GIVEN,
     sensitivity_level: Any = _NOT_GIVEN,
 ) -> int:
-    """Patch one or more properties on a :Behavior node."""
+    """patch node's props"""
     return await update_node_property(
         "Behavior",
         behavior_id,
@@ -123,7 +121,7 @@ async def update_experience(
     sensitivity_level: Any = _NOT_GIVEN,
     embedding_synced:  Any = _NOT_GIVEN,
 ) -> int:
-    """Patch one or more properties on an :Experience node."""
+    """patch node:Experience"""
     return await update_node_property(
         "Experience",
         experience_id,
@@ -146,7 +144,7 @@ async def update_subject(
     sentiment:         Any = _NOT_GIVEN,
     sensitivity_level: Any = _NOT_GIVEN,
 ) -> int:
-    """Patch one or more properties on a :Subject node."""
+    """patch node:Subject"""
     return await update_node_property(
         "Subject",
         subject_id,
@@ -168,7 +166,7 @@ async def update_person(
     sentiment:         Any = _NOT_GIVEN,
     sensitivity_level: Any = _NOT_GIVEN,
 ) -> int:
-    """Backward-compat alias for update_subject. Patches a :Subject node."""
+    """`update_subject`"""
     return await update_subject(
         person_id,
         name=name,
@@ -186,7 +184,7 @@ async def update_memory(
     sensitivity_level: Any = _NOT_GIVEN,
     embedding_synced:  Any = _NOT_GIVEN,
 ) -> int:
-    """Patch one or more properties on a :Memory node."""
+    """patch node's props"""
     return await update_node_property(
         "Memory",
         memory_id,
@@ -205,12 +203,7 @@ async def mark_embedding_synced(
     *,
     synced: bool = True,
 ) -> int:
-    """
-    Generic flip of ``embedding_synced`` for any embeddable label
-    (Memory / Experience / Thought / Trigger). Used by the writers
-    immediately after the pgvector upsert succeeds, and by the retry
-    job once a stuck node finally syncs.
-    """
+    """# sync embeds"""
     return await update_node_property(
         label, node_id, {"embedding_synced": bool(synced)},
     )

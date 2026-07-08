@@ -1,4 +1,4 @@
-"""Writer for the :Trigger node and the (:User)-[:HAS_TRIGGER]->(:Trigger)."""
+"""trigger node, user triggers"""
 
 from __future__ import annotations
 
@@ -20,23 +20,7 @@ logger = logging.getLogger(__name__)
 
 
 async def write_trigger(inp: TriggerInput) -> str:
-    """
-    MERGE :Trigger by (user_id, category, description prefix) on the
-    fast path; fall back to pgvector cosine for cross-phrasing dedup.
-
-    On match:
-      * frequency += 1
-      * last_seen refreshed to now
-      * aliases gains the incoming description (and any caller-supplied
-        aliases) when they differ from the canonical description and
-        are not already present
-    On create:
-      * aliases is initialized from ``inp.aliases`` (defaults to empty)
-      * embedding_synced is initialized to false; the cross-store helper
-        flips it to true once the pgvector row is written
-
-    Returns the node id.
-    """
+    """# on_match: #   * freq += 1 #   * last_seen = now #   * aliases += incoming_desc  # on_create: #   * aliases = inp.aliases #   * embedding_synced = False #   * pgvector_synced"""
     _require(inp.category,    "category")
     _require(inp.description, "description")
     _require(inp.user_id,     "user_id")
@@ -45,7 +29,7 @@ async def write_trigger(inp: TriggerInput) -> str:
     client = get_client()
     significance = inp.significance if inp.significance is not None else 0.5
 
-    # 1. Fast-path keyword match.
+    # match fast
     existing = await client.execute_read_single(
         """
         MATCH (u:User {id: $user_id})-[:HAS_TRIGGER]->(t:Trigger)
@@ -63,11 +47,7 @@ async def write_trigger(inp: TriggerInput) -> str:
         },
     )
 
-    # 1b. Slow-path cosine match (cross-phrasing entity dedup).
-    # Only consulted if the keyword fast path missed AND the caller
-    # supplied an embedding. The threshold logic mirrors Experience /
-    # Thought: at or above MERGE_THRESHOLD we treat the existing node
-    # as canonical and just absorb the new phrasing into its aliases.
+    # skip fast path
     if existing is None and inp.embedding is not None:
         similar = await find_similar_node(
             label="Trigger",
@@ -86,9 +66,7 @@ async def write_trigger(inp: TriggerInput) -> str:
             )
 
     if existing:
-        # Build the candidate aliases list: the new phrasing plus any
-        # aliases the caller supplied. We drop the canonical description
-        # itself; the Cypher side will dedup against existing aliases.
+        # build aliases list: new phrasing + caller-supplied aliases. drop canonical desc; Cypher dedup ex. aliases.
         canonical = existing["canonical"]
         candidate_aliases: list[str] = []
         if inp.description and inp.description != canonical:
@@ -139,7 +117,7 @@ async def write_trigger(inp: TriggerInput) -> str:
         )
         return existing["id"]
 
-    # 2. CREATE path.
+    # buat nyimpen config
     node_id = _new_id()
     await client.execute_write(
         """
@@ -180,7 +158,7 @@ async def write_trigger(inp: TriggerInput) -> str:
         },
     )
 
-    # Mirror vector into pgvector and flip embedding_synced on success.
+    # mirrors into pgvector, flip on success.
     await sync_embedding_to_pgvector(
         label="Trigger",
         node_id=node_id,

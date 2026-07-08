@@ -261,6 +261,7 @@ async def _seed_graph(cfg: SeedConfig) -> None:
             TriggerInput(
                 category=cat,
                 description=desc,
+                significance=0.8,
                 user_id=cfg.user_id,
                 session_id=s1,
                 embedding=embedding,

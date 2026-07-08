@@ -1,4 +1,4 @@
-"""Shared LangGraph state container."""
+"""init state"""
 
 from __future__ import annotations
 
@@ -7,14 +7,7 @@ from typing import Any, List, Literal, Optional, TypedDict
 
 
 OutputModality = Literal["text", "voice", "both"]
-# v2_5_turbo/v3/openai_tts1: legacy ElevenLabs-mode / OpenAI-engine
-# choices, kept for backward compat with already-saved user profiles.
-# gemini-*-preview-tts: the 3 real Gemini TTS tier ids (see
-# agentic/config/gemini_tts_tiers.py). The shorter gemini-*-tts forms
-# (no "-preview-") are also accepted -- that's the exact string the
-# frontend's Settings tier+gender picker actually sends; validation
-# must accept it before agentic.config.gemini_tts_tiers's alias
-# resolution ever runs, or the whole request 422s first.
+# legacy, preview, shorter, gemini_tts_tiers.
 TTSModelChoice = Literal[
     "v2_5_turbo",
     "v3",
@@ -29,12 +22,9 @@ TTSModelChoice = Literal[
 
 
 class VoiceState(TypedDict, total=False):
-    """
-    Sub-state for the voice pipeline. Owned by the speech_to_text,
-    speech_adapter, and text_to_speech nodes.
-    """
+    """init state"""
 
-    # input side.
+    # input.
     audio_input: Optional[Any]            # bytes | path string | URL
     audio_input_mime: Optional[str]
     transcript: Optional[str]
@@ -42,7 +32,7 @@ class VoiceState(TypedDict, total=False):
     transcript_language: Optional[str]    # detected by STT
     transcript_segments: Optional[list]   # optional STT word/segment detail
 
-    # output side.
+    # ekstrak data
     output_modality: OutputModality
     voice_id: Optional[str]               # selected voice id (catalog key)
     voice_provider_id: Optional[str]      # provider-specific id (ElevenLabs)
@@ -57,7 +47,7 @@ class VoiceState(TypedDict, total=False):
     voice_error: Optional[str]            # populated on fallback path
     speech_adapted_in_generator: bool     # True if LLM adapter skipped in single-pass
 
-# PHQ-9 sub-state
+# init state
 
 
 PHQ9Tier = Literal["scheduled", "event"]
@@ -73,16 +63,11 @@ PHQ9Phase = Literal[
 ]
 
 
-# CBT sub-state
+# init state
 
 
 class CBTState(TypedDict, total=False):
-    """
-    Sub-state owned by the CBT dialogue policy + thought record flow.
-
-    Stored under ``ConversationState["cbt_state"]``. Only the dialogue
-    policy node and the thought record machine mutate this.
-    """
+    """``ConversationState["cbt_state"]``"""
 
     last_offered: Optional[str]            # technique name from CBTTechnique
     declined_last_offer: bool
@@ -93,12 +78,7 @@ class CBTState(TypedDict, total=False):
 
 
 class PHQ9SessionState(TypedDict, total=False):
-    """
-    Sub-state owned by the PHQ-9 nodes.
-
-    Stored under ``ConversationState["phq9_state"]``. Only the PHQ-9
-    nodes mutate this. Other nodes treat it as read-only.
-    """
+    """set by PHQ-9"""
 
     phase: PHQ9Phase
     tier: Optional[PHQ9Tier]
@@ -113,17 +93,17 @@ class PHQ9SessionState(TypedDict, total=False):
     item9_flagged: bool
     route_to_crisis_after: bool
     retry_scheduled_at: Optional[str]   # ISO8601
-    # Subgraph extensions (LLM-judged delivery)
+    # skip
     back_count: int                  # number of times user asked to revise
     last_judge_action: Optional[str] # "advance" | "clarify" | "back" | "score_only"
     last_judge_rationale: Optional[str]
-    # Initiation context (contextual offer + user-initiated path)
+    # init state
     user_initiated: bool             # True when user explicitly requested PHQ-9
     offer_armed: bool                # True when response_generator should weave invite
 
 
 class ProfileContext(TypedDict, total=False):
-    """Minimal user profile used for personalization in prompts."""
+    """minimal profile"""
 
     display_name: Optional[str]
     preferred_language: Optional[str]
@@ -131,16 +111,16 @@ class ProfileContext(TypedDict, total=False):
 
 
 class ConversationState(TypedDict, total=False):
-    """LangGraph state for one chat turn."""
+    """init state"""
 
-    # identity and dialog.
+    # ident dan dialog
     user_id: str
     session_id: str
     messages: List[dict]
     current_message: str
     session_turn: int
 
-    # language and personalization.
+    # personalisasi
     language_pref: Optional[str]    # explicit preference if known
     preferred_response_model: Optional[str]
     profile_context: Optional[ProfileContext]
@@ -155,33 +135,32 @@ class ConversationState(TypedDict, total=False):
     input_guardrail: Optional[dict]  # Layer 2 verdict ({decision, reason, matched})
     crisis_escalated: bool           # True when crisis_escalation_node already wrote final_response
 
-    # memory and generation.
+    # mem & gen
     kg_context: Optional[str]
     url_context: Optional[str]  # Gemini url_context tool output, gemini-provider only
     retrieval_context: Optional[dict]   # structured bucket view (Phase 1/2 ranking)
     response_draft: Optional[str]
     final_response: Optional[str]
 
-    # CBT dialogue policy.
+    # policy
     cbt_node_active: Optional[str]   # technique name from CBTTechnique
     cbt_directive: Optional[dict]    # CBTDecision payload for response_generator
     cbt_state: Optional[CBTState]
 
-    # voice pipeline.
+    # init state
     voice_state: Optional[VoiceState]
 
-    # assessment.
+    # assess.
     phq9_state: Optional[PHQ9SessionState]
     phq9_declined_note: Optional[bool]   # True when user just declined PHQ offer this turn
 
-    # Confession Space: no-long-term-memory, PHQ-9-gate-bypassed voice mode.
-    # Crisis guardrail is NOT affected by this flag and stays fully active.
+    # confess space" "no-long-term-memory" "PHQ-9-gate-bypassed" "voice mode" "crisis guardrail" "flag" "active
     confession_mode: bool
 
 
 
 def empty_phq9_state() -> PHQ9SessionState:
-    """Return a freshly initialized PHQ-9 sub-state."""
+    """init state"""
     return PHQ9SessionState(
         phase="idle",
         tier=None,
@@ -205,7 +184,7 @@ def empty_phq9_state() -> PHQ9SessionState:
 
 
 def empty_voice_state() -> VoiceState:
-    """Return a freshly initialized voice sub-state."""
+    """init state"""
     return VoiceState(
         audio_input=None,
         audio_input_mime=None,
@@ -229,7 +208,7 @@ def empty_voice_state() -> VoiceState:
 
 
 def empty_cbt_state() -> CBTState:
-    """Return a freshly initialized CBT sub-state."""
+    """init state"""
     return CBTState(
         last_offered=None,
         declined_last_offer=False,
@@ -246,7 +225,7 @@ def empty_conversation_state(
     session_id: str,
     language_pref: str | None = None,
 ) -> ConversationState:
-    """Return a fresh state for a new turn."""
+    """init state"""
     return ConversationState(
         user_id=user_id,
         session_id=session_id,

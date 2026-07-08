@@ -1,4 +1,4 @@
-"""Pydantic request/response schemas for the agentic gateway."""
+"""init schemas"""
 
 from agentic.gateway.model.chat import (
     ChatMessage,

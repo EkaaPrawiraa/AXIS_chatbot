@@ -1,6 +1,4 @@
-"""Manual integration test for the real session finalizer pipeline.
-- AXIS_RUN_REAL_FINALIZER_TEST=1 .venv/bin/python -m pytest -s agentic/tests/test_feature_bot/test_session/test_real_session_finalizer.py
-"""
+"""test real sess fin"""
 
 from __future__ import annotations
 
@@ -17,7 +15,7 @@ from agentic.memory.neo4j_client import close_client, get_client, init_client
 from agentic.memory.pg_vector.client import close_pool, get_pool
 
 
-# SESSION_ID = "41497b7f-8cf6-4150-8e46-32c3dcd72004"
+# set ses ID
 SESSION_ID= "7915b875-6970-4d1c-b215-78afd070b652"
 ROOT = Path(__file__).resolve().parents[4]
 EMBEDDING_TABLES = {

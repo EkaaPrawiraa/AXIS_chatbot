@@ -1,4 +1,4 @@
-"""Public registry for response generator tools."""
+"""buat ngambil data"""
 
 from agentic.agent.tools.context_awareness_tool import (
     calculate_math,
@@ -8,8 +8,7 @@ from agentic.agent.tools.context_awareness_tool import (
 )
 
 
-# Stable name -> tool mapping. Used by response_generator to look up
-# the callable when the LLM emits a tool_call with a given name.
+# stabil name -> tool map.
 TOOL_REGISTRY: dict = {
     "current_context": current_context,
     "web_search": web_search,
@@ -18,9 +17,7 @@ TOOL_REGISTRY: dict = {
 }
 
 
-# Default toolset bound to the conversational response_generator.
-# Crisis content tools (e.g. anything that could expose blocked
-# resources) MUST NOT appear here.
+# skip crisis tools
 _DEFAULT_TOOL_NAMES: tuple[str, ...] = (
     "current_context",
     "resolve_relative_time",
@@ -30,12 +27,12 @@ _DEFAULT_TOOL_NAMES: tuple[str, ...] = (
 
 
 def get_default_toolset() -> list:
-    """Return the list of tool callables for the default chat path."""
+    """ret 'tool callables"""
     return [TOOL_REGISTRY[name] for name in _DEFAULT_TOOL_NAMES]
 
 
 def lookup(name: str):
-    """Return the tool callable for ``name`` or raise KeyError."""
+    """ret 'name' callable or raise KeyError"""
     return TOOL_REGISTRY[name]
 
 

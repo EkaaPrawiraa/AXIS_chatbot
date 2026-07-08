@@ -1,4 +1,4 @@
-"""Thin invoker that delegates to the PHQ-9 subgraph in."""
+"""`skip`"""
 
 from __future__ import annotations
 
@@ -32,11 +32,7 @@ async def phq9_delivery_node(
     clarification_llm: Any | None = None,
     audit: GuardrailLogger | None = None,
 ) -> ConversationState:
-    """
-    Delegate to the PHQ-9 subgraph. ``scorer_llm`` is preserved for
-    backwards compatibility with existing wiring; if ``judge_llm`` is
-    not explicitly provided, ``scorer_llm`` will be used.
-    """
+    """delegate to phq-9 subgraph. preserve for backward comp; use scorer_llm if not provided."""
     audit = audit or NullGuardrailLogger()
     return await phq9_subgraph_node(
         state,

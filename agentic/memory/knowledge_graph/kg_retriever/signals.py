@@ -1,4 +1,4 @@
-"""The retrieval signals consumed by context_builder.build_context."""
+"""get signals"""
 
 from __future__ import annotations
 
@@ -10,10 +10,10 @@ from agentic.memory.neo4j_client import get_client
 logger = logging.getLogger(__name__)
 
 
-# Signal 1 -- Recency
+# skip klo error
 
 async def fetch_recency(user_id: str, *, top_n: int = 2) -> list[str]:
-    """Return the most recent session summaries for the user."""
+    """retir session sumbmbs utk user terkahir"""
     rows = await get_client().execute_read(
         """
         MATCH (u:User {id: $user_id})-[:HAD_SESSION]->(s:Session)
@@ -28,7 +28,7 @@ async def fetch_recency(user_id: str, *, top_n: int = 2) -> list[str]:
     return [r["summary"] for r in rows]
 
 
-# Signal 2 -- Semantic
+# signal 2 -- sem
 
 async def fetch_semantic_memories(
     user_id: str,
@@ -38,14 +38,7 @@ async def fetch_semantic_memories(
     similarity_floor: float = 0.5,
     importance_floor: float = 0.5,
 ) -> list[str]:
-    """
-    DEPRECATED — always returns [] because Memory embeddings are stored in
-    pgvector (memory_embeddings table), NOT on the Neo4j node property.
-    `context_builder.build_context()` uses `search_memory()` from
-    `agentic.memory.pg_vector` instead, which is the correct path.
-
-    Kept for backwards-compat export only. Do not call this directly.
-    """
+    """`use search_memory()`"""
     logger.warning(
         "fetch_semantic_memories called but embeddings are in pgvector, not Neo4j. "
         "Use agentic.memory.pg_vector.search_memory() instead. Returning []."
@@ -53,7 +46,7 @@ async def fetch_semantic_memories(
     return []
 
 
-# Signal 3 -- Salience
+# signal 3
 
 async def fetch_salient_memories(
     user_id: str,
@@ -61,7 +54,7 @@ async def fetch_salient_memories(
     top_k: int = 5,
     importance_floor: float = 0.5,
 ) -> list[str]:
-    """Top-K Memory summaries whose importance is above the cutoff."""
+    """filter high-importance"""
     rows = await get_client().execute_read(
         """
         MATCH (u:User {id: $user_id})-[:HAS_MEMORY]->(m:Memory)
@@ -86,7 +79,7 @@ async def fetch_salient_memories(
 async def fetch_active_emotions(
     user_id: str, *, lookback_days: int = 7, limit: int = 5,
 ) -> list[dict[str, Any]]:
-    """Recent active emotions within ``lookback_days``."""
+    """ngambil data"""
     return await get_client().execute_read(
         """
         MATCH (u:User {id: $user_id})-[:FELT]->(em:Emotion)
@@ -105,7 +98,7 @@ async def fetch_active_emotions(
 async def fetch_active_distortions(
     user_id: str, *, limit: int = 3,
 ) -> list[dict[str, Any]]:
-    """Unchallenged cognitive distortions, newest first."""
+    """ncd, newest first."""
     return await get_client().execute_read(
         """
         MATCH (u:User {id: $user_id})-[:HAS_THOUGHT]->(th:Thought)
@@ -126,7 +119,7 @@ async def fetch_active_distortions(
 async def fetch_recurring_triggers(
     user_id: str, *, limit: int = 3,
 ) -> list[dict[str, Any]]:
-    """Highest-frequency active triggers."""
+    """hitung frekuensi aktif."""
     return await get_client().execute_read(
         """
         MATCH (u:User {id: $user_id})-[:HAS_TRIGGER]->(t:Trigger)
@@ -145,7 +138,7 @@ async def fetch_recurring_triggers(
 async def fetch_recent_experiences(
     user_id: str, *, limit: int = 5,
 ) -> list[dict[str, Any]]:
-    """Recent active experiences that can receive a reappraisal."""
+    """appraise recent exps"""
     return await get_client().execute_read(
         """
         MATCH (u:User {id: $user_id})-[:EXPERIENCED]->(e:Experience)
@@ -164,7 +157,7 @@ async def fetch_recent_experiences(
 async def fetch_active_behaviors(
     user_id: str, *, limit: int = 5,
 ) -> list[dict[str, Any]]:
-    """Active behaviors that may be replaced by newer coping."""
+    """nggak nggunting"""
     return await get_client().execute_read(
         """
         MATCH (u:User {id: $user_id})-[:EXHIBITED]->(b:Behavior)
@@ -184,10 +177,7 @@ async def fetch_active_behaviors(
 async def fetch_recurring_themes(
     user_id: str, *, limit: int = 5,
 ) -> list[dict[str, Any]]:
-    """
-    Topics the user keeps coming back to. Backed by the
-    HAS_RECURRING_THEME edge that link_user_recurring_theme maintains.
-    """
+    """backed by HAS_RECURRING_THEME"""
     return await get_client().execute_read(
         """
         MATCH (u:User {id: $user_id})-[r:HAS_RECURRING_THEME]->(top:Topic)

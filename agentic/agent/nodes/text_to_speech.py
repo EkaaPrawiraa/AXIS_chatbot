@@ -1,4 +1,4 @@
-"""ElevenLabs primary TTS with OpenAI fallback."""
+"""`fallback to OpenAI`"""
 
 from __future__ import annotations
 
@@ -30,9 +30,7 @@ from agentic.config.voices import VoiceCatalog, VoiceEntry, load_voice_catalog
 from agentic.gateway.monitoring import increment
 
 
-# Message classes (langchain or fallback) -- same self-contained pattern
-# as speech_adapter.py, since _inject_gemini_audio_tags below is its own
-# small LLM call.
+# `langchain` & `fallback`  `speech_adapter.py`  `inject_gemini_audio_tags`  `LLM`  `call`
 
 
 try:  # pragma: no cover
@@ -58,7 +56,7 @@ logger = logging.getLogger(__name__)
 
 @dataclass
 class TTSResult:
-    """Outcome of one TTS synthesis call."""
+    """synth call outcome"""
 
     provider: str             # "elevenlabs" | "openai_tts1"
     model: str                # provider-specific model id
@@ -105,11 +103,11 @@ class GeminiTTSProvider(Protocol):
     ) -> TTSResult: ...
 
 
-# Production providers (lazily imported)
+# prod prov (laz)
 
 
 class ElevenLabsClient:
-    """Thin wrapper over the ElevenLabs Python SDK."""
+    """wrp sdk"""
 
     def __init__(
         self,
@@ -164,7 +162,7 @@ class ElevenLabsClient:
                         output_format=output_format,
                         voice_settings=voice_settings,
                     )
-                    # Pull one chunk first so SDK stream errors can fall back.
+                    # pull first
                     try:
                         first_chunk = next(handle)
                     except StopIteration:
@@ -243,7 +241,7 @@ class ElevenLabsClient:
 
 
 class OpenAITTSClient:
-    """Thin wrapper over OpenAI speech synthesis."""
+    """wrp oai-synth"""
 
     def __init__(self, *, client: Any | None = None) -> None:
         self._client = client
@@ -300,13 +298,7 @@ class OpenAITTSClient:
 
 
 class GeminiTTSClient:
-    """Third-tier TTS fallback using Gemini's native audio generation.
-
-    Only reached when both ElevenLabs (primary) and OpenAI (secondary) have
-    already failed -- see the extra tier appended in ``text_to_speech_node``.
-    Gemini returns raw 24kHz mono 16-bit PCM, so the response is wrapped in
-    a minimal WAV header before being handed back as ``audio_blob``.
-    """
+    """fallback: TTS using Gemini"""
 
     def __init__(self, *, client: Any | None = None, retry_delay_s: float = 0.6) -> None:
         self._client = client
@@ -328,12 +320,7 @@ class GeminiTTSClient:
                 provider="gemini_tts", model=model, error=f"client_init:{exc}",
             )
 
-        # Gemini's TTS-preview endpoints have been observed to fail
-        # transiently (finish_reason=OTHER, no candidate content at all)
-        # and succeed on an immediate retry of the exact same request --
-        # confirmed by repeated live testing, not a fixed voice/model
-        # incompatibility. One retry recovers those without masking a
-        # genuine, persistent error.
+        # finish_reason=OTHER, no candidate content, retry works.
         last_result = await self._attempt(client, text=text, voice=voice, model=model, instructions=instructions)
         if last_result.error is None and last_result.audio_blob is not None:
             return last_result
@@ -355,11 +342,7 @@ class GeminiTTSClient:
         try:
             from google.genai import types  # type: ignore[import-not-found]
 
-            # `voice.id` carries the resolved Gemini prebuilt voice name
-            # (e.g. "Puck") -- see `_resolve_gemini_voice_entry` in
-            # text_to_speech_node, which is the only caller that builds
-            # a VoiceEntry for this provider. GEMINI_TTS_VOICE/"Kore"
-            # are only a defensive fallback for direct/test callers.
+            # `voice.id` sets prebuilt voice.
             voice_name = voice.id or os.getenv("GEMINI_TTS_VOICE", "Kore")
             spoken_text = f"{instructions.strip()}\n\n{text}" if instructions else text
             response = await client.aio.models.generate_content(
@@ -380,10 +363,7 @@ class GeminiTTSClient:
             content = candidates[0].content if candidates else None
             parts = content.parts if content else None
             if not parts:
-                # Seen transiently (e.g. under rate limiting) as a
-                # candidate with no content/parts at all, rather than a
-                # raised exception -- give a clear reason instead of
-                # letting the AttributeError below speak for it.
+                # explain w/o attr error
                 reason = getattr(candidates[0], "finish_reason", None) if candidates else "no_candidates"
                 return TTSResult(
                     provider="gemini_tts", model=model, error=f"empty_response:{reason}",
@@ -420,7 +400,7 @@ def _pcm_to_wav(
     channels: int = 1,
     sample_width: int = 2,
 ) -> bytes:
-    """Wrap raw PCM (Gemini's native TTS output) in a minimal WAV container."""
+    """wrap raw pcm"""
     import struct
 
     byte_rate = sample_rate * channels * sample_width
@@ -445,22 +425,11 @@ def _pcm_to_wav(
     return header + pcm_bytes
 
 
-# Gemini TTS style steering
-#
-# Gemini's TTS has no discrete pace/tone/accent parameters -- style is
-# steered entirely through natural-language prompt text prepended to
-# what gets spoken (Google's own "Director's Notes" convention, see
-# build_gemini_director_notes). The per-character Style/Accent/Pacing
-# description is the base; _select_tts_style only decides whether THIS
-# turn additionally needs the gentler "empathetic" modifier layered on
-# top, from signals that already exist for text-response tone (no new
-# user-facing control): CBT-engaged or crisis/escalate turns get it,
-# everyday chat doesn't.
+# gemini style
 
 
 def _select_tts_style(state: ConversationState) -> bool:
-    """True if this turn should get the extra empathetic pacing/tone
-    modifier on top of the active voice character's base style."""
+    """True if extra pacing/tone."""
     if state.get("safety_flag") in ("crisis", "escalate"):
         return True
     cbt_directive = state.get("cbt_directive") or {}
@@ -469,16 +438,7 @@ def _select_tts_style(state: ConversationState) -> bool:
 
 
 async def _inject_gemini_audio_tags(text: str, *, llm: Any | None = None) -> str:
-    """
-    Annotate already-adapted spoken text with Gemini's own bracketed
-    audio tags (e.g. "[warmly] ...") -- see
-    https://ai.google.dev/gemini-api/docs/speech-generation. Runs lazily,
-    only when the Gemini TTS tier is actually attempted (inside
-    run_tts_fallback_chain's _try_gemini), so the common case (ElevenLabs
-    succeeds) never pays for this extra LLM call. Any failure just
-    returns the untouched plain text -- tag injection is a nice-to-have
-    delivery enhancement, never a reason to block synthesis.
-    """
+    """bracket audio tags"""
     plain = text.strip()
     if not plain:
         return text
@@ -503,21 +463,7 @@ async def _inject_gemini_audio_tags(text: str, *, llm: Any | None = None) -> str
 
 
 def _resolve_gemini_voice_entry(voice_entry: VoiceEntry, tts_model_request: str | None) -> VoiceEntry:
-    """
-    Build the VoiceEntry Gemini TTS should actually speak with.
-
-    If the incoming voice_id wasn't a catalog entry (persona ==
-    "user-selected" -- see VoiceCatalog.get()'s fallback path) AND it's
-    actually one of Gemini's ~30 real prebuilt voice names, it's a raw id
-    the client chose deliberately (e.g. "Sulafat" from the character
-    picker in Settings) and is used as-is. Otherwise -- either a known
-    catalog persona, or some OTHER provider's voice id (e.g. "alloy",
-    ElevenLabs/OpenAI's own default, which also isn't a catalog persona
-    but is emphatically not a Gemini voice name either) -- there is no
-    real Gemini voice name to use, so fall back to the requested tier's
-    default (female) voice. Passing a non-Gemini id straight through
-    would make Gemini reject the request outright.
-    """
+    """check voice_id"""
     if (
         voice_entry.persona == "user-selected"
         and is_gemini_prebuilt_voice_name(voice_entry.id)
@@ -539,33 +485,21 @@ def _resolve_gemini_voice_entry(voice_entry: VoiceEntry, tts_model_request: str 
 
 
 def _materialize_audio_blob(blob: Any) -> Any:
-    """Fully drain a streaming provider's chunk iterator into one blob.
-
-    ElevenLabs' streaming call (used for the v2_5_turbo mode) returns a
-    generator of byte chunks for a lower time-to-first-byte on ITS side --
-    but nothing downstream of this node actually progressively streams
-    the HTTP response to the client; the chat-turn response is a single
-    JSON payload built well after the graph finishes. A generator isn't
-    `bytes`/`bytearray`, so the gateway's response serializer silently
-    skipped it (audio_output_base64 stayed None) -- the entire audio
-    reply vanished for every request that used the streaming ElevenLabs
-    tier, which is the default (v2_5_turbo). Consuming it here means
-    every caller of this node always gets real bytes back.
-    """
+    """drain stream into blob"""
     if blob is None or isinstance(blob, (bytes, bytearray)):
         return blob
     return b"".join(blob)
 
 
 def _elevenlabs_model_for(mode: str) -> str:
-    """Resolve the ElevenLabs model for the selected mode."""
+    """resolusi ElevenLabs model"""
     if mode == "v3":
         return os.getenv("ELEVENLABS_MODEL_PRERENDERED", "eleven_v3")
     return os.getenv("ELEVENLABS_MODEL_REALTIME", "eleven_turbo_v2_5")
 
 
 def _audio_format_from(output_format: str) -> str:
-    """Pick a short mime hint from ElevenLabs output_format strings."""
+    """pick mime hint"""
     if output_format.startswith("mp3"):
         return "mp3"
     if output_format.startswith("pcm"):
@@ -602,10 +536,7 @@ def _select_text(state: ConversationState) -> str:
 
 @dataclass
 class TTSChainOutcome:
-    """Result of ``run_tts_fallback_chain`` plus the tier-0 (ElevenLabs)
-    error, kept separate from ``result.error`` since the latter becomes a
-    combined "primary:...; second:...; third:..." message once every tier
-    has failed."""
+    """sep tier-0 error"""
 
     result: TTSResult
     primary_error: str | None
@@ -624,34 +555,7 @@ async def run_tts_fallback_chain(
     streaming: bool | None = None,
     gemini_tag_llm: Any | None = None,
 ) -> TTSChainOutcome:
-    """
-    Run the ElevenLabs -> (Gemini/OpenAI, ordered by LLM_PROVIDER) chain.
-
-    Tier 0 is always ElevenLabs. When it fails, tiers 1-2 are the
-    openai<->gemini pair, ORDERED by LLM_PROVIDER: whichever provider
-    backs the text LLM is tried first (it's already the account/key the
-    deployment is built around), the other is the fallback. A deployment
-    running LLM_PROVIDER=local (no TTS product of its own) defaults to
-    the same order as gemini, since Gemini's API key is the more likely
-    one to actually be configured alongside a local text model.
-
-    Shared by the in-turn ``text_to_speech_node`` and the stateless
-    ``synthesize_speech`` gateway endpoint so the ordering only lives in
-    one place -- the endpoint used to duplicate an older, ElevenLabs/
-    OpenAI-only version of this chain that never got the Gemini leg.
-
-    ``streaming`` defaults to True for the v2_5_turbo mode (matching the
-    in-turn chat voice reply); pass ``streaming=False`` explicitly for
-    stateless single-shot callers that need one complete audio blob back
-    (a generator can't be base64-encoded as a whole).
-
-    When the Gemini tier is actually attempted, its Director's Notes are
-    built from the resolved voice's character (see
-    ``build_gemini_director_notes``) plus ``empathetic``, and the text is
-    additionally passed through ``_inject_gemini_audio_tags`` -- both
-    lazily, only on this tier, so ElevenLabs-succeeding turns (the common
-    case) never pay for the extra LLM call.
-    """
+    """Run -> Gemini -> OpenAI."""
     cat = catalog or load_voice_catalog()
     el_model = _elevenlabs_model_for(mode)
     use_streaming = (mode == "v2_5_turbo") if streaming is None else streaming
@@ -732,7 +636,7 @@ async def text_to_speech_node(
     audit: GuardrailLogger | None = None,
     gemini_tag_llm: Any | None = None,
 ) -> ConversationState:
-    """Synthesize speech for the in-turn chat voice reply."""
+    """synthesize speech"""
     audit = audit or NullGuardrailLogger()
     voice = dict(state.get("voice_state") or empty_voice_state())
 

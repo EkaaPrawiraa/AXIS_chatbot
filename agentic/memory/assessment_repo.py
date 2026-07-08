@@ -1,4 +1,4 @@
-"""Single read/write seam for assessments and assessment-related KG."""
+"""rw seam"""
 
 from __future__ import annotations
 
@@ -21,7 +21,7 @@ logger = logging.getLogger(__name__)
 
 @dataclass(frozen=True)
 class LastPHQ9Snapshot:
-    """Lightweight view used by the trigger node."""
+    """view used by trigger node"""
 
     administered_at: datetime
     total_score: int
@@ -32,27 +32,7 @@ class LastPHQ9Snapshot:
 
 @dataclass(frozen=True)
 class DistressSnapshot:
-    """
-    Aggregated KG distress signal.
-
-    Attributes
-    ----------
-    high_distress_session_count_7d:
-        Sessions in the past 7 days where the active emotion mix
-        exceeded the high distress threshold.
-    avg_emotion_valence_7d:
-        Mean valence of emotions logged in the past 7 days.
-    recurring_trigger_active:
-        True when a Trigger node with frequency >= 2 was last mentioned
-        (``last_seen``) within the past ``LOOKBACK_DAYS_FOR_KG`` days --
-        i.e. a known stressor genuinely *reappeared* recently, not merely
-        that one exists somewhere in the user's history. Triggers are
-        rarely deactivated (only on explicit LLM-detected resolution),
-        so without this recency bound a trigger mentioned once, months
-        ago, would keep this permanently true and let Tier 2 re-offer
-        PHQ-9 every RETRY_DAYS_FOR_DISTRESS days indefinitely, defeating
-        the intended 14-day scheduled cadence.
-    """
+    """high_distress_session_count_7d     avg_emotion_valence_7d     recurring_trigger_active"""
 
     high_distress_session_count_7d: int
     avg_emotion_valence_7d: float | None
@@ -61,18 +41,17 @@ class DistressSnapshot:
 
 @dataclass(frozen=True)
 class AssessmentRetrySchedule:
-    """When the trigger node should retry the offer."""
+    """retry offer"""
 
     user_id: str
     next_attempt_at: datetime
     reason: str
 
 
-# Module-level configuration
+# buat nyimpen config
 
 
-# These are read-only thresholds used by the trigger node. They live
-# here so storage queries and gate evaluation share the same constants.
+# set read-only thres
 HIGH_DISTRESS_VALENCE_THRESHOLD: float = -0.5
 ACUTE_DISTRESS_VALENCE_THRESHOLD: float = -0.6
 ACUTE_DISTRESS_INTENSITY_THRESHOLD: float = 0.7
@@ -82,18 +61,7 @@ LOOKBACK_DAYS_FOR_KG: int = 7
 
 
 class AssessmentRepository:
-    """
-    Async repository for PHQ-9 records.
-
-    Parameters
-    ----------
-    pg_pool:
-        ``asyncpg.Pool`` or compatible context-managed pool. Only
-        ``acquire`` and the standard execute/fetch methods are used.
-    neo4j_driver:
-        Optional Neo4j driver for KG-side reads. The repository can
-        still operate on Postgres only when this is ``None``.
-    """
+    """pg_pool:         ``asyncpg.Pool`` or compatible context-managed pool.     neo4j_driver:         Optional Neo4j driver for KG-side reads."""
 
     def __init__(
         self,
@@ -104,10 +72,10 @@ class AssessmentRepository:
         self._pg = pg_pool
         self._neo4j = neo4j_driver
 
-    # reads.
+    # r.
 
     async def get_last_phq9(self, user_id: str) -> LastPHQ9Snapshot | None:
-        """Fetch the most recent PHQ-9 administration."""
+        """fetch most recent phq-9"""
         sql = (
             "SELECT administered_at, score, severity_label, "
             "       item_responses, delta_from_prev "
@@ -130,16 +98,7 @@ class AssessmentRepository:
         )
 
     async def get_conversation_count(self, user_id: str) -> int:
-        """
-        Return the number of completed conversations for ``user_id``.
-
-        Only sessions that logged at least one turn are counted — empty or
-        abandoned sessions (e.g., created then immediately navigated away)
-        would skew the warm-up counter and are excluded.
-
-        Used by ``phq9_check_node`` to enforce the cross-session warm-up
-        before a first PHQ-9 offer is made to new users.
-        """
+        """return count_completed_convs(user_id)"""
         sql = (
             "SELECT COUNT(*) FROM chat_sessions "
             "WHERE user_id = $1::uuid AND turn_count > 0"
@@ -151,7 +110,7 @@ class AssessmentRepository:
     async def get_pending_retry(
         self, user_id: str
     ) -> AssessmentRetrySchedule | None:
-        """Return the active retry schedule, if any."""
+        """retourkan retry schedule aktif, jikalau ada"""
         sql = (
             "SELECT user_id, next_attempt_at, reason FROM assessment_retries "
             "WHERE user_id = $1 ORDER BY next_attempt_at DESC LIMIT 1"
@@ -169,13 +128,7 @@ class AssessmentRepository:
     async def get_distress_snapshot(
         self, user_id: str
     ) -> DistressSnapshot:
-        """
-        Aggregate KG-derived distress signals over the lookback window.
-
-        When ``neo4j_driver`` is unavailable the snapshot defaults to
-        zero counts so the trigger gate falls back to the in-state
-        ``emotion_pad`` only.
-        """
+        """for node in nodes:     process_node(node)"""
         if self._neo4j is None:
             return DistressSnapshot(
                 high_distress_session_count_7d=0,
@@ -243,33 +196,16 @@ class AssessmentRepository:
             recurring_trigger_active=bool(record["recurring_trigger_count"]),
         )
 
-    # writes.
+    # write.
 
     async def save_phq9_result(self, result: PHQ9Result) -> None:
-        """
-        Persist a completed PHQ-9 to BOTH Postgres and Neo4j.
-
-        Postgres (``assessments`` table) is the source of truth for
-        analytics, delta computation, and the retry scheduler.
-
-        Neo4j (``Assessment`` node) is the source of truth for graph
-        traversal: ``GetEscalationSignals`` in Go reads PHQ-9 score and
-        delta directly from the graph, and the context_builder signal
-        ``fetch_recurring_themes`` depends on the KG being up to date.
-
-        Previously only Postgres was written here; Neo4j Assessment
-        nodes were only created when Go called WriteAssessment — which
-        required an explicit HTTP round-trip that was never wired.
-        Since Python already holds a direct Neo4j connection via
-        ``get_client()``, writing the Assessment node here removes that
-        gap without requiring any Go involvement.
-        """
+        """persist completed PHQ-9 to Postgres and Neo4j"""
         import asyncio, json, os, uuid
         from agentic.memory.neo4j_client import get_client as _neo4j_client
 
         payload = to_storage_payload(result)
 
-        # 1. Postgres write.
+        # write to db
         sql = (
             "INSERT INTO assessments "
             "(user_id, session_id, instrument, score, severity_label, "
@@ -291,10 +227,7 @@ class AssessmentRepository:
                 payload["administered_by"],
             )
 
-        # 2. Neo4j write.
-        # Mirrors what Go's WriteAssessment produces so graph traversal
-        # queries (GetEscalationSignals, COMPLETED_ASSESSMENT path) work
-        # without depending on a separate Go service call.
+        # write neo4j
         try:
             assessment_neo4j_id = str(uuid.uuid4())
             administered_iso = (
@@ -360,9 +293,7 @@ class AssessmentRepository:
                 payload["user_id"], payload["session_id"], payload["score"],
             )
         except Exception as exc:
-            # Neo4j write failure is non-fatal: Postgres already committed,
-            # so the assessment is persisted for analytics. The Neo4j node
-            # can be backfilled later via the seeder or a migration job.
+            # write failure, persist, later.
             logger.error(
                 "Assessment Neo4j write failed (user=%s session=%s): %s "
                 "— Postgres write succeeded, Neo4j node missing",
@@ -376,7 +307,7 @@ class AssessmentRepository:
         days: int,
         reason: str,
     ) -> AssessmentRetrySchedule:
-        """Upsert the retry schedule for a user."""
+        """retry_upsert"""
         next_attempt = datetime.now(timezone.utc) + timedelta(days=days)
         sql = (
             "INSERT INTO assessment_retries (user_id, next_attempt_at, reason) "
@@ -394,12 +325,12 @@ class AssessmentRepository:
         )
 
     async def clear_retry(self, user_id: str) -> None:
-        """Drop any pending retry, called after a successful offer."""
+        """drop pending retry"""
         sql = "DELETE FROM assessment_retries WHERE user_id = $1"
         async with self._pg.acquire() as conn:
             await conn.execute(sql, user_id)
 
-    # PHQ-9 in-flight progress (server-authoritative score store).
+    # store score
 
     async def save_phq9_progress(
         self,
@@ -408,24 +339,7 @@ class AssessmentRepository:
         session_id: str,
         state: Mapping[str, Any],
     ) -> None:
-        """
-        UPSERT the in-flight PHQ-9 state for ``(user_id, session_id)``.
-
-        Called after every PHQ-9 turn that mutates phase / responses /
-        active_item. The row is the authoritative source for partial
-        scores until the finalize node clears it. Persisting here means
-        the run survives stateless invocations, request retries, and
-        callers that forget to round-trip ``phq9_state``.
-
-        Parameters
-        ----------
-        user_id, session_id:
-            Composite primary key.
-        state:
-            Mapping with PHQ-9 state keys: phase, active_item,
-            responses, back_count, tier, language, user_initiated.
-            Extra keys are ignored.
-        """
+        """user_id, session_id, state"""
         import json
 
         responses = state.get("responses") or {}
@@ -468,14 +382,7 @@ class AssessmentRepository:
         user_id: str,
         session_id: str,
     ) -> dict[str, Any] | None:
-        """
-        Read the in-flight PHQ-9 state for ``(user_id, session_id)``.
-
-        Returns a partial PHQ9SessionState dict (only the persisted
-        fields), or ``None`` when no row exists. Callers merge the
-        result over an ``empty_phq9_state()`` baseline so transient
-        fields keep sane defaults.
-        """
+        """read_in_flight_phq9(session)"""
         import json
 
         sql = """
@@ -499,7 +406,7 @@ class AssessmentRepository:
         else:
             parsed_responses = dict(raw_responses or {})
 
-        # Cast item_id keys back to int (JSONB stores them as str).
+        # cast item_id as int
         parsed_responses = {
             int(k): v for k, v in parsed_responses.items()
         }
@@ -520,7 +427,7 @@ class AssessmentRepository:
         user_id: str,
         session_id: str,
     ) -> None:
-        """Drop the in-flight row after finalize or decline."""
+        """drop row after finalize"""
         sql = """
             DELETE FROM phq9_progress
             WHERE user_id = $1::uuid AND session_id = $2::uuid
@@ -531,7 +438,7 @@ class AssessmentRepository:
 
 
 def days_since(then: datetime) -> int:
-    """Whole days between ``then`` and now in UTC."""
+    """UTC diff"""
     delta = datetime.now(timezone.utc) - _ensure_utc(then)
     return int(delta.total_seconds() // 86_400)
 
@@ -545,7 +452,7 @@ def _ensure_utc(value: datetime) -> datetime:
 def _unpack_item_scores(
     raw: Mapping[str, Any] | str | None,
 ) -> tuple[int, ...]:
-    """Decode the ``item_responses`` JSON column into an ordered tuple."""
+    """decode json into tuple"""
     import json
 
     if raw is None:

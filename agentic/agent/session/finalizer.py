@@ -1,4 +1,4 @@
-"""Finalization pipeline for an idle session."""
+"""finalize idle session"""
 
 from __future__ import annotations
 
@@ -16,8 +16,7 @@ from agentic.assessment.phq9 import (
     OPTION_LABELS_ID,
 )
 
-# Number of prior messages (user + assistant combined) fed to the KG extractor
-# as sliding-window context. 6 = up to 3 full turns before the current message.
+# sliding window" 6 = 3 full turns
 _CONTEXT_WINDOW_MSGS = 6
 
 _LOW_SIGNAL_EXACT = {
@@ -81,12 +80,7 @@ def _normalize_message_text(text: str) -> str:
 import json as _json
 
 def _sanitize_summary(raw: str) -> str:
-    """Extract plain-text summary from LLM output that may be JSON-wrapped.
-
-    The session_summarizer prompt asks for plain prose, but some LLMs return
-    {"summary": "..."} JSON. This strips the wrapper and returns clean text.
-    Returns empty string for sentinel values like "{}", "SKIP", or "{}".
-    """
+    """strip json wrapper"""
     stripped = raw.strip()
     if not stripped or stripped in ("{}", "SKIP", "skip"):
         return ""
@@ -174,9 +168,7 @@ def _looks_like_phq9_answer(text: str) -> bool:
         return False
     if normalized in _PHQ9_OPTION_LABELS:
         return True
-    # Text answers during PHQ-9 often start with the option label and then
-    # add a short elaboration. Only treat them as PHQ when conversational
-    # context also indicates an active PHQ item.
+    # nto PHQ
     return any(
         normalized.startswith(f"{label} ")
         for label in _PHQ9_OPTION_LABELS
@@ -227,7 +219,7 @@ class HistoryLoader:
 
 
 class SessionMetadataLoaderFn:
-    """Load optional session metadata."""
+    """load sess data"""
     async def __call__(
         self, *, session_id: str, user_id: str,
     ) -> Mapping[str, Any]:
@@ -235,7 +227,7 @@ class SessionMetadataLoaderFn:
 
 
 class UserContextLoaderFn:
-    """Load optional cross-session user context."""
+    """load ctx"""
     async def __call__(
         self, *, user_id: str,
     ) -> Mapping[str, Any]:
@@ -427,8 +419,7 @@ class SessionFinalizer:
             )
 
         extracted: list[Mapping[str, Any]] = []
-        # Sliding window: keeps the last _CONTEXT_WINDOW_MSGS messages (both
-        # roles) so the extractor always has recent conversational context.
+        # `keep last _CONTEXT_WINDOW_MSGS`
         context_window: deque[dict[str, str]] = deque(maxlen=_CONTEXT_WINDOW_MSGS)
 
         for msg in memory_history:
@@ -449,7 +440,7 @@ class SessionFinalizer:
                 through_turn_index=through_turn_index,
             )
             if not in_range or not content:
-                # Keep window up to date even for messages outside the range.
+                # keep window updated
                 if content:
                     context_window.append({"role": "user", "content": content})
                 continue
@@ -568,8 +559,7 @@ def _filter_phq9_messages(
         if role == "assistant":
             previous_assistant_was_phq9 = is_phq9
         elif role == "user":
-            # The PHQ marker only applies to the immediate answer to the
-            # previous PHQ item. Later user messages must stand on their own.
+            # aply klo ngelang ngbaris
             previous_assistant_was_phq9 = False
 
         if is_phq9:

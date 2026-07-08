@@ -1,4 +1,4 @@
-"""Persists completed CBT thought records to Neo4j."""
+"""persists records"""
 
 from __future__ import annotations
 
@@ -22,32 +22,13 @@ async def write_thought_record(
     session_id: str,
     thought_record: dict[str, Any],
 ) -> str | None:
-    """
-    Persist a completed ``ThoughtRecordSubState`` dict to Neo4j.
-
-    Parameters
-    ----------
-    user_id:
-        The user's UUID string — used to anchor the relationship.
-    session_id:
-        The session that produced this thought record.
-    thought_record:
-        ``CBTState["thought_record"]`` as produced by
-        ``ThoughtRecordSubState.to_dict()``. Must have
-        ``step == "done"`` for a write to occur.
-
-    Returns
-    -------
-    str | None
-        The ``ThoughtRecord.id`` of the written (or merged) node, or
-        ``None`` when the record is incomplete / already skipped.
-    """
+    """persist completed ``ThoughtRecordSubState`` to Neo4j"""
     if not thought_record:
         return None
 
     step = thought_record.get("step", "")
     if step != "done":
-        # Record still in progress — do not persist partial data.
+        # skip persist
         logger.debug(
             "ThoughtRecord skipped (step=%s, session=%s)", step, session_id
         )
@@ -72,10 +53,7 @@ async def write_thought_record(
 
     client = get_client()
 
-    # MERGE on (user_id, session_id, thought) prevents duplicates when
-    # session_end_node is called more than once per session (e.g. on
-    # re-delivery after an error). Only the mutable payload fields are
-    # SET on match so idempotency is preserved.
+    # merge dupes, idempotent, payload fields
     result = await client.execute_write(
         """
         MATCH (u:User {id: $user_id})

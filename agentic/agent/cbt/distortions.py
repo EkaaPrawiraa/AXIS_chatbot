@@ -1,4 +1,4 @@
-"""The 10 canonical cognitive distortions from Beck (1979) plus standard."""
+"""skipped"""
 
 from __future__ import annotations
 
@@ -53,8 +53,7 @@ _RAW_DISTORTIONS: tuple[Distortion, ...] = (
         name="all_or_nothing",
         label_id="hitam-putih",
         label_en="all or nothing",
-        # Beck (1979) groups always/never under overgeneralization, so
-        # this set keeps only dichotomous-thinking specific cues.
+        # skip overgeneralization
         cues_id=(
             "harus sempurna",
             "atau tidak sama sekali",
@@ -169,8 +168,7 @@ _RAW_DISTORTIONS: tuple[Distortion, ...] = (
         name="overgeneralization",
         label_id="generalisasi",
         label_en="overgeneralization",
-        # Beck 1979: always/never patterns belong here, distinct from
-        # all_or_nothing dichotomous thinking.
+        # patterns belong here
         cues_id=(
             "selalu",
             "tidak pernah",
@@ -197,14 +195,7 @@ DISTORTIONS: dict[str, Distortion] = {d.name: d for d in _RAW_DISTORTIONS}
 
 
 def detect_distortion_in_text(text: str) -> Distortion | None:
-    """
-    Phase 1 cue-based detector. Returns the first distortion whose cues
-    appear in the lowered text, or None.
-
-    Phase 2 will defer to the KG ``Thought.distortion`` field populated
-    by the LLM extractor; this function will then become a fallback
-    used when the KG has not yet recorded the thought.
-    """
+    """None"""
     if not text:
         return None
     lowered = text.lower()

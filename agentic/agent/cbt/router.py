@@ -1,4 +1,4 @@
-"""CBT technique router."""
+"""skip klo error"""
 
 from __future__ import annotations
 
@@ -43,14 +43,7 @@ AVOIDANCE_CUES_EN: tuple[str, ...] = (
 )
 
 
-# Emotion-disclosure cues: used only to gate the terminal fallback
-# between VALIDATE (the user shared a feeling, even mild) and NONE
-# (ordinary conversation, nothing emotional to respond to). None of
-# the more specific branches above (distortion, avoidance, self
-# criticism, psychoed) need this list -- they already imply emotional
-# content on their own. Deliberately broad and low-bar: false positives
-# here just mean an ordinary-conversation turn gets validate instead of
-# none, which was the old universal behavior anyway and is always safe.
+# None of the more specific branches need this list.
 EMOTION_CUES_ID: tuple[str, ...] = (
     "sedih", "capek", "cape", "lelah", "kesel", "kesal", "marah", "takut",
     "cemas", "khawatir", "nangis", "galau", "stress", "stres", "tertekan",
@@ -71,9 +64,9 @@ PSYCHOED_CUES: tuple[re.Pattern[str], ...] = (
     re.compile(r"apa (sih |itu )?(yang dimaksud|maksudnya)\b", re.IGNORECASE),
     re.compile(r"\b(jelasin|definisi|apa beda)\b", re.IGNORECASE),
     re.compile(r"\bwhat (does|is|are) (this|that|cbt|ema|distortion)\b", re.IGNORECASE),
-    # Questions about "why do I feel like this / is this normal / am I crazy?"
+    # cek mood
     re.compile(r"\b(gak|ga|tidak)\s+paham\s+(kenapa|mengapa)\b", re.IGNORECASE),
-    # Require self-referential anchor to avoid matching "kenapa kamu tiba-tiba pergi"
+    # skip klo error
     re.compile(r"\bkenapa\b.{0,20}\b(aku|gue|gw|saya)\b.{0,20}\btiba-tiba\b", re.IGNORECASE | re.DOTALL),
     re.compile(r"\bkenapa\b.{0,10}\btiba-tiba\b.{0,20}\b(nangis|ngerasa|sedih|takut|panik|menangis)\b", re.IGNORECASE | re.DOTALL),
     re.compile(r"\bapa\s+(aku|ini|itu)\s+(gila|normal|wajar)\b", re.IGNORECASE),
@@ -91,7 +84,7 @@ REFRAME_REQUEST_CUES_EN: tuple[str, ...] = (
 )
 
 
-# Crisis / PHQ-9 phases that block CBT entirely.
+# block ctb
 SAFETY_TECHNIQUE_BLOCKLIST: frozenset[str] = frozenset(
     {"crisis", "escalate"}
 )
@@ -103,7 +96,7 @@ _PHQ9_ACTIVE_PHASES: frozenset[str] = frozenset(
 
 @dataclass(frozen=True)
 class CBTSignals:
-    """Reduced state surface the router actually needs."""
+    """init state"""
 
     user_message: str
     language: str
@@ -158,7 +151,7 @@ def _is_topic_shift(lower_msg: str) -> bool:
 
 
 def _is_continuation_message(msg: str, lower_msg: str) -> bool:
-    # Only treat as continuation when there is an explicit cue.
+    # skip init state req payload db conn init state skip klo error db conn skip klo error init state skip klo error skip klo error skip klo error skip klo error skip klo error skip klo error skip
     if not msg:
         return False
     stripped = msg.strip()
@@ -177,7 +170,7 @@ def _extract_active_distortion_names_from_kg_context(kg_context: str) -> list[st
     start = lowered.find(header)
     if start == -1:
         return []
-    # Slice to next section header (line starting with '[').
+    # slice to next section header
     after = kg_context[start + len(header) :]
     end_idx = after.find("\n[")
     section = after if end_idx == -1 else after[:end_idx]
@@ -201,7 +194,7 @@ def _infer_context_distortion(state: dict[str, Any]) -> Distortion | None:
     if hinted is not None:
         return hinted
 
-    # Last resort: use the most recent unchallenged distortion from KG context.
+    # use last unchallenged distortion
     kg_context = state.get("kg_context") or ""
     for name in _extract_active_distortion_names_from_kg_context(kg_context):
         d = _distortion_from_name(name)
@@ -215,7 +208,7 @@ def _has_any(text: str, cues: tuple[str, ...]) -> bool:
 
 
 def extract_signals(state: dict[str, Any]) -> CBTSignals:
-    """Reduce the conversation state to the inputs the router uses."""
+    """init state"""
     msg = (state.get("current_message") or "").strip()
     lower = msg.lower()
     language = state.get("resolved_language") or state.get("language_pref") or "id"
@@ -239,10 +232,7 @@ def extract_signals(state: dict[str, Any]) -> CBTSignals:
     distortion = detect_distortion_in_text(msg)
     distortion_from_context = False
 
-    # Gate for the terminal fallback (validate vs none). Corpus-driven
-    # distress_terms (linguistic_enrichment_node, high emotional weight
-    # phrases) count too, on top of the broader everyday emotion-word
-    # list above -- either is enough to treat the turn as emotional.
+    # `validate vs none`
     linguistic_signals = state.get("linguistic_signals") or {}
     has_distress_term = bool(linguistic_signals.get("distress_terms"))
     has_emotional_content = (
@@ -251,10 +241,7 @@ def extract_signals(state: dict[str, Any]) -> CBTSignals:
         or _has_any(lower, EMOTION_CUES_EN)
     )
 
-    # Continuation heuristic: if the user is clearly continuing the
-    # prior CBT thread (short acknowledgement / follow-up) and the
-    # previous directive contained a distortion, we allow that prior
-    # distortion to anchor the next turn.
+    # allow distortion, next turn.
     if (
         distortion is None
         and not _is_topic_shift(lower)
@@ -286,13 +273,7 @@ def extract_signals(state: dict[str, Any]) -> CBTSignals:
 
 
 def _rule_safety_check(state: dict[str, Any]) -> CBTDecision | None:
-    """
-    Hard safety rules that always win over any soft routing.
-
-    Returns a :class:`CBTDecision` when a safety rule fires, ``None``
-    otherwise so the caller can proceed to soft routing (rule based
-    tree or LLM judge).
-    """
+    """returns CBTDecision on safety rule fire"""
     safety_flag = state.get("safety_flag")
     if safety_flag in SAFETY_TECHNIQUE_BLOCKLIST:
         return CBTDecision(
@@ -311,7 +292,7 @@ def _rule_safety_check(state: dict[str, Any]) -> CBTDecision | None:
 
     s = extract_signals(state)
 
-    # Resume in-progress thought record.
+    # res in-rt
     if s.in_progress_thought_record:
         return CBTDecision(
             technique=CBTTechnique.THOUGHT_RECORD,
@@ -323,7 +304,7 @@ def _rule_safety_check(state: dict[str, Any]) -> CBTDecision | None:
 
 
 def route(state: dict[str, Any]) -> CBTDecision:
-    """Pick the technique that fits this turn using sync rule tree."""
+    """pilih teknik yang sesuai rule tree sync."""
     blocked = _rule_safety_check(state)
     if blocked is not None:
         return blocked
@@ -336,8 +317,7 @@ def route(state: dict[str, Any]) -> CBTDecision:
         (cbt_state.get("last_directive") or {}).get("payload") or {}
     )
 
-    # Explicit reframe request escalates straight to thought record if
-    # we already have a distortion to anchor on.
+    # skip if distortion
     if s.reframe_request and s.distortion is not None:
         return _maybe_offer(
             CBTTechnique.THOUGHT_RECORD,
@@ -347,8 +327,7 @@ def route(state: dict[str, Any]) -> CBTDecision:
             payload={"distortion": s.distortion.name},
         )
 
-    # Active distortion: escalate to thought_record when the same
-    # distortion was reframed last turn (CBT progression: Socratic → record).
+    # reframe" "last turn" "record
     if s.distortion is not None:
         prior_distortion = last_directive_payload.get("distortion")
         if (
@@ -370,7 +349,7 @@ def route(state: dict[str, Any]) -> CBTDecision:
             payload={"distortion": s.distortion.name},
         )
 
-    # Avoidance cue: behavior activation (Beck & Beck 2011).
+    # avoid cue: behav act
     if s.avoidance:
         return _maybe_offer(
             CBTTechnique.BEHAVIOR_ACTIVATION,
@@ -380,8 +359,7 @@ def route(state: dict[str, Any]) -> CBTDecision:
         )
 
     if s.self_criticism:
-        # After self_compassion was already offered, escalate to thought
-        # record so the user can examine the self-critical belief in depth.
+        # record self-crit
         if last_offered == CBTTechnique.SELF_COMPASSION.value:
             return _maybe_offer(
                 CBTTechnique.THOUGHT_RECORD,
@@ -403,11 +381,7 @@ def route(state: dict[str, Any]) -> CBTDecision:
             signals=("psychoed_cue",),
         )
 
-    # Terminal fallback: nothing more specific fired. The companion
-    # role isn't limited to CBT/validation -- ordinary conversation
-    # with no emotional content should just be ordinary conversation
-    # (no overlay), not validated by default. Only fall through to
-    # validate when the turn actually discloses a feeling.
+    # `fallback: `  `companion: `  `fallback: `
     if not s.has_emotional_content:
         return CBTDecision(
             technique=CBTTechnique.NONE,
@@ -429,11 +403,7 @@ def _maybe_offer(
     *,
     payload: dict[str, object] | None = None,
 ) -> CBTDecision:
-    """
-    Honor user opt-out: if the user declined the same technique on the
-    previous turn, fall back to validate for one turn before
-    re-offering.
-    """
+    """opt-out, prev turn, validate, one turn, re-offer."""
     if s.declined_last and s.last_offered == technique.value:
         return CBTDecision(
             technique=CBTTechnique.VALIDATE,
@@ -449,11 +419,10 @@ def _maybe_offer(
     )
 
 
-# Hybrid async route: rule safety -> LLM judge -> sync fallback
+# skip fallback
 
 
-# Confidence below this threshold causes the judge result to be
-# treated as advisory and we defer to the sync rule based router.
+# treat as advisory, defer to sync rule.
 JUDGE_CONFIDENCE_THRESHOLD: float = 0.4
 
 
@@ -461,12 +430,7 @@ def _apply_opt_out_cooldown(
     technique: CBTTechnique,
     signals: CBTSignals,
 ) -> CBTTechnique:
-    """
-    Demote to VALIDATE if the user just declined the same technique.
-
-    Mirrors :func:`_maybe_offer` for the LLM-judge path so cooldown
-    semantics stay consistent across both routers.
-    """
+    """validate, declined, same, technique"""
     if signals.declined_last and signals.last_offered == technique.value:
         return CBTTechnique.VALIDATE
     return technique
@@ -476,7 +440,7 @@ def _judge_outcome_to_decision(
     outcome: JudgeOutcome,
     signals: CBTSignals,
 ) -> CBTDecision:
-    """Translate a :class:`JudgeOutcome` into a :class:`CBTDecision`."""
+    """`cbt translate`"""
     technique = outcome.technique
     cooled_technique = _apply_opt_out_cooldown(technique, signals)
 
@@ -487,8 +451,7 @@ def _judge_outcome_to_decision(
     if outcome.rationale:
         payload["rationale"] = outcome.rationale
 
-    # Surface distortion from the judge or from KG context so the
-    # response_generator overlay can anchor the Socratic question.
+    # overlay Socratic q
     distortion_name: str | None = outcome.distortion
     if distortion_name is None and signals.distortion is not None:
         distortion_name = signals.distortion.name
@@ -497,7 +460,7 @@ def _judge_outcome_to_decision(
         payload["distortion"] = distortion_name
 
     if cooled_technique is not technique:
-        # User just declined this; demote with telemetry.
+        # telem, demote
         return CBTDecision(
             technique=CBTTechnique.VALIDATE,
             reason="opt_out_cooldown",
@@ -519,26 +482,7 @@ async def route_with_llm(
     judge_llm: Any | None,
     confidence_threshold: float = JUDGE_CONFIDENCE_THRESHOLD,
 ) -> CBTDecision:
-    """
-    Hybrid router: safety rules first, then LLM judge, then sync fallback.
-
-    Parameters
-    ----------
-    state:
-        ConversationState style dict.
-    judge_llm:
-        Optional pre-built LangChain client passed to the judge. If
-        ``None``, the judge constructs its own client from
-        :data:`agentic.config.llm_models.CBT_JUDGE`.
-    confidence_threshold:
-        Judge results with confidence below this value are treated as
-        advisory; the router defers to :func:`route`.
-
-    Returns
-    -------
-    A :class:`CBTDecision`. Never returns ``None``; the fallback to
-    :func:`route` guarantees a value.
-    """
+    """safety first, then judge, then sync."""
     blocked = _rule_safety_check(state)
     if blocked is not None:
         return blocked

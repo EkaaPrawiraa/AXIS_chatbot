@@ -1,4 +1,4 @@
-"""Shared helpers for the deleter package."""
+"""helper func"""
 
 from __future__ import annotations
 
@@ -16,7 +16,7 @@ DERIVED_LABELS: frozenset[str] = frozenset({
 
 
 def validate_label(label: str) -> str:
-    """Raise unless ``label`` is in the deleter allow-list."""
+    """raise unless 'label' in deleter"""
     if label not in DERIVED_LABELS:
         raise ValueError(
             f"label {label!r} not in deleter allow-list {sorted(DERIVED_LABELS)}"

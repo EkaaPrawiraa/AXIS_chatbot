@@ -1,4 +1,4 @@
-"""Single source of truth for LLM model selection used by LangGraph."""
+"""ssot LLM sel di LangGraph"""
 
 from __future__ import annotations
 
@@ -14,32 +14,7 @@ LLMProvider = Literal["openai", "gemini", "local"]
 
 @dataclass(frozen=True)
 class LLMSpec:
-    """
-    Description of an LLM call. Immutable on purpose.
-
-    Attributes
-    ----------
-    name:
-        Human readable id, used in logs and tracing.
-    model:
-        Provider model string, for example ``gpt-4o-mini``.
-    temperature:
-        Sampling temperature.
-    max_tokens:
-        Hard cap on output tokens.
-    timeout_s:
-        Per-request timeout in seconds.
-    prompt_ref:
-        Reference to a YAML prompt under :mod:`agentic.prompts`. For
-        example ``"nodes/response_generator"`` resolves to
-        ``agentic/prompts/nodes/response_generator.yaml``.
-    reasoning_effort:
-        Optional reasoning effort level for o-series models
-        (``"low"``, ``"medium"``, or ``"high"``). Leave ``None`` for
-        standard chat models.
-    extra_kwargs:
-        Provider specific kwargs forwarded to the constructor.
-    """
+    """name: id model: model temperature: temp max_tokens: max timeout_s: timeout prompt_ref: ref reasoning_effort: effort extra_kwargs: kwargs"""
 
     name: str
     model: str
@@ -52,7 +27,7 @@ class LLMSpec:
 
     @property
     def system_prompt(self) -> str:
-        """Resolve the prompt YAML lazily so import stays cheap."""
+        """resolve prompt yaml lazily"""
         from agentic.prompts import load_prompt
 
         return load_prompt(self.prompt_ref)
@@ -156,13 +131,7 @@ def llm_provider() -> LLMProvider:
 
 
 def resolve_llm_model(model: str, *, spec_name: str | None = None) -> str:
-    """Resolve provider-specific model ids while preserving OpenAI defaults.
-
-    Frontend/backend callers may still send OpenAI model names such as
-    ``gpt-4o-mini``. When Gemini or Local is selected, translate those names
-    into the closest provider tier so provider switching does not break runtime
-    calls.
-    """
+    """resolve provider-specific model ids"""
     provider = llm_provider()
     requested = (model or "").strip()
     if requested.startswith("models/gemini-"):
@@ -281,7 +250,7 @@ KG_EXTRACTOR = LLMSpec(
 )
 
 
-# Guardrail-specific specs (Layer 3 rewrite + CBT helpers)
+# layer 3 rewrite + ctb helpers
 
 
 GUARDRAIL_REWRITE = LLMSpec(
@@ -357,10 +326,7 @@ SPEECH_ADAPTER_V3 = LLMSpec(
 )
 
 
-# Runs lazily, only when the Gemini TTS tier is actually attempted (see
-# run_tts_fallback_chain) -- not on every voice turn -- so a short
-# timeout keeps a slow call from meaningfully delaying synthesis; any
-# failure just falls back to the untagged text.
+# limit tps
 SPEECH_ADAPTER_GEMINI_TAGS = LLMSpec(
     name="speech_adapter_gemini_tags",
     model=_DEFAULT_CHEAP,
@@ -371,7 +337,7 @@ SPEECH_ADAPTER_GEMINI_TAGS = LLMSpec(
 )
 
 
-# Crisis-specific specs
+# skip crisis
 
 
 CRISIS_EMPATHY = LLMSpec(
@@ -385,17 +351,7 @@ CRISIS_EMPATHY = LLMSpec(
 
 
 def build_llm(spec: LLMSpec) -> Any:
-    """
-    Construct a LangChain chat client from a spec.
-
-    The import lives inside the function so importing this module is
-    cheap and does not require provider packages to be installed in
-    environments that only need the dataclasses.
-
-    For o-series reasoning models, pass ``reasoning_effort`` on the spec.
-    The temperature field is forwarded as-is; o-series models accept it
-    but ignore it internally.
-    """
+    """Construct a LangChain chat client from spec.      Import inside func, cheap import for envs w/o provider deps.      Pass `reasoning_effort` for o-series; forward `temperature`."""
     provider = llm_provider()
     model = resolve_llm_model(spec.model, spec_name=spec.name)
 
@@ -439,15 +395,7 @@ def build_llm(spec: LLMSpec) -> Any:
         "temperature": spec.temperature,
         "max_tokens": spec.max_tokens,
         "timeout": spec.timeout_s,
-        # Unlike the openai/local branches above, this previously never
-        # forwarded spec.extra_kwargs at all -- RESPONSE_GENERATOR's
-        # `{"streaming": True}` was silently dropped for Gemini. Chat
-        # streaming still worked in practice (LangGraph's astream_events
-        # attaches a callback handler that _should_stream() also detects
-        # even without the field set), but ChatGoogleGenerativeAI DOES
-        # support this field like ChatOpenAI does, so pass it through for
-        # the same explicit behavior instead of relying on the implicit
-        # fallback path.
+        # `skip kwarg`
         **spec.extra_kwargs,
     }
     api_key = os.getenv("GOOGLE_API_KEY") or os.getenv("GEMINI_API_KEY")

@@ -1,4 +1,4 @@
-"""OpenAI speech-to-text entry point."""
+"""init speech-to-text"""
 
 from __future__ import annotations
 
@@ -66,7 +66,7 @@ def _extension_for_mime(mime: str | None) -> str:
 
 
 def _openai_audio_file(audio: Any, mime: str | None) -> Any:
-    """Wrap raw audio with a filename OpenAI can decode."""
+    """wrap audio w/ filename"""
     if isinstance(audio, bytes):
         file = BytesIO(audio)
         file.name = f"voice-input.{_extension_for_mime(mime)}"
@@ -87,7 +87,7 @@ class TranscriptResult:
 
 
 class STTProvider(Protocol):
-    """Small interface for production and test STT providers."""
+    """stt small prod test"""
 
     async def transcribe(
         self,
@@ -99,7 +99,7 @@ class STTProvider(Protocol):
 
 
 class OpenAITranscriptionProvider:
-    """Production provider using OpenAI audio transcriptions."""
+    """using openai audio"""
 
     def __init__(
         self,
@@ -137,7 +137,7 @@ class OpenAITranscriptionProvider:
         language = getattr(response, "language", None)
         segments = getattr(response, "segments", None)
 
-        # Best-effort confidence from segment logprobs.
+        # best-effort conf from logprobs
         confidence: float | None = None
         if segments:
             try:
@@ -165,14 +165,7 @@ class OpenAITranscriptionProvider:
 
 
 class GeminiTranscriptionProvider:
-    """Fallback provider using Gemini's native multimodal audio understanding.
-
-    Only reached when the primary OpenAI transcription call fails -- see
-    the extra fallback attempt appended in ``speech_to_text_node``. Gemini
-    has no dedicated transcription endpoint; audio is passed as an inline
-    Part alongside a transcription instruction, and the model's text reply
-    is used as the transcript.
-    """
+    """fallback using Gemini's audio model"""
 
     def __init__(
         self,
@@ -222,13 +215,7 @@ class GeminiTranscriptionProvider:
 
 
 def _default_stt_providers() -> tuple[STTProvider, STTProvider]:
-    """
-    Primary/fallback pair, ordered by LLM_PROVIDER -- mirrors the TTS
-    ordering in text_to_speech_node. Whichever provider backs the text
-    LLM is tried first; the other is the fallback. LLM_PROVIDER=local
-    defaults to the same order as gemini (see text_to_speech_node for
-    the same reasoning).
-    """
+    """Primary/fallback pair, ordered by LLM_PROVIDER."""
     if llm_provider() == "openai":
         return OpenAITranscriptionProvider(), GeminiTranscriptionProvider()
     return GeminiTranscriptionProvider(), OpenAITranscriptionProvider()
@@ -241,7 +228,7 @@ async def speech_to_text_node(
     fallback_provider: STTProvider | None = None,
     audit: GuardrailLogger | None = None,
 ) -> ConversationState:
-    """Run STT, falling back to the other LLM_PROVIDER-ordered provider on failure."""
+    """run stt, fallback to other provider on fail."""
     audit = audit or NullGuardrailLogger()
     voice = dict(state.get("voice_state") or empty_voice_state())
 
@@ -269,8 +256,7 @@ async def speech_to_text_node(
         logger.exception(
             "audio transcription failed (%s), trying fallback: %s", primary_label, exc,
         )
-        # Additive fallback tier: only reached once the primary provider
-        # has failed. Does not change the primary path above.
+        # fallback tier: fail first, then primary.
         try:
             fallback = fallback_provider
             result = await fallback.transcribe(
@@ -299,10 +285,7 @@ async def speech_to_text_node(
 
     elapsed_ms = int((time.perf_counter() - started) * 1000)
 
-    # Drop common Whisper hallucinations on silent/very-short clips.
-    # The model is trained on YouTube subtitles where silence is often
-    # padded with these phrases — they leak through whenever the mic
-    # captures breath, brief noise, or sub-second audio.
+    # Drop common hallucinations.
     cleaned_text = _drop_hallucinated_transcript(
         result.text,
         language_hint=state.get("language_pref"),
@@ -346,10 +329,7 @@ def _response_format_for_model(model: str) -> str:
     return "verbose_json"
 
 
-# Whisper / gpt-4o-mini-transcribe hallucinate these phrases on silent or
-# sub-second audio because their training data is dominated by YouTube
-# subtitles where silence is padded with stock filler. Normalised
-# (lower-cased, stripped of trailing punctuation/whitespace) for matching.
+# skip audio
 _HALLUCINATED_PHRASES = frozenset(
     s.lower()
     for s in (
@@ -380,7 +360,6 @@ def _drop_hallucinated_transcript(
     language_hint: str | None,
     detected_language: str | None,
 ) -> str:
-    """Return ``""`` when ``text`` is a known Whisper hallucination."""
     if not text:
         return ""
     normalised = text.strip().rstrip("。.,!?！？ ").lower()
@@ -392,9 +371,7 @@ def _drop_hallucinated_transcript(
             text, language_hint, detected_language,
         )
         return ""
-    # Cross-language sanity check: when the user's pref is Indonesian but
-    # the model returned a tiny non-Latin string (CJK punctuation, kana,
-    # hangul), it is almost certainly hallucinated.
+    # check lan
     if language_hint == "id" and len(normalised) <= 8:
         if any("぀" <= ch <= "ヿ" or "一" <= ch <= "鿿"
                or "가" <= ch <= "힣" for ch in normalised):

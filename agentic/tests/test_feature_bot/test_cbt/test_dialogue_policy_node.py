@@ -1,4 +1,4 @@
-"""Integration-ish tests for dialogue_policy_node."""
+"""test dialog policy"""
 
 from __future__ import annotations
 
@@ -27,9 +27,7 @@ class TestDecisionWiring:
 
     @pytest.mark.asyncio
     async def test_casual_message_wires_to_none(self, audit) -> None:
-        """A plain greeting has no emotional content -- the node should
-        wire cbt_node_active to "none" (no CBT overlay in the response
-        generator) instead of defaulting to validate for every turn."""
+        """wire cbt_node_active to "none"""
         state = _state_with_message("halo, hari ini gimana")
         out = await dialogue_policy_node(state, audit=audit)
         assert out["cbt_node_active"] == "none"
@@ -42,9 +40,7 @@ class TestDecisionWiring:
         assert out["cbt_node_active"] == "reframe"
         assert out["cbt_state"]["last_offered"] == "reframe"
 
-    # test_acute_distress_grounding removed in 2026-05: emotion_pad
-    # field was deleted along with the emotion_detection node.
-    # Acute affect routing now goes through the LLM judge.
+    # rm field 2026-05: emotion_pad field 2026-05: emotion_detection Acute affect 2026-05: LLM judge
 
     @pytest.mark.asyncio
     async def test_safety_flag_blocks(self, audit) -> None:
@@ -72,7 +68,7 @@ class TestDeclineCooldown:
 
     @pytest.mark.asyncio
     async def test_after_decline_router_falls_back_to_validate(self, audit) -> None:
-        # Same offer should be cooled down to validate next turn.
+        # cool down offer
         state = _state_with_message("aku selalu gagal")
         state["cbt_state"] = {  # type: ignore[typeddict-item]
             "last_offered": "reframe",
@@ -85,13 +81,7 @@ class TestDeclineCooldown:
 
     @pytest.mark.asyncio
     async def test_decline_turn_flag_stays_true(self, audit) -> None:
-        """
-        Bug-fix check: when the user declines on the SAME turn the offer
-        was made, declined_last_offer must still be True in the output state.
-
-        Previously the cooldown-reset logic ran unconditionally, so the flag
-        was set then immediately reset within one node execution.
-        """
+        """bug-fix: set flag to True, reset in next node."""
         state = _state_with_message("Nggak deh, ga usah dibahas lagi soal itu.")
         state["cbt_state"] = {  # type: ignore[typeddict-item]
             "last_offered": "reframe",
@@ -106,15 +96,8 @@ class TestDeclineCooldown:
 
     @pytest.mark.asyncio
     async def test_next_turn_after_decline_resets_flag(self, audit) -> None:
-        """
-        After the cooldown fires on the NEXT turn (opt_out_cooldown),
-        declined_last_offer must be reset to False so future turns are not
-        permanently blocked from offering the same technique.
-        """
-        # Simulate: previous turn ended with declined_last_offer=True (decline
-        # already happened). Now it is the next turn — a benign message that
-        # still triggers the same technique (reframe via distortion), which the
-        # router demotes to opt_out_cooldown. The node must consume the cooldown.
+        """reset to False"""
+        # declined_last_offer=True, next msg triggers same technique, demote to opt_out_cooldown, node consumes cooldown.
         state = _state_with_message("aku selalu gagal di mata kuliah ini")
         state["cbt_state"] = {  # type: ignore[typeddict-item]
             "last_offered": "reframe",
@@ -122,8 +105,7 @@ class TestDeclineCooldown:
             "decline_streak": 1,
         }
         out = await dialogue_policy_node(state, audit=audit, judge_llm=None)
-        # Router should have fired opt_out_cooldown because the distortion
-        # message would normally yield reframe but the flag blocks it.
+        # opt_out_cooldown
         assert out["cbt_directive"]["reason"] == "opt_out_cooldown", (
             f"FAIL: expected opt_out_cooldown reason, got {out['cbt_directive']['reason']!r}"
         )
@@ -154,7 +136,7 @@ class TestThoughtRecordDriven:
         out = await dialogue_policy_node(state, audit=audit)
         first_step = out["cbt_directive"]["payload"]["step"]
 
-        # User answers the catch-thought prompt.
+        # answering prompt
         out["current_message"] = "aku pasti gagal final besok"
         out2 = await dialogue_policy_node(out, audit=audit)
         second_step = out2["cbt_directive"]["payload"]["step"]

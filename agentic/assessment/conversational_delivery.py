@@ -1,4 +1,4 @@
-"""Conversational layer for PHQ-9."""
+"""init state"""
 
 from __future__ import annotations
 
@@ -28,12 +28,7 @@ from agentic.config.llm_models import (
 logger = logging.getLogger(__name__)
 
 
-# Message classes
-#
-# Prefer the real LangChain message classes when available so that
-# production calls keep their usual integrations. Fall back to small
-# stand-ins so unit tests that inject a fake LLM do not have to pull
-# in LangChain just to satisfy an import.
+# `msg classes`
 
 try:  # pragma: no cover - import behavior depends on environment
     from langchain_core.messages import (  # type: ignore[import-not-found]
@@ -52,7 +47,7 @@ except Exception:  # pragma: no cover - fallback path for tests/sandbox
         type: str = "human"
 
 
-# Result of a free-text scoring attempt
+# skor gratis
 
 
 CONFIDENCE_FLOOR_FOR_AUTO_ACCEPT: float = 0.7
@@ -60,7 +55,7 @@ CONFIDENCE_FLOOR_FOR_AUTO_ACCEPT: float = 0.7
 
 @dataclass(frozen=True)
 class TextScoreOutcome:
-    """Output of :func:`score_text_response`."""
+    """output: score_text_response()"""
 
     score: int
     confidence: float
@@ -74,7 +69,7 @@ class TextScoreOutcome:
 
 
 def build_greeting(language: str) -> str:
-    """Opening turn before item 1 is asked."""
+    """open turn 1"""
     if language == "id":
         return (
             "Aku mau ngajak kita ngecek kondisi mood-mu lewat 9 pertanyaan "
@@ -91,7 +86,7 @@ def build_greeting(language: str) -> str:
 
 
 def build_offer(language: str) -> str:
-    """Offer phrasing used during the warm-up to invite assessment."""
+    """start-up phrasing"""
     if language == "id":
         return (
             "Sudah beberapa minggu sejak terakhir kali kita ngecek gimana "
@@ -106,13 +101,7 @@ def build_offer(language: str) -> str:
 
 
 def build_item_prompt(item_id: int, language: str) -> str:
-    """
-    Build the user-facing message for one PHQ-9 item.
-
-    Includes the item question and four labeled options. Numbering on
-    the options matches the 0..3 PHQ-9 score so the LLM scorer and the
-    UI agree on the mapping.
-    """
+    """build msg PHQ-9 item"""
     question = item_text(item_id, language)
     options = options_with_scores(language)
     if language == "id":
@@ -131,7 +120,7 @@ def build_item_prompt(item_id: int, language: str) -> str:
 
 
 def build_clarification(item_id: int, language: str, prior_text: str) -> str:
-    """Asked when the LLM scorer's confidence is too low to auto-accept."""
+    """cek score"""
     if language == "id":
         return (
             f"Aku ingin pastiin paham jawabanmu untuk pertanyaan {item_id}. "
@@ -155,12 +144,7 @@ async def build_clarification_explanation(
     recent_context: str = "",
     llm: Any | None = None,
 ) -> str:
-    """Explain the item meaning when the user asks 'what does this mean?'.
-
-    This is used only on the clarification path (phase awaiting_clar) so it
-    doesn't change scoring logic. Falls back to :func:`build_clarification`
-    when the LLM is unavailable.
-    """
+    """explain meaning"""
     client = llm if llm is not None else build_llm(PHQ9_CLARIFICATION_EXPLAINER)
 
     options_block = "\n".join(
@@ -191,13 +175,13 @@ async def build_clarification_explanation(
 
 
 def build_acknowledgement(item_id: int, language: str) -> str:
-    """Short transition between items so the flow feels conversational."""
+    """nto the next"""
     if language == "id":
         return f"Oke, aku catat. Lanjut ke pertanyaan {item_id + 1}."
     return f"Got it, noted. Moving on to question {item_id + 1}."
 
 
-# Free-text scoring via LLM
+# scoring llm
 
 
 _SCORER_USER_TEMPLATE = (
@@ -217,13 +201,7 @@ async def score_text_response(
     language: str,
     llm: Any | None = None,
 ) -> TextScoreOutcome:
-    """
-    Map a free-text PHQ-9 answer to a 0..3 score.
-
-    The dedicated PHQ-9 scorer LLM is used at temperature 0 to keep
-    results reproducible. If the LLM returns malformed output the
-    function falls back to confidence 0.0 and forces clarification.
-    """
+    """map free-text to score 0..3 LLM used at temp 0 to keep results reproducible LLM returns malformed output -> fallback to confidence 0.0 fall back to confidence 0.0 and force clarification"""
     client = llm if llm is not None else build_llm(PHQ9_SCORER)
 
     options_block = "\n".join(
@@ -269,7 +247,7 @@ _JSON_RE = re.compile(r"\{.*\}", re.DOTALL)
 
 
 def _parse_score_json(raw: str) -> tuple[int, float]:
-    """Extract ``(score, confidence)`` from the LLM output."""
+    """const [score, confidence] = llmOutput;"""
     if not raw:
         return 0, 0.0
     match = _JSON_RE.search(raw)
@@ -309,7 +287,7 @@ async def build_feedback_message(
     item9_flagged: bool,
     llm: Any | None = None,
 ) -> str:
-    """Generate the closing feedback paragraphs."""
+    """buat ngelipkan feedback."""
     use_llm_feedback = os.getenv("PHQ9_FEEDBACK_USE_LLM", "").strip().lower() in {
         "1",
         "true",
@@ -351,7 +329,7 @@ async def build_feedback_message(
 def _fallback_feedback(
     total: int, severity: PHQ9Severity, language: str
 ) -> str:
-    """Static feedback used when the LLM call fails."""
+    """`use static feedback`"""
     if language == "id":
         severity_label = {
             "minimal": "minimal",

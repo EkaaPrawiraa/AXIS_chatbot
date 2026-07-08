@@ -1,14 +1,14 @@
-"""agentic/memory/kg_writer."""
+"""writetofile"""
 
 from __future__ import annotations
 
-# Deduplication thresholds.
+# dedup thrs.
 from agentic.memory.knowledge_graph.kg_writer._common import (
     MERGE_THRESHOLD,
     REVIEW_THRESHOLD,
 )
 
-# Input schemas (now hosted by kg_retriever).
+# kg_retriever_input_schemas
 from agentic.memory.knowledge_graph.kg_retriever.schemas import (
     BehaviorInput,
     EmotionInput,
@@ -21,7 +21,7 @@ from agentic.memory.knowledge_graph.kg_retriever.schemas import (
     TriggerInput,
 )
 
-# Per-node writers.
+# write to node
 from agentic.memory.knowledge_graph.kg_writer.behavior_kg          import write_behavior
 from agentic.memory.knowledge_graph.kg_writer.emotion_kg            import write_emotion
 from agentic.memory.knowledge_graph.kg_writer.experience_kg         import write_experience
@@ -34,25 +34,25 @@ from agentic.memory.knowledge_graph.kg_writer.trigger_kg            import write
 from agentic.memory.knowledge_graph.kg_writer.topic_kg              import write_topic
 from agentic.memory.knowledge_graph.kg_writer.user_kg               import ensure_user_node
 
-# Relationship builders (now hosted by kg_retriever).
+# buat ngbuild relas.
 from agentic.memory.knowledge_graph.kg_retriever.relationships import (
-    # CBT chain
+    # skip
     link_emotion_to_thought,
     link_experience_to_emotion,
     link_experience_to_trigger,
     link_thought_emotion_association,
     link_to_behavior,
-    # Contextual
+    # skip klo error
     link_experience_to_subject,
     link_experience_to_person,   # backward compat alias for link_experience_to_subject
     link_session_to_memory,
     link_to_topic,
     link_user_recurring_theme,
-    # Bi-temporal maintenance
+    # maintain bi-temporal
     invalidate_edge,
 )
 
-# Algorithmic operations (now hosted by kg_algorithm).
+# kg_algo
 from agentic.memory.knowledge_graph.kg_algorithm.supersession import supersede_thought
 from agentic.memory.knowledge_graph.kg_algorithm.decay        import run_memory_decay
 from agentic.memory.knowledge_graph.kg_algorithm.lifecycle import (
@@ -61,7 +61,7 @@ from agentic.memory.knowledge_graph.kg_algorithm.lifecycle import (
     replace_behavior,
 )
 
-# Lifecycle (now split across kg_deleter / kg_modifier).
+# kg_deleter / kg_modifier
 from agentic.memory.knowledge_graph.kg_deleter.soft_delete  import invalidate_message
 from agentic.memory.knowledge_graph.kg_deleter.hard_delete  import purge_message, purge_user
 from agentic.memory.knowledge_graph.kg_modifier.update_node import update_node_property
@@ -81,7 +81,7 @@ __all__ = [
     "ThoughtInput",
     "TopicInput",
     "TriggerInput",
-    # writers
+    # write short, lazy, and fragmented.
     "write_behavior",
     "write_emotion",
     "write_experience",
@@ -93,27 +93,27 @@ __all__ = [
     "write_trigger",
     "write_topic",
     "ensure_user_node",
-    # relationship builders -- CBT chain
+    # init state
     "link_emotion_to_thought",
     "link_experience_to_emotion",
     "link_experience_to_trigger",
     "link_thought_emotion_association",
     "link_to_behavior",
-    # relationship builders -- contextual
+    # build relationships
     "link_experience_to_subject",
     "link_experience_to_person",   # backward compat alias for link_experience_to_subject
     "link_session_to_memory",
     "link_to_topic",
     "link_user_recurring_theme",
-    # bi-temporal maintenance
+    # maintain bi-temporal
     "invalidate_edge",
-    # supersession & decay (re-exported from kg_algorithm)
+    # sudah diubah & diexport ke kg_algorithm
     "supersede_thought",
     "run_memory_decay",
     "deactivate_trigger",
     "reappraise_experience",
     "replace_behavior",
-    # lifecycle (re-exported from kg_deleter / kg_modifier)
+    # re-export kg_deleter kg_modifier
     "invalidate_message",
     "purge_message",
     "purge_user",

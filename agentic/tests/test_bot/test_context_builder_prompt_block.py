@@ -1,9 +1,4 @@
-"""
-Unit tests for RetrievedContext.as_prompt_block()'s handling of the
-distortions/core-belief block, added alongside the fix that makes
-_fetch_active_distortions surface core_belief Thought nodes even when
-they have no attached cognitive distortion (see AGENTIC #4).
-"""
+"""`test distortions`"""
 from __future__ import annotations
 
 from agentic.memory.context_builder import RetrievedContext

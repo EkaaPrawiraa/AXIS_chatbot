@@ -1,4 +1,4 @@
-"""Shared fakes for the guardrail test suite."""
+"""fake share"""
 
 from __future__ import annotations
 
@@ -17,7 +17,7 @@ from agentic.agent.audit.guardrail_events import (
 
 
 class RecordingAuditLogger(NullGuardrailLogger):
-    """A NullGuardrailLogger that stores events for assertions."""
+    """store events"""
 
     def __init__(self) -> None:
         super().__init__()
@@ -37,12 +37,7 @@ class _FakeAIMessage:
 
 @dataclass
 class FakeRewriteLLM:
-    """
-    Minimal fake for the rewrite LLM. Returns the next reply from
-    ``replies`` on each call, falling back to a clean default.
-
-    ``calls`` records each invocation for assertions.
-    """
+    """replies[0]  # fallback"""
 
     replies: list[str] = field(default_factory=list)
     default: str = "Aku dengar kamu. Mari kita lanjut bicara pelan-pelan."
@@ -57,7 +52,7 @@ class FakeRewriteLLM:
 
 @dataclass
 class FakeBrokenLLM:
-    """LLM that always raises. Used to test fallback paths."""
+    """always raise' 'test fallback"""
 
     async def ainvoke(self, _messages: list[Any]) -> _FakeAIMessage:
         raise RuntimeError("simulated llm failure")
@@ -81,7 +76,7 @@ def clean_rewrite_llm() -> FakeRewriteLLM:
 
 @pytest.fixture
 def stubborn_rewrite_llm() -> FakeRewriteLLM:
-    """LLM that keeps emitting violating text so the loop exhausts."""
+    """exhaust loop"""
     return FakeRewriteLLM(
         replies=[
             "Kamu mengalami depresi sedang.",

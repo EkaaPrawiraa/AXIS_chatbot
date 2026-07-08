@@ -1,4 +1,4 @@
-"""Compiled LangGraph subgraph that owns PHQ-9 administration."""
+"""langgraph subgraph"""
 
 from __future__ import annotations
 
@@ -144,13 +144,7 @@ async def _persist_progress(
     session_id: str,
     phq9: dict[str, Any],
 ) -> None:
-    """UPSERT in-flight PHQ-9 progress; never raise.
-
-    Persistence failure must never break the user-facing flow. If the
-    DB is hiccupping we log and continue; the next save will reconcile.
-    The caller side (request/response round-trip) still carries the
-    canonical state for this turn.
-    """
+    """upsert, log fail, continue."""
     if not user_id or not session_id:
         return
     try:
@@ -169,7 +163,7 @@ async def _clear_progress(
     user_id: str,
     session_id: str,
 ) -> None:
-    """Drop the in-flight row after the run terminates (declined/done)."""
+    """drop row run ends"""
     if not user_id or not session_id:
         return
     try:
@@ -199,15 +193,15 @@ async def _schedule_declined_retry(
         logger.warning("phq9 declined-offer retry failed for %s: %s", user_id, exc)
 
 
-# Explanation request detection
+# explain_req
 _EXPLANATION_CUES_ID: tuple[re.Pattern[str], ...] = (
-    # 1. Formal / baku
+    # skip klo error
     re.compile(r"\b(maksudnya|maksud pertanyaannya|gimana maksudnya)\b", re.IGNORECASE),
     re.compile(r"\b(apa (sih )?(yang )?dimaksud)\b", re.IGNORECASE),
     re.compile(r"\b(apa artinya|artinya apa)\b", re.IGNORECASE),
     re.compile(r"\b(jelaskan|definisi|jelasin)\b", re.IGNORECASE),
     re.compile(r"\b(bisa (di)?(per)?jelas(kan|in)?)\b", re.IGNORECASE),
-    # 2. Colloquial / gaul
+    # skip klo error
     re.compile(r"\b(gimana maksudnya|gimana sih|maksudnya gimana)\b", re.IGNORECASE),
     re.compile(r"\b(ga|gak|nggak|engga|enggak)\s+(ngerti|paham|jelas)\b", re.IGNORECASE),
     re.compile(r"\bbingung\b", re.IGNORECASE),
@@ -224,11 +218,7 @@ _EXPLANATION_CUES_EN: tuple[re.Pattern[str], ...] = (
 
 
 def _is_explanation_request(reply: str, language: str) -> bool:
-    """Return True if the user is asking the bot to explain the item.
-
-    Checks ID cues first, then EN, regardless of declared language so
-    code-switched messages ("jelasin what does this mean") fire too.
-    """
+    """return True if "explain" in msg else False"""
     if not reply:
         return False
     primary = _EXPLANATION_CUES_ID if language == "id" else _EXPLANATION_CUES_EN
@@ -238,7 +228,7 @@ def _is_explanation_request(reply: str, language: str) -> bool:
     )
 
 
-# Node: offer
+# skip
 
 
 async def _node_offer(
@@ -246,19 +236,7 @@ async def _node_offer(
     *,
     audit: GuardrailLogger,
 ) -> ConversationState:
-    """
-    Phase 2 implementation: this node no longer emits a static line.
-    Instead, it ARMS the response generator with an offer directive
-    and lets the LLM weave the invitation into a contextual reply.
-
-    The phase stays ``offer_pending``. When the response generator
-    finishes, it sets ``phq9_state.phase = "offered"`` and clears the
-    armed flag, so the next user reply hits the decision node.
-
-    Static text is only used as a last-resort fallback when warm-up
-    has long elapsed and the response generator never weaved the
-    offer (e.g., LLM downtime).
-    """
+    """offer_pending"""
     phq9 = _phq9(state)
     if int(state.get("session_turn") or 0) < WARMUP_TURNS_BEFORE_OFFER:
         phq9["offer_armed"] = False
@@ -270,7 +248,7 @@ async def _node_offer(
     return state
 
 
-# Node: process accept/decline reply
+# accept/decline
 
 
 async def _node_decision(
@@ -327,7 +305,7 @@ def _accept_and_start_item1(
     phq9: dict[str, Any],
     language: str,
 ) -> ConversationState:
-    """Enter item 1 with greeting + first prompt."""
+    """nginput 'greeting' + 'pertama'."""
     phq9["phase"] = "in_progress"
     phq9["active_item"] = 1
     phq9["responses"] = {}
@@ -341,7 +319,7 @@ def _accept_and_start_item1(
     return state
 
 
-# Node: item delivery (items 1..9)
+# item delivery 1..9
 
 
 async def _node_item(
@@ -361,7 +339,7 @@ async def _node_item(
     user_id = state.get("user_id") or ""
     session_id = state.get("session_id") or ""
 
-    # Short-circuit: user is asking, not answerins
+    # skip answering
     if _is_explanation_request(user_reply, language):
         phq9["phase"] = "awaiting_clar"
         phq9["awaiting_clarification"] = True
@@ -376,7 +354,7 @@ async def _node_item(
         await _persist_progress(repo, user_id, session_id, phq9)
         return state
 
-    # Run the judge on the user's reply.
+    # run judge
     outcome = await judge_item_response(
         item_id=item_id,
         user_reply=user_reply,
@@ -385,7 +363,7 @@ async def _node_item(
         llm=judge_llm,
     )
 
-    # Item 9 safety override
+    # safety override
     action = outcome.action
     if item_id == ITEM9_INDEX_ONE_BASED and action != JudgeAction.STOP:
         action = JudgeAction.ADVANCE
@@ -397,15 +375,15 @@ async def _node_item(
         phq9["phase"] = "declined"
         state["response_draft"] = _decline_message(language)
         _commit(state, phq9)
-        # Decline ends the run; clear in-flight progress.
+        # klm
         await _clear_progress(repo, user_id, session_id)
         return state
 
     if action == JudgeAction.STOP:
-        # Bail out without scoring. Crisis pre-gen will own the next turn.
+        # skip scoring
         state["safety_flag"] = "crisis"  # signal main graph
         _commit(state, phq9)
-        # Keep progress row so we can resume
+        # keep prgrss row
         await _persist_progress(repo, user_id, session_id, phq9)
         return state
 
@@ -436,13 +414,13 @@ async def _node_item(
         phq9["back_count"] = int(phq9.get("back_count", 0)) + 1
         phq9["active_item"] = target
         phq9["awaiting_clarification"] = False
-        # Re-present the target item.
+        # re-paint target.
         state["response_draft"] = build_item_prompt(target, language)
         _commit(state, phq9)
         await _persist_progress(repo, user_id, session_id, phq9)
         return state
 
-    # ADVANCE path: persist the response, move pointer, surface next.
+    # buat nyimpen config, skip error, init state.
     responses = dict(phq9.get("responses") or {})
     response_source = (
         ResponseSource.BUTTON
@@ -457,8 +435,7 @@ async def _node_item(
     }
     phq9["responses"] = responses
     phq9["awaiting_clarification"] = False
-    # Commit before any further branch so _node_finalize re-reads the
-    # latest responses dict from state.
+    # `skip re-read`
     _commit(state, phq9)
 
     if item_id < NUM_ITEMS:
@@ -471,18 +448,17 @@ async def _node_item(
             + build_item_prompt(next_id, language)
         )
         _commit(state, phq9)
-        # Persist the in-flight progress after every accepted item so a
-        # crash or stateless restart can resume without losing scores.
+        # buat nyimpan progress di server
         await _persist_progress(repo, user_id, session_id, phq9)
         return state
 
-    # Reached the end: finalize.
+    # done
     return await _node_finalize(
         state, audit=audit, repo=repo, feedback_llm=feedback_llm,
     )
 
 
-# Node: finalize
+# finalize
 
 
 async def _node_finalize(
@@ -512,8 +488,7 @@ async def _node_finalize(
     ]
 
     if len(response_objs) < NUM_ITEMS:
-        # Partial completion (e.g. user declined mid-flight). Skip
-        # scoring; phase is already declined or stays in_progress.
+        # skip scoring
         _commit(state, phq9)
         return state
 
@@ -534,7 +509,7 @@ async def _node_finalize(
     try:
         await repo.save_phq9_result(result)
         await repo.clear_retry(user_id)
-        # Run is now in the assessments table; drop the in-flight row.
+        # run in-flight row.
         await _clear_progress(repo, user_id, session_id)
     except Exception as exc:
         logger.exception("phq9 persist failed: %s", exc)
@@ -588,11 +563,7 @@ def build_phq9_subgraph(
     feedback_llm: Any | None = None,
     audit: GuardrailLogger | None = None,
 ) -> Any:
-    """
-    Compile the PHQ-9 subgraph as a LangGraph CompiledGraph. Returned
-    object satisfies the same protocol as any other LangGraph node, so
-    the main graph can wire it via ``add_node("phq9_delivery", subgraph)``.
-    """
+    """const { compile } = require('langgraph'); const { CompiledGraph } = require('langgraph/dist/compiledGraph');  const phq9Subgraph = compile('PHQ-9 subgraph logic'); const compiledGraph = new CompiledGraph(phq9Subgraph);  const node"""
     from langgraph.graph import END, StateGraph  # type: ignore[import-not-found]
 
     audit = audit or NullGuardrailLogger()
@@ -634,7 +605,7 @@ def build_phq9_subgraph(
     return g.compile()
 
 
-# Plain-Python wrapper (used by the existing phq9_delivery_node)
+# plain-py-wrapper
 
 
 async def phq9_subgraph_node(
@@ -646,11 +617,7 @@ async def phq9_subgraph_node(
     feedback_llm: Any | None = None,
     audit: GuardrailLogger | None = None,
 ) -> ConversationState:
-    """
-    Run one PHQ-9 subgraph step without requiring LangGraph. The main
-    graph can use either this Python entry point (cheap and portable)
-    or :func:`build_phq9_subgraph` (LangSmith tracing).
-    """
+    """run phq9 subgraph"""
     audit = audit or NullGuardrailLogger()
     phase = (state.get("phq9_state") or {}).get("phase", "idle")
     if phase == "offer_pending":

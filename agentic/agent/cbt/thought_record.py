@@ -1,4 +1,4 @@
-"""Five-step Beck thought record (Beck 1979, Beck & Beck 2011) adapted."""
+"""adapt Beck 1979 & Beck 2011"""
 
 from __future__ import annotations
 
@@ -30,7 +30,7 @@ _NEXT_STEP: dict[ThoughtRecordStep, ThoughtRecordStep] = {
 
 @dataclass
 class ThoughtRecordSubState:
-    """Persistable sub-state for the thought record flow."""
+    """persist sub-state"""
 
     step: ThoughtRecordStep = ThoughtRecordStep.CATCH_THOUGHT
     thought: str | None = None
@@ -153,7 +153,7 @@ def _prompt_done(sub: ThoughtRecordSubState, language: str) -> str:
 
 @dataclass
 class ThoughtRecordTurn:
-    """Output of one machine step."""
+    """step out"""
 
     bot_prompt: str
     next_state: ThoughtRecordSubState
@@ -161,23 +161,7 @@ class ThoughtRecordTurn:
 
 
 class ThoughtRecordMachine:
-    """
-    Deterministic five-step thought record flow.
-
-    Usage::
-
-        machine = ThoughtRecordMachine()
-        turn = await machine.step(
-            sub_state=ThoughtRecordSubState(),
-            user_reply="",
-            language="id",
-            hinted_distortion=DISTORTIONS["catastrophizing"],
-        )
-
-    The first call should pass an empty ``user_reply`` to receive the
-    opening prompt. Subsequent calls record the user reply at the
-    current step and return the next prompt.
-    """
+    """machine = ThoughtRecordMachine() turn = await machine.step(     sub_state=ThoughtRecordSubState(),     user_reply="",     language="id",     hinted_distortion=DISTORTIONS["catastrophizing"], )"""
 
     async def step(
         self,
@@ -188,8 +172,7 @@ class ThoughtRecordMachine:
         hinted_distortion: Distortion | None = None,
         llm: Any | None = None,
     ) -> ThoughtRecordTurn:
-        # Record reply at current step (skip when there is no reply
-        # yet; the first call simply emits the opening prompt).
+        # buat nyimpen reply
         if user_reply.strip():
             self._record_reply(sub_state, user_reply.strip(), hinted_distortion)
             sub_state.step = _NEXT_STEP[sub_state.step]
@@ -213,7 +196,7 @@ class ThoughtRecordMachine:
             ):
                 sub.distortion = hinted_distortion.name
             else:
-                # Best effort: search known names within the reply.
+                # search names
                 match = next(
                     (n for n in DISTORTIONS if n in normalized),
                     None,
@@ -266,7 +249,7 @@ class ThoughtRecordMachine:
                 next_state=sub,
                 completed=False,
             )
-        # DONE
+        # skip to next
         return ThoughtRecordTurn(
             bot_prompt=_prompt_done(sub, language),
             next_state=sub,

@@ -1,4 +1,4 @@
-"""Catalog of CBT techniques the dialogue policy node can choose from."""
+"""pilih CBT teknik"""
 
 from __future__ import annotations
 
@@ -8,7 +8,7 @@ from typing import Mapping
 
 
 class CBTTechnique(str, Enum):
-    """Available CBT moves. ``NONE`` is the default empathic listening."""
+    """`NONE` is def. empathic."""
 
     NONE = "none"
     VALIDATE = "validate"
@@ -20,9 +20,7 @@ class CBTTechnique(str, Enum):
     SELF_COMPASSION = "self_compassion"
 
 
-# Mapping from technique to its YAML prompt reference under
-# ``agentic/prompts/cbt/``. Used by the dialogue policy node and the
-# response generator overlay.
+# ``agentic/prompts/cbt/``
 PROMPT_REFS: Mapping[CBTTechnique, str] = {
     CBTTechnique.VALIDATE: "cbt/validate",
     CBTTechnique.REFRAME: "cbt/reframe",
@@ -36,15 +34,7 @@ PROMPT_REFS: Mapping[CBTTechnique, str] = {
 
 @dataclass(frozen=True)
 class CBTDecision:
-    """
-    What the router selected for the current turn.
-
-    ``technique`` always carries the chosen move. ``reason`` is the
-    short tag used for telemetry. ``signals`` records the inputs that
-    led to the choice; useful for auditing and offline calibration.
-    ``payload`` carries technique-specific extras (e.g. detected
-    distortion name for REFRAME, current step for THOUGHT_RECORD).
-    """
+    """router's move"""
 
     technique: CBTTechnique
     reason: str

@@ -1,6 +1,4 @@
-"""
-Tests for Layer 0 audit logger and event dataclasses.
-"""
+"""test logger test dataclasses"""
 
 from __future__ import annotations
 

@@ -1,4 +1,4 @@
-"""Manual benchmark for comparing response_generator OpenAI models."""
+"""bench manual OpenAI models"""
 
 from __future__ import annotations
 
@@ -149,7 +149,7 @@ async def _build_realistic_request(
     request = ChatTurnRequest(
         user_id=user_id,
         session_id=session["session_id"],
-        # current_message=loaded["current_message"],
+        # `set current_msg`
         current_message="apa yang lu tau tentang gua?",
         messages=loaded["history"],
         session_turn=loaded["session_turn"],

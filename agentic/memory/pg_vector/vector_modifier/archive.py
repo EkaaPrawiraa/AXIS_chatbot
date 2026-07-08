@@ -1,4 +1,4 @@
-"""Soft-archive a single mirror row."""
+"""archive row"""
 
 from __future__ import annotations
 
@@ -11,10 +11,7 @@ logger = logging.getLogger(__name__)
 
 
 async def archive_node(label: str, neo4j_node_id: str) -> int:
-    """
-    Set ``active = FALSE`` on the row matching ``neo4j_node_id``.
-    Returns the number of rows updated (0 if not present, 1 on hit).
-    """
+    """set active to false return rows updated"""
     require_str(neo4j_node_id, "neo4j_node_id")
 
     pool = await get_pool()

@@ -1,4 +1,4 @@
-"""Shared fixtures for CBT tests."""
+"""btwn ctb tests"""
 
 from __future__ import annotations
 
@@ -11,7 +11,7 @@ from agentic.agent.audit.guardrail_events import (
 
 
 class RecordingAuditLogger(NullGuardrailLogger):
-    """Records guardrail events for assertions."""
+    """guardrail events"""
 
     def by_type(self, event_type: str) -> list[GuardrailEvent]:
         return [e for e in self.events if e.event_type == event_type]

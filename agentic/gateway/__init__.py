@@ -1,1 +1,1 @@
-"""FastAPI gateway package for the agentic runtime."""
+"""fastapi agentic runtime"""

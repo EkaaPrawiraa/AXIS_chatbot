@@ -1,4 +1,4 @@
-"""Minimal LangChain CLI bot for exercising the modular memory layer end to end."""
+"""buat bot cli"""
 
 from __future__ import annotations
 
@@ -21,9 +21,7 @@ from agentic.agent.tools.context_awareness_tool import (
     web_search,
 )
 
-# LangChain provider clients. Each is optional: we degrade gracefully when a
-# provider is not installed so the bot still runs against whichever key the
-# developer happens to have in their environment.
+# `langchain providers`
 try:
     from langchain_openai import ChatOpenAI
 except Exception:  # pragma: no cover -- langchain-openai not installed
@@ -53,12 +51,12 @@ from agentic.agent.state import (
 )
 from agentic.agent.audit.guardrail_events import GuardrailEvent, GuardrailLogger
 
-# Memory layer: one import per modular package.
+# import per mod.
 from agentic.memory import neo4j_client as nc
 from agentic.memory.context_builder import build_context
 
 from agentic.memory.knowledge_graph.kg_retriever import (
-    # input dataclasses
+    # inisialisasi data
     BehaviorInput,
     EmotionInput,
     ExperienceInput,
@@ -66,14 +64,14 @@ from agentic.memory.knowledge_graph.kg_retriever import (
     PersonInput,
     ThoughtInput,
     TriggerInput,
-    # relationship builders
+    # buat ngbuild relas.
     link_emotion_to_thought,
     link_experience_to_emotion,
     link_experience_to_person,
     link_experience_to_trigger,
     link_thought_emotion_association,
     link_to_behavior,
-    # provenance lookups
+    # look up provenance
     facts_for_message,
     nodes_for_message,
     # per-label point-reads
@@ -97,8 +95,7 @@ from agentic.memory.knowledge_graph.kg_writer import (
 from agentic.memory.knowledge_graph.kg_modifier import update_node_property
 from agentic.memory.knowledge_graph.kg_algorithm import run_memory_decay, supersede_thought
 
-# Cross-store seam. Lifecycle goes through here (NOT through kg_deleter
-# directly) so the pgvector mirror is archived / purged in one call.
+# arch / purge pgvector in one call
 from agentic.memory.cross_store_sync import (
     invalidate_message_full,
     purge_message_full,
@@ -106,9 +103,7 @@ from agentic.memory.cross_store_sync import (
     sweep_unsynced,
 )
 
-# pgvector adapter -- only the embedder is needed in this file. Cosine
-# search and dedup are reached transparently through context_builder and
-# the writer-side seam.
+# pgvec adapter - only embedder needed. Cosine search & dedup transparent.
 from agentic.memory.pg_vector import embed_text
 
 
@@ -120,7 +115,7 @@ logger = logging.getLogger("test_bot")
 
 
 class StdoutGuardrailLogger:
-    """Small stdout logger for GuardrailEvents (debug/trace in CLI)."""
+    """log debug/trace"""
 
     def __init__(
         self,
@@ -162,7 +157,7 @@ class StdoutGuardrailLogger:
 
 
 def _init_node_state(*, user_id: str, session_id: str) -> ConversationState:
-    """Minimal ConversationState for the mini node pipeline."""
+    """init state"""
     return {
         "user_id": user_id,
         "session_id": session_id,
@@ -183,7 +178,7 @@ def _init_node_state(*, user_id: str, session_id: str) -> ConversationState:
 
 
 def _reset_turn_transients(state: ConversationState) -> None:
-    """Mirror the production graph's per-turn transient cleanup."""
+    """cleanup"""
     state["response_draft"] = None
     state["final_response"] = None
     state["kg_context"] = None
@@ -192,7 +187,7 @@ def _reset_turn_transients(state: ConversationState) -> None:
     state.pop("crisis_escalated", None)
 
 
-# Tools (context awareness)
+# aware
 
 BOT_TOOLS = [
     current_context,
@@ -204,7 +199,7 @@ _TOOLS_BY_NAME = {t.name: t for t in BOT_TOOLS}
 
 
 def _bind_tools_if_supported(llm: Any) -> Any:
-    """Best-effort bind tools for models that support tool calling."""
+    """bind tools"""
     binder = getattr(llm, "bind_tools", None)
     if callable(binder):
         try:
@@ -215,7 +210,7 @@ def _bind_tools_if_supported(llm: Any) -> Any:
 
 
 def _get_tool_calls(msg: Any) -> list[dict[str, Any]]:
-    """Extract tool calls from an AIMessage across providers."""
+    """skip klo error"""
     calls = getattr(msg, "tool_calls", None)
     if isinstance(calls, list):
         return [c for c in calls if isinstance(c, dict)]
@@ -228,15 +223,7 @@ def _get_tool_calls(msg: Any) -> list[dict[str, Any]]:
 
 
 async def _ainvoke_with_tools(llm: Any, messages: list[Any], *, max_hops: int = 6) -> AIMessage:
-    """Run an LLM turn with optional tool-calling hops.
-
-    For tool-capable models (OpenAI/Anthropic via LangChain), this will:
-      1) call the model
-      2) if it requests tools, run them and feed ToolMessage results
-      3) repeat until it returns a normal assistant response
-
-    If tool calling isn't supported, it degrades to a single model call.
-    """
+    """run llm with tools"""
     working: list[Any] = list(messages)
     web_urls: list[str] = []
     web_seen: set[str] = set()
@@ -263,7 +250,7 @@ async def _ainvoke_with_tools(llm: Any, messages: list[Any], *, max_hops: int = 
                 except Exception as exc:
                     result = {"error": f"tool failed: {exc}"}
 
-            # If web_search was used, capture reference URLs for the final reply.
+            # capture ref urls
             if name == "web_search" and isinstance(result, dict):
                 rows = result.get("results")
                 if isinstance(rows, list):
@@ -287,7 +274,7 @@ async def _ainvoke_with_tools(llm: Any, messages: list[Any], *, max_hops: int = 
         last.additional_kwargs = dict(getattr(last, "additional_kwargs", {}) or {})
         last.additional_kwargs["web_search_urls"] = web_urls
         return last
-    # Fallback: wrap unknown return types.
+    # wrap unkown return.
     msg = AIMessage(content=str(getattr(last, "content", last)))
     msg.additional_kwargs = dict(getattr(msg, "additional_kwargs", {}) or {})
     msg.additional_kwargs["web_search_urls"] = web_urls
@@ -343,25 +330,18 @@ Long-term memory context for this user (use it; do not repeat verbatim):
 {{KG_CONTEXT}}
 """
 
-# Sentinel inside SYSTEM_PROMPT replaced at runtime with the rendered
-# context block. We use ``str.replace`` instead of ``str.format`` because
-# the prompt body contains literal ``{`` and ``}`` characters from the
-# example JSON schema, which would otherwise break ``.format()``.
+# skip klo error
 _KG_CONTEXT_SENTINEL = "{{KG_CONTEXT}}"
 
 
 def render_system_prompt(kg_context: str) -> str:
-    """Inject the live KG context block into the static system prompt."""
+    """inject live kg into static prompt"""
     return SYSTEM_PROMPT.replace(_KG_CONTEXT_SENTINEL, kg_context)
 
 
 
 class _GroqChatAdapter:
-    """Tiny adapter to make Groq's SDK look like a LangChain chat model.
-
-    The rest of the bot expects an object with an async ``ainvoke(messages)``
-    method that returns something with a ``.content`` attribute.
-    """
+    """adapt for LangChain"""
 
     def __init__(
         self,
@@ -389,7 +369,7 @@ class _GroqChatAdapter:
             elif isinstance(m, AIMessage):
                 role = "assistant"
             else:
-                # Fallback for any other LangChain message type.
+                # fallback for any other msg type
                 role = getattr(m, "type", None) or "user"
 
             content = getattr(m, "content", "")
@@ -405,7 +385,7 @@ class _GroqChatAdapter:
         if self._max_completion_tokens is not None:
             payload["max_completion_tokens"] = self._max_completion_tokens
 
-        # Groq SDK is synchronous; run it off the event loop.
+        # skip klo async
         def _call():
             return self._client.chat.completions.create(**payload)
 
@@ -431,7 +411,7 @@ def _make_groq_llm() -> _GroqChatAdapter:
 
 
 def _make_llm():
-    """Return whichever chat client the environment makes available."""
+    """`ng ambil client`"""
     provider = (os.getenv("LLM_PROVIDER") or "").strip().lower()
     print(provider)
 
@@ -460,7 +440,7 @@ def _make_llm():
     if provider == "groq":
         return _make_groq_llm()
 
-    # Default priority: OpenAI, then Anthropic, then Groq.
+    # default pri: OpenAI, then Anthropic, then Groq.
     if os.getenv("OPENAI_API_KEY") and ChatOpenAI is not None:
         return _make_openai()
     if os.getenv("ANTHROPIC_API_KEY") and ChatAnthropic is not None:
@@ -486,11 +466,7 @@ class TurnOutput:
 
 
 def parse_turn(raw: str) -> TurnOutput:
-    """
-    Pull the user-facing reply out of ``<reply>...</reply>`` and the structured
-    block out of ```kg ... ```. Both are optional. If parsing fails we
-    still return the raw text so the user sees something.
-    """
+    """pull reply, block, optional, parse fail, return raw text."""
     reply_match = _REPLY_RE.search(raw)
     kg_match    = _KG_RE.search(raw)
 
@@ -504,11 +480,11 @@ def parse_turn(raw: str) -> TurnOutput:
     return TurnOutput(reply=reply, kg=kg)
 
 
-# Turn log: tracks message_id provenance so slash commands can target turns
+# track msg_id, skip errors
 
 @dataclass
 class TurnRecord:
-    """One round trip's ids, kept for slash-command resolution."""
+    """ngambil ids"""
     index:      int
     message_id: str
     user_text:  str
@@ -517,7 +493,7 @@ class TurnRecord:
 
 
 class TurnLog:
-    """In-memory ring buffer of recent turns with helpers for ``/`` commands."""
+    """mbungkus data, akses `/`"""
 
     def __init__(self, capacity: int = 50) -> None:
         self._records: list[TurnRecord] = []
@@ -538,11 +514,7 @@ class TurnLog:
         return None
 
     def resolve(self, ref: str) -> str | None:
-        """
-        Resolve a user-facing reference to a message_id.
-
-        Accepts ``#3`` (turn index) or a raw ``msg-...`` id.
-        """
+        """resolve msg_id"""
         ref = ref.strip()
         if not ref:
             return None
@@ -557,9 +529,7 @@ class TurnLog:
 
 
 
-# Labels accepted by the per-node readers and update_node_property. Kept here
-# so the slash-command parser can validate the user's input before we round
-# trip to Neo4j.
+# Labels, update_node, validate_input.
 _READABLE_LABELS: dict[str, Callable[[str], Awaitable[Any]]] = {
     "Behavior":   read_behavior,
     "Emotion":    read_emotion,
@@ -576,12 +546,7 @@ def _now_iso() -> str:
 
 
 async def _safe_embed(text: str | None) -> list[float] | None:
-    """
-    Best-effort embedding. Returns ``None`` on any failure (offline
-    OpenAI key, transient pgvector hiccup, empty text). The writer
-    handles None by leaving the node at ``embedding_synced = false``;
-    the retry sweep (``/sweep``) reconciles it later.
-    """
+    """None on fail. Sync'd by retry sweep."""
     if not text or not text.strip():
         return None
     try:
@@ -591,11 +556,7 @@ async def _safe_embed(text: str | None) -> list[float] | None:
         return None
 
 
-# Trace logging: show every byte that crosses into Neo4j or pgvector
-#
-# A dedicated child logger keeps the data trace separate from operational
-# logs, so a developer can scope it with ``LOG_LEVEL=INFO`` and still see
-# exactly what the writers received and what the retriever returned.
+# log every byte to Neo4j/pgvector
 
 trace = logging.getLogger("test_bot.trace")
 
@@ -604,7 +565,7 @@ _TRACE_MAX_LIST_LEN  = 6     # show first N items of any list field
 
 
 def _trim_for_trace(value: Any) -> Any:
-    """Make a value safe and short for a single-line log."""
+    """safe_val"""
     if isinstance(value, str):
         return value if len(value) <= _TRACE_MAX_FIELD_LEN else value[:_TRACE_MAX_FIELD_LEN] + "..."
     if isinstance(value, list):
@@ -616,7 +577,7 @@ def _trim_for_trace(value: Any) -> Any:
 
 
 def _embedding_marker(embedding: list[float] | None) -> str:
-    """Render a one-token tag describing where this write will land."""
+    """write to db"""
     if embedding is None:
         return "Neo4j only"
     return f"Neo4j + pgvector (dim={len(embedding)})"
@@ -628,7 +589,7 @@ def _log_kg_write(
     *,
     embedding: list[float] | None = None,
 ) -> None:
-    """One log line per outbound writer call, with the payload trimmed."""
+    """log line per writer, payload trimmed."""
     trace.info(
         "[KG WRITE] %-10s | %s | payload=%s",
         label,
@@ -667,7 +628,7 @@ def _log_pg_read(line: str, embedding: list[float] | None) -> None:
 
 
 def _log_kg_read_summary(retrieved: Any) -> None:
-    """One-line summary of what the retrieval signals returned."""
+    """get data"""
     trace.info(
         "[KG READ]  context | recency=%d semantic=%d salient=%d "
         "experiences=%d people=%d emotions=%d distortions=%d triggers=%d",
@@ -689,11 +650,7 @@ async def apply_kg_block(
     session_id: str,
     message_id: str,
 ) -> dict[str, str | None]:
-    """
-    Hand each non-null KG item to its writer, stamping the same
-    ``source_message_id`` on every node and edge so the soft-delete and
-    provenance flows can find them later. Returns the resulting node ids.
-    """
+    """get node ids"""
     ids: dict[str, str | None] = {
         "experience": None, "emotion": None, "thought": None,
         "trigger":    None, "behavior": None, "subject": None,
@@ -733,6 +690,7 @@ async def apply_kg_block(
             "source_message_id": message_id,
         }
         _log_kg_write("Emotion", emo_payload, embedding=None)
+        # pyrefly: ignore [unexpected-keyword]
         ids["emotion"] = await write_emotion(EmotionInput(**emo_payload))
         _log_kg_write_result("Emotion", ids["emotion"])
 
@@ -803,10 +761,7 @@ async def apply_kg_block(
         ids["subject"] = await write_person(PersonInput(**per_payload))
         _log_kg_write_result("Subject", ids["subject"])
 
-    # Wire up whatever pieces of the CBT chain we have ids for. Each builder
-    # accepts ``source_message_id`` so the edge inherits the same provenance
-    # the writers used for the nodes. Every edge is traced so the operator
-    # can see the full graph fan-out per turn.
+    # wire up edges, use source_msg_id, trace edges, see full graph.
     if ids["experience"] and ids["trigger"]:
         _log_kg_edge("Experience", ids["experience"], "TRIGGERED_BY",
                      "Trigger", ids["trigger"])
@@ -895,7 +850,7 @@ def _append_references(reply: str, urls: list[str]) -> str:
     return out.rstrip()
 
 async def _run_cbt_dialogue_policy(state: dict[str, Any]) -> dict[str, Any]:
-    """Best-effort integration with CBT/dialogue policy node."""
+    """skip klo error"""
     try:
         module = importlib.import_module("agentic.agent.nodes.dialogue_policy")
     except Exception:
@@ -936,10 +891,10 @@ def _format_search(result: dict[str, Any]) -> str:
     return "\n".join(out)
 
 
-# Helpers used by the commands below.
+# `helpers`
 
 def _parse_value(raw: str) -> Any:
-    """Best-effort cast for ``/update`` values: JSON first, then string."""
+    """update values: json, then str."""
     try:
         return json.loads(raw)
     except json.JSONDecodeError:
@@ -970,7 +925,7 @@ def _format_facts(rows: Iterable[dict[str, Any]]) -> str:
     return "\n".join(out)
 
 
-# Snapshot.
+# snap.
 
 async def cmd_snapshot(user_id: str) -> str:
     client = nc.get_client()
@@ -1012,7 +967,7 @@ async def cmd_snapshot(user_id: str) -> str:
     )
 
 
-# /history.
+# buat ngequery
 
 def cmd_history(log: TurnLog, n: int = 10) -> str:
     records = log.latest(n)
@@ -1028,7 +983,7 @@ def cmd_history(log: TurnLog, n: int = 10) -> str:
     return "\n".join(out)
 
 
-# /facts.
+# facts.
 
 async def cmd_facts(log: TurnLog, ref: str) -> str:
     message_id = log.resolve(ref)
@@ -1040,7 +995,7 @@ async def cmd_facts(log: TurnLog, ref: str) -> str:
     return head + "\n" + _format_facts(rows)
 
 
-# /node.
+# skip
 
 async def cmd_node(label: str, node_id: str) -> str:
     reader = _READABLE_LABELS.get(label)
@@ -1050,7 +1005,7 @@ async def cmd_node(label: str, node_id: str) -> str:
     return f"  {label} {node_id}\n{_format_node_props(props)}"
 
 
-# /update.
+# update.
 
 async def cmd_update(label: str, node_id: str, prop: str, value_raw: str) -> str:
     if label not in _READABLE_LABELS:
@@ -1060,10 +1015,7 @@ async def cmd_update(label: str, node_id: str, prop: str, value_raw: str) -> str
     return f"  update_node_property({label}, {node_id}, {{{prop!r}: {value!r}}}) -> {affected} updated"
 
 
-# /soft, /purge, /sweep, /wipe-user.
-# These all route through cross_store_sync so the Neo4j change and the
-# pgvector mirror stay in lock-step. kg_deleter is intentionally NOT
-# imported here.
+# purge, sync, delete.
 
 async def cmd_soft(log: TurnLog, ref: str, reason: str) -> str:
     message_id = log.resolve(ref)
@@ -1085,18 +1037,18 @@ async def cmd_purge(log: TurnLog, ref: str) -> str:
 
 
 async def cmd_sweep() -> str:
-    """Reconcile any KG nodes still stuck at embedding_synced=false."""
+    """reconcile stuck nodes."""
     counters = await sweep_unsynced()
     return f"  sweep_unsynced() -> {json.dumps(counters)}"
 
 
 async def cmd_wipe_user(target_user_id: str) -> str:
-    """GDPR / UU PDP right-to-erasure: hard delete every trace of a user."""
+    """delete traces"""
     counters = await purge_user_full(target_user_id)
     return f"  purge_user_full({target_user_id}) -> {json.dumps(counters)}"
 
 
-# /supersede.
+# supersede
 
 async def cmd_supersede(
     *,
@@ -1120,14 +1072,7 @@ async def cmd_supersede(
     return f"  supersede_thought({old_thought_id}) -> new Thought {new_id}"
 
 
-# Session summary helper
-#
-# Memory.summary used to be a placeholder ("Session ended via /end command.")
-# which left the recency / semantic / salient signals with nothing useful to
-# match against. We now ask the LLM to produce a real 2-4 sentence summary
-# from the in-memory transcript. The summary is what gets embedded and
-# mirrored into pgvector, so future sessions can recall subjects (people, pets,
-# objects, places) by name AND the experiences they were involved in.
+# buat summary
 
 _SUMMARY_SYSTEM_PROMPT = (
     "You write factual session summaries for a long-term memory store. "
@@ -1139,11 +1084,7 @@ _SUMMARY_SYSTEM_PROMPT = (
 
 
 async def _summarize_history(llm: Any, history: list[Any]) -> str:
-    """
-    Ask the LLM to compress the in-memory transcript into one paragraph
-    that mentions subjects, experiences, and emotion. Returns a fallback
-    string on any error so the writer always has something to embed.
-    """
+    """compress into one par", "mention subjects/exps/emotions", "fallback on error"""
     if not history:
         return "Session had no user messages."
 
@@ -1181,14 +1122,11 @@ class BotContext:
 
 
 async def dispatch_command(line: str, ctx: BotContext) -> bool:
-    """
-    Run one slash command. Returns True if the command requested shutdown
-    (only ``/end`` does that), False otherwise.
-    """
+    """run slash cmd, returns true if shutdown, false otherwise."""
     parts = line.split()
     cmd, args = parts[0], parts[1:]
 
-    # trivial commands.
+    # `skip`
     if cmd == "/help":
         print(HELP_TEXT)
         return False
@@ -1268,14 +1206,10 @@ async def dispatch_command(line: str, ctx: BotContext) -> bool:
         print(cmd_history(ctx.log, n))
         return False
 
-    # memory lifecycle.
+    # mem lifecycle
     if cmd == "/flush":
         async def session_flush(_uid: str, _sid: str) -> None:
-            # The CLI bot only owns the transcript of the ACTIVE session.
-            # If the idle sweep finds a different session that has gone
-            # quiet, we cannot summarize it from this process; fall back to
-            # a placeholder string and let the next sweep retry once a
-            # different worker (with that session's transcript) takes over.
+            # skip idle sweep
             if _uid == ctx.user_id and _sid == ctx.session_id:
                 summary = await _summarize_history(ctx.llm, ctx.history)
             else:
@@ -1308,7 +1242,7 @@ async def dispatch_command(line: str, ctx: BotContext) -> bool:
         print(await cmd_sweep())
         return False
 
-    # retriever / modifier / deleter / algorithm surfaces.
+    # buat ngehitung
     if cmd == "/facts":
         if not args:
             print("  usage: /facts <#turn|message_id>")
@@ -1371,13 +1305,9 @@ async def dispatch_command(line: str, ctx: BotContext) -> bool:
         ))
         return False
 
-    # shutdown.
+    # shut down.
     if cmd == "/end":
-        # User-supplied summary wins (so manual tests can pin specific
-        # text), otherwise compress the in-memory transcript through the
-        # LLM. Either way, the result becomes Memory.summary AND its
-        # pgvector embedding, so semantic retrieval in the next session
-        # picks up subjects and experiences by name.
+        # summarize user" "compress in-memory" "semantic retrieval
         if args:
             summary = " ".join(args)
         else:
@@ -1432,7 +1362,7 @@ async def chat_loop(user_id: str, session_id: str) -> None:
         if not line:
             continue
 
-        # slash commands.
+        # `skip`
         if line.startswith("/"):
             try:
                 shutdown = await dispatch_command(line, ctx)
@@ -1448,9 +1378,7 @@ async def chat_loop(user_id: str, session_id: str) -> None:
         turn_index += 1
         message_id = f"msg-{uuid.uuid4()}"
 
-        # Embed the user's line so context_builder's signal 2 (pgvector
-        # cosine) actually fires. ``_safe_embed`` returns None on failure;
-        # build_context skips the semantic signal in that case.
+        # if _safe_embed() is None:     build_context()
         query_embedding = await _safe_embed(line)
         _log_pg_read(line, query_embedding)
 
@@ -1473,8 +1401,7 @@ async def chat_loop(user_id: str, session_id: str) -> None:
         sys_msg   = SystemMessage(content=render_system_prompt(retrieved.as_prompt_block()))
         history.append(HumanMessage(content=line))
 
-        # Keep ``last_activity`` fresh so the idle-flush worker only fires
-        # after a genuine pause in the conversation.
+        # keep last_activity fresh
         await nc.get_client().execute_write(
             "MATCH (s:Session {id: $sid}) SET s.last_activity = datetime()",
             {"sid": session_id},
@@ -1539,7 +1466,7 @@ async def chat_loop_nodes(
     trace_cbt: bool = False,
     trace_metadata: bool = False,
 ) -> None:
-    """Mini-graph CLI: memory_retrieval -> dialogue_policy -> response_generator."""
+    """buat ngambil data"""
     llm = _bind_tools_if_supported(_make_llm())
     history: list[Any] = []
     log = TurnLog()
@@ -1591,8 +1518,7 @@ async def chat_loop_nodes(
         turn_index += 1
         message_id = f"msg-{uuid.uuid4()}"
 
-        # Keep ``last_activity`` fresh so the idle-flush worker only fires
-        # after a genuine pause in the conversation.
+        # keep last_activity fresh
         try:
             await nc.get_client().execute_write(
                 "MATCH (s:Session {id: $sid}) SET s.last_activity = datetime()",
@@ -1604,7 +1530,7 @@ async def chat_loop_nodes(
         _reset_turn_transients(state)
         state["current_message"] = line
 
-        # Run the focused node pipeline.
+        # run focused node pipeline
         try:
             state = await memory_retrieval_node(state, audit=audit)
             state = await dialogue_policy_node(state, audit=audit)
@@ -1614,12 +1540,12 @@ async def chat_loop_nodes(
             print(f"[bot error: {exc}]")
             continue
 
-        # Treat the draft as final in this focused harness.
+        # treat as final
         state["final_response"] = (state.get("response_draft") or "").strip() or None
 
-        # Append turn to transcript so memory_retrieval sees it next turn.
+        # append to transcript
         state = await session_end_node(state, audit=audit)
-        # Focused logs: CBT + memory only.
+        # log: CBT
         kg_context = (state.get("kg_context") or "")
         directive = state.get("cbt_directive") or {}
         technique = state.get("cbt_node_active")
@@ -1649,11 +1575,7 @@ async def chat_loop_nodes(
 
 
 async def _bootstrap_user_and_session(user_id: str | None) -> tuple[str, str]:
-    """
-    Create the user and session if they do not exist yet. The Go memory
-    service normally owns these, but we are running standalone, so we MERGE
-    them directly. The MERGE is keyed on id so re-runs are safe.
-    """
+    """if user, ok := db.Get("user").(map[string]interface{}) {     user["id"].(string) } if session, ok := db.Get("session").(map[string]interface{}) {     session["id"].(string) }"""
     client = nc.get_client()
     user_id    = user_id or f"cli-user-{uuid.uuid4()}"
     session_id = f"cli-sess-{uuid.uuid4()}"
@@ -1721,8 +1643,7 @@ async def main(argv: list[str]) -> int:
         else:
             await chat_loop(user_id, session_id)
     finally:
-        # Stamp ``ended_at`` and ``last_activity`` so the idle-flush worker
-        # does not re-pick this session on its next sweep.
+        # stamp ended_at & last_activity
         await nc.get_client().execute_write(
             """
             MATCH (s:Session {id: $sid})

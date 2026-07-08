@@ -1,20 +1,11 @@
-"""
-Regression test for the exact production crash: VoiceTurnResponse.tts_model
-constrained to TTSModelChoice rejected "gemini_tts" with a pydantic
-literal_error, 400-ing every /chat/invoke response where the Gemini TTS
-fallback tier fired (i.e. whenever both ElevenLabs and OpenAI had
-failed) -- which meant no audio reached the client at all, not even a
-degraded one, since the response itself never serialized.
-"""
+"""tts_model" constrained to "TTSModelChoice"""
 from __future__ import annotations
 
 from agentic.gateway.model.chat import VoiceTurnResponse
 
 
 def test_arbitrary_provider_model_string_does_not_raise() -> None:
-    # Must not raise -- this exact value crashed every response before
-    # the fix (tts_model was typed as the request-side TTSModelChoice
-    # literal, which never included the fallback-provider labels).
+    # tts_model typo
     resp = VoiceTurnResponse(tts_model="gemini_tts")
     assert resp.tts_model == "gemini_tts"
 

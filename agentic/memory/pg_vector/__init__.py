@@ -1,4 +1,4 @@
-"""agentic/memory/pg_vector."""
+"""init state"""
 
 from __future__ import annotations
 
@@ -35,29 +35,29 @@ from agentic.memory.pg_vector.vector_modifier  import (
 )
 
 __all__ = [
-    # config / lifecycle
+    # buat nyimpen config
     "PgvectorConfig",
     "get_pool",
     "close_pool",
     "is_available",
-    # embeddings
+    # emb.
     "EMBED_DIM",
     "embed_text",
     "embed_many",
-    # writes
+    # write
     "upsert_memory",
     "upsert_experience",
     "upsert_thought",
     "upsert_trigger",
     "upsert_behavior",
-    # reads
+    # ngbaca
     "SearchHit",
     "search_memory",
     "search_experience",
     "search_thought",
     "search_trigger",
     "search_behavior",
-    # lifecycle / archival
+    # archival
     "archive_node",
     "purge_node",
     "purge_user",

@@ -1,4 +1,4 @@
-"""Lightweight fakes for PHQ-9 tests so the suite runs without Postgres,."""
+"""fakes, PHQ-9, suite, Postgres, run, without, suite, Postgres, without, Postgres, without, Postgres, without, Postgres, without, Postgres, without, Postgres, without, Postgres, without, Postgres, without, Post"""
 
 from __future__ import annotations
 
@@ -45,7 +45,7 @@ class FakeRepoState:
 
 
 class FakeAssessmentRepository:
-    """In-memory stand-in for AssessmentRepository."""
+    """stand-in"""
 
     def __init__(self, state: FakeRepoState | None = None) -> None:
         self.state = state or FakeRepoState()
@@ -116,15 +116,7 @@ class _FakeAIMessage:
 
 
 class FakeLLM:
-    """
-    Minimal stand-in for ``langchain_openai.ChatOpenAI``.
-
-    Two modes:
-
-    * ``script`` is a list of replies returned in order, popped FIFO.
-    * ``responder`` is a callable that receives the raw user prompt
-      and returns a reply string. Useful for content-aware fakes.
-    """
+    """script_mode responder_mode"""
 
     def __init__(
         self,
@@ -143,8 +135,7 @@ class FakeLLM:
             for m in messages:
                 cls_name = m.__class__.__name__
                 msg_type = getattr(m, "type", "")
-                # Match real langchain HumanMessage and the fallback
-                # _HumanMessage stand-in by both class name and type.
+                # stand-in by both class name and type.
                 if "Human" in cls_name or msg_type == "human":
                     user_text = m.content
             return _FakeAIMessage(self.responder(user_text))
@@ -161,19 +152,13 @@ def fake_repo() -> FakeAssessmentRepository:
 
 @pytest.fixture
 def scorer_llm_factory():
-    """
-    Returns a builder that produces a FakeLLM whose JSON output maps
-    user replies to scores via simple keyword heuristics. Useful when
-    you want the scorer to feel realistic without a real LLM.
-    """
+    """fake llm json"""
 
     def builder() -> FakeLLM:
         import re as _re
 
         def respond(user_prompt: str) -> str:
-            # Match only the user answer block. The option labels above
-            # contain phrases like "Hampir setiap hari" that would
-            # otherwise leak into the keyword search.
+            # match only user answer.
             m = _re.search(
                 r'User answer:\s*"""\s*(.*?)\s*"""',
                 user_prompt,

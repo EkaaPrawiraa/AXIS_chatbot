@@ -1,17 +1,4 @@
-"""
-Tests for web_search's LLM_PROVIDER-driven provider ordering and Gemini
-grounding-chunk normalization.
-
-Context: web_search previously ALWAYS called OpenAI directly (a separate,
-hardcoded API call independent of whatever LLM_PROVIDER the deployment
-actually runs on), so a deployment with LLM_PROVIDER=gemini still burned
-OpenAI quota on every single web search. Gemini's built-in google_search
-grounding tool can't be bound alongside custom function-calling tools in
-the SAME request (the exact conflict response_generator.py's
-_maybe_bind_tools already works around) -- so _gemini_web_search makes
-its own fully isolated call using ONLY google_search, and its result is
-returned as this custom tool's output to the outer, tool-mixing call.
-"""
+"""Tests for web_search's LLM_PROVIDER-driven provider ordering and Gemini ground-chunk normalization."""
 from __future__ import annotations
 
 from types import SimpleNamespace

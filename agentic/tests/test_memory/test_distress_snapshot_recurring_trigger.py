@@ -1,24 +1,4 @@
-"""
-Regression test for AssessmentRepository.get_distress_snapshot's
-recurring_trigger_active recency bound (AGENTIC #5).
-
-Root cause: Trigger nodes are only ever deactivated on explicit,
-LLM-detected resolution (kg_algorithm/lifecycle.py::deactivate_trigger) --
-there is no time-based decay. Before this fix, the Cypher behind
-recurring_trigger_active checked only `active = true` and
-`frequency >= 2`, with no bound on `last_seen`. That means any trigger a
-user ever mentioned twice stayed "recurring" forever, and Tier 2's
-event-based PHQ-9 gate (phq9_check.py::_evaluate_tier2) treated that as
-a fresh distress cluster indefinitely -- re-offering PHQ-9 every
-RETRY_DAYS_FOR_DISTRESS (3) days regardless of how long ago the trigger
-was actually last mentioned, defeating the intended 14-day scheduled
-cadence (SCHEDULED_INTERVAL_DAYS in phq9_check.py).
-
-The fix bounds the trigger match to `t.last_seen >= since`, the same
-LOOKBACK_DAYS_FOR_KG (7-day) window already used for the session-based
-distress signal, so a trigger only counts as "recurring" if it actually
-reappeared recently.
-"""
+"""bounds trigger match to `t.last_seen >= since`"""
 from __future__ import annotations
 
 import os
@@ -39,12 +19,7 @@ pytestmark = [pytest.mark.asyncio, neo4j_required]
 
 @pytest_asyncio.fixture
 async def raw_neo4j_driver(neo4j_client: nc.Neo4jClient):
-    """
-    A raw neo4j driver, matching how AssessmentRepository is actually
-    constructed in production (chat_graph.py uses pg_vector.client.get_neo4j(),
-    a plain AsyncGraphDatabase driver -- distinct from the Neo4jClient
-    wrapper singleton used elsewhere in the KG code).
-    """
+    """raw neo4j driver     chat_graph.py uses pg_vector.client.get_neo4j()     plain AsyncGraphDatabase     distinct from KG code"""
     del neo4j_client  # ensures the shared client/env is already verified reachable
     from neo4j import AsyncGraphDatabase
 

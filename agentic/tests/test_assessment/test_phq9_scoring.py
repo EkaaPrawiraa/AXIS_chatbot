@@ -1,4 +1,4 @@
-"""Pure-logic tests for agentic.assessment.phq9."""
+"""test agentic.assessment.phq9"""
 
 from __future__ import annotations
 
@@ -265,7 +265,7 @@ class TestLanguageDetect:
         assert resolve_language(user_pref=None, recent_messages=[]) == DEFAULT_LANGUAGE
 
     def test_resolve_invalid_pref_falls_through(self) -> None:
-        # An unrecognized pref should not block the heuristic.
+        # block it
         assert resolve_language(
             user_pref="zh", recent_messages=["I am tired"]
         ) == "en"

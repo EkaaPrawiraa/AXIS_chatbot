@@ -1,4 +1,4 @@
-"""agentic/memory/kg_modifier."""
+"""mgmt/modify"""
 
 from __future__ import annotations
 

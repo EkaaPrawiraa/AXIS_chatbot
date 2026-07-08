@@ -1,4 +1,4 @@
-"""Private-key middleware for the internal Agentic LangServe gateway."""
+"""priv-key mgmt"""
 
 from __future__ import annotations
 
@@ -12,12 +12,7 @@ from starlette.responses import Response
 
 
 class PrivateKeyMiddleware(BaseHTTPMiddleware):
-    """Require a shared private key header for non-public routes.
-
-    The backend should send the configured key in ``X-Agentic-Private-Key``.
-    If no key is configured, protected routes fail closed instead of being
-    accidentally exposed.
-    """
+    """send key req"""
 
     def __init__(
         self,

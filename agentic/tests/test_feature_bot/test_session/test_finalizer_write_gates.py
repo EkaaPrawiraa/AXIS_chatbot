@@ -1,15 +1,4 @@
-"""
-Regression tests for the per-node-type write gates in finalizer_factory.py.
-
-Before this change, only Experience had a real significance floor;
-Emotion and Behavior had no importance-based gate at all (any non-empty
-text got written), and Thought/Trigger used purely structural proxies
-(text length, pronoun presence) instead of the significance-like signal
-the extractor already emits. See docs/importantS/analisis_memory_write_gating.md.
-
-These tests exercise the pure `_should_write_*` predicates directly --
-no DB, no LLM -- so they run fast and pin the exact threshold behavior.
-"""
+"""run tests"""
 
 from __future__ import annotations
 
@@ -23,7 +12,7 @@ from agentic.agent.session.finalizer_factory import (
 
 
 class TestExperienceGate:
-    """Unchanged behavior -- the one gate that already worked correctly."""
+    """ngubah behvior"""
 
     def test_low_significance_rejected(self) -> None:
         assert not _should_write_experience(
@@ -42,7 +31,7 @@ class TestExperienceGate:
 
 
 class TestEmotionGate:
-    """New gate -- previously ANY non-empty label+source_text wrote unconditionally."""
+    """write unconditionally."""
 
     def test_low_intensity_rejected(self) -> None:
         assert not _should_write_emotion(
@@ -55,9 +44,7 @@ class TestEmotionGate:
         )
 
     def test_missing_intensity_defaults_to_passing(self) -> None:
-        """Missing field defaults to 0.5 (passes) so a transient LLM
-        omission doesn't silently drop the write -- only an explicit
-        low value should reject."""
+        """`set to 0`"""
         assert _should_write_emotion({"label": "sedih", "source_text": "sedih hari ini"})
 
     def test_empty_label_rejected(self) -> None:
@@ -65,7 +52,7 @@ class TestEmotionGate:
 
 
 class TestBehaviorGate:
-    """New gate -- previously ANY non-empty description wrote unconditionally."""
+    """write unconditionally."""
 
     def test_low_significance_rejected(self) -> None:
         assert not _should_write_behavior(
@@ -88,8 +75,7 @@ class TestThoughtGate:
         )
 
     def test_near_zero_believability_rejected_even_if_structurally_ok(self) -> None:
-        """A stray, barely-held hedge shouldn't accumulate as a durable
-        cognition just because it's long enough and mentions 'aku'."""
+        """buat nyimpen config"""
         assert not _should_write_thought(
             {
                 "content": "aku kayaknya cuma bercanda doang sih tadi",

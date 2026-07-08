@@ -1,26 +1,15 @@
-"""Input dataclasses for every AI-coupled writer in the kg_writer package."""
+"""for writer in kg_writer:     writer.input_dataclass()"""
 
 from __future__ import annotations
 
 from dataclasses import dataclass
 
 
-# Emotion  (CBT hot-cross-bun: feelings)
+# feelings
 
 @dataclass
 class EmotionInput:
-    """
-    Discrete emotional event. Not deduplicated -- each utterance-level
-    emotion is time-stamped and preserved as its own node.
-
-    Schema notes (post 2026-05 cleanup):
-        - ``intensity`` and ``valence`` are the only PAD-style numerics
-          retained because they have live readers (context_builder
-          surfacing + DistressSnapshot aggregation in assessment_repo).
-        - ``arousal`` and ``dominance`` were dropped together with the
-          per-turn emotion_detection node; no downstream code consumed
-          them.
-    """
+    """discrete emotions"""
     label:        str              # e.g. "anxious", "sad", "grateful"
     intensity:    float            # [0, 1] strength of the felt emotion
     valence:      float            # [-1, 1] pleasure-displeasure axis
@@ -32,16 +21,11 @@ class EmotionInput:
     source_message_id: str | None = None
 
 
-# Thought  (CBT hot-cross-bun: thoughts / cognitions)
+# thoughts
 
 @dataclass
 class ThoughtInput:
-    """
-    An automatic thought, intermediate belief, or core belief.
-
-    When deduplicated, the existing node's believability is averaged with
-    the new value and ``challenged`` resets to false.
-    """
+    """avg believability, reset challenged"""
     content:         str
     thought_type:    str              # "automatic" | "core_belief" | "intermediate"
     distortion:      str | None       # "catastrophizing" | "mind_reading" | "all_or_nothing" | "fortune_telling" | "emotional_reasoning" | "should_statements" | "labeling" | "magnification" | "personalization" | "overgeneralization" | None
@@ -54,26 +38,11 @@ class ThoughtInput:
     source_message_id: str | None = None
 
 
-# Trigger  (CBT hot-cross-bun: antecedent)
+# `CBT hot-cross-bun`
 
 @dataclass
 class TriggerInput:
-    """
-    A recurring antecedent -- what set off the experience.
-    Deduplicated by (user, category, description prefix) on the fast
-    path; cosine similarity in pgvector on the slow path (DevNotes
-    v1.3, Section 1.3 marks Trigger as embeddable for entity dedup
-    across phrasings such as "exam stress" / "academic anxiety" /
-    "test fear").
-
-    ``aliases`` carries the alternative phrasings collected during
-    deduplication. Per real KG schema, the canonical Trigger node
-    keeps the aliases list.
-
-    ``embedding`` is the dense vector for the description. Forwarded
-    to ``trigger_embeddings`` in pgvector by the writer; never stored
-    on the Neo4j node itself.
-    """
+    """cosine_sim"""
     category:     str                  # "academic" | "social" | "family" | "work" | ...
     description:  str
     significance: float                # [0, 1] write-gate + pgvector importance
@@ -86,15 +55,11 @@ class TriggerInput:
     source_message_id: str | None = None
 
 
-# Behavior  (CBT hot-cross-bun: behavior)
+# CBT hot-cross-bun: beh
 
 @dataclass
 class BehaviorInput:
-    """
-    Observable action the user took. Marked adaptive / maladaptive so the
-    recommendation engine can surface healthier alternatives for the
-    maladaptive ones.
-    """
+    """adapt or avoid"""
     description:  str
     category:     str                  # "avoidance" | "rumination" | "exercise" | ...
     adaptive:     bool
@@ -107,14 +72,11 @@ class BehaviorInput:
     source_message_id: str | None = None
 
 
-# Experience  (CBT hot-cross-bun: situation)
+# `situasi`
 
 @dataclass
 class ExperienceInput:
-    """
-    A concrete situation the user lived through -- the anchor of the
-    CBT chain. Deduplicated via cosine similarity on ``embedding``.
-    """
+    """cosine_sim embedding"""
     description:   str
     occurred_at:   str                 # ISO datetime string
     extracted_at:  str                 # ISO datetime string
@@ -128,19 +90,11 @@ class ExperienceInput:
     source_message_id: str | None = None
 
 
-# Subject  (social/entity graph — replaces :Person node)
+# replaces node
 
 @dataclass
 class SubjectInput:
-    """
-    A subject (person, pet, object, place, or other entity) mentioned by the
-    user. MERGE-upserted by (user_id, name).
-    Sentiment is a running average; mention_count increments on match.
-
-    The User edge is HAS_SUBJECT (per updated KG schema); ``relationship_quality``
-    is carried on that edge as a coarse summary of the bond.
-    Allowed values: "supportive", "complicated", "negative", "neutral".
-    """
+    """merge-upsert, sentiment, match, count, update, user, edge, HAS_SUBJECT, relationship_quality, supportive, complicated, negative, neutral"""
     name:                str
     role:                str   # "parent" | "friend" | "partner" | "professor" | ...
     sentiment:           float                # [-1, 1]
@@ -155,15 +109,11 @@ class SubjectInput:
 PersonInput = SubjectInput  # backward compat alias
 
 
-# Memory  (compressed post-session summary)
+# mem  (smp post-session)
 
 @dataclass
 class MemoryInput:
-    """
-    Compressed session summary written once per session from
-    session_end.py. Memories decay: importance halves after 60 days
-    without access, active flips to false after 180 days.
-    """
+    """write summary, decay, importance, access, time"""
     summary:     str
     importance:  float                  # [0, 1]
     user_id:     str
@@ -173,23 +123,14 @@ class MemoryInput:
     source_message_id: str | None = None
 
 
-# Topic  (recurring theme detected in conversation)
+# skip to next step
 
 @dataclass
 class TopicInput:
-    """
-    A high-abstraction recurring theme extracted from a session turn.
-    Topic nodes are MERGED by name (case-insensitive), so the same
-    conceptual topic accumulates frequency across sessions rather than
-    spawning duplicate nodes.
-
-    Owner: Python (extraction from LLM-classified turns).
-    Go also owns a UpsertTopic endpoint for its own writes; both target
-    the same Neo4j node shape and use the same MERGE-by-name pattern.
-    """
+    """merge topic nodes"""
     name:       str           # e.g. "academic-stress", "relationship-conflict"
     category:   str           # "academic"|"social"|"family"|"career"|"health"|
-                              # "financial"|"identity"|"mental_health"|"other"
+                              # financial"|"identity"|"mental_health"|"other
     sentiment:  float         # [-1, 1] average sentiment in the turn
     user_id:    str
     session_id: str

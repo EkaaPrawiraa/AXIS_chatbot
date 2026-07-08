@@ -1,4 +1,4 @@
-"""Layer 3 post-generation validator."""
+"""layer 3 post-gen validate"""
 
 from __future__ import annotations
 
@@ -59,9 +59,7 @@ def load_postgen_rules(*, force_reload: bool = False) -> PostGenRules:
     bundle = load_prompt_bundle("guardrails/post_generation")
     instruction_text = bundle.system
 
-    # The system block contains both prose (the rewrite instruction)
-    # and structured pattern lists. Parse only the YAML-shaped section
-    # at the bottom; the prose stays as the rewrite instruction prefix.
+    # parse yaml
     parsed = _parse_yaml_tail(instruction_text)
 
     diagnostic = tuple(
@@ -84,17 +82,14 @@ def load_postgen_rules(*, force_reload: bool = False) -> PostGenRules:
 
 
 def _parse_yaml_tail(text: str) -> dict[str, Any]:
-    """
-    Try parsing the whole text as YAML. If the prose at the top makes
-    that fail, fall back to extracting the first valid YAML segment.
-    """
+    """parse whole text as yaml, fail -> extract first valid segment."""
     try:
         data = yaml.safe_load(text)
         if isinstance(data, dict):
             return data
     except yaml.YAMLError:
         pass
-    # Fallback: look for the first occurrence of "DIAGNOSTIC_PATTERNS:"
+    # DIAGNOSTIC_PATTERNS:
     marker = "DIAGNOSTIC_PATTERNS:"
     idx = text.find(marker)
     if idx == -1:
@@ -132,8 +127,7 @@ def find_violations(
 
 
 
-# Reuse the same fallback message classes as conversational_delivery so
-# unit tests can substitute a fake LLM without LangChain installed.
+# re-use fallback msg classes
 try:  # pragma: no cover - import behavior depends on environment
     from langchain_core.messages import (  # type: ignore[import-not-found]
         HumanMessage as _HumanMessage,
@@ -158,7 +152,7 @@ async def _request_rewrite(
     llm: Any,
     language_hint: str = "",
 ) -> str:
-    """Call the rewrite LLM with the original draft."""
+    """call llm w/ orig draft"""
     prefix = (
         f"Language preservation (mandatory): {language_hint}\n\n"
         if language_hint
@@ -229,13 +223,7 @@ async def output_guardrail_node(
     rewrite_llm: Any | None = None,
     rules: PostGenRules | None = None,
 ) -> ConversationState:
-    """
-    Validate ``response_draft`` and either promote it to ``final_response``
-    or trigger the rewrite loop.
-
-    Skips validation entirely when the crisis escalation node has
-    already produced ``final_response``.
-    """
+    """validate draft, skip if final resp exists"""
     audit = audit or NullGuardrailLogger()
 
     if state.get("crisis_escalated"):  # type: ignore[typeddict-unknown-key]
@@ -263,9 +251,7 @@ async def output_guardrail_node(
 
     violations = find_violations(draft, rules=rules)
     if not violations:
-        # Audit the clean pass so the pass rate is queryable in the DB.
-        # Severity INFO because no action was taken; this is expected
-        # behavior, not an alert condition.
+        # audit pass rate in db.
         elapsed_ms = int((time.perf_counter() - started) * 1000)
         state["final_response"] = draft
         await audit.log(
@@ -294,11 +280,7 @@ async def output_guardrail_node(
             language_hint=_language_preservation_hint(state),
         )
         if not rewritten:
-            # LLM returned empty string (failure, timeout, or content filter).
-            # Do NOT break: count the attempt and continue so that
-            # max_attempts is fully exhausted before falling back.
-            # Breaking on the first empty string would effectively set
-            # max_attempts = 1 regardless of config.
+            # count, max, empty, fallback, break, first, exhausted.
             logger.warning(
                 "guardrail rewrite attempt %d/%d returned empty string; continuing",
                 attempts,
@@ -332,7 +314,7 @@ async def output_guardrail_node(
 
         current_draft = rewritten
 
-    # Exhausted: emit safe fallback.
+    # skip error
     elapsed_ms = int((time.perf_counter() - started) * 1000)
     state["final_response"] = _safe_fallback()
     await audit.log(

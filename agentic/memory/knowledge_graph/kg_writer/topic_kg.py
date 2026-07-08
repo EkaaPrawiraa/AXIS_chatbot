@@ -1,4 +1,4 @@
-"""Writer for the :Topic node (recurring conversation theme)."""
+"""write node"""
 
 from __future__ import annotations
 
@@ -12,16 +12,7 @@ logger = logging.getLogger(__name__)
 
 
 async def write_topic(inp: TopicInput) -> str:
-    """
-    Upsert a :Topic node and wire it to the User via
-    ``(User)-[:HAS_RECURRING_THEME]->(Topic)``.
-
-    Returns the topic node id (existing or freshly created).
-
-    The topic is MERGED by lower-cased name so the same concept
-    accumulates frequency across sessions. Sentiment is kept as a
-    running average: ``(old + new) / 2``.
-    """
+    """Upsert node & wire to User via (User)-[:HAS_RECURRING_THEME]->(Topic). Merge by lowercasing name, keep sentiment avg."""
     _require(inp.name,       "name")
     _require(inp.user_id,    "user_id")
     _require(inp.session_id, "session_id")
@@ -83,7 +74,7 @@ async def write_topic(inp: TopicInput) -> str:
         },
     )
 
-    # execute_write returns a list of record dicts.
+    # exec_write returns list of dicts.
     if result and result[0].get("topic_id"):
         return str(result[0]["topic_id"])
 

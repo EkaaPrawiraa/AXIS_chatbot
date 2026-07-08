@@ -1,4 +1,4 @@
-"""Layer 0 telemetry."""
+"""telemetry."""
 
 from __future__ import annotations
 
@@ -41,7 +41,7 @@ class GuardrailEventSeverity(str, Enum):
 
 @dataclass(frozen=True)
 class GuardrailEvent:
-    """One guardrail observation."""
+    """check db"""
 
     user_id: str | None
     session_id: str | None
@@ -55,7 +55,7 @@ class GuardrailEvent:
     created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
 
     def to_log_line(self) -> str:
-        """Compact log representation for stdout fallback."""
+        """log compact"""
         return (
             f"guardrail layer={self.layer.value} type={self.event_type} "
             f"decision={self.decision.value} severity={self.severity.value} "
@@ -65,17 +65,17 @@ class GuardrailEvent:
         )
 
 
-# Logger protocol + implementations
+# log + impl
 
 
 class GuardrailLogger(Protocol):
-    """Minimal interface so nodes can be unit-tested with fakes."""
+    """minimal interface"""
 
     async def log(self, event: GuardrailEvent) -> None: ...
 
 
 class NullGuardrailLogger:
-    """No-op logger. Default in tests and when Postgres is unavailable."""
+    """log no-op."""
 
     def __init__(self) -> None:
         self.events: list[GuardrailEvent] = []
@@ -86,44 +86,26 @@ class NullGuardrailLogger:
 
 
 class PostgresGuardrailLogger:
-    """
-    Writes events to ``guardrail_events`` via an asyncpg pool.
-
-    Each ``log()`` call schedules a background task and returns
-    immediately. The chat turn never waits for the database.
-
-    Task references are kept in ``_pending_tasks`` until the task
-    completes. This prevents the CPython garbage collector from
-    cancelling in-flight DB inserts when the Task object has no other
-    live referent (see module docstring for details).
-    """
+    """writes to guardrail_events asyncpg pool log() schedules background task chat turn skips db never waits _pending_tasks keep prevent garbage collector"""
 
     def __init__(self, pg_pool: Any) -> None:
         self._pool = pg_pool
-        # Strong references to in-flight tasks. Each task removes itself
-        # via a done callback so the set does not grow unboundedly.
+        # done, set, grow, unboundly
         self._pending_tasks: set[asyncio.Task[None]] = set()
 
     async def log(self, event: GuardrailEvent) -> None:
-        # log() is always called from an async context, so there is
-        # always a running event loop. The previous RuntimeError branch
-        # was dead code and has been removed.
+        # log() async, event loop always.
         task: asyncio.Task[None] = asyncio.create_task(self._insert(event))
         self._pending_tasks.add(task)
         task.add_done_callback(self._pending_tasks.discard)
 
     async def _insert(self, event: GuardrailEvent) -> None:
-        """
-        Insert one event row. On FK violation (session not yet committed),
-        retry with session_id = NULL so the event is never silently lost.
-        """
+        """retry, session_id = None"""
         try:
             await self._insert_row(event.session_id, event)
         except Exception as exc:
             exc_str = str(exc)
-            # Detect FK violation: asyncpg raises asyncpg.ForeignKeyViolationError
-            # but we cannot import asyncpg at module level (optional dep).
-            # Checking the error class name and message is robust enough.
+            # `check error name`
             is_fk_error = (
                 "ForeignKeyViolation" in type(exc).__name__
                 or "foreign key constraint" in exc_str.lower()
@@ -154,7 +136,7 @@ class PostgresGuardrailLogger:
     async def _insert_row(
         self, session_id: str | None, event: GuardrailEvent
     ) -> None:
-        """Execute the actual INSERT with the given session_id."""
+        """exec insert with session_id"""
         async with self._pool.acquire() as conn:
             await conn.execute(
                 """
