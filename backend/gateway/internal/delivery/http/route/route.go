@@ -9,7 +9,7 @@ import (
 	"github.com/EkaaPrawiraa/companionshipchatbot/shared/pkg/middleware"
 )
 
-// Register mounts all gateway routes and route-level limits.
+// all mounts routes, limits.
 func Register(
 	mux *http.ServeMux,
 	health *gatewayHandler.HealthHandler,

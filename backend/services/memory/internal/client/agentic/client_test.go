@@ -10,13 +10,7 @@ import (
 	apperrors "github.com/EkaaPrawiraa/companionshipchatbot/shared/pkg/errors"
 )
 
-// A non-2xx agentic response used to collapse into a bare fmt.Errorf that
-// response.FromError couldn't classify, so every validation failure (the
-// memory-edit content-safety gate's rejection included, or the pre-existing
-// enum checks) surfaced to the caller as an opaque 500 instead of the real
-// 400/404/409. These tests lock in that the client now returns a typed
-// apperrors.Error carrying both the right status classification and the
-// agentic service's actual "detail" message.
+// response.FromError couldn't classify, so every failure surfaced as opaque 500.
 
 func newTestClient(t *testing.T, statusCode int, body string) *Client {
 	t.Helper()

@@ -16,11 +16,7 @@ func NewMoodRepository(db *sql.DB) *MoodRepository {
 	return &MoodRepository{db: db}
 }
 
-// Upsert records today's mood score, overwriting any score already
-// submitted today (one entry per user per calendar day). "Today" is pinned
-// to Asia/Jakarta (AXIS's whole user base), not the DB server's own
-// timezone (UTC here) — otherwise a mood logged between midnight and 7am
-// WIB would land on the wrong calendar day.
+// Upsert mood scores, overwrite existing ones. "Today" uses Asia/Jakarta time.
 func (r *MoodRepository) Upsert(ctx context.Context, userID string, score int) (entity.Mood, error) {
 	row := r.db.QueryRowContext(ctx, `
 		INSERT INTO user_moods (user_id, mood_date, mood_score, updated_at)
@@ -36,8 +32,7 @@ func (r *MoodRepository) Upsert(ctx context.Context, userID string, score int) (
 	return mood, nil
 }
 
-// ListRecent returns the last `days` calendar days of mood entries, most
-// recent first, for trend display and agentic context.
+// `getRecentMoods(days)`
 func (r *MoodRepository) ListRecent(ctx context.Context, userID string, days int) ([]entity.Mood, error) {
 	rows, err := r.db.QueryContext(ctx, `
 		SELECT id, user_id, mood_date, mood_score, created_at, updated_at

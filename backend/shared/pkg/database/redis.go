@@ -4,14 +4,14 @@ import (
 	"github.com/redis/go-redis/v9"
 )
 
-// RedisConfig holds connection parameters for a Redis instance.
+// init redis
 type RedisConfig struct {
 	Addr     string
 	Password string
 	DB       int
 }
 
-// NewRedisClient constructs a lazy go-redis client.
+// lazy redis client
 func NewRedisClient(cfg RedisConfig) *redis.Client {
 	return redis.NewClient(&redis.Options{
 		Addr:     cfg.Addr,

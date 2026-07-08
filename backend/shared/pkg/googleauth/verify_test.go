@@ -130,9 +130,7 @@ func TestVerifyWithKeyfunc_WrongSigningKeyRejected(t *testing.T) {
 }
 
 func TestVerifyWithKeyfunc_UnverifiedEmailStillParsesButFlagsFalse(t *testing.T) {
-	// Verify() itself doesn't reject unverified emails -- that's a
-	// business decision left to the caller (GoogleLogin usecase), so
-	// this just confirms the flag survives parsing correctly.
+	// ```Verify()``` just checks flag, no email ver.
 	priv, keyfn := newTestKeyPair(t)
 	claims := baseClaims()
 	claims.EmailVerified = false

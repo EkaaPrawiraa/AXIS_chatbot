@@ -1,4 +1,4 @@
-// Package repository provides Neo4j queries for the memory service.
+// mem service queries
 package repository
 
 import (
@@ -9,20 +9,19 @@ import (
 	"github.com/neo4j/neo4j-go-driver/v5/neo4j"
 )
 
-// Neo4jRepo handles all graph operations for the memory service.
+// neo4j_repo_handles_graph_operations
 type Neo4jRepo struct {
 	driver neo4j.DriverWithContext
 }
 
-// New creates a Neo4jRepo. Pass the shared driver from database.NewNeo4jDriver.
+// ```go NewRepo(NewNeo4jDriver) ```
 func New(driver neo4j.DriverWithContext) *Neo4jRepo {
 	return &Neo4jRepo{driver: driver}
 }
 
-// USER.
+// user.
 
-// UpsertUser creates a User node if it does not exist, or updates last_active
-// if it does. Called on every login / session start.
+// UpsertUser checks if user exists, then updates last_active.
 func (r *Neo4jRepo) UpsertUser(ctx context.Context, userID, displayName string) error {
 	session := r.driver.NewSession(ctx, neo4j.SessionConfig{AccessMode: neo4j.AccessModeWrite})
 	defer session.Close(ctx)
@@ -50,7 +49,7 @@ func (r *Neo4jRepo) UpsertUser(ctx context.Context, userID, displayName string) 
 	return nil
 }
 
-// GetUser retrieves a user record. Returns nil if not found.
+// get user returns nil if not found.
 func (r *Neo4jRepo) GetUser(ctx context.Context, userID string) (map[string]any, error) {
 	session := r.driver.NewSession(ctx, neo4j.SessionConfig{AccessMode: neo4j.AccessModeRead})
 	defer session.Close(ctx)
@@ -82,7 +81,7 @@ func (r *Neo4jRepo) GetUser(ctx context.Context, userID string) (map[string]any,
 	return result.(map[string]any), nil
 }
 
-// MarkOnboardingComplete sets onboarding_complete = true after IPIP assessment.
+// set_onboarding_complete=true
 func (r *Neo4jRepo) MarkOnboardingComplete(ctx context.Context, userID string) error {
 	session := r.driver.NewSession(ctx, neo4j.SessionConfig{AccessMode: neo4j.AccessModeWrite})
 	defer session.Close(ctx)
@@ -100,10 +99,9 @@ func (r *Neo4jRepo) MarkOnboardingComplete(ctx context.Context, userID string) e
 	return nil
 }
 
-// SESSION.
+// ses.
 
-// OpenSession creates a Session node and links it to the User.
-// Returns the new session ID.
+// open session, link to user, get session id.
 func (r *Neo4jRepo) OpenSession(ctx context.Context, sessionID, userID, channel string) error {
 	session := r.driver.NewSession(ctx, neo4j.SessionConfig{AccessMode: neo4j.AccessModeWrite})
 	defer session.Close(ctx)
@@ -140,9 +138,7 @@ func (r *Neo4jRepo) OpenSession(ctx context.Context, sessionID, userID, channel 
 	return nil
 }
 
-// CloseSession sets ended_at and stores the LLM-generated summary and
-// computed sentiment average. Called by session_end.py via gRPC after the
-// Python side generates the summary.
+// set ended_at, llm_summary, senti_avg
 func (r *Neo4jRepo) CloseSession(
 	ctx context.Context,
 	sessionID, summary string,
@@ -170,8 +166,7 @@ func (r *Neo4jRepo) CloseSession(
 	return nil
 }
 
-// MarkPHQ9Administered sets phq9_administered = true for a session,
-// preventing duplicate delivery within the same session.
+// set phq9_administered=true
 func (r *Neo4jRepo) MarkPHQ9Administered(ctx context.Context, sessionID string) error {
 	session := r.driver.NewSession(ctx, neo4j.SessionConfig{AccessMode: neo4j.AccessModeWrite})
 	defer session.Close(ctx)
@@ -189,10 +184,9 @@ func (r *Neo4jRepo) MarkPHQ9Administered(ctx context.Context, sessionID string) 
 	return nil
 }
 
-// ASSESSMENT.
+// assess.
 
-// WriteAssessment creates an Assessment node and links it to both the User
-// and the Session. Handles PHQ-9, GAD-7, and IPIP.
+// Assessment node, User, Session, PHQ-9, GAD-7, IPIP.
 func (r *Neo4jRepo) WriteAssessment(ctx context.Context, a AssessmentInput) error {
 	session := r.driver.NewSession(ctx, neo4j.SessionConfig{AccessMode: neo4j.AccessModeWrite})
 	defer session.Close(ctx)
@@ -242,8 +236,7 @@ func (r *Neo4jRepo) WriteAssessment(ctx context.Context, a AssessmentInput) erro
 	return nil
 }
 
-// GetLatestAssessment fetches the most recent assessment of a given instrument
-// for a user. Used to compute delta_from_previous and check the 14-day interval.
+// get latest ass fetch 14-day interval
 func (r *Neo4jRepo) GetLatestAssessment(
 	ctx context.Context,
 	userID, instrument string,
@@ -283,10 +276,9 @@ func (r *Neo4jRepo) GetLatestAssessment(
 	return result.(map[string]any), nil
 }
 
-// TOPIC (upsert -- Go handles because it is pure frequency increment).
+// upsert pure freq inc Go handlers
 
-// UpsertTopic increments frequency on an existing Topic or creates a new one.
-// Called from the Python side via gRPC after topic detection.
+// UpsertTopic Called from Python via gRPC.
 func (r *Neo4jRepo) UpsertTopic(
 	ctx context.Context,
 	topicID, userID, name string,
@@ -324,9 +316,9 @@ func (r *Neo4jRepo) UpsertTopic(
 	return nil
 }
 
-// ESCALATION SIGNAL READS.
+// read signal
 
-// GetEscalationSignals reads graph signals used before opening a session.
+// get signals before session open
 func (r *Neo4jRepo) GetEscalationSignals(
 	ctx context.Context,
 	userID string,
@@ -338,7 +330,7 @@ func (r *Neo4jRepo) GetEscalationSignals(
 		res, err := tx.Run(ctx, `
 			MATCH (u:User {id: $user_id})
 
-			// Latest emotion in the past 48 hours
+			// emotenya di masa lalu 48 jam
 			OPTIONAL MATCH (u)-[:FELT]->(emo:Emotion)
 			WHERE emo.active = true
 			  AND emo.timestamp > datetime() - duration('PT48H')
@@ -346,14 +338,14 @@ func (r *Neo4jRepo) GetEscalationSignals(
 			ORDER BY emo.timestamp DESC
 			LIMIT 1
 
-			// Latest PHQ-9
+			// check phq9 score
 			OPTIONAL MATCH (u)-[:COMPLETED_ASSESSMENT]->(a:Assessment)
 			WHERE a.instrument = 'PHQ-9'
 			WITH u, emo, a
 			ORDER BY a.administered_at DESC
 			LIMIT 1
 
-			// Weekly session count (social attachment guardrail)
+			// set weekly sess cnt
 			OPTIONAL MATCH (u)-[:HAD_SESSION]->(s:Session)
 			WHERE s.started_at > datetime() - duration('P7D')
 
@@ -406,11 +398,9 @@ func (r *Neo4jRepo) GetEscalationSignals(
 	return result.(*EscalationSignals), nil
 }
 
-// PRIVACY.
+// privacy.
 
-// ArchiveUserMemory archives all Memory nodes for a user (UU PDP compliance).
-// Nodes are set active = false with privacy_cleared_at timestamp.
-// Nothing is hard deleted.
+// archive mem nodes, set active=false, clear privacy_cleared_at.
 func (r *Neo4jRepo) ArchiveUserMemory(ctx context.Context, userID string) error {
 	session := r.driver.NewSession(ctx, neo4j.SessionConfig{AccessMode: neo4j.AccessModeWrite})
 	defer session.Close(ctx)
@@ -429,9 +419,9 @@ func (r *Neo4jRepo) ArchiveUserMemory(ctx context.Context, userID string) error 
 	return nil
 }
 
-// INPUT / OUTPUT TYPES.
+// set inputs/outputs
 
-// AssessmentInput groups the fields needed to write an Assessment node.
+// assess groups fields
 type AssessmentInput struct {
 	ID                string
 	UserID            string
@@ -444,7 +434,7 @@ type AssessmentInput struct {
 	ItemResponsesJSON string // raw JSON string of item_responses map
 }
 
-// EscalationSignals holds the KG-derived signals read before each session.
+// EscalationSignals holds signals.
 type EscalationSignals struct {
 	LatestValence    float64
 	LatestIntensity  float64
@@ -455,20 +445,17 @@ type EscalationSignals struct {
 	LastPHQ9At       *time.Time
 }
 
-// ShouldSuppressReminder returns true when the 48-hour suppression rule fires.
-// valence < -0.6 AND intensity > 0.7 (Haque & Rubya, 2023).
+// nggunin 48-hr rule
 func (s *EscalationSignals) ShouldSuppressReminder() bool {
 	return s.LatestValence < -0.6 && s.LatestIntensity > 0.7
 }
 
-// IsCrisis returns true when PHQ-9 item 9 indicates suicidal ideation.
-// q9 >= 1 triggers immediate crisis protocol.
+// is crisis true q9 >= 1
 func (s *EscalationSignals) IsCrisis() bool {
 	return s.Q9Score >= 1
 }
 
-// ShouldSuppressPHQ9 returns true when PHQ-9 delta worsened by 3+ points
-// within the last 7 days, suppressing re-administration.
+// `PHQ9 delta > 3` & `last 7 days`
 func (s *EscalationSignals) ShouldSuppressPHQ9() bool {
 	if s.LastPHQ9At == nil {
 		return false
@@ -477,8 +464,7 @@ func (s *EscalationSignals) ShouldSuppressPHQ9() bool {
 	return withinWindow && s.PHQ9Delta >= 3
 }
 
-// ShouldNudgeSocialConnection returns true when social attachment guardrail
-// fires: > 20 sessions in 7 days (Haque & Rubya, 2023).
+// check soc conn
 func (s *EscalationSignals) ShouldNudgeSocialConnection() bool {
 	return s.SessionsThisWeek > 20
 }

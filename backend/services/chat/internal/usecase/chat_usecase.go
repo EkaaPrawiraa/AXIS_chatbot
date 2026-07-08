@@ -223,8 +223,7 @@ type MoodDTO struct {
 	Score int    `json:"score"`
 }
 
-// SubmitMood records today's mood score (1-5), overwriting any score
-// already submitted today.
+// submit mood score, overwrite old score
 func (u *ChatUsecase) SubmitMood(ctx context.Context, userID string, score int) (MoodDTO, error) {
 	if err := validateUUID("userId", userID); err != nil {
 		return MoodDTO{}, err
@@ -239,8 +238,7 @@ func (u *ChatUsecase) SubmitMood(ctx context.Context, userID string, score int) 
 	return MoodDTO{Date: mood.MoodDate.Format("2006-01-02"), Score: mood.Score}, nil
 }
 
-// MoodTrend returns the last `days` calendar days of mood entries, most
-// recent first, for both the dashboard trend chart and agentic context.
+// `moodTrend days`
 func (u *ChatUsecase) MoodTrend(ctx context.Context, userID string, days int) ([]MoodDTO, error) {
 	if err := validateUUID("userId", userID); err != nil {
 		return nil, err
@@ -408,17 +406,7 @@ func (u *ChatUsecase) SendMessage(ctx context.Context, input SendMessageInput) (
 		}
 	}
 
-	// Confession Space's whole premise, shown right in its own UI header,
-	// is that nothing said there is stored permanently. SendMessage used
-	// to persist both the user and assistant message unconditionally,
-	// regardless of channel -- every confession was silently written to
-	// the same `messages` table as a normal conversation. For this
-	// channel we never call u.messages.Append/NextTurnIndex/ListBySession
-	// at all: turn index comes from the session's own counter, history is
-	// empty (no persisted turns to read back, by design), and the
-	// response DTOs are built from in-memory-only entities with a
-	// generated id -- so nothing about this exchange ever touches
-	// Postgres beyond the session-level turn counter and safety flag.
+	// skip klo error
 	isConfession := session.Channel == entity.ChannelConfession
 
 	var (
@@ -565,10 +553,7 @@ type RegenerateMessageInput struct {
 	CBTState               map[string]any
 }
 
-// RegenerateMessage re-runs the LAST assistant reply against the same
-// preceding user turn and replaces it in place (same message ID/turn index,
-// not a new row) — "Buat ulang" only ever applies to the most recent
-// assistant message, never older history.
+// RegenerateMessage" "Buat ulang" "aply to most recent" "never older" "history
 func (u *ChatUsecase) RegenerateMessage(ctx context.Context, input RegenerateMessageInput) (SendMessageOutput, error) {
 	if err := validateUUID("conversationId", input.SessionID); err != nil {
 		return SendMessageOutput{}, err
@@ -600,9 +585,7 @@ func (u *ChatUsecase) RegenerateMessage(ctx context.Context, input RegenerateMes
 		return SendMessageOutput{}, apperrors.Invalid("no preceding user message to regenerate a reply for")
 	}
 
-	// Build history for the agentic call WITHOUT the stale assistant reply,
-	// so the model answers the same prompt fresh rather than "continuing"
-	// its own previous (about-to-be-replaced) answer.
+	// build history, skip stale reply, fresh answer.
 	contextHistory := history[:len(history)-1]
 	agenticMessages := make([]ChatMessage, 0, len(contextHistory))
 	for _, msg := range contextHistory {
@@ -722,7 +705,7 @@ func (u *ChatUsecase) StreamMessage(ctx context.Context, input StreamMessageInpu
 		})
 	}
 
-	// Pre-create the assistant message as 'streaming' so clients can recover on reconnect.
+	// streaming
 	assistantMessage, err := u.messages.Append(ctx, entity.Message{
 		SessionID: input.SessionID,
 		UserID:    input.UserID,
@@ -737,7 +720,7 @@ func (u *ChatUsecase) StreamMessage(ctx context.Context, input StreamMessageInpu
 
 	var accumulated strings.Builder
 	tokenCount := 0
-	// bgCtx survives client disconnect so incremental flushes always reach the DB.
+	// bgCtx survives client disso.
 	bgCtx := context.Background()
 
 	resp, err := u.agentic.Stream(ctx, AgenticChatRequest{
@@ -763,16 +746,14 @@ func (u *ChatUsecase) StreamMessage(ctx context.Context, input StreamMessageInpu
 				return err
 			}
 		}
-		// Flush accumulated content to DB every 30 tokens so clients can
-		// recover after a refresh even if the stream is still in progress.
+		// flush to db 30 tokens 30 tokens 30 tokens 30 tokens 30 tokens 30 tokens 30 tokens 30 tokens 30 tokens 30 tokens 30 tokens 30 tokens 30 tokens 30 tokens
 		if tokenCount%30 == 0 {
 			_ = u.messages.UpdateStatusAndContent(bgCtx, assistantMessage.ID, "streaming", accumulated.String())
 		}
 		return nil
 	})
 	if err != nil {
-		// Stream was interrupted (client disconnect, agentic error, etc.).
-		// Persist whatever was accumulated so the user sees partial content.
+		// persist partial content
 		_ = u.messages.UpdateStatusAndContent(bgCtx, assistantMessage.ID, "streaming", accumulated.String())
 		return SendMessageOutput{}, err
 	}
@@ -791,7 +772,7 @@ func (u *ChatUsecase) StreamMessage(ctx context.Context, input StreamMessageInpu
 	safetyFlag := optionalString(resp.SafetyFlag)
 	crisisTier := optionalString(resp.CrisisTier)
 
-	// Finalize: update content, safety metadata, and mark complete.
+	// finalize: update, add safety, mark complete.
 	assistantMessage.Content = reply
 	assistantMessage.SafetyFlag = safetyFlag
 	assistantMessage.CrisisTier = crisisTier
@@ -940,9 +921,7 @@ func messageDTO(msg entity.Message) MessageDTO {
 	}
 }
 
-// messageFrontendStatus maps the DB status to the frontend MessageStatus type.
-// A 'streaming' message that is more than 2 minutes old is treated as 'sent'
-// (partial content) because the stream was interrupted and will not complete.
+// map db to frontend, 'streaming' msg treated as 'sent' if old, stream interrupted.
 func messageFrontendStatus(msg entity.Message) string {
 	switch msg.Status {
 	case "streaming":
@@ -991,9 +970,7 @@ func responseMetadata(phq9State map[string]any) map[string]any {
 	return metadata
 }
 
-// phq9MetadataFromState builds the metadata.phq9 payload that the frontend
-// expects, derived from the phq9_state returned by the agentic service.
-// Returns nil when the phase is idle/offer_pending so plain messages are unaffected.
+// builds payload, returns nil.
 func phq9MetadataFromState(phq9State map[string]any) map[string]any {
 	if len(phq9State) == 0 {
 		return nil

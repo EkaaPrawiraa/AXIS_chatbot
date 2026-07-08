@@ -1,4 +1,4 @@
-// Package database provides shared database connection factories.
+// db conn
 package database
 
 import (
@@ -9,20 +9,19 @@ import (
 	"github.com/neo4j/neo4j-go-driver/v5/neo4j"
 )
 
-// Neo4jConfig holds Neo4j connection parameters.
+// Neo4jConfig holds conn params.
 type Neo4jConfig struct {
 	URI      string // e.g. bolt://localhost:7687  or  neo4j://neo4j:7687
 	Username string
 	Password string
 
-	// Connection pool tuning. Defaults are safe for a single-service dev setup.
+	// pool settings
 	MaxConnectionPoolSize        int           // default: 50
 	ConnectionAcquisitionTimeout time.Duration // default: 60s
 	MaxTransactionRetryTime      time.Duration // default: 30s
 }
 
-// DefaultNeo4jConfig returns sane defaults for local development.
-// Override individual fields before passing to NewNeo4jDriver.
+// skip defaults, override fields.
 func DefaultNeo4jConfig() Neo4jConfig {
 	return Neo4jConfig{
 		URI:                          "bolt://localhost:7687",
@@ -34,7 +33,7 @@ func DefaultNeo4jConfig() Neo4jConfig {
 	}
 }
 
-// NewNeo4jDriver creates a shared Neo4j driver and verifies connectivity.
+// creates shared driver, verifys conn.
 func NewNeo4jDriver(cfg Neo4jConfig) (neo4j.DriverWithContext, error) {
 	driver, err := neo4j.NewDriverWithContext(
 		cfg.URI,
@@ -49,7 +48,7 @@ func NewNeo4jDriver(cfg Neo4jConfig) (neo4j.DriverWithContext, error) {
 		return nil, fmt.Errorf("neo4j: failed to create driver: %w", err)
 	}
 
-	// Verify the connection before returning.
+	// verify conn
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
@@ -61,7 +60,7 @@ func NewNeo4jDriver(cfg Neo4jConfig) (neo4j.DriverWithContext, error) {
 	return driver, nil
 }
 
-// NewNeo4jSession opens a lightweight per-operation session.
+// opens session
 func NewNeo4jSession(
 	ctx context.Context,
 	driver neo4j.DriverWithContext,

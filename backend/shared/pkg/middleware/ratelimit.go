@@ -12,7 +12,7 @@ import (
 	"github.com/redis/go-redis/v9"
 )
 
-// RateLimitConfig holds per-user chat and session limits.
+// rate limit config
 type RateLimitConfig struct {
 	MaxTurnsPerHour        int
 	MaxMessagesPerDay      int
@@ -20,10 +20,7 @@ type RateLimitConfig struct {
 	MaxAuthAttemptsPerHour int
 }
 
-// DefaultRateLimitConfig returns the limits defined in input_validation.yaml.
-// MaxMessagesPerDay is a thesis-scope constraint (not just abuse
-// prevention like the other limits) — the study runs on a fixed LLM
-// budget, so every user gets a stated, transparent daily message cap.
+// DefaultRateLimitConfig returns limits from input_validation.yaml. MaxMessagesPerDay is a thesis-scope (not abuse prevention). LLM budget caps daily messages.
 func DefaultRateLimitConfig() RateLimitConfig {
 	return RateLimitConfig{
 		MaxTurnsPerHour:        30,
@@ -33,14 +30,14 @@ func DefaultRateLimitConfig() RateLimitConfig {
 	}
 }
 
-// RateLimiter applies Redis-backed fixed-window limits per user.
+// rate limit redis
 type RateLimiter struct {
 	rdb    *redis.Client
 	cfg    RateLimitConfig
 	prefix string // key namespace prefix, default "rl"
 }
 
-// NewRateLimiter constructs a Redis-backed rate limiter.
+// Redis rate limiter.
 func NewRateLimiter(rdb *redis.Client, cfg RateLimitConfig) *RateLimiter {
 	return &RateLimiter{
 		rdb:    rdb,
@@ -49,10 +46,7 @@ func NewRateLimiter(rdb *redis.Client, cfg RateLimitConfig) *RateLimiter {
 	}
 }
 
-// TurnLimit limits chat-message turns (hourly, abuse prevention) AND daily
-// messages (a stated thesis-scope constraint, not abuse prevention) in one
-// pass — both fail open on Redis errors so a Redis outage never blocks
-// chat, it just silently stops enforcing the caps.
+// TurnLimit limits hourly & daily messages — both fail open on Redis errors.
 func (rl *RateLimiter) TurnLimit(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodPost {
@@ -104,7 +98,7 @@ func (rl *RateLimiter) TurnLimit(next http.Handler) http.Handler {
 	})
 }
 
-// SessionLimit limits new conversation creation and fails open on Redis errors.
+// limit new conv, fail on err.
 func (rl *RateLimiter) SessionLimit(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodPost {
@@ -169,16 +163,7 @@ func (rl *RateLimiter) AuthLimit(next http.Handler) http.Handler {
 	})
 }
 
-// checkLimit increments a Redis counter and returns the remaining quota.
-//
-// Uses EXPIRE ... NX (Redis 7+) instead of a plain EXPIRE so the TTL is
-// only set once, the moment the key is created. A plain EXPIRE on every
-// call resets the countdown to a fresh `window` on every single request
-// -- including rejected ones -- so a user who keeps sending messages (or
-// retrying after a 429) faster than the window never sees their counter
-// actually expire. That turned "100 messages per rolling 24h" into
-// "100 messages, then blocked indefinitely for as long as you keep
-// trying," which is worse than the intended cap.
+// checkLimit increments Redis counter, returns quota. Uses EXPIRE to set TTL once.
 func (rl *RateLimiter) checkLimit(
 	ctx context.Context,
 	redisKey string,
@@ -201,13 +186,13 @@ func (rl *RateLimiter) checkLimit(
 	return true, limit - count
 }
 
-// clientKey extracts a token-based key, then falls back to client IP.
+// clientKey uses token or IP.
 func (rl *RateLimiter) clientKey(r *http.Request) string {
 	auth := r.Header.Get("Authorization")
 	if strings.HasPrefix(auth, "Bearer ") {
 		token := strings.TrimPrefix(auth, "Bearer ")
 		if len(token) > 8 {
-			// Keep keys short while preserving practical uniqueness.
+			// skp klo nggak pake id
 			if len(token) > 32 {
 				token = token[:32]
 			}
@@ -215,12 +200,12 @@ func (rl *RateLimiter) clientKey(r *http.Request) string {
 		}
 	}
 
-	// Fallback to client IP.
+	// `fallback ip`
 	ip, _, err := net.SplitHostPort(r.RemoteAddr)
 	if err != nil {
 		ip = r.RemoteAddr
 	}
-	// Prefer X-Forwarded-For when behind a reverse proxy.
+	// prefer x-forwarded-for
 	if forwarded := r.Header.Get("X-Forwarded-For"); forwarded != "" {
 		parts := strings.Split(forwarded, ",")
 		if len(parts) > 0 {

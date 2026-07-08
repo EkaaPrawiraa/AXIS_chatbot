@@ -8,13 +8,7 @@ import (
 	"github.com/EkaaPrawiraa/companionshipchatbot/services/chat/internal/domain/entity"
 )
 
-// Regression test: Confession Space's entire premise (shown in its own UI
-// header, "Tidak disimpan permanen -- bebas cerita apa aja") is that
-// nothing said there is stored permanently. SendMessage used to call
-// u.messages.Append/NextTurnIndex/ListBySession unconditionally regardless
-// of session.Channel, so every confession was silently written to the same
-// `messages` table as a normal conversation -- a real, user-visible privacy
-// promise violation.
+// `skip`
 
 type fakeSessionRepo struct {
 	session          entity.Session
@@ -148,7 +142,7 @@ func TestSendMessage_ConfessionChannel_NeverTouchesMessageRepository(t *testing.
 		t.Fatalf("expected ListBySession to never be called for confession channel, got %d calls", messageRepo.listBySessionCalls)
 	}
 
-	// The response DTOs must still be usable even though nothing was persisted.
+	// skip klo error
 	if out.UserMessage.ID == "" {
 		t.Fatal("expected a generated (non-empty) user message id even without persistence")
 	}
@@ -162,8 +156,7 @@ func TestSendMessage_ConfessionChannel_NeverTouchesMessageRepository(t *testing.
 		t.Fatalf("unexpected assistant content: %q", out.Assistant.Content)
 	}
 
-	// Session-level bookkeeping (turn counter) is fine to keep -- it carries
-	// no message content, unlike the message rows this test guards against.
+	// buat nyimpen state
 	if sessionRepo.incrementCalls != 1 {
 		t.Fatalf("expected session turn counter to still increment, got %d calls", sessionRepo.incrementCalls)
 	}

@@ -220,14 +220,7 @@ func (c *Client) do(ctx context.Context, method string, path string, in any, out
 	return nil
 }
 
-// agenticError turns a non-2xx agentic response into a typed apperrors.Error
-// so response.FromError maps it to the RIGHT HTTP status for the caller.
-// Previously every non-2xx response (400 validation failures included --
-// e.g. the memory-edit content-safety gate, or "must be one of {allowed}"
-// enum checks) collapsed into a bare fmt.Errorf that response.FromError
-// couldn't classify, so it fell through to a generic 500 -- the frontend
-// could never tell "your edit was rejected, try different content" apart
-// from "the server crashed."
+// ```go response.FromError ```
 func agenticError(resp *http.Response) error {
 	var body struct {
 		Detail string `json:"detail"`

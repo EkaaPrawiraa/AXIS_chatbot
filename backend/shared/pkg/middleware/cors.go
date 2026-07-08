@@ -27,9 +27,7 @@ func CORS(next http.Handler, allowedOrigins []string) http.Handler {
 			w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE, OPTIONS")
 			w.Header().Set("Access-Control-Allow-Headers", "Authorization, Content-Type, X-Requested-With, X-CSRF-Token")
 			w.Header().Set("Access-Control-Allow-Credentials", "true")
-			// Custom response headers are invisible to browser JS cross-origin
-			// unless explicitly exposed — the rate-limit headers exist purely
-			// so the frontend can show a "N/100 pesan hari ini" indicator.
+			// headers ngga visible buat js frontend
 			w.Header().Set(
 				"Access-Control-Expose-Headers",
 				"X-RateLimit-Limit-Turns, X-RateLimit-Remaining-Turns, "+

@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-// PostgresConfig holds connection and pool settings for PostgreSQL.
+// PostgresConfig sets db conn & pool.
 type PostgresConfig struct {
 	DSN             string
 	MaxOpenConns    int
@@ -14,8 +14,7 @@ type PostgresConfig struct {
 	ConnMaxLifetime time.Duration
 }
 
-// OpenPostgres configures a database/sql pool. The caller must import the
-// concrete driver in its main package when enabling a real database connection.
+// skip klo error
 func OpenPostgres(cfg PostgresConfig) (*sql.DB, error) {
 	db, err := sql.Open("postgres", cfg.DSN)
 	if err != nil {

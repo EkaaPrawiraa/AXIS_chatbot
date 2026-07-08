@@ -1,6 +1,4 @@
-// Package memory calls the memory service's own KG-purge endpoint so
-// account deletion enforces "delete everything" server-side, rather than
-// depending on the frontend correctly sequencing two separate API calls.
+// `purge mem`
 package memory
 
 import (
@@ -24,10 +22,7 @@ func New(baseURL string) *Client {
 	}
 }
 
-// PurgeAccount deletes every KG/pgvector node belonging to userID. The
-// memory service resolves userID from the query param when there's no
-// authenticated request context to extract it from (service-to-service
-// call, not a user-facing proxied request).
+// purge account, resolve user from query, no ctx for user.
 func (c *Client) PurgeAccount(ctx context.Context, userID string) error {
 	target := c.baseURL + "/memories/kg/purge-account?userId=" + url.QueryEscape(userID)
 	req, err := http.NewRequestWithContext(ctx, http.MethodDelete, target, nil)

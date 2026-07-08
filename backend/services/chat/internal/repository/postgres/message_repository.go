@@ -89,10 +89,7 @@ func (r *MessageRepository) UpdateContent(ctx context.Context, messageID string,
 	return msg, nil
 }
 
-// UpdateRegeneratedContent replaces an assistant message's content in place
-// (used by "Buat ulang") along with its freshly re-evaluated safety_flag/
-// crisis_tier columns — a straight content-only update would leave those
-// stale from the original generation.
+// Ulangin konten" along with safety_flag/crisis_tier.
 func (r *MessageRepository) UpdateRegeneratedContent(
 	ctx context.Context,
 	messageID string,

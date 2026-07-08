@@ -1,6 +1,4 @@
-// Package googleauth verifies Google Identity Services ID tokens (the
-// credential a "Sign in with Google" button hands back to the frontend),
-// without pulling in the full google.golang.org/api SDK.
+// `skip klo error`
 package googleauth
 
 import (
@@ -15,15 +13,12 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 )
 
-// ClientIDFromEnv reads the OAuth Client ID (public, not a secret) this
-// deployment expects Google ID tokens to be issued for.
+// `read env`
 func ClientIDFromEnv() string {
 	return strings.TrimSpace(os.Getenv("GOOGLE_CLIENT_ID"))
 }
 
-// googleJWKSURL is Google's published JSON Web Key Set for verifying
-// ID tokens signed by accounts.google.com. Keys rotate; keyfunc handles
-// refetch/caching for us (default background refresh).
+// googleJWKSURL refetch/caching.
 const googleJWKSURL = "https://www.googleapis.com/oauth2/v3/certs"
 
 var googleIssuers = map[string]bool{
@@ -31,7 +26,7 @@ var googleIssuers = map[string]bool{
 	"https://accounts.google.com": true,
 }
 
-// Claims is the subset of a Google ID token's payload this app trusts.
+// subset id token payload
 type Claims struct {
 	Subject       string // "sub", Google's stable per-account id
 	Email         string
@@ -54,17 +49,13 @@ var (
 
 func loadJWKS() (keyfunc.Keyfunc, error) {
 	jwksOnce.Do(func() {
-		// context.Background() on purpose: this ties the shared key-refresh
-		// goroutine's lifetime, not a single caller's request.
+		// bg ctx 2go 1req 1call
 		jwks, jwksErr = keyfunc.NewDefaultCtx(context.Background(), []string{googleJWKSURL})
 	})
 	return jwks, jwksErr
 }
 
-// Verify checks an ID token's signature against Google's current public
-// keys, and validates issuer/audience/expiry. clientID must match the
-// token's "aud" claim (the OAuth Client ID configured for this app in
-// Google Cloud Console).
+// verify signature, validate claims, match clientID
 func Verify(ctx context.Context, idToken string, clientID string) (*Claims, error) {
 	keys, err := loadJWKS()
 	if err != nil {
@@ -73,9 +64,7 @@ func Verify(ctx context.Context, idToken string, clientID string) (*Claims, erro
 	return verifyWithKeyfunc(idToken, clientID, keys.KeyfuncCtx(ctx))
 }
 
-// verifyWithKeyfunc is the pure verification logic, decoupled from
-// package-level JWKS loading so tests can inject their own signing key
-// instead of depending on Google's live JWKS endpoint.
+// verifyWithKeyfunc is pure verification logic, decoupled from JWKS loading.
 func verifyWithKeyfunc(idToken string, clientID string, keyfn jwt.Keyfunc) (*Claims, error) {
 	idToken = strings.TrimSpace(idToken)
 	if idToken == "" {

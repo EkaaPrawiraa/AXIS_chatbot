@@ -125,7 +125,7 @@ type refreshRequest struct {
 	RefreshToken string `json:"refreshToken"`
 }
 
-// Refresh menukar refresh token (cookie atau body) dengan access token baru.
+// refresh token.
 func (h *AuthHandler) Refresh(w http.ResponseWriter, r *http.Request) {
 	refreshToken := ""
 	if c, err := r.Cookie(refreshCookieName); err == nil {
@@ -146,7 +146,7 @@ func (h *AuthHandler) Refresh(w http.ResponseWriter, r *http.Request) {
 	response.OK(w, out)
 }
 
-// Logout mencabut refresh token dan membersihkan cookie sesi pengguna.
+// logout, delete token, clean cookies.
 func (h *AuthHandler) Logout(w http.ResponseWriter, r *http.Request) {
 	input := usecase.LogoutInput{UserID: requestUserID(r, "")}
 	if c, err := r.Cookie(refreshCookieName); err == nil {

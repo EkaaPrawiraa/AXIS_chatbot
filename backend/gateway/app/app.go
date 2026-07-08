@@ -14,7 +14,7 @@ import (
 	"github.com/EkaaPrawiraa/companionshipchatbot/shared/pkg/monitoring"
 )
 
-// Handler builds the gateway HTTP handler and shared middleware.
+// build gateway handler
 func Handler(cfg configs.Config) http.Handler {
 	mux := http.NewServeMux()
 	mux.Handle("/metrics", monitoring.Handler())

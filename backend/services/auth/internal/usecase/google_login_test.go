@@ -12,9 +12,7 @@ import (
 	"github.com/EkaaPrawiraa/companionshipchatbot/shared/pkg/googleauth"
 )
 
-// fakeUserRepository is an in-memory stand-in for repository.UserRepository,
-// just enough to exercise GoogleLogin's branches (existing google_id,
-// existing-email rejection, brand-new user) without a real database.
+// fakeUserRepo is in-memory stand-in.
 type fakeUserRepository struct {
 	byID    map[string]*entity.User
 	byEmail map[string]*entity.User
@@ -170,11 +168,7 @@ func TestGoogleLogin_ExistingGoogleID_LogsInDirectly(t *testing.T) {
 }
 
 func TestGoogleLogin_ExistingEmailWithoutGoogleID_RejectedNotAutoLinked(t *testing.T) {
-	// This is the account-takeover guard: password registration never
-	// verifies email ownership (no confirmation email exists in this
-	// system), so auto-linking by email match would let an attacker who
-	// pre-registered the victim's email inherit the victim's later,
-	// genuinely-verified Google identity. Must reject instead.
+	// reject auto-linking
 	t.Setenv("JWT_SECRET", "test-secret")
 	t.Setenv("GOOGLE_CLIENT_ID", "test-client-id.apps.googleusercontent.com")
 

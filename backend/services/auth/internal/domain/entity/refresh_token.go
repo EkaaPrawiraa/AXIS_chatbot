@@ -2,9 +2,7 @@ package entity
 
 import "time"
 
-// RefreshToken merepresentasikan satu token penyegaran (refresh token) yang
-// disimpan dalam bentuk hash SHA-256 pada basis data. Token plaintext hanya
-// pernah ada di sisi klien dan tidak pernah disimpan.
+// refreshToken merepresentasikan token penyegaran (refresh token) hash SHA-256, sementara token plaintext hanya pernah ada di klien dan tidak disimpan.
 type RefreshToken struct {
 	ID        string
 	UserID    string

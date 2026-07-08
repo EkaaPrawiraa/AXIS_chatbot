@@ -9,16 +9,7 @@ import (
 	"github.com/redis/go-redis/v9"
 )
 
-// Regression test for AGENTIC #6 / BACKEND #2: checkLimit used a plain
-// EXPIRE on every call (including rejected ones), which resets the TTL
-// to a fresh `window` duration on every single request instead of only
-// when the counter key is first created. A user sending requests faster
-// than the window -- or a client retrying after a 429 -- would keep
-// pushing the TTL out, so the window never actually expired on schedule.
-//
-// Requires a real Redis reachable at TEST_REDIS_ADDR (defaults to
-// 127.0.0.1:16399, matching the throwaway local instance used to verify
-// this fix) -- skips if unreachable.
+// skip if unreachable
 
 func testRedisClient(t *testing.T) *redis.Client {
 	t.Helper()
@@ -43,11 +34,7 @@ func TestCheckLimit_TTLNotResetOnSubsequentCalls(t *testing.T) {
 
 	rl := &RateLimiter{rdb: rdb, prefix: "rl-test"}
 
-	// First call creates the key and must set a TTL close to `window`.
-	// PTTL (millisecond precision) instead of TTL (whole-second, rounds
-	// away the ~1.2s gap this test relies on) -- with TTL's 1-second
-	// granularity, "2s window minus 1.2s elapsed" and "reset to a fresh
-	// 2s" are both indistinguishable from an observed value of 1s.
+	// `PTTL` instalasi, `millisecond` keunghuan `window`.
 	allowed, _ := rl.checkLimit(ctx, key, 100, 2*time.Second)
 	if !allowed {
 		t.Fatalf("expected first call to be allowed")
@@ -60,9 +47,7 @@ func TestCheckLimit_TTLNotResetOnSubsequentCalls(t *testing.T) {
 		t.Fatalf("expected a positive TTL after key creation, got %v", ttl1)
 	}
 
-	// Let some of the window elapse, then call again -- the TTL must
-	// keep counting down from the ORIGINAL window, not reset to a fresh
-	// `window` duration on this second call.
+	// elapse, then call, keep ttl count, orig window, not reset
 	time.Sleep(1200 * time.Millisecond)
 	allowed, _ = rl.checkLimit(ctx, key, 100, 2*time.Second)
 	if !allowed {

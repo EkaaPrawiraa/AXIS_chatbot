@@ -27,18 +27,7 @@ func New(baseURL, privateKey string) *Client {
 		baseURL:    strings.TrimRight(baseURL, "/"),
 		privateKey: privateKey,
 		httpClient: &http.Client{Timeout: 60 * time.Second},
-		// http.Client.Timeout bounds the ENTIRE round trip, including
-		// reading the response body -- for a streaming SSE response that
-		// means the whole turn (retrieval + guardrails + CBT/PHQ judges +
-		// token-by-token LLM generation), not just connecting. A turn that
-		// legitimately runs past 60s (slower model, heavier turn) got its
-		// connection killed mid-stream, surfacing as "agentic read stream:
-		// unexpected EOF" downstream. Neither the Go server (plain
-		// ListenAndServe, no ReadTimeout/WriteTimeout) nor Caddy in front
-		// of it enforce a shorter bound, so the request's real lifecycle is
-		// governed by the browser staying connected (propagated via ctx).
-		// Keep a generous bound here only as a safety net against a truly
-		// hung connection, not as a turn-latency budget.
+		// `skip klo error`
 		streamClient: &http.Client{Timeout: 5 * time.Minute},
 	}
 }

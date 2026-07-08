@@ -20,21 +20,15 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-// refreshTTL adalah masa berlaku refresh token (30 hari). Access token tetap
-// berumur pendek (24 jam) dan diperbarui melalui mekanisme rotasi refresh token.
+// refreshTTL: 30 hari AccessTTL: 24 jam
 const refreshTTL = 30 * 24 * time.Hour
 
-// MemoryPurger deletes a user's KG/pgvector data. Enforced server-side in
-// DeleteAccount so full deletion doesn't depend on the frontend correctly
-// sequencing two separate API calls.
+// `purge data`
 type MemoryPurger interface {
 	PurgeAccount(ctx context.Context, userID string) error
 }
 
-// GoogleVerifier checks a Google ID token's signature/claims. Injected
-// (rather than calling googleauth.Verify directly) so GoogleLogin can be
-// unit-tested with a fake instead of depending on Google's live JWKS
-// endpoint -- same reasoning as MemoryPurger above.
+// inject' 'googleauth' 'Verify
 type GoogleVerifier interface {
 	Verify(ctx context.Context, idToken string, clientID string) (*googleauth.Claims, error)
 }
@@ -98,7 +92,7 @@ type AuthOutput struct {
 	Profile      ProfileDTO `json:"profile"`
 }
 
-// LogoutInput membawa data yang diperlukan untuk mencabut sesi pengguna.
+// logoutInput ngambil data sesi pengguna.
 type LogoutInput struct {
 	UserID       string
 	AccessJTI    string
@@ -205,26 +199,7 @@ type GoogleLoginInput struct {
 	IDToken string
 }
 
-// GoogleLogin memverifikasi ID token dari tombol "Sign in with Google" lalu
-// mencari/membuat user berdasarkan hasilnya. Dua skenario:
-//  1. google_id sudah pernah dipakai login sebelumnya -> langsung masuk ke
-//     akun itu.
-//  2. Belum pernah dan emailnya belum terdaftar sama sekali -> akun baru
-//     dibuat tanpa password (password_hash NULL; lihat migration
-//     022_google_oauth).
-//
-// Sengaja TIDAK auto-link ke akun password yang emailnya kebetulan sama
-// (lihat error di bawah untuk kasus itu). Registrasi email/password di
-// sistem ini tidak pernah memverifikasi kepemilikan email (tidak ada
-// email konfirmasi) -- siapa pun bisa mendaftar pakai email orang lain.
-// Kalau langkah ini auto-link berdasarkan email, penyerang bisa
-// mendaftar duluan pakai email korban, lalu ketika korban asli akhirnya
-// "Sign in with Google" pakai email itu, identitas Google korban yang
-// SUDAH terverifikasi asli malah otomatis tersambung ke akun bikinan
-// penyerang -- pengambilalihan akun penuh. Menolak di sini memaksa
-// pengguna login pakai password dulu untuk akun lama; linking manual
-// (kalau dibutuhkan nanti) harus jadi aksi eksplisit dari sesi yang
-// sudah terautentikasi, bukan efek samping diam-diam saat login.
+// ```plaintext "google_id" sudah dipakai -> langsung login "email belum terdaftar" -> akun baru ```
 func (u *AuthUsecase) GoogleLogin(ctx context.Context, input GoogleLoginInput) (AuthOutput, error) {
 	idToken := strings.TrimSpace(input.IDToken)
 	if idToken == "" {
@@ -238,12 +213,7 @@ func (u *AuthUsecase) GoogleLogin(ctx context.Context, input GoogleLoginInput) (
 	if err != nil {
 		return AuthOutput{}, apperrors.Unauthorized("invalid google sign-in")
 	}
-	// Google itself controls this claim (it's only true once the account's
-	// email address has been confirmed via Google's own verification flow),
-	// so an unverified email is not something a client can forge by hand --
-	// but it IS something a legitimate Google account can genuinely have,
-	// so reject explicitly rather than silently trusting an unconfirmed
-	// address as this user's login identity.
+	// skip klo unverified email
 	if !claims.EmailVerified {
 		return AuthOutput{}, apperrors.Unauthorized("google account email is not verified")
 	}
@@ -289,8 +259,7 @@ func (u *AuthUsecase) GoogleLogin(ctx context.Context, input GoogleLoginInput) (
 	return out, nil
 }
 
-// Refresh memvalidasi refresh token, melakukan rotasi (mencabut token lama dan
-// menerbitkan token baru), lalu mengembalikan access token baru.
+// `refresh token`
 func (u *AuthUsecase) Refresh(ctx context.Context, refreshToken string) (AuthOutput, error) {
 	refreshToken = strings.TrimSpace(refreshToken)
 	if refreshToken == "" {
@@ -310,7 +279,7 @@ func (u *AuthUsecase) Refresh(ctx context.Context, refreshToken string) (AuthOut
 	if user == nil || user.AccountStatus != entity.UserStatusActive {
 		return AuthOutput{}, apperrors.Unauthorized("unauthorized")
 	}
-	// Rotasi: cabut token lama agar tidak dapat dipakai ulang.
+	// `skip token`
 	if err := u.users.RevokeRefreshToken(ctx, stored.TokenHash); err != nil {
 		return AuthOutput{}, err
 	}
@@ -325,8 +294,7 @@ func (u *AuthUsecase) Refresh(ctx context.Context, refreshToken string) (AuthOut
 	return out, nil
 }
 
-// Logout mencabut refresh token pengguna dan memasukkan jti access token ke
-// daftar hitam (token blacklist) sehingga sesi tidak dapat diperpanjang.
+// logout, delete refresh token, add to blacklist, prevent session renewal.
 func (u *AuthUsecase) Logout(ctx context.Context, input LogoutInput) error {
 	if refreshToken := strings.TrimSpace(input.RefreshToken); refreshToken != "" {
 		if err := u.users.RevokeRefreshToken(ctx, hashToken(refreshToken)); err != nil {
@@ -464,18 +432,7 @@ func (u *AuthUsecase) UpdateProfile(ctx context.Context, input UpdateProfileInpu
 	return profileDTO(updated), nil
 }
 
-// DeleteAccount memverifikasi password pengguna, memurge seluruh data
-// KG/pgvector via memory service, mencabut seluruh sesi aktif, lalu
-// menganonimkan baris pengguna (soft delete).
-//
-// Purge dipanggil di sini (bukan hanya diandalkan dari frontend settings
-// page) supaya "hapus akun = hapus semua data" adalah jaminan sisi server,
-// bukan tergantung frontend memanggil dua endpoint terpisah dengan urutan
-// yang benar. Kegagalan purge di-log dengan jelas dan TETAP melanjutkan
-// soft delete Postgres -- database KG/pgvector belum punya mekanisme
-// retry/antrian utk kompensasi kegagalan parsial, jadi memblokir hapus akun
-// pengguna hanya karena memory service down akan lebih buruk daripada log
-// yang bisa ditindaklanjuti manual.
+// DeleteAccount memverifikasi password, memurge data, lalu anonimkan baris. Purge dipanggil di sini untuk jaminan server. Kegagalan purge log dengan jelas.
 func (u *AuthUsecase) DeleteAccount(ctx context.Context, input DeleteAccountInput) error {
 	if err := validateUUID("userId", input.UserID); err != nil {
 		return err
@@ -564,8 +521,7 @@ func newToken(userID string) (string, error) {
 	return axisauth.Sign(userID, 24*time.Hour, axisauth.SecretFromEnv())
 }
 
-// newRefreshToken menghasilkan refresh token acak (plaintext untuk klien) beserta
-// hash SHA-256-nya (untuk disimpan di basis data).
+// newRefreshToken: random acak (client), hash SHA-256 (server).
 func newRefreshToken() (string, string, error) {
 	var b [32]byte
 	if _, err := rand.Read(b[:]); err != nil {
@@ -575,7 +531,7 @@ func newRefreshToken() (string, string, error) {
 	return plain, hashToken(plain), nil
 }
 
-// hashToken mengembalikan hash SHA-256 (heksadesimal 64 karakter) dari sebuah token.
+// hashToken: "64-hex SHA-256 token
 func hashToken(token string) string {
 	sum := sha256.Sum256([]byte(token))
 	return hex.EncodeToString(sum[:])
