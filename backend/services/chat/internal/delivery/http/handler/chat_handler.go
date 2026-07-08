@@ -36,8 +36,9 @@ type sendMessageRequest struct {
 	Voice                  *usecase.VoiceRequest `json:"voice,omitempty"`
 	PHQ9State              map[string]any        `json:"phq9_state,omitempty"`
 	CBTState               map[string]any        `json:"cbt_state,omitempty"`
-	LanguagePref           string                `json:"language_pref,omitempty"`
-	PreferredResponseModel string                `json:"preferred_response_model,omitempty"`
+	LanguagePref           string                      `json:"language_pref,omitempty"`
+	PreferredResponseModel string                      `json:"preferred_response_model,omitempty"`
+	EphemeralHistory       []usecase.EphemeralMessage `json:"ephemeral_history,omitempty"`
 }
 
 type updateConversationRequest struct {
@@ -171,6 +172,7 @@ func (h *ChatHandler) SendMessage(w http.ResponseWriter, r *http.Request) {
 		CBTState:               req.CBTState,
 		LanguagePref:           req.LanguagePref,
 		PreferredResponseModel: req.PreferredResponseModel,
+		EphemeralHistory:       req.EphemeralHistory,
 	})
 	if err != nil {
 		response.FromError(w, err)

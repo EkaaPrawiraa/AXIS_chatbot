@@ -55,6 +55,7 @@ function ConfessionSpaceContent() {
   const revealTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const phq9StateRef = useRef<Record<string, unknown> | undefined>(undefined);
   const cbtStateRef = useRef<Record<string, unknown> | undefined>(undefined);
+  const ephemeralHistoryRef = useRef<{role: string, content: string}[]>([]);
 
   const primedAudioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -107,14 +108,10 @@ function ConfessionSpaceContent() {
         if (chunks.length > 0) {
           try {
             const blob = new Blob(chunks, { type: segmentRecorder.mimeType || 'audio/webm' });
-            const wavBlob = await blobToWavBlob(blob).catch((error) => {
-              console.warn('Confession Space: interim WAV conversion failed, sending raw blob', error);
-              return blob;
-            });
-            const audioBase64 = await blobToBase64(wavBlob);
+            const audioBase64 = await blobToBase64(blob);
             const result = await voiceAPI.transcribe({
               audio_base64: audioBase64,
-              audio_mime: wavBlob.type || blob.type,
+              audio_mime: blob.type || 'audio/webm',
               language_pref: user?.preferredLanguage || 'id',
             });
             const text = result.text?.trim();
@@ -215,19 +212,20 @@ function ConfessionSpaceContent() {
     try {
       const conversationId = await ensureConversation();
       if (!conversationId) return;
-      const wavBlob = await blobToWavBlob(audio).catch(() => audio);
-      const audioBase64 = await blobToBase64(wavBlob);
+      const audioBase64 = await blobToBase64(audio);
       const response: SendMessageResponse = await chatAPI.sendMessage({
         conversationId,
         content: '',
         userId,
         language_pref: user?.preferredLanguage || 'id',
+        single_pass_voice: true,
+        ephemeral_history: ephemeralHistoryRef.current,
         phq9_state: phq9StateRef.current,
         cbt_state: cbtStateRef.current,
         voice: {
           output_modality: 'both',
           audio_input_base64: audioBase64,
-          audio_input_mime: wavBlob.type || mimeType,
+          audio_input_mime: audio.type || mimeType || 'audio/webm',
           voice_id: user?.preferredVoiceId,
           tts_model: (user?.preferredTtsModel || 'v2_5_turbo') as TTSModelChoice,
         },
@@ -247,6 +245,15 @@ function ConfessionSpaceContent() {
 
       const assistantText = stripCrisisResourceBlock(rawAssistantText);
       const spokenText = response.voice?.speech_response || rawAssistantText;
+
+      if (userText || rawAssistantText) {
+        // Append to our ephemeral history so the next turn has context
+        const newHistory = [...ephemeralHistoryRef.current];
+        if (userText) newHistory.push({ role: 'user', content: userText });
+        if (rawAssistantText) newHistory.push({ role: 'assistant', content: rawAssistantText });
+        ephemeralHistoryRef.current = newHistory;
+      }
+
       const source = response.voice?.audio_output_base64
         ? dataUrlFromBase64(response.voice.audio_output_base64, response.voice.audio_output_format)
         : response.voice?.audio_output_url || null;

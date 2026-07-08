@@ -8,9 +8,7 @@ import { CONCEPT_ICONS } from '@/lib/assets';
 import { cn } from '@/lib/utils';
 import { useSessionStore } from '@/stores';
 
-/**
- * Shared mobile header for top-level v2 pages.
- */
+
 export function MobileAppHeader() {
   const pathname = usePathname();
   const user = useSessionStore((state) => state.user);
@@ -19,26 +17,33 @@ export function MobileAppHeader() {
   const isProfile = pathname === '/profile' || pathname?.startsWith('/profile/');
   const isHelp = pathname === '/help' || pathname?.startsWith('/help/');
   const isMemories = pathname === '/memories' || pathname?.startsWith('/memories/');
+  const isChat = pathname === '/chat' || pathname?.startsWith('/chat/');
 
   const showSettings = isProfile || isHelp;
 
-  const UtilityIcon = isMemories
-    ? CONCEPT_ICONS.knowledgeGraph
-    : showSettings
-      ? CONCEPT_ICONS.pengaturan
-      : CONCEPT_ICONS.bantuan;
+  const UtilityIcon = isChat
+    ? CONCEPT_ICONS.confession
+    : isMemories
+      ? CONCEPT_ICONS.knowledgeGraph
+      : showSettings
+        ? CONCEPT_ICONS.pengaturan
+        : CONCEPT_ICONS.bantuan;
 
-  const utilityHref = isMemories
-    ? '/knowledge-graph'
-    : showSettings
-      ? '/settings'
-      : '/help';
+  const utilityHref = isChat
+    ? '/confession-space'
+    : isMemories
+      ? '/knowledge-graph'
+      : showSettings
+        ? '/settings'
+        : '/help';
 
-  const utilityLabel = isMemories
-    ? 'Peta Relasi Memori'
-    : showSettings
-      ? 'Pengaturan'
-      : 'Bantuan';
+  const utilityLabel = isChat
+    ? 'Confession Space'
+    : isMemories
+      ? 'Peta Relasi Memori'
+      : showSettings
+        ? 'Pengaturan'
+        : 'Bantuan';
 
   return (
     <header className="v2-mobile-header">

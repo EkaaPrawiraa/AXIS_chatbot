@@ -11,11 +11,7 @@ const FACE_STYLES = [
   { Icon: Frown, color: '#ef4444' }, // Match dashboard Red
 ] as const;
 
-/**
- * PHQ-9 mood-check card per the v3 design (04_chat_mood_check_phq):
- * illustrated header, "N dari 9" progress bar, bold question, four
- * emoji-face option pills, and an "Apa ini?" clarification link.
- */
+
 export function PhqCard({
   question,
   current,
@@ -91,11 +87,7 @@ export function PhqCard({
   );
 }
 
-/**
- * Split a PHQ item message into the conversational intro (rendered as a
- * normal bubble) and the question shown inside the card. The agentic
- * service emits: "<ack>\n\nPertanyaan N dari 9. <header>:\n\n<item>\n\n  0. ...".
- */
+
 export function parsePhqContent(content: string): { intro: string; question: string | null } {
   const header = content.match(/(?:Pertanyaan|Question)\s+\d+\s+(?:dari|of)\s+\d+\.?\s*/i);
   if (!header || header.index === undefined) {

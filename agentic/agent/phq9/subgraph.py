@@ -200,31 +200,6 @@ async def _schedule_declined_retry(
 
 
 # Explanation request detection
-#
-# Three sources of cues with linguistic justification:
-#
-# 1.  Indonesian formal/baku interrogatives. Sneddon (2003) ch. 4
-#     identifies these as the canonical "request for clarification"
-#     forms used in academic register. Students fall back to these in
-#     written chat when they want to make sure they understand.
-#
-# 2.  Indonesian colloquial (gaul) forms. Sneddon ch. 4 / Indonesia
-#     youth slang corpus: the Jakarta-based productive suffix swap
-#     ``me-/-kan`` -> ``-in`` ("jelaskan" -> "jelasin"), plus negation
-#     particles ("ga"/"gak"/"nggak") + verbs of comprehension
-#     ("ngerti", "paham"). These dominate ITB-age chat input.
-#
-# 3.  English minimal set. Sneddon ch. 12 documents Indonesian-English
-#     bilingualism; ITB students code-switch heavily, so we include the
-#     bare minimum so we do not miss "what does this mean" style
-#     requests. Kept small to avoid false positives.
-#
-# Cues that look tempting but are intentionally NOT here:
-#   * ``apa`` alone (false positive on "apa adanya", "apa kabar")
-#   * ``tanya`` (user may be quoting someone else's question)
-#   * ``kurang`` alone ("kurang setuju" is an answer, not a question)
-
-
 _EXPLANATION_CUES_ID: tuple[re.Pattern[str], ...] = (
     # 1. Formal / baku
     re.compile(r"\b(maksudnya|maksud pertanyaannya|gimana maksudnya)\b", re.IGNORECASE),
@@ -286,15 +261,10 @@ async def _node_offer(
     """
     phq9 = _phq9(state)
     if int(state.get("session_turn") or 0) < WARMUP_TURNS_BEFORE_OFFER:
-        # Warm-up not satisfied yet. Just signal armed=False and let
-        # the response generator continue the natural conversation.
         phq9["offer_armed"] = False
         _commit(state, phq9)
         return state
 
-    # Warm-up done: arm the response generator. Do NOT emit static
-    # text; do NOT transition phase here. Both responsibilities move
-    # to response_generator (see _arm_offer_for_response_generator).
     phq9["offer_armed"] = True
     _commit(state, phq9)
     return state
@@ -315,12 +285,6 @@ async def _node_decision(
     user_id = state.get("user_id") or ""
     session_id = state.get("session_id") or ""
 
-    # User-initiated path: phq9_check already detected an explicit
-    # request. We treat the request itself as the accept and start
-    # item 1 immediately. Keep user_initiated=True in state so the
-    # caller can see how this assessment was triggered; it won't
-    # re-fire because _accept_and_start_item1 moves phase to
-    # "in_progress" and _route_entry only sends phase="offered" here.
     if phq9.get("user_initiated"):
         out = _accept_and_start_item1(state, phq9, language)
         await _persist_progress(
@@ -397,12 +361,7 @@ async def _node_item(
     user_id = state.get("user_id") or ""
     session_id = state.get("session_id") or ""
 
-    # Short-circuit: user is asking, not answering. Skip the judge
-    # entirely so we never miscategorize an explanation request as a
-    # low-confidence answer (which used to drop to a static reprompt).
-    # Phase becomes awaiting_clar; the score for this item is NOT
-    # mutated; the user gets a natural LLM explanation; next turn the
-    # judge runs again on whatever they actually answer.
+    # Short-circuit: user is asking, not answerins
     if _is_explanation_request(user_reply, language):
         phq9["phase"] = "awaiting_clar"
         phq9["awaiting_clarification"] = True
@@ -426,8 +385,7 @@ async def _node_item(
         llm=judge_llm,
     )
 
-    # Item 9 safety override: action is always ADVANCE regardless of
-    # what the LLM proposed. The score is honored.
+    # Item 9 safety override
     action = outcome.action
     if item_id == ITEM9_INDEX_ONE_BASED and action != JudgeAction.STOP:
         action = JudgeAction.ADVANCE
@@ -447,8 +405,7 @@ async def _node_item(
         # Bail out without scoring. Crisis pre-gen will own the next turn.
         state["safety_flag"] = "crisis"  # signal main graph
         _commit(state, phq9)
-        # Keep progress row so we can resume if appropriate; clearing
-        # is up to a later flow once crisis routing is done.
+        # Keep progress row so we can resume
         await _persist_progress(repo, user_id, session_id, phq9)
         return state
 
@@ -456,12 +413,6 @@ async def _node_item(
         action = JudgeAction.ADVANCE
 
     if action == JudgeAction.CLARIFY:
-        # Reached here only when the judge saw an answer but couldn't
-        # score it confidently. Explanation requests are handled
-        # upfront so we know this is an ambiguous answer, not a
-        # question. A short re-prompt is the right move; do not call
-        # the explanation LLM (we have nothing to explain about an
-        # answer the user already gave).
         phq9["phase"] = "awaiting_clar"
         phq9["awaiting_clarification"] = True
         state["response_draft"] = build_clarification(
@@ -474,8 +425,6 @@ async def _node_item(
     if action == JudgeAction.BACK:
         target = outcome.next_item or max(item_id - 1, 1)
         if phq9.get("back_count", 0) >= MAX_BACK_NAVIGATIONS:
-            # Cap reached; demote to clarify (static re-prompt).
-            # Explanation requests were already short-circuited above.
             phq9["phase"] = "awaiting_clar"
             phq9["awaiting_clarification"] = True
             state["response_draft"] = build_clarification(

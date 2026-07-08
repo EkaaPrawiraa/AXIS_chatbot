@@ -4,10 +4,7 @@ import { formatChatTime } from '@/components/v2/chat/utils/format';
 import { animationClasses } from '@/lib/animations';
 import { chatRoomStyles } from '@/lib/styles/chatRoom';
 
-/**
- * User chat bubble: soft olive fill, white text, inline timestamp with
- * double-check mark bottom-right — per the v3 chat design.
- */
+
 export function UserBubble({ message }: { message: Message }) {
   return (
     <div data-bubble="user" className={`${chatRoomStyles.userBubbleWrapper} ${animationClasses.chatBubbleIn}`}>

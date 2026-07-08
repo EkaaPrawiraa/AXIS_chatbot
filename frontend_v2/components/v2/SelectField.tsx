@@ -4,10 +4,7 @@ import { ChevronDown } from '@/lib/assets';
 import type { ReactNode, SelectHTMLAttributes } from 'react';
 import { cn } from '@/lib/utils';
 
-/**
- * Labeled native select with a leading icon and chevron affordance,
- * styled like the axis_mobile_v3 dropdown field.
- */
+
 export function SelectField({
   label,
   icon,

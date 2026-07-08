@@ -80,7 +80,7 @@ export default function HomePage() {
 							className={animationClasses.staggerItem}
 							style={motionStyleVars({ delayMs: 260 })}
 							href="/confession-space"
-							label="Percakapan santai"
+							label="Confession Space"
 							description="Ceritakan apa saja yang ingin kamu bagi dengan AXIS dengan interaksi suara, percakapan ini tidak akan disimpan."
 						/>
 						<QuickActionCard

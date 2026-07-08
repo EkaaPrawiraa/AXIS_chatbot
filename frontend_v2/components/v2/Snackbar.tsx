@@ -13,7 +13,7 @@ const TYPE_STYLE = {
   info: { bg: 'var(--v2-c-eae6da)', text: 'var(--v2-c-5a5648)', Icon: Info },
 } as const;
 
-/** Global toast stack, anchored top-right, for errors/confirmations with no dedicated inline UI. */
+
 export function Snackbar() {
   const toasts = useUIStore((state) => state.toasts);
   const removeToast = useUIStore((state) => state.removeToast);

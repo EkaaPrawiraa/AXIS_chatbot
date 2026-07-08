@@ -276,6 +276,17 @@ def _build_messages(state: ConversationState) -> list[Any]:
             "Use the conversation history to pick up where you left off."
         )
 
+    phq9_reason = phq9_state.get("reason") or ""
+    if phq9_state.get("phase") == "idle" and phq9_reason.startswith("suppressed:"):
+        parts.append(
+            "==================== PHQ SUPPRESSED NOTICE ====================\n\n"
+            "The system has temporarily disabled the PHQ-9 mood assessment for this user to protect their well-being.\n"
+            "If the user asks to take a mood test, mental check, or PHQ-9, you MUST gently decline.\n"
+            "Do NOT administer any test questions and do NOT hallucinate the PHQ-9 process.\n"
+            "Instead, acknowledge their request empathetically, explain that right now you just want to focus "
+            "on listening and supporting them directly through regular conversation, and invite them to share whatever is on their mind."
+        )
+
     if state.get("confession_mode"):
         try:
             parts.append(load_prompt("assessment/confession_mode"))
@@ -298,6 +309,22 @@ def _build_messages(state: ConversationState) -> list[Any]:
         f"resolved_language={language}; "
         f"detected_user_language={detected or 'unknown'}."
     )
+
+    if state.get("single_pass_voice"):
+        voice = state.get("voice_state") or {}
+        if voice.get("output_modality") in ("voice", "both"):
+            from agentic.agent.nodes.speech_adapter import select_mode, _language_context
+            from agentic.config.llm_models import SPEECH_ADAPTER, SPEECH_ADAPTER_V3
+            mode = select_mode(state)
+            sp_spec = SPEECH_ADAPTER_V3 if mode == "v3" else SPEECH_ADAPTER
+            parts.append(
+                "==================== VOICE SCRIPT MODE ENABLED ====================\n\n"
+                "You are generating the FINAL SPOKEN SCRIPT directly. Do NOT write text meant only for reading.\n"
+                "Apply the following speech adapter system instructions directly to your response:\n\n"
+                f"{sp_spec.system_prompt}\n\n"
+                "Additionally, follow the strict language context for voice:\n"
+                f"{_language_context(state)}"
+            )
 
     system_text = _SECTION_SEP.join(parts).strip()
     # print(system_text)
@@ -383,16 +410,10 @@ def _response_generator_spec(state: ConversationState):
     if not model or not _is_allowed_response_model(model):
         spec = RESPONSE_GENERATOR
     else:
-        # Validate that provider-specific resolution succeeds early. The
-        # returned spec keeps the caller's model id; build_llm performs the
-        # final mapping.
         resolve_llm_model(model, spec_name=RESPONSE_GENERATOR.name)
         spec = replace(RESPONSE_GENERATOR, model=model)
 
     if state.get("confession_mode"):
-        # Confession Space favors longer, uninterrupted listening replies —
-        # reuse the same per-request override mechanism rather than a
-        # separate code path.
         spec = replace(spec, max_tokens=CONFESSION_MODE_MAX_TOKENS)
     return spec
 
@@ -425,32 +446,52 @@ async def response_generator_node(
 
     base_client = llm if llm is not None else build_llm(_response_generator_spec(state))
     bound_tools = _resolve_tools(tools)
-    # Gemini's API rejects combining its built-in tools (e.g. google_search)
-    # with custom function-calling tools in the same request ("Built-in
-    # tools ... and Function Calling cannot be combined"). The default
-    # toolset (current_context, resolve_relative_time, calculate_math,
-    # web_search) is always non-empty, so binding google_search here on
-    # every Gemini call made the API reject every single response --
-    # response_generator silently fell back to a generic "technical
-    # glitch" message for 100% of chat turns. The custom web_search tool
-    # already covers this capability across providers, so there's no
-    # fallback to add here; just don't bind the incompatible built-in tool.
     client = _maybe_bind_tools(base_client, bound_tools)
     tools_by_name = {t.name: t for t in bound_tools if hasattr(t, "name")} if bound_tools else {}
 
     messages = _build_messages(state)
 
-    started = time.perf_counter()
-    draft, tool_iterations = await _run_tool_loop(
-        client=client,
-        messages=messages,
-        tools_by_name=tools_by_name,
-        state=state,
-        audit=audit,
-    )
+    if len(messages) == 1:
+        # No history and no current message. We cannot call Gemini without contents.
+        # This usually happens if STT drops a hallucination on an empty audio clip.
+        if (state.get("resolved_language") or "id") == "id":
+            draft = "Maaf, aku tidak mendengar apa-apa. Bisa diulangi?"
+        else:
+            draft = "Sorry, I didn't catch that. Could you repeat?"
+        tool_iterations = 0
+        started = time.perf_counter()
+    else:
+        started = time.perf_counter()
+        draft, tool_iterations = await _run_tool_loop(
+            client=client,
+            messages=messages,
+            tools_by_name=tools_by_name,
+            state=state,
+            audit=audit,
+        )
+
     elapsed_ms = int((time.perf_counter() - started) * 1000)
 
     draft = _polish_companion_style(draft)
+    
+    if state.get("single_pass_voice"):
+        voice = dict(state.get("voice_state") or {})
+        if voice.get("output_modality") in ("voice", "both"):
+            from agentic.agent.nodes.speech_adapter import select_mode, _normalize_laughter, _strip_v3_tags
+            mode = select_mode(state)
+            adapted = _normalize_laughter(draft)
+            if mode == "v3":
+                voice["speech_response_tags"] = adapted
+                voice["speech_response"] = _strip_v3_tags(adapted)
+                # Clean the draft for the UI so it doesn't show the v3 tags
+                draft = voice["speech_response"]
+            else:
+                voice["speech_response"] = adapted
+            
+            voice["tts_model"] = mode
+            voice["speech_adapted_in_generator"] = True
+            state["voice_state"] = voice  # type: ignore[typeddict-item]
+
     state["response_draft"] = draft
 
     phq9 = state.get("phq9_state") or {}

@@ -26,7 +26,7 @@ export function AxisMark({ className, size = 44 }: { className?: string; size?: 
   );
 }
 
-/** The real AXIS app icon (docs/axis_mobile_v3/Ikon_AXIS_Aplikasi.png). */
+
 export function AxisMonogram({ className, size = 44 }: { className?: string; size?: number }) {
   return (
     <span

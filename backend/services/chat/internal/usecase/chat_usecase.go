@@ -141,6 +141,10 @@ type StartSessionInput struct {
 	Title   string
 	Channel entity.Channel
 }
+type EphemeralMessage struct {
+	Role    string `json:"role"`
+	Content string `json:"content"`
+}
 
 type SendMessageInput struct {
 	UserID                 string
@@ -152,6 +156,7 @@ type SendMessageInput struct {
 	CBTState               map[string]any
 	LanguagePref           string
 	PreferredResponseModel string
+	EphemeralHistory       []EphemeralMessage
 }
 
 type SendMessageOutput struct {
@@ -449,13 +454,24 @@ func (u *ChatUsecase) SendMessage(ctx context.Context, input SendMessageInput) (
 			return SendMessageOutput{}, err
 		}
 	}
-	agenticMessages := make([]ChatMessage, 0, len(history))
-	for _, msg := range history {
-		agenticMessages = append(agenticMessages, ChatMessage{
-			Role:     string(msg.Role),
-			Content:  msg.Content,
-			Metadata: messageMetadata(msg),
-		})
+	var agenticMessages []ChatMessage
+	if isConfession && len(input.EphemeralHistory) > 0 {
+		agenticMessages = make([]ChatMessage, 0, len(input.EphemeralHistory))
+		for _, msg := range input.EphemeralHistory {
+			agenticMessages = append(agenticMessages, ChatMessage{
+				Role:    msg.Role,
+				Content: msg.Content,
+			})
+		}
+	} else {
+		agenticMessages = make([]ChatMessage, 0, len(history))
+		for _, msg := range history {
+			agenticMessages = append(agenticMessages, ChatMessage{
+				Role:     string(msg.Role),
+				Content:  msg.Content,
+				Metadata: messageMetadata(msg),
+			})
+		}
 	}
 
 	resp, err := u.agentic.Invoke(ctx, AgenticChatRequest{

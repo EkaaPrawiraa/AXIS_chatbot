@@ -73,6 +73,7 @@ class ChatTurnRequest(BaseModel):
     voice: VoiceTurnRequest = Field(default_factory=VoiceTurnRequest)
     include_state: bool = False
     confession_mode: bool = False
+    single_pass_voice: bool = False
 
     @model_validator(mode="after")
     def validate_turn_input(self) -> "ChatTurnRequest":

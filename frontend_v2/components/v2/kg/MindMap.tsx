@@ -52,11 +52,7 @@ function groupTopics(topics: MemoryNode[], categories: string[]): string[] {
     .map((node) => prettify(String(node.properties?.name || node.title || node.label)));
 }
 
-/**
- * Landscape "Peta Memori" mind map per 09_knowledge_graph_expanded_rotate_phone:
- * dashed rings + avatar center, six tinted category pills with curved
- * connectors, and up to three real topic chips per category.
- */
+
 export function MindMap({
   topics,
   userName,
@@ -161,9 +157,7 @@ export function MindMap({
           />
         </span>
         <p className="mt-3 text-[28px] font-bold leading-none text-[var(--v2-ink)]">{userName}</p>
-        <p className="mt-2 flex items-center gap-1.5 text-[14.5px] font-bold text-[var(--v2-ink)]">
-          <Leaf className="h-[14px] w-[14px] text-[var(--v2-c-a8854a)]" fill="currentColor" /> Fokus hari ini
-        </p>
+     
         <p className="mt-0.5 text-[14.5px] font-medium text-[var(--v2-text-subdued)]">{focusText}</p>
       </div>
     </div>

@@ -55,7 +55,7 @@ class VoiceState(TypedDict, total=False):
     audio_output_blob: Optional[Any]      # in-memory bytes for tests / fallback
     audio_output_format: Optional[str]    # "mp3" | "wav" | etc.
     voice_error: Optional[str]            # populated on fallback path
-
+    speech_adapted_in_generator: bool     # True if LLM adapter skipped in single-pass
 
 # PHQ-9 sub-state
 
@@ -146,6 +146,7 @@ class ConversationState(TypedDict, total=False):
     profile_context: Optional[ProfileContext]
     resolved_language: Optional[str]  # outcome of resolve_language()
     linguistic_signals: Optional[dict]  # output of linguistic_enrichment_node
+    single_pass_voice: bool           # Enable 1-pass voice optimization
 
     # safety.
     safety_flag: Optional[str]      # None | "escalate" | "crisis" | "safe"

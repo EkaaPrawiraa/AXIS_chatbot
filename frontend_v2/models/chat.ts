@@ -46,6 +46,8 @@ export interface SendMessageRequest {
   content: string;
   userId?: ID;
   language_pref?: string;
+  single_pass_voice?: boolean;
+  ephemeral_history?: {role: string, content: string}[];
   preferred_response_model?: string;
   voiceUrl?: string;
   voice?: VoiceTurnRequest;

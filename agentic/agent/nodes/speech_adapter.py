@@ -108,6 +108,10 @@ async def speech_adapter_node(
         state["voice_state"] = voice  # type: ignore[typeddict-item]
         return state
 
+    if voice.get("speech_adapted_in_generator"):
+        # The response_generator_node already handled the rewrite in a single pass.
+        return state
+
     source_text = (state.get("final_response") or state.get("response_draft") or "").strip()
     if not source_text:
         state["voice_state"] = voice  # type: ignore[typeddict-item]

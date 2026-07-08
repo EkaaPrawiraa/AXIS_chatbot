@@ -763,6 +763,7 @@ class ChatGraphService:
         state["preferred_response_model"] = request.preferred_response_model
         state["resolved_language"] = request.resolved_language
         state["confession_mode"] = request.confession_mode
+        state["single_pass_voice"] = request.single_pass_voice
         if request.linguistic_signals is not None:
             state["linguistic_signals"] = request.linguistic_signals  # type: ignore[typeddict-item]
         state["safety_flag"] = request.safety_flag

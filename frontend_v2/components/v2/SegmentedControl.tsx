@@ -8,10 +8,7 @@ export interface SegmentedOption<T extends string> {
   label: string;
 }
 
-/**
- * Two-or-more option pill switch (e.g. Masuk / Daftar) matching the
- * axis_mobile_v3 tab style: hairline-bordered cream track, olive active pill.
- */
+
 export function SegmentedControl<T extends string>({
   options,
   value,

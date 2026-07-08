@@ -3,10 +3,7 @@
 import type { InputHTMLAttributes, ReactNode } from 'react';
 import { cn } from '@/lib/utils';
 
-/**
- * Labeled text input with a leading icon and optional trailing control,
- * matching the axis_mobile_v3 field style (soft cream fill, hairline border).
- */
+
 export function TextField({
   label,
   icon,

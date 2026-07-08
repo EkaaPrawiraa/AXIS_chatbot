@@ -40,6 +40,8 @@ export const chatAPI = {
         voiceUrl: request.voiceUrl,
         voice: request.voice,
         language_pref: request.language_pref,
+        single_pass_voice: request.single_pass_voice,
+        ephemeral_history: request.ephemeral_history,
         preferred_response_model: request.preferred_response_model,
         phq9_state: request.phq9_state,
         cbt_state: request.cbt_state,

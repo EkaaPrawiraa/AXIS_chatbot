@@ -67,12 +67,9 @@ class JudgeOutcome:
 
 
 # Confidence threshold above which the rule-based score is accepted
-# without asking the LLM to re-score. The LLM is still called for the
-# routing decision (action / next_item / rationale).
 RULE_CONFIDENCE_THRESHOLD: float = 0.90
 
 # Canonical option map — Indonesian (id).
-# Keys are lowercased and stripped of trailing punctuation.
 _OPTION_MAP_ID: dict[str, int] = {
     # Score 0 — Tidak sama sekali
     "tidak sama sekali": 0,
@@ -158,15 +155,6 @@ _PUNCT_TAIL_RE = re.compile(r"[.,!?؟]+$")
 _MULTI_SPACE_RE = re.compile(r"\s+")
 
 # Cap on how many extra words are tolerated after a canonical label match
-# (e.g. "kadang deh" / "kadang sih" are still a direct pick). Without this
-# cap, `normalized.startswith(label)` would also match a long free-text
-# sentence that merely happens to OPEN with a common word that is also a
-# canonical label ("kadang", "sering", "jarang", "selalu", "tidak" are all
-# ordinary Indonesian sentence-openers). That previously let a nuanced
-# multi-sentence answer get silently scored off its first word alone —
-# dangerous on item 9 (self-harm ideation), where a qualifier later in the
-# sentence ("tapi ga sampe niat ngapa-ngapain") changes the meaning
-# entirely. See docs/importantS/analisis_phq9_subgraph.md, Temuan #1.
 MAX_TRAILING_WORDS_FOR_PREFIX_MATCH: int = 2
 
 
@@ -187,7 +175,7 @@ def _rule_based_score(reply: str, language: str) -> tuple[int | None, float]:
 
     stripped = reply.strip()
 
-    # Bare digit: "0" / "1" / "2" / "3" (whitespace-bounded)
+    
     m = _DIGIT_RE.match(stripped)
     if m:
         return int(m.group(1)), 1.0
@@ -202,9 +190,7 @@ def _rule_based_score(reply: str, language: str) -> tuple[int | None, float]:
     if normalized in option_map:
         return option_map[normalized], 1.0
 
-    # Prefix match in both directions: user typed a leading substring of a
-    # canonical label, or the canonical label is a prefix of the user reply.
-    # Require at least 4 chars to avoid matching single-syllable words.
+    # Prefix match in both directions
     for label, score in option_map.items():
         if len(normalized) >= 4 and label.startswith(normalized):
             return score, 0.95
@@ -246,8 +232,7 @@ _USER_TEMPLATE = (
     "Respond with the JSON object only."
 )
 
-# Routing-only prompt — used when the rule-based scorer already fixed the
-# score. The LLM decides action / next_item / rationale only.
+# Routing-only prompt — used when the rule-based scorer already fixed the score 
 _ROUTING_SYSTEM_PROMPT = (
     "You are a PHQ-9 assessment assistant. The user's score for this item "
     "has already been determined by a rule-based scorer. Your role is to:\n"
