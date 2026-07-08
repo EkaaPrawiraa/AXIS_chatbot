@@ -3,10 +3,7 @@ import type { RelationEntry } from '@/components/v2/kg/NodeDetailSheet';
 import { humanizeSnakeCase } from '@/lib/textFormat';
 import { SPOKE_RELATION_LABEL } from '@/components/v2/kg/MemoryMapHub';
 
-// The relations API already returns sourceType/targetType as lowercase
-// strings matching our MemoryNodeType directly (e.g. "experience",
-// "behaviour") — the one exception is "user" (the User node itself),
-// which isn't a memory node type and gets filtered out below.
+
 const VALID_TYPES = new Set<MemoryNodeType>([
   'subject',
   'experience',
@@ -37,12 +34,7 @@ const TYPE_LABELS: Record<MemoryNodeType, string> = {
   memory: 'Memori',
 };
 
-/**
- * For a hub node type, find up to 3 OTHER node types it has a real graph
- * relation with, each backed by one genuine connected node's title as the
- * example (not placeholder text) — used to populate NodeDetailSheet's
- * "Relasi utama" list.
- */
+
 export function deriveNodeRelations(type: MemoryNodeType, relations: MemoryGraphRelation[]): RelationEntry[] {
   const seenTypes = new Set<MemoryNodeType>([type]);
   const entries: RelationEntry[] = [];
@@ -59,14 +51,8 @@ export function deriveNodeRelations(type: MemoryNodeType, relations: MemoryGraph
     if (!otherType || seenTypes.has(otherType) || !otherTitle) continue;
 
     seenTypes.add(otherType);
-    // Only Topic names come out of the KG as raw snake_case tokens — other
-    // node titles (subject names, trigger/thought descriptions) are already
-    // natural language and shouldn't be lowercased/reformatted.
+  
     const displayTitle = otherType === 'topic' ? humanizeSnakeCase(otherTitle) : otherTitle;
-    // Row title mirrors 22_knowledge_graph_node_detail's "{Verb} {Type}"
-    // pattern (e.g. "Dipicu oleh Pemicu") using that type's own connector
-    // verb; the description is the user's OWN real connected memory rather
-    // than generic canned copy, matching this app's real-data convention.
     const verb = SPOKE_RELATION_LABEL[otherType];
     const title = verb ? `${capitalize(verb)} ${TYPE_LABELS[otherType]}` : TYPE_LABELS[otherType];
     entries.push({

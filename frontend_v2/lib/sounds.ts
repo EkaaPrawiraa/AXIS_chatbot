@@ -1,12 +1,5 @@
 'use client';
 
-/**
- * Tiny local Web Audio cues for mobile chat UX.
- *
- * These are intentionally short and soft: they should feel like subtle chat
- * feedback, not notification alarms. Browser autoplay policies are respected
- * because the sounds are triggered after direct user actions.
- */
 
 type SoundKind = 'typing' | 'stream' | 'complete';
 

@@ -162,14 +162,11 @@ function ConfessionSpaceContent() {
 
   const stopRecording = () => {
     if (phase !== 'recording') return;
-    // Prime here, synchronously, still inside this click — AXIS's spoken
-    // reply won't be ready until sendTurn's full network round trip
-    // finishes several awaits from now.
+
     primedAudioRef.current = primeAudioElement();
     interimActiveRef.current = false;
     if (interimRecorderRef.current?.state === 'recording') {
-      // Its own onstop will fire and see interimActiveRef=false, so it
-      // transcribes this last segment once more without rescheduling.
+
       interimRecorderRef.current.stop();
     }
     const recorder = recorderRef.current;

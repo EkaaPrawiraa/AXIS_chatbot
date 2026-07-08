@@ -1,7 +1,4 @@
-/**
- * Centralized styles for the Profile page.
- * Replaces hardcoded boxy inline classes with organic flat-list layouts.
- */
+
 export const profileStyles = {
   // Page Layout
   mainContainer: "space-y-3 pb-[124px] pt-0",

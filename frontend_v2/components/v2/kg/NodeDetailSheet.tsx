@@ -13,12 +13,6 @@ export interface RelationEntry {
   description: string;
 }
 
-/**
- * Node detail bottom sheet per 22_knowledge_graph_node_detail: tapping a
- * hub satellite shows its icon, count, description, up to three curated
- * "Relasi utama" entries (per node-type relationships), and two actions —
- * a relation-graph affordance and the real "Buka memori" navigation.
- */
 export function NodeDetailSheet({
   Icon,
   color,

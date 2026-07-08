@@ -11,7 +11,7 @@ function isMobileUserAgent(): boolean {
   return MOBILE_UA.test(navigator.userAgent);
 }
 
-// nudges real desktop UAs toward a phone, not a hard block; dismissal persists for the session
+// nudges real desktop UAs toward a phone
 export function DesktopWarningBanner() {
   const [visible, setVisible] = useState(false);
 

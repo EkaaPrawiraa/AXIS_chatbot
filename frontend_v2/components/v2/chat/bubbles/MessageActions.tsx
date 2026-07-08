@@ -3,7 +3,7 @@
 import { Copy, Loader2, Play, RefreshCw } from '@/lib/assets';
 import { useState } from 'react';
 
-// Salin / Putar / Buat ulang pill bar; showRegenerate lets the caller hide "Buat ulang" for non-latest messages
+// Salin / Putar / Buat ulang pill bar
 export function MessageActions({
   content,
   onPlay,

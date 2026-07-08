@@ -84,7 +84,6 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 // Wrapper utility to make FontAwesome icons act like Lucide icons
-// This allows us to use them directly as components like <Home className="..." />
 const createIcon = (icon: any, defaultClasses: string = "") => {
   return ({ className, ...props }: any) => (
     <FontAwesomeIcon icon={icon} className={`${defaultClasses} ${className || ""}`.trim()} {...props} />

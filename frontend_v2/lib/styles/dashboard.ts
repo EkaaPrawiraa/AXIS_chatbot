@@ -1,8 +1,4 @@
-/**
- * Centralized styles for the Dashboard page.
- * Use these constants to ensure consistent typography and spacing
- * across all components in the dashboard view.
- */
+
 export const dashboardStyles = {
 
   

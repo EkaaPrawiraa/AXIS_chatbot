@@ -9,10 +9,7 @@ export interface TopicInsight {
   conversationId?: string;
 }
 
-// Defense-in-depth: even a topic node whose connected content isn't flagged
-// sensitive can itself be a crisis-adjacent label (e.g. extracted verbatim
-// from a self-harm mention) — never name one of these in a cheerful
-// "last time we talked about..." dashboard card, regardless of KG data.
+
 const CRISIS_TOPIC_KEYWORDS = ['bunuh diri', 'bunuh_diri', 'suicid', 'self_harm', 'self-harm', 'menyakiti diri', 'melukai diri'];
 
 function isCrisisTopicName(name: string): boolean {

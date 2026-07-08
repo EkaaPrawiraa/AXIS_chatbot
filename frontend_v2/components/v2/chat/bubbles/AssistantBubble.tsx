@@ -9,7 +9,7 @@ import { formatChatTime } from "@/components/v2/chat/utils/format";
 import { animationClasses } from "@/lib/animations";
 import { chatRoomStyles } from "@/lib/styles/chatRoom";
 
-// assistant chat bubble: cream fill, timestamp below-left, optional action pills and PHQ answer chips
+// assistant chat bubble
 export function AssistantBubble({
 	message,
 	showActions = true,
@@ -33,7 +33,7 @@ export function AssistantBubble({
 	isRegenerating?: boolean;
 	isStreaming?: boolean;
 }) {
-	// show typing dots during the gap before the first streamed token, instead of an empty bubble that looks frozen
+	// show typing dots
 	const awaitingFirstToken = isStreaming && !message.content.trim();
 	const phq = message.metadata?.phq9;
 	const isPhqItem =

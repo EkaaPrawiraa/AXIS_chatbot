@@ -6,7 +6,7 @@ import { chatRoomStyles } from '@/lib/styles/chatRoom';
 
 const IMMEDIATE_HELP_TEL = 'tel:119';
 
-// crisis support card shown under a reply flagged crisisTier 1 or 2; "Hubungi orang terdekat" dials the crisis line directly
+// crisis support card 
 export function HotlineWarningCard() {
   return (
     <div className={chatRoomStyles.hotlineCardBase}>

@@ -12,8 +12,8 @@ const MAX_HEIGHT = 120;
 
 type MicState = 'idle' | 'recording' | 'processing';
 
-// auto-growing textarea + mic/send control. stays in normal flow (not fixed) so it tracks the real viewport bottom when
-// the keyboard opens. mic here does inline speech-to-text into the textarea, separate from the header mic (Confession Space).
+
+
 export function ChatComposer({
   value,
   onChange,

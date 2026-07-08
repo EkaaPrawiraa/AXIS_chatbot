@@ -1,4 +1,4 @@
-/** Maps a backend error code/message to plain, non-technical Indonesian copy. */
+
 const KNOWN_MESSAGES: Record<string, string> = {
   'invalid email or password': 'Email atau password salah.',
   'invalid password': 'Password yang kamu masukkan salah.',
@@ -16,12 +16,7 @@ const STATUS_FALLBACKS: Record<number, string> = {
   429: 'Terlalu banyak permintaan dalam waktu singkat. Coba lagi sebentar lagi.',
 };
 
-/**
- * Converts any thrown error into short, non-technical Indonesian copy safe to
- * show a user. Errors we already threw ourselves with hand-written Indonesian
- * text (e.g. daily-limit, mic/transcribe failures) pass through unchanged —
- * only raw Axios/network errors get translated.
- */
+
 export function friendlyErrorMessage(error: unknown, fallback = 'Terjadi gangguan. Coba lagi ya.'): string {
   const response = (error as { response?: { status?: number; data?: unknown }; isAxiosError?: boolean })?.response;
   const isAxiosError = Boolean((error as { isAxiosError?: boolean })?.isAxiosError);

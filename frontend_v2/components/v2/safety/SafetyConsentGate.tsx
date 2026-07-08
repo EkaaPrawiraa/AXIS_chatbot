@@ -10,12 +10,7 @@ import { useUIStore } from '@/stores/ui';
 export const SAFETY_TERMS_VERSION = 'companion-safety-v1';
 const DISMISS_KEY = 'axis-safety-consent-dismissed';
 
-/**
- * Shows the safety consent sheet for signed-in users whose profile has
- * not accepted the safety terms yet (same contract as the v1 AppShell:
- * accept persists via the profile API; "Nanti dulu" snoozes for the
- * browser session).
- */
+
 export function SafetyConsentGate() {
   const userId = useSessionStore((state) => state.userId);
   const profile = useSessionStore((state) => state.profile);

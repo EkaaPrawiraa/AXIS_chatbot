@@ -2,7 +2,7 @@ import Image from 'next/image';
 import { ILLUSTRATIONS } from '@/lib/assets';
 import { cn } from '@/lib/utils';
 
-// AXIS brand mark: orange bud above two olive leaves, inline SVG so it stays crisp at any size
+// AXIS brand mark
 export function AxisMark({ className, size = 44 }: { className?: string; size?: number }) {
   return (
     <svg

@@ -1,12 +1,6 @@
 import type { CSSProperties } from 'react';
 
-/**
- * Shared motion tokens and utility class names for AXIS frontend_v2.
- *
- * Keep animation reusable from here so page components do not hard-code
- * durations/easings independently. CSS implementations live in
- * `app/globals.css` under the matching class names.
- */
+
 
 export const animationTimings = {
   quick: 140,

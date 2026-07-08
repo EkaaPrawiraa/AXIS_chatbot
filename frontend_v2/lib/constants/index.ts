@@ -16,7 +16,7 @@ export const API_ROUTES = {
   
   HOTLINES: '/hotlines',
 
-  // Legacy insight API helpers kept for unused query modules.
+  
   INSIGHTS: '/insights',
   INSIGHTS_GENERATE: '/insights/generate',
   

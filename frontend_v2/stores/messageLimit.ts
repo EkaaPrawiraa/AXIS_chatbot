@@ -12,7 +12,6 @@ function readHeader(headers: Record<string, unknown> | Headers, key: string): st
   return typeof value === 'string' ? value : null;
 }
 
-// mirrors the gateway's X-RateLimit-*-MessagesDaily headers so the composer can show "N/100 pesan hari ini"
 export const useMessageLimitStore = create<MessageLimitState>((set) => ({
   limit: null,
   remaining: null,

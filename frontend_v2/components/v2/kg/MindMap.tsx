@@ -22,7 +22,7 @@ interface GroupDef {
   y: number;
 }
 
-/** Six life-area groups per the v3 expanded-map mock, fed by real topic categories. */
+
 const GROUPS: GroupDef[] = [
   { key: 'diri', label: 'Kesehatan Diri', categories: ['health'], pill: 'var(--v2-c-dfe4cd)', chipBg: 'var(--v2-c-e9ecdb)', chipBorder: 'var(--v2-c-d8ddc2)', line: 'var(--v2-c-9aa77e)', side: 'left', y: 108 },
   { key: 'hubungan', label: 'Hubungan', categories: ['social', 'family'], pill: 'var(--v2-c-eec5b7)', chipBg: 'var(--v2-c-f6e3da)', chipBorder: 'var(--v2-c-e8cdc0)', line: 'var(--v2-c-cd8465)', side: 'left', y: 258 },

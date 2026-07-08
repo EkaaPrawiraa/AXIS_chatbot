@@ -4,10 +4,7 @@ import type { ComponentType, ReactNode } from 'react';
 
 import { profileStyles } from '@/lib/styles/profileStyles';
 
-/**
- * Profile settings row per the v3 design: tinted icon circle on the left,
- * small label + bold value + muted helper, optional accessory on the right.
- */
+
 export function ProfileRow({
   Icon,
   label,

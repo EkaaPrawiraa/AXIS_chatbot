@@ -19,30 +19,11 @@ export function stopActiveAudio() {
   }
 }
 
-/**
- * Call SYNCHRONOUSLY inside a click handler, before any `await`, when
- * playback will only be ready after a network round-trip (e.g. TTS
- * synthesis). Browsers require audio.play() to happen within a direct
- * user gesture; a fetch in between breaks that chain, so a
- * `new Audio(src)` created only after the fetch resolves gets silently
- * rejected by autoplay policy in Safari (and sometimes Chrome) — the
- * failure is invisible unless the caller explicitly checks for it. This
- * primes (and immediately mutes/pauses) a real <audio> element while
- * still inside the gesture; pass the SAME element into createAudioPlayer
- * once the real src is known and browsers treat it as still "unlocked".
- */
+
 export function primeAudioElement(): HTMLAudioElement {
   const audio = new Audio();
   audio.muted = true;
-  // pause() is called synchronously, in the same tick as play(), rather
-  // than inside a .then()/.finally() waiting on play()'s promise to
-  // settle. Browsers explicitly support this ordering without error
-  // (see Chrome's play()-Promise integration notes), but waiting for
-  // the promise first leaves a window where this element is still
-  // "priming" (unpaused, play() pending) when createAudioPlayer reuses
-  // it and reassigns `.src` for the real clip -- reassigning src while
-  // a play() is in flight aborts it, which was surfacing as an
-  // intermittent, unrelated "gagal diputar" failure on the real clip.
+  
   const primingPlay = audio.play();
   audio.pause();
   primingPlay.catch(() => undefined);
@@ -106,11 +87,7 @@ export function blobToBase64(blob: Blob): Promise<string> {
   });
 }
 
-/**
- * Re-encode a recorded audio blob as mono 16 kHz PCM WAV. MediaRecorder's
- * streaming webm (no duration header) is rejected intermittently by STT
- * providers; plain WAV decodes everywhere.
- */
+
 export async function blobToWavBlob(blob: Blob, targetRate = 16000): Promise<Blob> {
   const arrayBuffer = await blob.arrayBuffer();
   const decodeCtx = new AudioContext();

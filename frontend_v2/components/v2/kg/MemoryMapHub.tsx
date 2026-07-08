@@ -37,7 +37,7 @@ export const SPOKE_RELATION_LABEL: Record<string, string> = {
   trigger: 'dipicu oleh',
 };
 
-// radial "Peta Memori" hub: user avatar in the middle, node-type satellites on a ring with connector lines
+
 export function MemoryMapHub({
   spokes,
   userName,

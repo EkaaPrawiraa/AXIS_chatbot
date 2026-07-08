@@ -5,12 +5,7 @@ import { Check, ChevronRight, HeartHandshake, Lock, PhoneCall, ShieldCheck, Spro
 import { useState } from 'react';
 import { animationClasses } from '@/lib/animations';
 
-/**
- * "Sebelum lanjut" safety consent bottom sheet per the v3 design
- * (13_safety_consent_modal_compact). Shown to users who have not yet
- * accepted the safety terms; "Saya paham" is enabled only after the
- * consent checkbox is ticked.
- */
+
 export function SafetyConsentSheet({
   onAccept,
   onLater,
