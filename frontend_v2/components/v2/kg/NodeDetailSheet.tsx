@@ -4,6 +4,7 @@ import { BookOpen, Network, X } from '@/lib/assets';
 import type { ComponentType } from 'react';
 import { animationClasses } from '@/lib/animations';
 import type { MemoryNodeType } from '@/models';
+import { CONCEPT_ICONS } from '@/lib/assets';
 
 export interface RelationEntry {
   type: MemoryNodeType;
@@ -103,7 +104,7 @@ export function NodeDetailSheet({
             onClick={onViewRelations}
             className="v2-anim-pressable flex h-[48px] flex-1 items-center justify-center gap-2 rounded-full border border-[var(--v2-line-lighter)] bg-[var(--v2-bg-light-1)] text-[14px] font-bold text-[var(--v2-ink)]"
           >
-            <Network className="h-[16px] w-[16px]" /> Lihat relasi
+            <CONCEPT_ICONS.knowledgeGraph className="v2-mobile-header-icon" />Lihat relasi
           </button>
           <button
             onClick={onOpenMemories}

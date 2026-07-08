@@ -37,11 +37,9 @@ export function SafetyConsentSheet({
           </div>
         </div>
 
-        <div className="mt-2.5 divide-y divide-[var(--v2-c-eee5d4)] rounded-[18px] border border-[var(--v2-c-eee5d4)] bg-[var(--v2-c-fbf6ec)] px-2.5">
-          <div className="flex gap-2 py-2">
-            <span className="grid h-[34px] w-[34px] shrink-0 place-items-center rounded-full bg-[var(--v2-bg-light-4)]">
-              <Sprout className="h-[16px] w-[16px] text-[var(--v2-green-light)]" />
-            </span>
+        <div className="mt-2.5 flex flex-col">
+          <div className="flex items-start gap-3 py-2.5">
+            <Sprout className="h-[22px] w-[22px] shrink-0 text-[var(--v2-green-light)]" strokeWidth={2.1} />
             <div className="min-w-0 flex-1">
               <p className="text-[13px] font-bold leading-snug text-[var(--v2-ink)]">
                 AXIS adalah teman, bukan layanan darurat.
@@ -51,11 +49,13 @@ export function SafetyConsentSheet({
               </p>
             </div>
           </div>
+          
+          <hr className="my-1 border-[var(--v2-line-lighter)]" />
 
-          <div className="flex gap-2 py-2">
-            <span className="relative grid h-[34px] w-[34px] shrink-0 place-items-center rounded-full bg-[var(--v2-bg-light-4)]">
-              <PhoneCall className="h-[16px] w-[16px] text-[var(--v2-green-secondary)]" />
-              <span className="absolute -right-0.5 -top-0.5 grid h-[13px] w-[13px] place-items-center rounded-full bg-[var(--v2-clay-accent)] text-[9px] font-black text-white">
+          <div className="flex items-start gap-3 py-2.5">
+            <span className="relative shrink-0">
+              <PhoneCall className="h-[22px] w-[22px] text-[var(--v2-green-secondary)]" strokeWidth={2.1} />
+              <span className="absolute -right-1 -top-1 grid h-[13px] w-[13px] place-items-center rounded-full bg-[var(--v2-clay-accent)] text-[9px] font-black text-white">
                 +
               </span>
             </span>
@@ -75,10 +75,10 @@ export function SafetyConsentSheet({
             </div>
           </div>
 
-          <div className="flex gap-2 py-2">
-            <span className="grid h-[34px] w-[34px] shrink-0 place-items-center rounded-full bg-[var(--v2-bg-light-4)]">
-              <HeartHandshake className="h-[16px] w-[16px] text-[var(--v2-clay-accent)]" />
-            </span>
+          <hr className="my-1 border-[var(--v2-line-lighter)]" />
+
+          <div className="flex items-start gap-3 py-2.5">
+            <HeartHandshake className="h-[22px] w-[22px] shrink-0 text-[var(--v2-clay-accent)]" strokeWidth={2.1} />
             <div className="min-w-0 flex-1">
               <p className="text-[13px] font-bold leading-snug text-[var(--v2-ink)]">
                 Keselamatanmu lebih penting.

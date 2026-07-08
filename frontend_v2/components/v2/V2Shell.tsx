@@ -31,11 +31,8 @@ export function V2Shell({
   return (
     <div className="v2-app-shell">
       <Snackbar />
-      {showTopbar ? (
-        <div className="px-[22px] pt-[10px]">
-          <MobileAppHeader />
-        </div>
-      ) : null}
+
+      {showTopbar ? <MobileAppHeader /> : null}
 
       <div className={cn('v2-app-content', showBottomNav && 'v2-app-content--with-bottom-nav')}>
         <EvaluationBanner />

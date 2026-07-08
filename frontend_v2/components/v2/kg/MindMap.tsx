@@ -1,10 +1,9 @@
 'use client';
 
-import Image from 'next/image';
-import { Briefcase, Flower2, Heart, Home, Leaf, Star } from '@/lib/assets';
+import Avatar from 'boring-avatars';
+import { Leaf } from '@/lib/assets';
 import type { ComponentType } from 'react';
 import type { MemoryNode } from '@/models';
-import { avatarSrcForUser } from '@/lib/avatar';
 import { useSessionStore } from '@/stores';
 
 const CANVAS_W = 1180;
@@ -15,9 +14,7 @@ interface GroupDef {
   key: string;
   label: string;
   categories: string[];
-  Icon: ComponentType<{ className?: string; style?: React.CSSProperties }>;
   pill: string;
-  iconColor: string;
   chipBg: string;
   chipBorder: string;
   line: string;
@@ -27,12 +24,12 @@ interface GroupDef {
 
 /** Six life-area groups per the v3 expanded-map mock, fed by real topic categories. */
 const GROUPS: GroupDef[] = [
-  { key: 'diri', label: 'Kesehatan Diri', categories: ['health'], Icon: Leaf, pill: 'var(--v2-c-838c70)', iconColor: 'var(--v2-green-light)', chipBg: 'var(--v2-c-e9ecdb)', chipBorder: 'var(--v2-c-d8ddc2)', line: 'var(--v2-c-9aa77e)', side: 'left', y: 108 },
-  { key: 'hubungan', label: 'Hubungan', categories: ['social', 'family'], Icon: Heart, pill: 'var(--v2-c-c26b4b)', iconColor: 'var(--v2-c-c04f2f)', chipBg: 'var(--v2-c-f6e3da)', chipBorder: 'var(--v2-c-e8cdc0)', line: 'var(--v2-c-cd8465)', side: 'left', y: 258 },
-  { key: 'karier', label: 'Karier & Pendidikan', categories: ['academic', 'career'], Icon: Briefcase, pill: 'var(--v2-c-d9a13d)', iconColor: 'var(--v2-c-b98213)', chipBg: 'var(--v2-c-f6ecd2)', chipBorder: 'var(--v2-c-e9d9ae)', line: 'var(--v2-c-d9b264)', side: 'left', y: 408 },
-  { key: 'mental', label: 'Kesehatan Mental', categories: ['mental_health'], Icon: Flower2, pill: 'var(--v2-c-a0a287)', iconColor: 'var(--v2-green-light)', chipBg: 'var(--v2-c-e9ecdb)', chipBorder: 'var(--v2-c-d8ddc2)', line: 'var(--v2-c-9aa77e)', side: 'right', y: 108 },
-  { key: 'tujuan', label: 'Tujuan & Impian', categories: ['identity'], Icon: Star, pill: 'var(--v2-c-d9a13d)', iconColor: 'var(--v2-c-b98213)', chipBg: 'var(--v2-c-f6ecd2)', chipBorder: 'var(--v2-c-e9d9ae)', line: 'var(--v2-c-d9b264)', side: 'right', y: 258 },
-  { key: 'lingkungan', label: 'Lingkungan & Kehidupan', categories: ['financial', 'other'], Icon: Home, pill: 'var(--v2-c-b3b89d)', iconColor: 'var(--v2-green-light)', chipBg: 'var(--v2-c-e9ecdb)', chipBorder: 'var(--v2-c-d8ddc2)', line: 'var(--v2-c-9aa77e)', side: 'right', y: 408 },
+  { key: 'diri', label: 'Kesehatan Diri', categories: ['health'], pill: 'var(--v2-c-dfe4cd)', chipBg: 'var(--v2-c-e9ecdb)', chipBorder: 'var(--v2-c-d8ddc2)', line: 'var(--v2-c-9aa77e)', side: 'left', y: 108 },
+  { key: 'hubungan', label: 'Hubungan', categories: ['social', 'family'], pill: 'var(--v2-c-eec5b7)', chipBg: 'var(--v2-c-f6e3da)', chipBorder: 'var(--v2-c-e8cdc0)', line: 'var(--v2-c-cd8465)', side: 'left', y: 258 },
+  { key: 'karier', label: 'Karier & Pendidikan', categories: ['academic', 'career'], pill: 'var(--v2-c-f2e6bf)', chipBg: 'var(--v2-c-f6ecd2)', chipBorder: 'var(--v2-c-e9d9ae)', line: 'var(--v2-c-d9b264)', side: 'left', y: 408 },
+  { key: 'mental', label: 'Kesehatan Mental', categories: ['mental_health'], pill: 'var(--v2-c-f2eddf)', chipBg: 'var(--v2-c-e9ecdb)', chipBorder: 'var(--v2-c-d8ddc2)', line: 'var(--v2-c-9aa77e)', side: 'right', y: 108 },
+  { key: 'tujuan', label: 'Tujuan & Impian', categories: ['identity'], pill: 'var(--v2-c-e9dcbf)', chipBg: 'var(--v2-c-f6ecd2)', chipBorder: 'var(--v2-c-e9d9ae)', line: 'var(--v2-c-d9b264)', side: 'right', y: 258 },
+  { key: 'lingkungan', label: 'Lingkungan & Kehidupan', categories: ['financial', 'other'], pill: 'var(--v2-c-dde3cd)', chipBg: 'var(--v2-c-e9ecdb)', chipBorder: 'var(--v2-c-d8ddc2)', line: 'var(--v2-c-9aa77e)', side: 'right', y: 408 },
 ];
 
 const PILL_W = 250;
@@ -73,7 +70,6 @@ export function MindMap({
 }) {
   const user = useSessionStore((state) => state.user);
   const profile = useSessionStore((state) => state.profile);
-  const avatarSrc = avatarSrcForUser(user?.id ?? profile?.userId);
   const layout = GROUPS.map((group) => {
     const dir = group.side === 'left' ? -1 : 1;
     const pillInnerX = CENTER.x + dir * PILL_GAP_FROM_CENTER;
@@ -120,13 +116,10 @@ export function MindMap({
         return (
           <div key={group.key}>
             <div
-              className="absolute flex items-center gap-3 rounded-full px-2.5 text-white shadow-[0_12px_24px_-14px_rgba(var(--v2-rgb-464035),0.55)]"
+              className="absolute flex items-center justify-center gap-3 rounded-full px-2.5 text-[var(--v2-ink)] shadow-[0_12px_24px_-14px_rgba(var(--v2-rgb-464035),0.55)]"
               style={{ left: pillLeft, top: group.y - PILL_H / 2, width: PILL_W, height: PILL_H, backgroundColor: group.pill }}
             >
-              <span className="grid h-[44px] w-[44px] shrink-0 place-items-center rounded-full bg-white">
-                <group.Icon className="h-[22px] w-[22px]" style={{ color: group.iconColor }} />
-              </span>
-              <span className="text-[16.5px] font-bold leading-tight">{group.label}</span>
+              <span className="text-[16.5px] font-bold leading-tight text-center">{group.label}</span>
             </div>
 
             {chips.map((chip, index) => {
@@ -160,13 +153,11 @@ export function MindMap({
         style={{ left: CENTER.x, top: CENTER.y - 118 }}
       >
         <span className="block h-[156px] w-[156px] overflow-hidden rounded-full bg-[var(--v2-c-f6efe2)] shadow-[0_18px_34px_-18px_rgba(var(--v2-rgb-464035),0.6)] ring-8 ring-[var(--v2-c-fbf6ec)]">
-          <Image
-            src={avatarSrc}
-            alt={userName}
-            width={186}
-            height={186}
-            unoptimized
-            className="h-full w-full object-cover"
+          <Avatar
+            size={156}
+            name={user?.id ?? profile?.userId ?? "AXIS User"}
+            variant="beam"
+            colors={["#F2EFE8", "#D8DDC2", "#84A971", "#E7DFCC", "#F2D8C8"]}
           />
         </span>
         <p className="mt-3 text-[28px] font-bold leading-none text-[var(--v2-ink)]">{userName}</p>

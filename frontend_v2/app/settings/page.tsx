@@ -8,6 +8,8 @@ import { useSessionStore } from "@/stores";
 import { ResponseModeSection } from "@/components/v2/settings/ResponseModeSection";
 import { PrivacyDataSection } from "@/components/v2/settings/PrivacyDataSection";
 import { DangerZoneSection } from "@/components/v2/settings/DangerZoneSection";
+import { animationClasses, motionStyleVars } from "@/lib/animations";
+import { MobileAppHeader } from "@/components/v2/MobileAppHeader";
 
 export default function SettingsPage() {
 	return (
@@ -32,8 +34,14 @@ function SettingsContent() {
 	};
 
 	return (
-		<V2Shell>
+		<V2Shell showTopbar={false}>
 			<main className={settingsStyles.mainContainer}>
+				<div
+					className={animationClasses.staggerItem}
+					style={motionStyleVars({ delayMs: 40 })}
+				>
+					<MobileAppHeader />
+				</div>
 				<div className={settingsStyles.pageHeaderWrapper}>
 					<h1 className={settingsStyles.pageTitle}>
 						Pengaturan

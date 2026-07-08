@@ -1,6 +1,6 @@
-import { ShieldCheck } from '@/lib/assets';
-import { SectionHeading, ActionRow } from './SettingsComponents';
-import { settingsStyles } from '@/lib/styles/settingsStyles';
+import { ShieldCheck, Download, Trash2, ChevronRight } from 'lucide-react';
+import { profileStyles } from '@/lib/styles/profileStyles';
+import { ProfileRow } from '@/components/v2/profile/ProfileRow';
 import { chatAPI } from '@/lib/api/chat';
 
 export function PrivacyDataSection({
@@ -62,24 +62,32 @@ export function PrivacyDataSection({
 	};
 
 	return (
-		<div className={settingsStyles.sectionContainer}>
-			<SectionHeading
-				Icon={ShieldCheck}
-				title="Privasi & data"
-				subtitle="Kelola informasi pribadi dan aktivitas kamu."
-			/>
-			<div className={settingsStyles.listWrapper}>
-				<ActionRow
-					title="Unduh data saya"
-					helper="Unduh riwayat dan data yang tersimpan di AXIS."
+		<section className={profileStyles.sectionHeaderGroup}>
+			<p className={profileStyles.sectionTitle}>
+				<ShieldCheck className={profileStyles.rowInlineIcon} strokeWidth={2.5} />
+				Privasi & data
+			</p>
+			<p className={profileStyles.sectionSubtitle}>
+				Kelola informasi pribadi dan aktivitas kamu.
+			</p>
+			<div className={profileStyles.settingsListWrapper}>
+				<ProfileRow
+					Icon={Download}
+					label="Ekspor Data"
+					value="Unduh data saya"
+					helper="Unduh riwayat percakapan yang tersimpan di AXIS."
+					accessory={<ChevronRight className="h-[19px] w-[19px] text-[var(--v2-muted-secondary)]" />}
 					onClick={() => void downloadMyData()}
 				/>
-				<ActionRow
-					title="Hapus riwayat percakapan"
+				<ProfileRow
+					Icon={Trash2}
+					label="Penghapusan"
+					value="Hapus riwayat percakapan"
 					helper="Bersihkan riwayat percakapan secara permanen."
+					accessory={<ChevronRight className="h-[19px] w-[19px] text-[var(--v2-muted-secondary)]" />}
 					onClick={() => void clearHistory()}
 				/>
 			</div>
-		</div>
+		</section>
 	);
 }

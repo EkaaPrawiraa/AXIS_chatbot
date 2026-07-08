@@ -1,13 +1,15 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { Eye, EyeOff, Loader2, MoveDiagonal, Smartphone } from '@/lib/assets';
+import { Loader2 } from '@/lib/assets';
 import { useMemo, useState } from 'react';
 import { AuthRequired } from '@/components/session';
 import { MobileAppHeader } from '@/components/v2/MobileAppHeader';
 import { V2Shell } from '@/components/v2/V2Shell';
 import { MemoryMapHub, SPOKE_STYLES, type HubSpoke } from '@/components/v2/kg/MemoryMapHub';
 import { NodeDetailSheet } from '@/components/v2/kg/NodeDetailSheet';
+import { KnowledgeGraphHeader, SensitiveToggle, ExpandMapButton, LandscapeNotice } from '@/components/v2/kg/KnowledgeGraphUI';
+import { knowledgeGraphStyles } from '@/lib/styles/knowledgeGraphStyles';
 import { isSensitiveNode } from '@/components/v2/memories/MemoryCard';
 import { memoryAPI } from '@/lib/api/memory';
 import { NODE_TYPE_DESCRIPTION } from '@/lib/memoryNodeTypes';
@@ -83,31 +85,20 @@ function KnowledgeGraphContent() {
 
   return (
     <V2Shell showTopbar={false}>
-      <main className="space-y-3.5 pb-6">
+      <main className={knowledgeGraphStyles.mainContainer}>
         <MobileAppHeader />
 
-        <div>
-          <h1 className="text-[25px] font-bold leading-tight text-[var(--v2-ink)]">Peta Memori</h1>
-          <p className="mt-1 max-w-[300px] text-[13px] font-medium leading-snug text-[var(--v2-muted)]">
-            Ini adalah gambaran hubungan antara memori, pikiran, dan dirimu.
-          </p>
-        </div>
+        <KnowledgeGraphHeader />
 
-        <section className="rounded-[24px] border border-[var(--v2-line-light)] bg-[var(--v2-c-f8f2e7)] px-3 pb-4 pt-3">
-          <button
-            onClick={() => setHideSensitive((value) => !value)}
-            className="v2-anim-pressable flex items-center gap-2 rounded-full border border-[var(--v2-c-e0d8c5)] bg-[var(--v2-c-fbf6ec)] px-3.5 py-1.5 text-[12px] font-semibold text-[var(--v2-ink)]"
-          >
-            {hideSensitive ? <EyeOff className="h-[14px] w-[14px]" /> : <Eye className="h-[14px] w-[14px]" />}
-            {hideSensitive ? 'Sembunyikan yang sensitif' : 'Tampilkan yang sensitif'}
-          </button>
+        <section className={knowledgeGraphStyles.mapSection}>
+          <SensitiveToggle hidden={hideSensitive} onToggle={() => setHideSensitive((value) => !value)} />
 
           {hubQuery.isLoading ? (
-            <div className="grid h-[336px] place-items-center text-[var(--v2-muted)]">
+            <div className={knowledgeGraphStyles.loadingContainer}>
               <Loader2 className="h-6 w-6 animate-spin" />
             </div>
           ) : (
-            <div className="mt-1.5">
+            <div className={knowledgeGraphStyles.hubContainer}>
               <MemoryMapHub
                 spokes={spokes}
                 userName={user?.displayName || 'Kamu'}
@@ -116,17 +107,8 @@ function KnowledgeGraphContent() {
             </div>
           )}
 
-          <button
-            onClick={() => router.push('/knowledge-graph/expanded')}
-            className="v2-anim-pressable mx-auto mt-3 flex h-[44px] w-[min(100%,210px)] items-center justify-center gap-2.5 rounded-full bg-[var(--v2-clay)] text-[15.5px] font-bold text-white shadow-[0_14px_26px_-14px_rgba(var(--v2-rgb-c36c45),0.9)]"
-          >
-            Perbesar peta <MoveDiagonal className="h-[16px] w-[16px]" />
-          </button>
-
-          <p className="mt-3 flex items-center justify-center gap-2 text-[12px] font-medium text-[var(--v2-muted-tertiary)]">
-            <Smartphone className="h-[15px] w-[15px] -rotate-90" />
-            Lebih nyaman dilihat saat HP dimiringkan.
-          </p>
+          <ExpandMapButton onClick={() => router.push('/knowledge-graph/expanded')} />
+          <LandscapeNotice />
         </section>
       </main>
 

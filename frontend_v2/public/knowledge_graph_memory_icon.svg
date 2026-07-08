@@ -1,0 +1,55 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <title>Knowledge Graph Memory Icon</title>
+  <desc>A knowledge graph memory icon with a central memory node connected to surrounding nodes.</desc>
+
+  <g color="#1F2433" stroke="currentColor" fill="currentColor" stroke-linecap="round" stroke-linejoin="round">
+    <!-- outer connector lines -->
+    <path d="M512 306V242" stroke-width="28"/>
+    <path d="M512 782V718" stroke-width="28"/>
+    <path d="M306 370L244 333" stroke-width="28"/>
+    <path d="M718 370L780 333" stroke-width="28"/>
+    <path d="M306 654L244 691" stroke-width="28"/>
+    <path d="M718 654L780 691" stroke-width="28"/>
+    <path d="M314 512H234" stroke-width="28"/>
+    <path d="M790 512H710" stroke-width="28"/>
+
+    <!-- side graph branches -->
+    <path d="M226 337L196 444" stroke-width="28"/>
+    <path d="M196 580L241 675" stroke-width="28"/>
+    <path d="M798 337L828 444" stroke-width="28"/>
+    <path d="M828 580L783 675" stroke-width="28"/>
+
+    <!-- central memory circle -->
+    <circle cx="512" cy="512" r="170" fill="none" stroke-width="26"/>
+    <circle cx="512" cy="512" r="125" fill="none" stroke-width="20" opacity="0.9"/>
+
+    <!-- memory relationship curves -->
+    <path d="M372 505C407 444 464 424 512 463C560 502 617 521 652 459" fill="none" stroke-width="30"/>
+    <path d="M372 559C407 498 464 478 512 517C560 556 617 575 652 513" fill="none" stroke-width="30"/>
+
+    <!-- inner relationship nodes -->
+    <circle cx="420" cy="530" r="45"/>
+    <circle cx="604" cy="530" r="45"/>
+
+    <!-- outer nodes -->
+    <circle cx="512" cy="196" r="58"/>
+    <circle cx="512" cy="828" r="58"/>
+    <circle cx="233" cy="326" r="58"/>
+    <circle cx="175" cy="512" r="58"/>
+    <circle cx="250" cy="696" r="58"/>
+    <circle cx="791" cy="326" r="58"/>
+    <circle cx="849" cy="512" r="58"/>
+    <circle cx="774" cy="696" r="58"/>
+
+    <!-- small highlights to match generated image feel -->
+    <ellipse cx="497" cy="182" rx="24" ry="13" transform="rotate(-42 497 182)" fill="#FFFFFF" opacity="0.32"/>
+    <ellipse cx="497" cy="814" rx="24" ry="13" transform="rotate(-42 497 814)" fill="#FFFFFF" opacity="0.32"/>
+    <ellipse cx="217" cy="313" rx="24" ry="13" transform="rotate(-42 217 313)" fill="#FFFFFF" opacity="0.32"/>
+    <ellipse cx="159" cy="498" rx="24" ry="13" transform="rotate(-42 159 498)" fill="#FFFFFF" opacity="0.32"/>
+    <ellipse cx="234" cy="682" rx="24" ry="13" transform="rotate(-42 234 682)" fill="#FFFFFF" opacity="0.32"/>
+    <ellipse cx="775" cy="313" rx="24" ry="13" transform="rotate(-42 775 313)" fill="#FFFFFF" opacity="0.32"/>
+    <ellipse cx="833" cy="498" rx="24" ry="13" transform="rotate(-42 833 498)" fill="#FFFFFF" opacity="0.32"/>
+    <ellipse cx="758" cy="682" rx="24" ry="13" transform="rotate(-42 758 682)" fill="#FFFFFF" opacity="0.32"/>
+    <ellipse cx="588" cy="510" rx="24" ry="13" transform="rotate(-42 588 510)" fill="#FFFFFF" opacity="0.32"/>
+  </g>
+</svg>

@@ -35,7 +35,7 @@ export const chatRoomStyles = {
   // Page structure
   pageContainer: "fixed inset-0 z-10 flex h-[100dvh] flex-col",
   chatRail: "min-h-0 flex-1 space-y-3 overflow-y-auto px-1 pb-4",
-  
+
   // Date Divider
   dateDividerContainer: "my-6 flex items-center justify-center gap-4",
   dateDividerLine: "h-[1px] flex-1 bg-gradient-to-r from-transparent to-[var(--v2-line-border)]",
@@ -51,7 +51,7 @@ export const chatRoomStyles = {
   assistantActionRow: "flex items-center gap-2.5 pl-1",
   assistantTimestampAction: "shrink-0 text-[11px] font-medium text-[var(--v2-c-8d8880)]",
   assistantTimestamp: "pl-1 text-[11px] font-medium text-[var(--v2-c-8d8880)]",
-  
+
   // User Bubble
   userBubbleWrapper: "ml-auto w-fit max-w-[80%] rounded-[12px] bg-[var(--v2-c-7b8467)] px-3.5 py-2 text-[14px] font-medium leading-[1.5] text-white",
   userBubbleText: "whitespace-pre-wrap",
@@ -72,10 +72,10 @@ export const chatRoomStyles = {
   composerSendBtn: "grid h-[38px] w-[38px] shrink-0 place-items-center rounded-full bg-[var(--v2-olive)] text-white shadow-sm disabled:opacity-40",
 
   // Chat Header
-  headerWrapper: "sticky top-0 z-20 -mx-[22px] flex items-center gap-2 bg-[rgba(var(--v2-rgb-faf4eb),0.92)] px-[22px] pb-2.5 pt-1.5 backdrop-blur-lg",
+  headerWrapper: "sticky top-0 z-20 -mx-[22px] flex items-center gap-2 border-b border-[rgba(var(--v2-rgb-4a301d),0.045)] bg-[rgba(var(--v2-rgb-faf4eb),0.52)] px-[22px] pb-2.5 pt-1.5 shadow-[0_8px_24px_rgba(var(--v2-rgb-4a301d),0.025)] backdrop-blur-xl supports-[backdrop-filter]:bg-[rgba(var(--v2-rgb-faf4eb),0.46)]",
   headerBackBtn: "v2-anim-pressable grid h-9 w-8 place-items-center text-[var(--v2-ink)]",
   headerActionsWrapper: "relative ml-auto flex items-center gap-1",
-  headerIconBtn: "v2-anim-pressable grid h-[38px] w-[38px] place-items-center rounded-full bg-white text-[var(--v2-ink)] shadow-[0_2px_8px_rgba(0,0,0,0.03)]",
+  headerIconBtn: "v2-anim-pressable grid h-[38px] w-[38px] place-items-center rounded-full  text-[var(--v2-ink)] shadow-[0_2px_8px_rgba(0,0,0,0.03)]",
   headerDropdown: "absolute right-0 top-full mt-2 w-48 overflow-hidden rounded-[16px] border border-[var(--v2-line-border)] bg-[rgba(255,255,255,0.95)] p-1 shadow-lg backdrop-blur-lg origin-top-right",
   headerDropdownItem: "flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-left text-[14px] font-bold text-[var(--v2-ink)] hover:bg-[var(--v2-bg-light-1)] transition-colors",
   headerDropdownItemDanger: "flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-left text-[14px] font-bold text-[#d84f45] hover:bg-[#fff5f5] transition-colors",

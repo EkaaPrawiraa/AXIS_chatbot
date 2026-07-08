@@ -15,6 +15,8 @@ import { ResponseStyleSelector } from "@/components/v2/profile/ResponseStyleSele
 import { AccountInfo } from "@/components/v2/profile/AccountInfo";
 import { VoiceSelectionSheet } from "@/components/v2/profile/VoiceSelectionSheet";
 import { TtsSelectionSheet } from "@/components/v2/profile/TtsSelectionSheet";
+import { animationClasses, motionStyleVars } from "@/lib/animations";
+import { MobileAppHeader } from "@/components/v2/MobileAppHeader";
 
 export default function ProfilePage() {
 	return (
@@ -43,8 +45,8 @@ function ProfileContent() {
 	);
 	const [responseModel, setResponseModel] = useState(
 		profile?.preferredResponseModel ||
-			user?.preferredResponseModel ||
-			"gpt-5.4-nano",
+		user?.preferredResponseModel ||
+		"gpt-5.4-nano",
 	);
 	const [voiceSheetOpen, setVoiceSheetOpen] = useState(false);
 	const [ttsSheetOpen, setTtsSheetOpen] = useState(false);
@@ -137,14 +139,13 @@ function ProfileContent() {
 	};
 
 	return (
-		<V2Shell>
+		<V2Shell showTopbar={false}>
 			{/* Saved Banner Popup */}
 			<div
-				className={`${profileStyles.savedBannerPopup} ${
-					showSavedBanner
+				className={`${profileStyles.savedBannerPopup} ${showSavedBanner
 						? "translate-y-0 opacity-100"
 						: "-translate-y-full opacity-0 pointer-events-none"
-				}`}
+					}`}
 				onTransitionEnd={() => {
 					if (!savedField) setShowSavedBanner(false);
 				}}
@@ -153,6 +154,13 @@ function ProfileContent() {
 			</div>
 
 			<main className={profileStyles.mainContainer}>
+
+				<div
+					className={animationClasses.staggerItem}
+					style={motionStyleVars({ delayMs: 40 })}
+				>
+					<MobileAppHeader />
+				</div>
 				<div className={profileStyles.headerContainer}>
 					<h1 className={profileStyles.pageTitle}>Profil</h1>
 					<p className={profileStyles.pageSubtitle}>

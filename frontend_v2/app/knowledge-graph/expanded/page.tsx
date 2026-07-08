@@ -114,7 +114,7 @@ function ExpandedMapContent() {
             <ArrowLeft className="h-[17px] w-[17px]" /> Kembali
           </button>
           <div>
-            <h1 className="text-[24px] font-bold leading-tight text-[var(--v2-ink)]">Peta Memori 🌿</h1>
+            <h1 className="text-[24px] font-bold leading-tight text-[var(--v2-ink)]">Peta Memori </h1>
             <p className="text-[13px] font-medium text-[var(--v2-muted-tertiary)]">Gambaran hal-hal penting dalam hidupmu.</p>
           </div>
         </div>

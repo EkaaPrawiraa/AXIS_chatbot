@@ -199,13 +199,17 @@ export const BookBookmark = createIcon(faBookBookmark);
 export const Headset = createIcon(faHeadset);
 export const CircleUser = createIcon(faCircleUser);
 export const Sliders = createIcon(faSliders);
+export const KnowledgeGraphSvgIcon = ({ className }: { className?: string }) => (
+  <img src="/knowledge_graph_memory_icon.svg" alt="" className={`${className || ''} scale-[1.35]`} aria-hidden="true" />
+);
+
 // icon per top-level concept, shared by bottom nav, header, and dashboard
 export const CONCEPT_ICONS: Record<string, any> = {
   beranda: HouseChimney,
   chat: Comments,
   confession: Mic,
   memori: BookBookmark,
-  knowledgeGraph: Network,
+  knowledgeGraph: KnowledgeGraphSvgIcon,
   hotline: Headset,
   bantuan: HelpCircle,
   pengaturan: Sliders,

@@ -1,9 +1,8 @@
 'use client';
 
-import Image from 'next/image';
 import type { ComponentType } from 'react';
+import Avatar from 'boring-avatars';
 import type { MemoryNodeType } from '@/models';
-import { avatarSrcForUser } from '@/lib/avatar';
 import { MEMORY_TYPE_ICONS } from '@/lib/assets';
 import { useSessionStore } from '@/stores';
 
@@ -52,7 +51,6 @@ export function MemoryMapHub({
 }) {
   const user = useSessionStore((state) => state.user);
   const profile = useSessionStore((state) => state.profile);
-  const avatarSrc = avatarSrcForUser(user?.id ?? profile?.userId);
   const center = size / 2;
   const ringRadius = size * 0.375;
   const satellite = size * 0.24;
@@ -99,11 +97,7 @@ export function MemoryMapHub({
             className="v2-anim-pressable absolute z-10 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-full text-center shadow-[0_10px_20px_-14px_rgba(var(--v2-rgb-464035),0.5)]"
             style={{ left: pos.x, top: pos.y, width: satellite, height: satellite, backgroundColor: style.bg }}
           >
-            <style.Icon
-              className="h-[22px] w-[22px]"
-              style={{ color: style.icon }}
-              {...(spoke.type === 'emotion' ? { fill: 'currentColor' } : {})}
-            />
+
             <span className="mt-0.5 text-[12px] font-bold leading-tight text-[var(--v2-ink)]">{spoke.label}</span>
             <span className="text-[10px] font-medium text-[var(--v2-c-7d7869)]">{spoke.count} memori</span>
           </button>
@@ -119,13 +113,11 @@ export function MemoryMapHub({
             className="block overflow-hidden rounded-full bg-[var(--v2-c-f6efe2)] shadow-[0_14px_26px_-16px_rgba(var(--v2-rgb-464035),0.6)] ring-4 ring-white/90"
             style={{ width: size * 0.24, height: size * 0.24 }}
           >
-            <Image
-              src={avatarSrc}
-              alt={userName}
-              width={93}
-              height={93}
-              unoptimized
-              className="h-full w-full object-cover"
+            <Avatar
+              size={size * 0.24}
+              name={user?.id ?? profile?.userId ?? "AXIS User"}
+              variant="beam"
+              colors={["#F2EFE8", "#D8DDC2", "#84A971", "#E7DFCC", "#F2D8C8"]}
             />
           </span>
           <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 rounded-[10px] bg-white px-3 py-0.5 text-[13px] font-bold text-[var(--v2-ink)] shadow">

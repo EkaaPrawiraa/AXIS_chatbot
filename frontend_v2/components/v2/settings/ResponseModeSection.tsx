@@ -1,53 +1,66 @@
-import { MessageCircle } from '@/lib/assets';
-import { SectionHeading, RadioMark } from './SettingsComponents';
-import { settingsStyles } from '@/lib/styles/settingsStyles';
+import React from 'react';
+import { Check, MessageCircle } from 'lucide-react';
 import { usePreferencesStore } from '@/stores/preferences';
+import { profileStyles } from '@/lib/styles/profileStyles';
 
 export function ResponseModeSection() {
 	const chatResponseMode = usePreferencesStore((state) => state.chatResponseMode);
 	const setChatResponseMode = usePreferencesStore((state) => state.setChatResponseMode);
 
 	return (
-		<div className={settingsStyles.sectionContainer}>
-			<SectionHeading
-				Icon={MessageCircle}
-				title="Mode jawaban"
-				subtitle="Pilih cara AXIS memberikan jawaban untuk kamu."
-			/>
-			<div className={settingsStyles.listWrapper}>
+		<section className={profileStyles.sectionHeaderGroup}>
+			<p className={profileStyles.sectionTitle}>
+				<MessageCircle className={profileStyles.rowInlineIcon} strokeWidth={2.5} />
+				Mode jawaban
+			</p>
+			<p className={profileStyles.sectionSubtitle}>
+				Pilih cara AXIS memberikan jawaban untuk kamu.
+			</p>
+			<div className={profileStyles.responseStyleList}>
 				{(
 					[
 						{
 							id: "normal",
-							label: "Jawaban muncul sekaligus",
+							label: "Jawaban sekaligus",
 							helper: "AXIS memberikan jawaban lengkap dalam satu balasan.",
 						},
 						{
 							id: "stream",
-							label: "Jawaban muncul bertahap",
+							label: "Jawaban bertahap",
 							helper: "AXIS memberikan jawaban perlahan hingga selesai.",
 						},
 					] as const
-				).map((option) => (
-					<button
-						key={option.id}
-						onClick={() => setChatResponseMode(option.id)}
-						className={settingsStyles.listItem}
-					>
-						<div className="flex items-center gap-3 min-w-0 flex-1">
-							<div className={settingsStyles.listItemContent}>
-								<span className={settingsStyles.listItemTitle}>
+				).map((option, index) => {
+					const active = chatResponseMode === option.id;
+					return (
+						<React.Fragment key={option.id}>
+							{index > 0 && (
+								<div className={profileStyles.responseStyleDivider} />
+							)}
+							<button
+								onClick={() => setChatResponseMode(option.id)}
+								className={`${profileStyles.responseStyleCard} ${
+									active
+										? profileStyles.responseStyleCardActive
+										: profileStyles.responseStyleCardInactive
+								}`}
+							>
+								{active ? (
+									<span className={profileStyles.responseStyleActiveBadge}>
+										<Check className={profileStyles.responseStyleActiveIcon} strokeWidth={3} />
+									</span>
+								) : null}
+								<p className={profileStyles.responseStyleTitle}>
 									{option.label}
-								</span>
-								<span className={settingsStyles.listItemSubtitle}>
+								</p>
+								<p className={profileStyles.responseStyleHelper}>
 									{option.helper}
-								</span>
-							</div>
-						</div>
-						<RadioMark active={chatResponseMode === option.id} />
-					</button>
-				))}
+								</p>
+							</button>
+						</React.Fragment>
+					);
+				})}
 			</div>
-		</div>
+		</section>
 	);
 }
