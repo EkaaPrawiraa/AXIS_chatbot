@@ -17,15 +17,17 @@ const navItems = [
   { href: '/profile', label: 'Profil', icon: CONCEPT_ICONS.profil },
 ];
 
+interface V2ShellProps {
+  children: React.ReactNode;
+  showTopbar?: boolean;
+  showBottomNav?: boolean;
+}
+
 export function V2Shell({
   children,
   showTopbar = true,
   showBottomNav = true,
-}: {
-  children: React.ReactNode;
-  showTopbar?: boolean;
-  showBottomNav?: boolean;
-}) {
+}: V2ShellProps) {
   const pathname = usePathname();
 
   return (
@@ -35,10 +37,12 @@ export function V2Shell({
       {showTopbar ? <MobileAppHeader /> : null}
 
       <div className={cn('v2-app-content', showBottomNav && 'v2-app-content--with-bottom-nav')}>
+        {/* alert buat ngingetin ini bot evaluasi, jangan diilangin */}
         <EvaluationBanner />
         {children}
       </div>
 
+      {/* gate consent biar ga asal masuk */}
       <SafetyConsentGate />
 
       {showBottomNav ? (

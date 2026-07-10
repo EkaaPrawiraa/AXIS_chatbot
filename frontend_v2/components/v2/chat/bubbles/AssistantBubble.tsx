@@ -9,7 +9,20 @@ import { formatChatTime } from "@/components/v2/chat/utils/format";
 import { animationClasses } from "@/lib/animations";
 import { chatRoomStyles } from "@/lib/styles/chatRoom";
 
-// assistant chat bubble
+// props buat bubble chat bot
+interface AssistantBubbleProps {
+	message: Message;
+	showActions?: boolean;
+	onPhqAnswer?: (label: string) => void;
+	phqDisabled?: boolean;
+	onRegenerate?: () => void;
+	showRegenerate?: boolean;
+	onPlay?: () => void;
+	isPlaying?: boolean;
+	isRegenerating?: boolean;
+	isStreaming?: boolean;
+}
+
 export function AssistantBubble({
 	message,
 	showActions = true,
@@ -21,27 +34,21 @@ export function AssistantBubble({
 	isPlaying = false,
 	isRegenerating = false,
 	isStreaming = false,
-}: {
-	message: Message;
-	showActions?: boolean;
-	onPhqAnswer?: (label: string) => void;
-	phqDisabled?: boolean;
-	onRegenerate?: () => void;
-	showRegenerate?: boolean;
-	onPlay?: () => void;
-	isPlaying?: boolean;
-	isRegenerating?: boolean;
-	isStreaming?: boolean;
-}) {
-	// show typing dots
-	const awaitingFirstToken = isStreaming && !message.content.trim();
+}: AssistantBubbleProps) {
+	// cek klo lagi loading stream text pertama kali dari backend
+	const isWaitingFirstWord = isStreaming && !message.content.trim();
 	const phq = message.metadata?.phq9;
+
+	// logic buat card PHQ9 agak ribet, biarin jalan gini dulu ya
 	const isPhqItem =
 		phq?.active &&
 		!!phq.options?.length &&
 		(phq.phase === "in_progress" || phq.phase === "awaiting_clar");
+	
 	const showPhqChips = phq?.active && !!phq.options?.length && !isPhqItem;
 	const parsed = isPhqItem ? parsePhqContent(message.content) : null;
+
+	// // console.log("render bubble", message.id);
 
 	if (isPhqItem && phq?.options) {
 		const introText = parsed?.intro || message.content;
@@ -79,7 +86,8 @@ export function AssistantBubble({
 			className={`${chatRoomStyles.assistantBubbleWrapper} ${animationClasses.chatBubbleIn}`}
 		>
 			<div className={chatRoomStyles.assistantBubbleBody}>
-				{awaitingFirstToken ? <TypingDots /> : <ReactMarkdown>{message.content}</ReactMarkdown>}
+				{isWaitingFirstWord ? <TypingDots /> : <ReactMarkdown>{message.content}</ReactMarkdown>}
+				{/* TODO: styling padding buat chips kadang bocor, benerin nanti abis sidang */}
 				{showPhqChips ? (
 					<div className={chatRoomStyles.assistantPhqChipsWrapper}>
 						<div className={chatRoomStyles.assistantPhqChipsGrid}>

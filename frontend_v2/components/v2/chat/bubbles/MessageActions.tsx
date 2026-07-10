@@ -3,6 +3,15 @@
 import { Copy, Loader2, Play, RefreshCw } from '@/lib/assets';
 import { useState } from 'react';
 
+interface MessageActionProps {
+  content: string;
+  onPlay?: () => void;
+  onRegenerate?: () => void;
+  showRegenerate?: boolean;
+  isPlaying?: boolean;
+  isRegenerating?: boolean;
+}
+
 // Salin / Putar / Buat ulang pill bar
 export function MessageActions({
   content,
@@ -11,17 +20,11 @@ export function MessageActions({
   showRegenerate = true,
   isPlaying = false,
   isRegenerating = false,
-}: {
-  content: string;
-  onPlay?: () => void;
-  onRegenerate?: () => void;
-  showRegenerate?: boolean;
-  isPlaying?: boolean;
-  isRegenerating?: boolean;
-}) {
+}: MessageActionProps) {
   const [copied, setCopied] = useState(false);
 
   const copy = async () => {
+    // navigator clipboard kadang ga jalan di http biasa, pastiin deploy pake https nanti
     await navigator.clipboard.writeText(content);
     setCopied(true);
     window.setTimeout(() => setCopied(false), 1200);

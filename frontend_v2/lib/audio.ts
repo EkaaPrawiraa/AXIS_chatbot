@@ -21,6 +21,8 @@ export function stopActiveAudio() {
 
 
 export function primeAudioElement(): HTMLAudioElement {
+  // Safari iOS rewel banget soal autoplay, jadi kita pancing dulu
+  // bikin empty audio element yg jalan pas user klik tombol
   const audio = new Audio();
   audio.muted = true;
   
@@ -40,6 +42,7 @@ export function createAudioPlayer(src: string, onStarted?: () => void, reuse?: H
     audio.addEventListener('playing', onStarted, { once: true });
   }
 
+  // stop n reset audio state
   const stop = () => {
     audio.pause();
     audio.currentTime = 0;
