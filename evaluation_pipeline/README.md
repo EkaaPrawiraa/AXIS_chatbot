@@ -1,53 +1,129 @@
-# Evaluation Pipeline — Baseline Chatbot (No Knowledge Graph)
+# AXIS Evaluation Pipeline
 
-This pipeline provides a **baseline chatbot** for thesis evaluation comparing the effect of Neo4j Knowledge Graph (KG) on response quality versus pure semantic search memory.
+Folder ini menyediakan protokol evaluasi yang memisahkan **eksperimen
+terkontrol** dari **simulasi eksploratif**. Tujuannya adalah menyiapkan bukti
+yang dapat diaudit untuk tiga rumusan masalah laporan.
 
-## What This Is
+## Batas Interpretasi
 
-The main AXIS chatbot uses **hybrid memory**: Neo4j KG + pgvector semantic search. This baseline uses the **same PostgreSQL pgvector database** but **no Neo4j KG** — only cosine similarity retrieval from the four embedding tables.
+Perbandingan utama menguji AXIS sebagai sistem lengkap terhadap baseline
+vector-RAG yang lebih sederhana. Hasil tersebut digunakan untuk membaca perbedaan
+perilaku pada skenario yang sama. Analisis khusus mengenai kontribusi knowledge
+graph dapat dilakukan melalui ablation `vector-only`, `graph-only`, dan `hybrid`
+dengan pipeline, prompt, riwayat, model, dan context budget yang disetarakan.
 
-Running both AXIS and this baseline on the same set of evaluation prompts allows a direct comparison of response quality with and without KG-enriched context.
+## Protokol
 
-## Architecture
+### 1. Controlled scripted evaluation (utama)
 
-```
-User Message
-    → OpenAI text-embedding-3-small (embed query)
-    → pgvector cosine similarity search (4 tables)
-    → Deduplicated memory context
-    → System prompt + user message → GPT-4.1-mini
-    → Response + full log saved to logs/
-```
+Jalankan `evaluate.py`. Setiap sistem menerima pesan pengguna yang sama dan urutan
+yang tetap. Skenario dipetakan ke rumusan masalah:
 
-## Tables Queried
+| RM | Skenario | Sistem |
+|---|---|---|
+| RM1 | Bahasa informal/code-mixing, percakapan kasual, sinyal risiko implisit | AXIS + baseline |
+| RM2 | PHQ-9 percakapan sampai butir kesembilan | AXIS saja |
+| RM3 | Recall memori lama lalu pergeseran topik | AXIS + baseline |
 
-| Table | Content Column |
-|---|---|
-| `memory_embeddings` | `summary` |
-| `experience_embeddings` | `description` |
-| `thought_embeddings` | `content` |
-| `trigger_embeddings` | `description` |
+Baseline menerima riwayat percakapan yang sama panjang dengan AXIS, memakai model
+generatif yang dikonfigurasi, dan melakukan global top-k semantic retrieval dari
+`memory_embeddings`, `experience_embeddings`, `thought_embeddings`,
+`trigger_embeddings`, dan `behavior_embeddings`. Baseline tidak memakai traversal
+graf, dialogue policy, state machine PHQ-9, atau guardrail AXIS.
+
+### 2. Free-running simulated user (eksploratif)
+
+`simulate.py` mempertahankan loop pengguna simulatif. Karena simulator membalas
+respons masing-masing sistem, input setelah giliran pertama tidak identik. Mode
+ini digunakan untuk eksplorasi perilaku percakapan, bukan sebagai protokol
+komparatif utama.
+
+### 3. Domain smoke tests
+
+`mahasiswa_domain_test.py` dan `casual_test.py` adalah smoke test tambahan. Keduanya
+bukan pengganti protokol utama dan tidak menghasilkan inferensi komparatif.
 
 ## Setup
 
 ```bash
-pip install -r requirements.txt
-cp .env.example .env  # fill in your values
+cd evaluation_pipeline
+cp .env.example .env
+../.venv/bin/pip install -r requirements.txt
 ```
 
-`.env` values needed:
-- `OPENAI_API_KEY`
-- `DATABASE_URL` — PostgreSQL connection string with pgvector
-- `USER_ID` — UUID of the user whose memories to retrieve (can be overridden via CLI)
+Isi hanya kredensial provider yang dipilih. Runner tidak menulis API key ke
+manifest atau hasil.
 
-## Usage
+Siapkan akun evaluasi Arya (cold-start) dan Budi (rich-memory):
 
 ```bash
-python run.py --user-id <UUID> --message "How have you been feeling lately?"
+../.venv/bin/python seeder.py --confirm-reset
 ```
 
-Each run appends a JSON log entry to `logs/<user_id>_<date>.json` containing:
-- Retrieved memories (table, content, similarity score)
-- Full system prompt sent to the model
-- Model response
-- Timestamp
+Flag wajib karena perintah tersebut menghapus dan membuat ulang dua UUID akun
+evaluasi yang dicadangkan.
+
+## Menjalankan Evaluasi Terkontrol
+
+Periksa konfigurasi dan artefak tanpa mengakses API/database:
+
+```bash
+../.venv/bin/python evaluate.py --dry-run --run-id config-check
+```
+
+Jalankan seluruh skenario dengan tiga pengulangan:
+
+```bash
+../.venv/bin/python evaluate.py \
+  --systems axis,baseline \
+  --scenarios all \
+  --repetitions 3
+```
+
+Jalankan skenario RM3 saja:
+
+```bash
+../.venv/bin/python evaluate.py \
+  --systems axis,baseline \
+  --scenarios rm3_memory_continuity_and_shift
+```
+
+## Artefak Per Run
+
+Setiap run disimpan di `runs/<UTC_RUN_ID>/`:
+
+| File | Isi |
+|---|---|
+| `manifest.json` | Commit, dirty state, Python/dependency, model, temperatur, seed, hash prompt dan skenario |
+| `raw.jsonl` | Data mentah setiap giliran, termasuk state AXIS dan hasil retrieval baseline |
+| `transcripts/*.md` | Transkrip yang mudah diperiksa manusia |
+| `metrics.json` | Metrik deterministik per transkrip dan agregat |
+| `SUMMARY.md` | Ringkasan run dan batas interpretasi |
+
+Runner membersihkan session row sementara setelah setiap skenario agar evaluasi
+tidak diproses finalizer dan tidak mengotori memori akun.
+
+## Metrik Saat Ini
+
+- Latensi mean/p50/p95.
+- Panjang respons.
+- Jaccard antardua respons berurutan sebagai indikator repetisi sederhana.
+- Kemunculan klaim klinis eksplisit.
+- Kehadiran sumber keselamatan dan `safety_flag`.
+- Teknik CBT dan urutan fase PHQ-9 dari state AXIS.
+- Giliran yang memuat `kg_context`.
+- Recall istilah memori yang ditetapkan pada skenario RM3.
+
+Metrik ini transparan dan deterministik. Untuk evaluasi yang lebih lengkap,
+metrik tersebut dapat dilengkapi dengan penilaian manusia buta, ground-truth
+retrieval (`Recall@k`, MRR/nDCG), serta ablation memori yang terkontrol.
+
+## Reproduksibilitas
+
+- `EVAL_RANDOM_SEED` selalu dicatat dan dipakai untuk RNG lokal.
+- Seed hanya dikirim ke provider jika `EVAL_SEND_PROVIDER_SEED=1`; beberapa
+  endpoint Gemini-compatible tidak menjamin dukungannya.
+- Jika provider tidak menyediakan snapshot bobot atau seed, gunakan beberapa
+  pengulangan dan laporkan rerata serta sebaran.
+- Jalankan eksperimen final dari worktree yang sudah stabil. Manifest mencatat
+  semua path yang berubah.

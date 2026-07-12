@@ -1,96 +1,122 @@
-import json
-import os
-from datetime import datetime, timezone
-from typing import List, Dict, Any
+"""Vector-RAG baseline for controlled comparison."""
+
+from __future__ import annotations
+
+import time
+from dataclasses import asdict, dataclass
+from typing import Any, Sequence
 
 from openai import OpenAI
 
-from config import OPENAI_API_KEY, CHAT_MODEL, TOP_K_DEFAULT
+from config import CONFIG, EvaluationConfig
 from retrieval import retrieve_memories
 
-_openai_client = OpenAI(api_key=OPENAI_API_KEY)
 
-_LOGS_DIR = os.path.join(os.path.dirname(__file__), "logs")
+BASELINE_SYSTEM_PROMPT = """\
+You are a non-clinical AI companion for Indonesian university students.
+Listen carefully, respond warmly, and help the user reflect without diagnosing,
+prescribing medication, or claiming to replace professional support.
 
-SYSTEM_PROMPT_TEMPLATE = """\
-You are AXIS, a compassionate AI companion. Your role is to provide emotional support, \
-engage in meaningful conversation, and help the user reflect on their experiences.
+Relevant memories from vector similarity search are provided below. Use a memory
+only when it is clearly relevant to the current message. Do not enumerate the
+memory list or reveal similarity scores.
 
-Below are relevant memories retrieved from the user's history. Use them to personalize \
-your response and maintain continuity, but do not directly quote or enumerate them unless \
-it feels natural to do so.
-
---- Relevant Memories ---
+--- Vector memories ---
 {memories}
---- End of Memories ---
+--- End vector memories ---
 
-Respond warmly, empathetically, and concisely."""
+Reply in the user's language and register. Keep the response concise and invite
+the conversation to progress naturally.
+"""
 
 
-def _format_memories(memories: List[Dict[str, Any]]) -> str:
+@dataclass(frozen=True)
+class BaselineTurnResult:
+    reply: str
+    retrieved_memories: list[dict[str, Any]]
+    system_prompt: str
+    latency_ms: int
+    model: str
+    usage: dict[str, int | None]
+
+    def snapshot(self) -> dict[str, Any]:
+        return asdict(self)
+
+
+def _format_memories(memories: Sequence[dict[str, Any]]) -> str:
     if not memories:
-        return "(No relevant memories found.)"
-    lines = []
-    for i, m in enumerate(memories, 1):
-        score = f"{m['similarity']:.3f}"
-        lines.append(f"{i}. [{m['table']}] (similarity={score}) {m['content']}")
-    return "\n".join(lines)
-
-
-def _log_entry(
-    user_id: str,
-    user_message: str,
-    memories: List[Dict[str, Any]],
-    system_prompt: str,
-    response: str,
-) -> None:
-    os.makedirs(_LOGS_DIR, exist_ok=True)
-    date_str = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-    log_file = os.path.join(_LOGS_DIR, f"{user_id}_{date_str}.json")
-
-    entry = {
-        "timestamp": datetime.now(timezone.utc).isoformat(),
-        "user_id": user_id,
-        "user_message": user_message,
-        "retrieved_memories": memories,
-        "system_prompt": system_prompt,
-        "response": response,
-    }
-
-    existing: List[Dict[str, Any]] = []
-    if os.path.exists(log_file):
-        with open(log_file, "r", encoding="utf-8") as f:
-            try:
-                existing = json.load(f)
-            except json.JSONDecodeError:
-                existing = []
-
-    existing.append(entry)
-    with open(log_file, "w", encoding="utf-8") as f:
-        json.dump(existing, f, indent=2, ensure_ascii=False)
-
-    print(f"[chatbot] Log saved → {log_file}")
-
-
-def chat(user_id: str, user_message: str, top_k: int = TOP_K_DEFAULT) -> str:
-    memories = retrieve_memories(user_id, user_message, top_k=top_k)
-
-    memory_text = _format_memories(memories)
-    system_prompt = SYSTEM_PROMPT_TEMPLATE.format(memories=memory_text)
-
-    messages = [
-        {"role": "system", "content": system_prompt},
-        {"role": "user", "content": user_message},
-    ]
-
-    completion = _openai_client.chat.completions.create(
-        model=CHAT_MODEL,
-        messages=messages,
-        temperature=0.7,
+        return "(No relevant memory.)"
+    return "\n".join(
+        f"- [{memory['table']}] {memory['content']}" for memory in memories
     )
 
-    response = completion.choices[0].message.content or ""
 
-    _log_entry(user_id, user_message, memories, system_prompt, response)
+def baseline_turn(
+    *,
+    user_id: str,
+    user_message: str,
+    history: Sequence[dict[str, str]] = (),
+    top_k: int | None = None,
+    config: EvaluationConfig = CONFIG,
+    repetition_seed: int | None = None,
+) -> BaselineTurnResult:
+    config.validate_for(baseline=True)
+    memories = retrieve_memories(user_id, user_message, top_k, config=config)
+    system_prompt = BASELINE_SYSTEM_PROMPT.format(
+        memories=_format_memories(memories)
+    )
+    messages: list[dict[str, str]] = [{"role": "system", "content": system_prompt}]
+    messages.extend(
+        {"role": item["role"], "content": item["content"]}
+        for item in history
+        if item.get("role") in {"user", "assistant"} and item.get("content")
+    )
+    if not messages or messages[-1].get("role") != "user" or messages[-1].get(
+        "content"
+    ) != user_message:
+        messages.append({"role": "user", "content": user_message})
 
-    return response
+    client = OpenAI(
+        api_key=config.baseline_api_key,
+        base_url=config.baseline_base_url or None,
+        timeout=config.request_timeout_seconds,
+    )
+    kwargs: dict[str, Any] = {
+        "model": config.baseline_model,
+        "messages": messages,
+        "temperature": config.baseline_temperature,
+        "max_tokens": config.baseline_max_tokens,
+    }
+    if config.send_provider_seed and repetition_seed is not None:
+        kwargs["seed"] = repetition_seed
+
+    started = time.perf_counter()
+    completion = client.chat.completions.create(**kwargs)
+    latency_ms = int((time.perf_counter() - started) * 1000)
+    usage = getattr(completion, "usage", None)
+    return BaselineTurnResult(
+        reply=completion.choices[0].message.content or "",
+        retrieved_memories=memories,
+        system_prompt=system_prompt,
+        latency_ms=latency_ms,
+        model=config.baseline_model,
+        usage={
+            "prompt_tokens": getattr(usage, "prompt_tokens", None),
+            "completion_tokens": getattr(usage, "completion_tokens", None),
+            "total_tokens": getattr(usage, "total_tokens", None),
+        },
+    )
+
+
+def chat(
+    user_id: str,
+    user_message: str,
+    top_k: int | None = None,
+    history: Sequence[dict[str, str]] = (),
+) -> str:
+    return baseline_turn(
+        user_id=user_id,
+        user_message=user_message,
+        history=history,
+        top_k=top_k,
+    ).reply
