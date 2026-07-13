@@ -1,0 +1,10 @@
+{
+  "n_total": 14,
+  "n_numeric_reference": 12,
+  "n_numeric_matched_type": 11,
+  "quadratic_weighted_kappa": 1.0,
+  "macro_f1": 1.0,
+  "accuracy_numeric": 0.9166666666666666,
+  "n_clarification_reference": 2,
+  "clarification_accuracy": 1.0
+}

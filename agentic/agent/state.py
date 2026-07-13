@@ -144,6 +144,7 @@ class ConversationState(TypedDict, total=False):
     retrieval_context: Optional[dict]   # structured bucket view (Phase 1/2 ranking)
     response_draft: Optional[str]
     final_response: Optional[str]
+    user_understanding: Optional[dict]  # UnderstandingSynthesis payload, v3 pipeline only
 
     # policy
     cbt_node_active: Optional[str]   # technique name from CBTTechnique
@@ -251,6 +252,7 @@ def empty_conversation_state(
         retrieval_context=None,
         response_draft=None,
         final_response=None,
+        user_understanding=None,
         cbt_node_active=None,
         cbt_directive=None,
         cbt_state=empty_cbt_state(),

@@ -1,0 +1,690 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/z1cy0i",
+    "id": "z1cy0i",
+    "slide": 1,
+    "layoutId": "e130e22f-9edf-4253-a180-c1c4fd49812a",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "3006dcdd-5836-4e1e-8228-0a7269cfcc43",
+    "masterLayoutName": "Master",
+    "backgroundColor": "#FFFAF4",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "Arial"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "e130e22f-9edf-4253-a180-c1c4fd49812a",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "3006dcdd-5836-4e1e-8228-0a7269cfcc43",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "3006dcdd-5836-4e1e-8228-0a7269cfcc43",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/wfyxobm5",
+      "id": "1",
+      "bbox": [
+        0,
+        0,
+        42,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#4F3424",
+      "lineColor": "#4F3424",
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/7u54zido",
+      "id": "2",
+      "bbox": [
+        42,
+        0,
+        10,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#8B5438",
+      "lineColor": "#8B5438",
+      "lineWidth": 0
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ed8bat47",
+      "id": "3",
+      "bbox": [
+        90,
+        72,
+        450,
+        24
+      ],
+      "geometry": "rect",
+      "text": "SEMINAR HASIL TUGAS AKHIR",
+      "textPreview": "SEMINAR HASIL TUGAS AKHIR",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "fontSize": 14,
+        "typeface": "Arial",
+        "color": "#8B5438",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "SEMINAR HASIL TUGAS AKHIR"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "SEMINAR HASIL TUGAS AKHIR",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "typeface": "Arial",
+            "color": "#8B5438",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "SEMINAR HASIL TUGAS AKHIR",
+              "fontSize": 14,
+              "typeface": "Arial",
+              "color": "#8B5438",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/lc7u54zi",
+      "id": "4",
+      "bbox": [
+        90,
+        122,
+        410,
+        72
+      ],
+      "geometry": "rect",
+      "text": "AXIS",
+      "textPreview": "AXIS",
+      "resolvedFontSize": 58,
+      "resolvedTextStyle": {
+        "fontSize": 58,
+        "typeface": "Arial",
+        "color": "#4F3424",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "AXIS"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "AXIS",
+          "resolvedTextStyle": {
+            "fontSize": 58,
+            "typeface": "Arial",
+            "color": "#4F3424",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "AXIS",
+              "fontSize": 58,
+              "typeface": "Arial",
+              "color": "#4F3424",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/wra5gbq1",
+      "id": "5",
+      "bbox": [
+        92,
+        210,
+        725,
+        125
+      ],
+      "geometry": "rect",
+      "text": "Pengembangan arsitektur perangkat lunak companionship chatbot dengan memori jangka panjang berbasis knowledge graph untuk mahasiswa Indonesia",
+      "textPreview": "Pengembangan arsitektur perangkat lunak companionship chatbot dengan memori jangka panjang berbasis knowledge graph untuk mahasiswa Indon...",
+      "resolvedFontSize": 27,
+      "resolvedTextStyle": {
+        "fontSize": 27,
+        "typeface": "Arial",
+        "color": "#2D2119",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 3,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Pengembangan arsitektur perangkat lunak"
+          },
+          {
+            "index": 2,
+            "text": "companionship chatbot dengan memori jangka panjang"
+          },
+          {
+            "index": 3,
+            "text": "berbasis knowledge graph untuk mahasiswa Indonesia"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Pengembangan arsitektur perangkat lunak companionship chatbot dengan memori jangka panjang berbasis knowledge graph untuk mahasiswa Indonesia",
+          "resolvedTextStyle": {
+            "fontSize": 27,
+            "typeface": "Arial",
+            "color": "#2D2119",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Pengembangan arsitektur perangkat lunak companionship chatbot dengan memori jangka panjang berbasis knowledge graph untuk mahasiswa Indonesia",
+              "fontSize": 27,
+              "typeface": "Arial",
+              "color": "#2D2119",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/36hcrmhk",
+      "id": "6",
+      "bbox": [
+        92,
+        360,
+        658,
+        0
+      ],
+      "geometry": "line",
+      "lineColor": "#8B5438",
+      "lineWidth": 3
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/eloj2t83",
+      "id": "7",
+      "bbox": [
+        92,
+        390,
+        600,
+        27
+      ],
+      "geometry": "rect",
+      "text": "Mohammad Nugraha Eka Prawira  |  13522001",
+      "textPreview": "Mohammad Nugraha Eka Prawira  |  13522001",
+      "resolvedFontSize": 18,
+      "resolvedTextStyle": {
+        "fontSize": 18,
+        "typeface": "Arial",
+        "color": "#2D2119",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Mohammad Nugraha Eka Prawira  |  13522001"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Mohammad Nugraha Eka Prawira  |  13522001",
+          "resolvedTextStyle": {
+            "fontSize": 18,
+            "typeface": "Arial",
+            "color": "#2D2119",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Mohammad Nugraha Eka Prawira  |  13522001",
+              "fontSize": 18,
+              "typeface": "Arial",
+              "color": "#2D2119",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/pg3ex0nu",
+      "id": "8",
+      "bbox": [
+        92,
+        430,
+        600,
+        78
+      ],
+      "geometry": "rect",
+      "text": "Program Studi Informatika, STEI ITB\nPembimbing: Dr. Agung Dewandaru, S.T., M.Sc.\n2026",
+      "textPreview": "Program Studi Informatika, STEI ITB | Pembimbing: Dr. Agung Dewandaru, S.T., M.Sc. | 2026",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "Arial",
+        "color": "#8A7667",
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 3,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Program Studi Informatika, STEI ITB"
+          },
+          {
+            "index": 2,
+            "text": "Pembimbing: Dr. Agung Dewandaru, S.T., M.Sc."
+          },
+          {
+            "index": 3,
+            "text": "2026"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Program Studi Informatika, STEI ITB\nPembimbing: Dr. Agung Dewandaru, S.T., M.Sc.\n2026",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "typeface": "Arial",
+            "color": "#8A7667",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Program Studi Informatika, STEI ITB\nPembimbing: Dr. Agung Dewandaru, S.T., M.Sc.\n2026",
+              "fontSize": 16,
+              "typeface": "Arial",
+              "color": "#8A7667"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/wval87ed",
+      "id": "9",
+      "bbox": [
+        872,
+        82,
+        250,
+        440
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#FFFDF9",
+      "lineColor": "#E5D4C3",
+      "lineWidth": 1
+    },
+    {
+      "order": 10,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/5sneloj2",
+      "id": "10",
+      "bbox": [
+        884,
+        95,
+        226,
+        404
+      ],
+      "alt": "Tangkapan antarmuka percakapan AXIS",
+      "contentType": "image/png",
+      "imageFit": "contain",
+      "asset": {
+        "assetId": "5cd90ba6-8511-46a5-9d52-aae793c4cc33",
+        "contentType": "image/png",
+        "byteLength": 1276072
+      }
+    },
+    {
+      "order": 11,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/z25kb6xk",
+      "id": "11",
+      "bbox": [
+        875,
+        530,
+        244,
+        20
+      ],
+      "geometry": "rect",
+      "text": "Tangkapan antarmuka AXIS",
+      "textPreview": "Tangkapan antarmuka AXIS",
+      "resolvedFontSize": 11,
+      "resolvedTextStyle": {
+        "fontSize": 11,
+        "typeface": "Arial",
+        "color": "#8A7667",
+        "alignment": "center",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Tangkapan antarmuka AXIS"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Tangkapan antarmuka AXIS",
+          "resolvedTextStyle": {
+            "fontSize": 11,
+            "typeface": "Arial",
+            "color": "#8A7667",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Tangkapan antarmuka AXIS",
+              "fontSize": 11,
+              "typeface": "Arial",
+              "color": "#8A7667"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 12,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/onyd0z61",
+      "id": "12",
+      "bbox": [
+        842,
+        570,
+        310,
+        65
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#F0DFCF",
+      "lineColor": "#F0DFCF",
+      "lineWidth": 1
+    },
+    {
+      "order": 13,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/d8v6psfi",
+      "id": "13",
+      "bbox": [
+        856,
+        590,
+        280,
+        28
+      ],
+      "geometry": "rect",
+      "text": "Rancangan, implementasi, dan bukti awal evaluasi",
+      "textPreview": "Rancangan, implementasi, dan bukti awal evaluasi",
+      "resolvedFontSize": 15,
+      "resolvedTextStyle": {
+        "fontSize": 15,
+        "typeface": "Arial",
+        "color": "#4F3424",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Rancangan, implementasi, dan bukti"
+          },
+          {
+            "index": 2,
+            "text": "awal evaluasi"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Rancangan, implementasi, dan bukti awal evaluasi",
+          "resolvedTextStyle": {
+            "fontSize": 15,
+            "typeface": "Arial",
+            "color": "#4F3424",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Rancangan, implementasi, dan bukti awal evaluasi",
+              "fontSize": 15,
+              "typeface": "Arial",
+              "color": "#4F3424",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 14,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/6tovahoz",
+      "id": "14",
+      "bbox": [
+        90,
+        666,
+        500,
+        18
+      ],
+      "geometry": "rect",
+      "text": "INFORMATIKA  •  STEI ITB",
+      "textPreview": "INFORMATIKA  •  STEI ITB",
+      "resolvedFontSize": 11,
+      "resolvedTextStyle": {
+        "fontSize": 11,
+        "typeface": "Arial",
+        "color": "#8A7667",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "INFORMATIKA  •  STEI ITB"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "INFORMATIKA  •  STEI ITB",
+          "resolvedTextStyle": {
+            "fontSize": 11,
+            "typeface": "Arial",
+            "color": "#8A7667",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "INFORMATIKA  •  STEI ITB",
+              "fontSize": 11,
+              "typeface": "Arial",
+              "color": "#8A7667",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    }
+  ],
+  "composeRuns": []
+}

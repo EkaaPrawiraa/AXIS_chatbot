@@ -21,7 +21,7 @@ from agentic.memory.neo4j_client import get_client
 from agentic.memory.pg_vector import archive_node, embed_text
 
 
-TRIGGER_CATEGORIES = ["academic", "social", "family", "work", "health", "financial", "other"]
+TRIGGER_CATEGORIES = ["academic", "family", "organizational", "career", "financial", "housing", "other"]
 BEHAVIOR_CATEGORIES = [
     "avoidance",
     "rumination",

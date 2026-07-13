@@ -2,23 +2,74 @@
 % BAB V KESIMPULAN DAN SARAN
 % =====================================================================
 
+\ifdefined\seminarhasilmode
+\chapter{KESIMPULAN}
+\else
 \chapter{KESIMPULAN DAN SARAN}
+\fi
 \label{ch:kesimpulan}
+
+% Bab ini bersifat sementara. Isi berikut disusun ulang berdasarkan hasil evaluasi_v2 (Subbab~\ref{sec:evaluasi-fungsional}--\ref{sec:diskusi-hasil}) dan akan ditinjau kembali menjelang sidang akhir, terutama setelah data pengujian pengguna nyata tersedia. Isi BAB V sebelum pembaruan ini dipertahankan pada blok \texttt{\textbackslash iffalse} di bagian bawah berkas sebagai arsip.
 
 \section{Kesimpulan}
 \label{sec:kesimpulan}
 
-\textit{Placeholder --- bab ini dikosongkan sementara karena fokus saat ini adalah seminar hasil (BAB I--IV dan lampiran terkait). Isi sebelumnya dipertahankan pada blok \texttt{\textbackslash iffalse} di bawah dan akan dikerjakan ulang menjelang sidang akhir.}
+Tugas akhir ini mengembangkan AXIS sebagai \textit{chatbot} pendamping non-klinis untuk mahasiswa Indonesia, dengan tiga rumusan masalah yang menaungi rancangan, implementasi, dan evaluasinya. Berdasarkan bukti yang terkumpul pada Subbab~\ref{sec:evaluasi-fungsional} sampai Subbab~\ref{sec:diskusi-hasil}, terdapat tiga kesimpulan utama.
+
+Pertama, untuk RM1, AXIS menunjukkan keunggulan yang dapat diukur pada dua sisi yang berbeda sifatnya. Pada sisi kualitas percakapan, penilaian buta \textit{LLM-as-judge} terhadap enam skenario satu-giliran memilih AXIS pada 11 dari 12 penilaian berpasangan, tetapi perbedaan median skor yang konsisten hanya muncul pada dimensi \textit{groundedness} terhadap memori. Dimensi lain, seperti reaksi emosional, interpretasi, eksplorasi, ketepatan teknik CBT, batas non-klinis, dan kesesuaian bahasa, berada pada skor yang setara antara AXIS dan \textit{baseline}. Klaim yang dapat dipertanggungjawabkan karena itu bukan "AXIS lebih empatik secara umum", melainkan "AXIS memanfaatkan memori personal secara lebih konsisten pada percakapan lanjutan", sejalan dengan penemuan bahwa \textit{knowledge graph} membawa nilai tambah paling nyata pada kesinambungan konteks, bukan pada seluruh aspek kualitas dialog. Pada sisi keselamatan, \textit{benchmark} berlabel menunjukkan sensitivitas 0,737 terhadap eufemisme krisis tersamar dan spesifisitas 0,957 pada distres pelajar biasa, membuktikan \textit{guardrail} tetap berfungsi pada ekspresi tidak langsung, meskipun lima eufemisme masih terlewat dan perlu perbaikan lanjutan.
+
+Kedua, untuk RM2, orkestrasi mood harian dan PHQ-9 secara percakapan lulus penuh pada seluruh kontrak fungsional yang tercakup suite otomatis, yaitu penawaran dan penolakan, penyampaian satu item per giliran, klarifikasi, penyelesaian skor, dan rute item kesembilan. Pemetaan jawaban bebas ke skor menunjukkan \textit{quadratic weighted kappa} 1,00, \textit{macro-F1} 1,00, dan akurasi 0,917 terhadap label acuan, dengan satu kasus ambigu yang secara tepat memicu klarifikasi alih-alih skor yang keliru. Hasil ini menunjukkan bahwa penyampaian PHQ-9 secara percakapan dapat dibuat setia terhadap instrumen sumbernya tanpa terasa seperti formulir baku, tetapi kesesuaiannya dengan pengisian mandiri oleh subjek yang sama belum dapat dinyatakan karena secara struktural memerlukan partisipan nyata yang belum tersedia pada tahap ini.
+
+Ketiga, untuk RM3, nilai tambah representasi graf dibanding pencarian semantik murni berhasil diisolasi pada jenis kueri yang secara struktural membutuhkannya. Pada 15 kueri parafrase satu-\textit{hop}, kondisi vektor saja dan kondisi hibrid mencapai \textit{Recall@5} yang identik (1,00), karena kueri jenis ini memang dapat dijawab kemiripan semantik tanpa penelusuran relasi. Sebaliknya, pada satu kasus bertarget yang sengaja dirancang agar dua pengalaman berbagi identitas simpul Pemicu tanpa kesamaan kata maupun makna permukaan, kondisi vektor saja gagal menemukan pengalaman kedua sedangkan kondisi hibrid berhasil menemukannya lewat satu langkah penelusuran graf, mengoperasionalkan langsung prinsip \textit{spreading activation} \parencite{collinsloftus1975}. Bukti ini menegaskan bahwa keunggulan \textit{knowledge graph} pada AXIS bersifat spesifik untuk kueri berbasis identitas relasi, bukan klaim umum bahwa graf selalu mengungguli pencarian semantik pada seluruh jenis kueri.
+
+Secara keseluruhan, kontribusi utama tugas akhir ini tetap berada pada penggabungan percakapan pendamping, mood dan PHQ-9, serta memori jangka panjang berbasis \textit{knowledge graph} dalam satu arsitektur yang dapat diaudit. Berbeda dari tahap evaluasi sebelumnya yang bergantung pada studi kasus kualitatif, bukti pada tahap ini sudah berupa metrik terukur dari \textit{benchmark} berlabel dan penilaian buta berskala kecil hingga menengah. Hasil tersebut cukup untuk menunjukkan kelayakan purwarupa dan arah manfaatnya, tetapi belum cukup untuk mengklaim efektivitas klinis, dampak longitudinal, maupun kesetaraan penuh dengan penilaian manusia.
+
+Pada tahap seminar hasil ini, pengujian pengguna nyata belum dilaksanakan. Instrumen pengujiannya sudah disiapkan, tetapi data partisipan belum dikumpulkan. Oleh karena itu, kesimpulan ini didasarkan pada validasi rekayasa, \textit{benchmark} berlabel, penilaian buta oleh model, dan ablasi terkendali; klaim mengenai pengalaman subjektif pengguna tetap menunggu evaluasi pengguna nyata pada tahap berikutnya.
+
+\ifdefined\seminarhasilmode
+\else
 
 \section{Keterbatasan}
 \label{sec:keterbatasan}
 
-\textit{Placeholder --- lihat catatan pada Subbab~\ref{sec:kesimpulan}.}
+Terdapat beberapa keterbatasan yang perlu dibaca bersama kesimpulan di atas.
+
+Pertama, evaluasi fungsional membuktikan setiap kontrak dan cabang keputusan tereksekusi pada skenario terkontrol (Tabel~\ref{tab:v2-fungsional}), bukan seluruh kombinasi kondisi yang mungkin terjadi pada percakapan bebas di dunia nyata. Kontrak mengunduh data pengguna belum memiliki \textit{suite} otomatis karena implementasinya berada sepenuhnya pada kode antarmuka (Tabel~\ref{tab:v2-user-control}), sedangkan kontrak lain (\textit{Confession Space}; melihat, mengoreksi, dan menyembunyikan memori; hapus riwayat percakapan) kini tercakup \textit{suite} otomatis, meskipun belum menguji seluruh permukaan setiap fitur (mis. kepatuhan lapisan \textit{backend} \textit{Confession Space} yang tidak menyimpan isi pesan).
+
+Kedua, penilaian buta pada tahap ini sepenuhnya mengandalkan dua konfigurasi model penilai (\textit{LLM-as-judge}) sebagai pengganti sementara penilaian manusia, bukan validasi terhadap manusia itu sendiri. Kesepakatan antarkonfigurasi penilai terukur baik pada dimensi \textit{groundedness} (\textit{weighted kappa} 1,00), tetapi tidak dapat dihitung secara stabil pada sebagian besar dimensi lain karena distribusi skor yang nyaris konstan pada skala penilaian kecil, sehingga \textit{kappa} kehilangan makna praktisnya pada dimensi tersebut. Keselarasan rubrik ini dengan penilaian manusia belum diuji langsung pada tahap ini.
+
+Ketiga, pengujian pengguna nyata masih berada pada tahap instrumen yang sudah disusun (Lampiran~\ref{lamp:userstudy}), belum pada tahap pengumpulan data partisipan, sehingga klaim mengenai rasa didampingi, kemudahan penggunaan, dan pemahaman subjektif terhadap kendali data (Tabel~\ref{tab:v2-user-control}) masih menunggu data tersebut.
+
+Keempat, cakupan RM1 masih berskala kecil menengah. Penilaian dialog buta hanya mencakup enam skenario, korpus keselamatan hanya diuji untuk ragam bahasa informal dan eufemistik, sedangkan ragam formal dan bahasa campur pada rubrik buta belum diuji terpisah pada skala ini.
+
+Kelima, item kesembilan PHQ-9 baru diuji pada tiga kasus, sehingga sensitivitas yang terukur (1,00) belum dapat digeneralisasi. Kesesuaian skor total antara bentuk PHQ-9 percakapan dan bentuk mandiri (ICC dan Bland--Altman) juga belum dapat dihitung karena secara struktural memerlukan subjek yang sama mengisi kedua bentuk, yang belum tersedia pada tahap ini.
+
+Keenam, dari seluruh metrik memori jangka panjang yang ditetapkan pada Subbab~\ref{sec:tujuan}, baru \textit{Recall@5} dan satu kasus keberhasilan kueri berbagi entitas yang terukur (Tabel~\ref{tab:v2-ablation-result}). Presisi dan \textit{recall} penulisan node/relasi, \textit{P@5}, MRR, nDCG@5, \textit{update correctness}, \textit{stale-memory rate}, \textit{grounded-answer rate}, \textit{contradiction rate}, dan \textit{false-personalization rate} belum diukur karena memerlukan korpus emas berlabel relevansi berjenjang dan kasus pembaruan memori yang belum disusun pada skala penuh.
+
+Ketujuh, dua dari 47 kontrak memori (Tabel~\ref{tab:v2-fungsional}) gagal karena keterbatasan konektivitas \textit{pool} basis data vektor pada \textit{harness} pengujian asinkron, bukan karena kesalahan logika penggabungan memori itu sendiri; perbaikan infrastruktur pengujian ini tetap tercatat sebagai pekerjaan terpisah yang belum diselesaikan.
+
+Kedelapan, keterbatasan yang sudah tercatat sejak tahap sebelumnya dan belum tersentuh oleh pembaruan implementasi pada tahap ini tetap berlaku: taksonomi peran Subjek masih memetakan dosen penguji sidang ke label yang sama dengan dosen pembimbing skripsi, \textit{Confession Space} belum memiliki pengukuran latensi suara seperti \textit{time-to-first-audio}, integrasi Neo4j dan pgvector masih menggunakan konsistensi eventual alih-alih transaksi terdistribusi, dan validasi \textit{lifecycle} memori pada rentang 60--180 hari belum dilakukan pada data penggunaan yang panjang.
 
 \section{Saran}
 \label{sec:saran}
 
-\textit{Placeholder --- lihat catatan pada Subbab~\ref{sec:kesimpulan}.}
+Prioritas pertama pengembangan berikutnya adalah menjalankan pengujian pengguna nyata menggunakan instrumen yang sudah disiapkan (Lampiran~\ref{lamp:userstudy}), karena inilah satu-satunya jalan untuk mengisi bagian rumusan masalah yang secara struktural tidak dapat dijawab oleh penilaian model, yaitu rasa didampingi, kemudahan penggunaan, pemahaman kendali data, dan kesesuaian skor PHQ-9 antara bentuk percakapan dan bentuk mandiri. Jika jumlah partisipan masih terbatas, studi skala kecil tetap lebih baik daripada tidak ada data, selama batasnya dijelaskan secara jujur.
+
+Prioritas kedua adalah menyusun korpus emas berlabel relevansi berjenjang beserta kasus pembaruan dan penggunaan memori, agar metrik \textit{retrieval} dan \textit{lifecycle} yang sudah ditetapkan pada Subbab~\ref{sec:tujuan} (\textit{P@5}, MRR, nDCG@5, \textit{update correctness}, \textit{stale-memory rate}, \textit{grounded-answer rate}, dan \textit{false-personalization rate}) dapat diukur, bukan hanya \textit{Recall@5} dan kasus tunggal keberhasilan kueri relasional. Perluasan ini juga sebaiknya menambah lebih banyak kasus bertarget yang secara struktural membutuhkan penelusuran graf, mengikuti pola kasus Pemicu bersama yang sudah terbukti pada Subbab~\ref{sec:v2-ablation}, agar nilai tambah graf teruji pada lebih dari satu contoh.
+
+Ketiga, korpus penilaian buta dialog dan keselamatan sebaiknya diperluas jumlah kasusnya, dan sebagian kecil sampelnya sebaiknya juga dinilai oleh manusia dengan rubrik yang sama, agar keselarasan penilaian \textit{LLM-as-judge} dengan penilaian manusia dapat diverifikasi secara langsung, bukan hanya diasumsikan dari kesepakatan antarkonfigurasi model penilai. Lima eufemisme krisis yang masih terlewat pada \textit{benchmark} keselamatan juga perlu ditelusuri polanya untuk perbaikan \textit{guardrail} lanjutan, dan cakupan ragam bahasa formal serta bahasa campur perlu ditambahkan pada rubrik buta yang sama.
+
+Keempat, studi kesesuaian skor PHQ-9 sebaiknya melibatkan partisipan nyata yang mengisi bentuk mandiri dan bentuk percakapan pada rentang waktu berdekatan, sehingga ICC dan analisis Bland--Altman yang sudah ditetapkan sebagai metrik pada Subbab~\ref{sec:tujuan} dapat dihitung. Studi ini tetap harus membatasi diri pada kesesuaian skrining, bukan efektivitas klinis.
+
+Kelima, pada sisi percakapan, gerbang giliran minimum dan ambang keyakinan pada kebijakan dialog CBT masih seragam untuk semua tingkat keakutan sinyal dan perlu disempurnakan agar distres akut yang muncul sangat dini tidak ikut tertunda oleh gerbang yang sama. Penyampaian teknik reflektif, terutama \textit{grounding}, juga perlu dibuat lebih luwes lintas giliran.
+
+Keenam, \textit{Confession Space} perlu diukur menggunakan metrik latensi seperti STT \textit{latency}, \textit{time-to-first-token}, \textit{time-to-first-audio}, dan total \textit{round-trip}, mengingat pengalaman suara sangat bergantung pada jeda.
+
+Ketujuh, arsitektur hibrid Neo4j dan pgvector perlu diperkuat pada sisi observabilitas, dengan dashboard internal untuk melihat node yang belum tersinkron, kegagalan finalisasi sesi, dan kualitas \textit{ranking} memori. Taksonomi peran Subjek juga perlu diperluas agar dosen penguji sidang dan dosen pembimbing skripsi tidak lagi terpetakan ke label generik yang sama.
+
+Terakhir, kedua kegagalan kontrak memori yang tercatat pada Tabel~\ref{tab:v2-fungsional} perlu ditindaklanjuti pada tingkat infrastruktur pengujian, dan \textit{suite} kontrak otomatis untuk kendali pengguna mengunduh data perlu disusun pada lapisan antarmuka (mis. pengujian ujung ke ujung berbasis peramban) agar tidak lagi bergantung sepenuhnya pada pengujian pengguna nyata untuk membuktikan keberhasilannya.
+
+\fi
 
 \iffalse
 % =====================================================================

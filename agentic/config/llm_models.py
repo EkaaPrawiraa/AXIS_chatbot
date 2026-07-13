@@ -26,11 +26,19 @@ class LLMSpec:
     extra_kwargs: dict[str, Any] = field(default_factory=dict)
 
     @property
+    def resolved_prompt_ref(self) -> str:
+        """prompt_ref after applying any name-specific runtime override
+        (mirrors build_llm()'s name-specific kwargs pattern below)."""
+        if self.name == "response_generator" and _response_pipeline_version() == "v3":
+            return "nodes/response_generator_v3"
+        return self.prompt_ref
+
+    @property
     def system_prompt(self) -> str:
         """lazy resolve prompt yaml"""
         from agentic.prompts import load_prompt
 
-        return load_prompt(self.prompt_ref)
+        return load_prompt(self.resolved_prompt_ref)
 
 
 
@@ -74,6 +82,11 @@ def _env_bool(name: str, default: bool = False) -> bool:
         return default
     return raw.strip().lower() in {"1", "true", "yes", "on"}
 
+
+def _response_pipeline_version() -> str:
+    return os.getenv("AXIS_RESPONSE_PIPELINE_VERSION", "v2").strip().lower()
+
+
 _GEMINI_CHEAP_SPEC_NAMES = {
     "phq9_scorer",
     "phq9_conversation",
@@ -81,6 +94,7 @@ _GEMINI_CHEAP_SPEC_NAMES = {
     "phq9_judge",
     "cbt_grounding",
     "cbt_judge",
+    "understanding_synthesis",
     "speech_adapter",
     "speech_adapter_v3",
 }
@@ -198,6 +212,20 @@ RESPONSE_GENERATOR = LLMSpec(
     max_tokens=6000,
     prompt_ref="nodes/response_generator_v2",
     extra_kwargs={"streaming": True},
+)
+
+# v3 pipeline only (AXIS_RESPONSE_PIPELINE_VERSION=v3): silent reasoning pass
+# that builds a psychological model of the user before response_generator
+# writes a reply. Temperature above 0 because it needs interpretive
+# inference (not a closed classification like the CBT/PHQ-9 judges), but
+# well below response_generator's 1 because grounding matters more here
+# than voice variety.
+UNDERSTANDING_SYNTHESIS = LLMSpec(
+    name="understanding_synthesis",
+    model=_DEFAULT_CHEAP,
+    temperature=0.3,
+    max_tokens=700,
+    prompt_ref="nodes/understanding_synthesis",
 )
 
 PHQ9_SCORER = LLMSpec(
@@ -451,6 +479,7 @@ __all__ = [
     "PHQ9_FEEDBACK",
     "PHQ9_JUDGE",
     "RESPONSE_GENERATOR",
+    "UNDERSTANDING_SYNTHESIS",
     "SESSION_SUMMARIZER",
     "KG_EXTRACTOR",
     "GUARDRAIL_REWRITE",

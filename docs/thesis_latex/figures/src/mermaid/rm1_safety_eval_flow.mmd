@@ -1,0 +1,34 @@
+flowchart TD
+    A([Mulai])
+    B[Korpus eufemisme krisis\ndan pembanding benign]
+    C[Jalankan evaluate_input\ndan evaluate_pregen nyata]
+    D{Terdeteksi sebagai\nkrisis?}
+    E[Tandai tertangkap]
+    F[Tandai tidak tertangkap]
+    G{Label acuan\nrisiko tinggi?}
+    H[Hitung true positive]
+    I[Hitung false negative]
+    J[Hitung false positive]
+    K[Hitung true negative]
+    L[Hitung sensitivitas, spesifisitas,\npresisi, dan F2]
+    M([Selesai])
+
+    A --> B --> C --> D
+    D -->|Ya| E --> G
+    D -->|Tidak| F --> G
+    G -->|Ya, tertangkap| H
+    G -->|Ya, tidak tertangkap| I
+    G -->|Tidak, tertangkap| J
+    G -->|Tidak, tidak tertangkap| K
+    H --> L
+    I --> L
+    J --> L
+    K --> L
+    L --> M
+
+    classDef terminator fill:#ffffff,stroke:#111111,stroke-width:1.4px,color:#111111;
+    classDef process fill:#ffffff,stroke:#111111,stroke-width:1.2px,color:#111111;
+    classDef decision fill:#f2f2f2,stroke:#111111,stroke-width:1.2px,color:#111111;
+    class A,M terminator;
+    class B,C,E,F,H,I,J,K,L process;
+    class D,G decision;

@@ -15,14 +15,6 @@ notes: |
   a short 3-4 word canonical phrase compared against a full
   conversational sentence (10+ words) almost never crosses 0.6
   regardless of how closely the message paraphrases the phrase.
-  Calibrated 2026-07-13 against a 19-sentence adversarial euphemism
-  benchmark (recall 0/19 with the old Dice+0.6 setup) plus an
-  18-sentence casual-distress hard-negative set (0 false positives
-  both before and after). See docs/thesis_review/
-  adversarial-crisis-benchmark-2026-07-13.md for the full iteration
-  log and final numbers. CRISIS_SEMANTIC_THRESHOLD is on a different
-  scale than before (containment, not Dice) so 0.4 here is not a
-  "loosened" 0.6 — it is calibrated fresh for the new metric.
 system: |
   CRISIS_SIGNAL_PHRASES:
     - ingin mengakhiri hidupnya

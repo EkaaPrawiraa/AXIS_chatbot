@@ -19,10 +19,6 @@ notes: |
             empathetic response followed by deterministic resource block.
             Based on AFSP Safe Messaging Guidelines (2023).
 
-  CRISIS_KEYWORDS_ID/EN remain the union of tier1 + tier2. The Go gateway
-  and Layer 2 input_guardrail_node route ALL of them to crisis handling.
-  The tier split is used only inside crisis_triage_node to choose the
-  response style.
 system: |
   CRISIS_KEYWORDS_ID:
     - ingin mati

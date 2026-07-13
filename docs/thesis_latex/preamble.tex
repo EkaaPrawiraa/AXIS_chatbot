@@ -137,6 +137,15 @@
 \usepackage{tabularx}
 \usepackage{fvextra}
 
+% Menyisipkan berkas prompt/skrip sumber apa adanya (Lampiran konfigurasi
+% prompt) agar isinya tidak pernah menyimpang dari repositori sumber.
+\newcommand{\promptlisting}[2][]{%
+  \begingroup
+  \VerbatimInput[breaklines=true, breakanywhere=true, fontsize=\scriptsize,
+    frame=single, framesep=2mm, xleftmargin=2mm, xrightmargin=2mm, #1]{#2}%
+  \endgroup
+}
+
 % Kolom tabel bergaris penuh menyerap ruang lebih banyak dari garis vertikal;
 % perkecil padding sel agar kolom sempit (mis. kamus atribut node) tidak overfull.
 \setlength{\tabcolsep}{4pt}
@@ -152,7 +161,7 @@
   linkcolor=black,
   citecolor=black,
   urlcolor=black,
-  pdftitle={Pengembangan Arsitektur Perangkat Lunak Companionship Chatbot},
+  pdftitle={Pengembangan Companionship Chatbot dengan Asesmen Depresi melalui Percakapan dan Memori Jangka Panjang Berbasis Knowledge Graph untuk Mahasiswa Indonesia},
   pdfauthor={Mohammad Nugraha Eka Prawira}
 ]{hyperref}
 

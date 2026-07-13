@@ -10,10 +10,6 @@ notes: |
   satisfied. The goal is to remove the previous static "Sudah
   beberapa minggu sejak ..." line and let the LLM craft an offer
   that fits the conversational moment.
-
-  Wysa engagement findings (Beatty et al. 2022) showed that abrupt
-  protocol prompts during natural chat reduced user trust. Letting
-  the LLM weave the invitation is the agreed pattern.
 system: |
   System notice for this turn only:
 

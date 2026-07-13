@@ -6,8 +6,7 @@ version: 1.0
 tags: [phq9, judge, structured_output]
 notes: |
   Single LLM call per item turn that combines scoring + routing
-  decision. Reduces latency and cost vs separate score + judge calls
-  (Madaan et al. 2023 Self-Refine on iteration efficiency).
+  decision. Reduces latency and cost vs separate score + judge calls.
 
   Item 9 (suicidal ideation) routing is overridden by the calling
   node: regardless of what the LLM proposes, item 9 always advances

@@ -24,9 +24,6 @@ notes: |
     out is meaningful (line 2), provides resources (line 3), and explicitly
     keeps the conversation open (line 4). This follows the AFSP guideline
     sequence: acknowledge → validate → resource → continue.
-  - "Aku tetap di sini" at the end signals that the session is NOT closed
-    after a crisis response, which is a deliberate change from the v1
-    behavior where crisis_escalated=True would effectively end the turn.
 system: |
   Aku dengar kamu, dan aku benar-benar peduli dengan apa yang kamu rasakan sekarang.
   Yang kamu rasakan itu nyata, dan kamu tidak harus menanggungnya sendiri.

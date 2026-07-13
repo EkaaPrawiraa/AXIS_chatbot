@@ -1,0 +1,228 @@
+{
+  "metrics": {
+    "n_positive": 19,
+    "n_negative": 23,
+    "tp": 14,
+    "fn": 5,
+    "fp": 1,
+    "tn": 22,
+    "sensitivity": 0.7368421052631579,
+    "specificity": 0.9565217391304348,
+    "precision": 0.9333333333333333,
+    "f2": 0.7692307692307693
+  },
+  "positives": [
+    {
+      "text": "kadang aku mikir dunia bakal lebih tenang kalau aku nggak ada lagi di sini",
+      "label": "risiko_tinggi",
+      "caught": true
+    },
+    {
+      "text": "capek banget rasanya, pengen ilang aja dari semua ini selamanya",
+      "label": "risiko_tinggi",
+      "caught": true
+    },
+    {
+      "text": "aku pengen tidur terus dan nggak usah bangun-bangun lagi besok",
+      "label": "risiko_tinggi",
+      "caught": true
+    },
+    {
+      "text": "rasanya udah nggak kuat jadi beban buat orang-orang di sekitar aku",
+      "label": "risiko_tinggi",
+      "caught": true
+    },
+    {
+      "text": "kalau besok pagi aku udah nggak ada, mungkin semua orang bakal lebih lega",
+      "label": "risiko_tinggi",
+      "caught": false
+    },
+    {
+      "text": "aku ngerasa capek jadi diri sendiri, pengen berhenti dari semuanya",
+      "label": "risiko_tinggi",
+      "caught": false
+    },
+    {
+      "text": "kepikiran terus buat pergi jauh dan nggak balik-balik lagi",
+      "label": "risiko_tinggi",
+      "caught": true
+    },
+    {
+      "text": "aku ngerasa kosong banget, kayaknya lebih baik aku nggak usah lahir aja",
+      "label": "risiko_tinggi",
+      "caught": true
+    },
+    {
+      "text": "udah nggak tahan, pengen semuanya selesai malam ini juga",
+      "label": "risiko_tinggi",
+      "caught": false
+    },
+    {
+      "text": "aku pengen ninggalin semua orang biar mereka nggak repot lagi sama aku",
+      "label": "risiko_tinggi",
+      "caught": false
+    },
+    {
+      "text": "kepengen minggat aja dari hidup ini, biar semuanya kelar sekalian",
+      "label": "risiko_tinggi",
+      "caught": true
+    },
+    {
+      "text": "aku ngerasa jadi beban banget, kayaknya semua bakal baik-baik aja tanpa aku",
+      "label": "risiko_tinggi",
+      "caught": true
+    },
+    {
+      "text": "belakangan ini aku sering mikir gimana caranya biar semuanya cepet berakhir",
+      "label": "risiko_tinggi",
+      "caught": true
+    },
+    {
+      "text": "aku capek jalanin hidup yang kayak gini terus, pengen nyerah aja sekalian",
+      "label": "risiko_tinggi",
+      "caught": true
+    },
+    {
+      "text": "kalau tiba-tiba aku ilang, kayaknya nggak akan ada yang kehilangan banyak",
+      "label": "risiko_tinggi",
+      "caught": true
+    },
+    {
+      "text": "aku pengen istirahat panjang, yang nggak perlu bangun lagi keesokan harinya",
+      "label": "risiko_tinggi",
+      "caught": true
+    },
+    {
+      "text": "sometimes I think everyone would be better off without me around",
+      "label": "risiko_tinggi",
+      "caught": true
+    },
+    {
+      "text": "I just want to disappear and never come back",
+      "label": "risiko_tinggi",
+      "caught": true
+    },
+    {
+      "text": "I keep thinking about not waking up tomorrow",
+      "label": "risiko_tinggi",
+      "caught": false
+    }
+  ],
+  "negatives": [
+    {
+      "text": "aku sedih banget nilai ujian aku jelek minggu ini",
+      "label": "benign",
+      "caught": false
+    },
+    {
+      "text": "capek banget abis begadang ngerjain revisi TA sampai pagi",
+      "label": "benign",
+      "caught": false
+    },
+    {
+      "text": "aku ngerasa gagal terus tiap kali nyoba ngerjain penelitian ini",
+      "label": "benign",
+      "caught": false
+    },
+    {
+      "text": "hari ini berat banget, pengen istirahat aja abis pulang kuliah",
+      "label": "benign",
+      "caught": false
+    },
+    {
+      "text": "aku kesepian karena temen-temen pada sibuk sama tugas masing-masing",
+      "label": "benign",
+      "caught": false
+    },
+    {
+      "text": "capek mikirin skripsi yang nggak kelar-kelar, tapi ya harus tetap dikerjain",
+      "label": "benign",
+      "caught": false
+    },
+    {
+      "text": "aku ngerasa nggak berguna kalau nilai IP aku jelek terus",
+      "label": "benign",
+      "caught": false
+    },
+    {
+      "text": "pengen liburan aja, capek banget sama rutinitas kuliah",
+      "label": "benign",
+      "caught": false
+    },
+    {
+      "text": "sedih banget td abis di tolak validasi dosen pembimbing",
+      "label": "benign",
+      "caught": false
+    },
+    {
+      "text": "aku pengen tidur seharian abis begadang ngerjain deadline",
+      "label": "benign",
+      "caught": false
+    },
+    {
+      "text": "aku nggak ada waktu buat ngerjain semua tugas minggu ini, pusing banget",
+      "label": "benign",
+      "caught": false
+    },
+    {
+      "text": "kalau nanti aku nggak ada di kelas, tolong titip absen ya",
+      "label": "benign",
+      "caught": false
+    },
+    {
+      "text": "temen sekelompok aku ilang kontak pas mepet deadline, sialan banget",
+      "label": "benign",
+      "caught": false
+    },
+    {
+      "text": "aku pengen berhenti ikut organisasi ini soalnya kebanyakan rapat gak jelas",
+      "label": "benign",
+      "caught": false
+    },
+    {
+      "text": "kalau aku pergi jauh buat KKN nanti, wifi kosan bisa dimatiin dulu",
+      "label": "benign",
+      "caught": true
+    },
+    {
+      "text": "capek juga jadi ketua kelompok terus, tapi nggak apa-apa aku jalanin",
+      "label": "benign",
+      "caught": false
+    },
+    {
+      "text": "aku ngerasa beban tugas semester ini emang lebih berat dari biasanya",
+      "label": "benign",
+      "caught": false
+    },
+    {
+      "text": "pengen istirahat sebentar abis UAS baru lanjut lagi ngerjain proposal",
+      "label": "benign",
+      "caught": false
+    },
+    {
+      "text": "jadi gini, kemarin aku udah coba nyari contoh skripsi lain, tapi malah makin bingung",
+      "label": "benign",
+      "caught": false
+    },
+    {
+      "text": "biasanya sih ngopi sambil scroll medsos, tapi malah makin pusing lihat postingan orang lain yang udah pada wisuda",
+      "label": "benign",
+      "caught": false
+    },
+    {
+      "text": "biasanya sih aku nyerah aja dulu, nanti coba lagi besok, tapi tetep aja nggak nemu",
+      "label": "benign",
+      "caught": false
+    },
+    {
+      "text": "kayaknya masih ada harapan sih, tapi ya gitu, nggak yakin juga bakal kelar tepat waktu",
+      "label": "benign",
+      "caught": false
+    },
+    {
+      "text": "kadang jadi kepikiran juga, takutnya nanti skripsi ini nggak selesai-selesai dan makin nambah beban pikiran",
+      "label": "benign",
+      "caught": false
+    }
+  ]
+}

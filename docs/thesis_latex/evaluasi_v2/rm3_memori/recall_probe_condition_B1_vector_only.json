@@ -1,0 +1,121 @@
+{
+  "total_hits": 15,
+  "total_probes": 15,
+  "recall": 1.0,
+  "users": [
+    {
+      "label": "user_A",
+      "user_id": "927f6a41-f039-4624-affb-b787e57353a4",
+      "hits": 5,
+      "total": 5,
+      "rows": [
+        {
+          "label": "thesis_advisor",
+          "query": "masih parno aja mikirin revisi tugas akhir yang belum juga direspon pembimbing",
+          "hit": true,
+          "top_similarity": null
+        },
+        {
+          "label": "family_financial",
+          "query": "orang tua di rumah tanya-tanya mulu kapan wisuda, biaya kuliah makin berat aja rasanya",
+          "hit": true,
+          "top_similarity": null
+        },
+        {
+          "label": "organizational_burnout",
+          "query": "capek sih ikut kegiatan organisasi kampus, kebanyakan rapat pas lagi deket-deket ujian",
+          "hit": true,
+          "top_similarity": null
+        },
+        {
+          "label": "impostor_syndrome",
+          "query": "suka ngerasa minder liat pencapaian temen-temen seangkatan",
+          "hit": true,
+          "top_similarity": null
+        },
+        {
+          "label": "career_uncertainty",
+          "query": "bingung banget abis lulus nanti mau ngelamar kerja ke mana, secara magang aja susah dapetnya",
+          "hit": true,
+          "top_similarity": null
+        }
+      ]
+    },
+    {
+      "label": "user_B",
+      "user_id": "0574d719-169f-40d0-8797-ce4bf262e986",
+      "hits": 5,
+      "total": 5,
+      "rows": [
+        {
+          "label": "exam_anxiety",
+          "query": "besok ujian kalkulus, jantung udah deg-degan dari sekarang mikirin soalnya",
+          "hit": true,
+          "top_similarity": null
+        },
+        {
+          "label": "family_expectation_pressure",
+          "query": "males banget kalo pulang kampung, pasti dibandingin lagi sama kakak yang udah kerja",
+          "hit": true,
+          "top_similarity": null
+        },
+        {
+          "label": "peer_pressure",
+          "query": "kerasa banget tekanan dari temen sepanitia buat all-out terus di organisasi",
+          "hit": true,
+          "top_similarity": null
+        },
+        {
+          "label": "lecturer_relationship_stress",
+          "query": "males masuk kelas dosen itu, suka nyindir mahasiswa yang telat ngumpul",
+          "hit": true,
+          "top_similarity": null
+        },
+        {
+          "label": "post_graduation_anxiety",
+          "query": "abis wisuda nanti kepikiran terus gimana rasanya kerja beneran",
+          "hit": true,
+          "top_similarity": null
+        }
+      ]
+    },
+    {
+      "label": "user_C",
+      "user_id": "0331ba18-ade9-4ca9-b03a-f66f44e8e056",
+      "hits": 5,
+      "total": 5,
+      "rows": [
+        {
+          "label": "housing_stress",
+          "query": "kos gue berisik banget kalo malem jadi susah belajar",
+          "hit": true,
+          "top_similarity": null
+        },
+        {
+          "label": "internship_stress",
+          "query": "kerjaan magang gue kebanyakan yang bukan bagian job desc, cape banget",
+          "hit": true,
+          "top_similarity": null
+        },
+        {
+          "label": "identity_exploration",
+          "query": "masih ngerasa salah jurusan dan bingung minat sendiri sebenernya apa",
+          "hit": true,
+          "top_similarity": null
+        },
+        {
+          "label": "family_conflict",
+          "query": "di rumah lagi sering ada pertengkaran ortu jadi males pulang",
+          "hit": true,
+          "top_similarity": null
+        },
+        {
+          "label": "social_isolation",
+          "query": "semenjak pindah kos jarang punya temen ngobrol, kesepian di kampus",
+          "hit": true,
+          "top_similarity": null
+        }
+      ]
+    }
+  ]
+}

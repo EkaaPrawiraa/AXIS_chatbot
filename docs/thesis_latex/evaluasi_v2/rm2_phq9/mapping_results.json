@@ -1,0 +1,142 @@
+[
+  {
+    "item_id": 1,
+    "text": "Nggak sih, semua masih terasa seru-seru aja kayak biasa",
+    "reference": 0,
+    "predicted_score": 0,
+    "confidence": 0.9,
+    "needs_clarification": false,
+    "predicted_label": 0,
+    "correct": true
+  },
+  {
+    "item_id": 1,
+    "text": "Beberapa hari ini emang males ngapa-ngapain, tapi nggak sampai separuh minggu",
+    "reference": 1,
+    "predicted_score": 1,
+    "confidence": 0.8,
+    "needs_clarification": false,
+    "predicted_label": 1,
+    "correct": true
+  },
+  {
+    "item_id": 1,
+    "text": "Hampir tiap hari deh rasanya males banget ngelakuin apa-apa",
+    "reference": 3,
+    "predicted_score": 3,
+    "confidence": 0.9,
+    "needs_clarification": false,
+    "predicted_label": 3,
+    "correct": true
+  },
+  {
+    "item_id": 2,
+    "text": "Iya, hampir tiap hari saya ngerasa sedih dan putus asa",
+    "reference": 3,
+    "predicted_score": 3,
+    "confidence": 0.95,
+    "needs_clarification": false,
+    "predicted_label": 3,
+    "correct": true
+  },
+  {
+    "item_id": 2,
+    "text": "Kadang aja sih, beberapa hari doang ngerasa gitu",
+    "reference": 1,
+    "predicted_score": 1,
+    "confidence": 0.8,
+    "needs_clarification": false,
+    "predicted_label": 1,
+    "correct": true
+  },
+  {
+    "item_id": 3,
+    "text": "Tidur saya kacau lebih dari separuh hari dalam 2 minggu ini",
+    "reference": 2,
+    "predicted_score": 2,
+    "confidence": 0.9,
+    "needs_clarification": false,
+    "predicted_label": 2,
+    "correct": true
+  },
+  {
+    "item_id": 4,
+    "text": "Nggak capek-capek amat kok, biasa aja",
+    "reference": 0,
+    "predicted_score": 1,
+    "confidence": 0.6,
+    "needs_clarification": true,
+    "predicted_label": "K",
+    "correct": false
+  },
+  {
+    "item_id": 5,
+    "text": "Nafsu makan saya menurun hampir setiap hari",
+    "reference": 3,
+    "predicted_score": 3,
+    "confidence": 0.9,
+    "needs_clarification": false,
+    "predicted_label": 3,
+    "correct": true
+  },
+  {
+    "item_id": 6,
+    "text": "Enggak lah, aku nggak ngerasa gagal atau ngecewain sesuatu",
+    "reference": 0,
+    "predicted_score": 0,
+    "confidence": 0.9,
+    "needs_clarification": false,
+    "predicted_label": 0,
+    "correct": true
+  },
+  {
+    "item_id": 7,
+    "text": "Susah banget concentrate akhir-akhir ini, kayaknya lebih dari separuh hari",
+    "reference": 2,
+    "predicted_score": 2,
+    "confidence": 0.9,
+    "needs_clarification": false,
+    "predicted_label": 2,
+    "correct": true
+  },
+  {
+    "item_id": 8,
+    "text": "Kadang gerak lambat kadang enggak, nggak nentu deh",
+    "reference": "K",
+    "predicted_score": 1,
+    "confidence": 0.6,
+    "needs_clarification": true,
+    "predicted_label": "K",
+    "correct": true
+  },
+  {
+    "item_id": 9,
+    "text": "Enggak pernah kepikiran gitu sama sekali",
+    "reference": 0,
+    "predicted_score": 0,
+    "confidence": 1.0,
+    "needs_clarification": false,
+    "predicted_label": 0,
+    "correct": true
+  },
+  {
+    "item_id": 9,
+    "text": "Beberapa hari ini malah kepikiran mending saya nggak usah ada aja",
+    "reference": 1,
+    "predicted_score": 1,
+    "confidence": 0.7,
+    "needs_clarification": false,
+    "predicted_label": 1,
+    "correct": true
+  },
+  {
+    "item_id": 9,
+    "text": "Kadang kepikiran hal-hal gitu tapi nggak yakin seberapa sering",
+    "reference": "K",
+    "predicted_score": 1,
+    "confidence": 0.6,
+    "needs_clarification": true,
+    "predicted_label": "K",
+    "correct": true
+  }
+]

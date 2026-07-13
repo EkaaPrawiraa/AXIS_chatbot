@@ -50,6 +50,15 @@ FOCUSED_EMOTION_CAP:   int   = 5
 FOCUSED_THOUGHT_CAP:   int   = 5
 FOCUSED_BEHAVIOR_CAP:  int   = 5
 
+# lifecycle history signal (Task 2): ambient, always-on -- not gated by
+# this turn's vector search -- so kept deliberately small.
+BELIEF_EVOLUTION_CAP: int   = 3
+
+# graph-native expansion (Task 4): bounded so it augments the vector-ranked
+# results rather than drowning them out -- pgvector still decides the seed,
+# this only adds siblings vector similarity structurally cannot reach.
+GRAPH_EXPANSION_CAP: int   = 2
+
 # skip no signals, run pgvector, full pipeline
 RETRIEVAL_MODE: str = os.getenv("RETRIEVAL_MODE", "full")
 
@@ -334,43 +343,73 @@ def _apply_sensitivity_redaction(
         redacted["subjects"] = []
         # keep triggers & emotions
         redacted["behaviors"] = []
+        # Surgical, not blanket: emotion_chains keeps each label (the
+        # existing "keep emotions" policy above) but strips its nested
+        # thought/behavior detail -- a blanket emotion_chains=[] would
+        # silently hide emotion labels this tier deliberately preserves.
+        if redacted.get("emotion_chains"):
+            redacted["emotion_chains"] = [
+                {**chain, "thoughts": [], "behaviors": []}
+                for chain in redacted["emotion_chains"]
+                if isinstance(chain, dict)
+            ]
         return redacted
     return rec
 
 
 async def _rehydrate_experience(user_id: str, exp_id: str) -> dict[str, Any] | None:
-    """get exp view w/ sensitivity tier policy"""
+    """get exp view w/ sensitivity tier policy.
+
+    Emotions are grouped with their OWN Thought/Behavior descendants (the
+    schema's only real pairing -- Trigger has no direct edge to Emotion, so
+    triggers stay an honest flat co-occurring list) instead of bucket-
+    collecting every node type into independent lists. The old flat
+    collect(DISTINCT ...) approach cross-joined parallel triggers/emotions
+    before rendering, so _render_causal_chain's "Triggers: A, B -> Emotions:
+    X, Y" text looked like one causal chain even when trigger A actually had
+    nothing to do with emotion Y.
+    """
     records = await get_client().execute_read(
         """
         MATCH (u:User {id: $user_id})-[:EXPERIENCED]->(e:Experience {id: $exp_id})
         WHERE e.active = true
           AND coalesce(e.sensitivity_level, 'normal') IN ['normal', 'public', 'personal', 'sensitive', 'trauma']
+
         OPTIONAL MATCH (e)-[ip:INVOLVES_SUBJECT|INVOLVES_PERSON]->(p)
-          WHERE (p:Subject OR p:Person)
-            AND ip.t_invalid IS NULL
+          WHERE (p:Subject OR p:Person) AND ip.t_invalid IS NULL
+        WITH e, collect(DISTINCT p.name) AS subjects
+
         OPTIONAL MATCH (e)-[rt:TRIGGERED_BY]->(t:Trigger)
           WHERE rt.t_invalid IS NULL AND coalesce(t.active, true) = true
+        WITH e, subjects, collect(DISTINCT t.description) AS triggers
+
         OPTIONAL MATCH (e)-[re:TRIGGERED_EMOTION]->(em:Emotion)
           WHERE re.t_invalid IS NULL AND coalesce(em.active, true) = true
-                OPTIONAL MATCH (em)-[et:ACTIVATED_THOUGHT|ASSOCIATED_WITH]->(th:Thought)
-                    WHERE et.t_invalid IS NULL
-                        AND coalesce(th.active, true) = true
-                        AND coalesce(th.sensitivity_level, 'normal') IN ['normal', 'public', 'personal']
-                OPTIONAL MATCH (em)-[eb:LED_TO_BEHAVIOR]->(b1:Behavior)
-                    WHERE eb.t_invalid IS NULL
-                        AND coalesce(b1.sensitivity_level, 'normal') IN ['normal', 'public', 'personal']
-                        AND coalesce(b1.active, true) = true
-                OPTIONAL MATCH (th)-[tb:LED_TO_BEHAVIOR]->(b2:Behavior)
-                    WHERE tb.t_invalid IS NULL
-                        AND coalesce(b2.sensitivity_level, 'normal') IN ['normal', 'public', 'personal']
-                        AND coalesce(b2.active, true) = true
-        WITH e,
-             collect(DISTINCT p.name) AS subjects,
-             collect(DISTINCT t.description) AS triggers,
-             collect(DISTINCT em.label) AS emotions,
-             collect(DISTINCT {content: th.content, distortion: th.distortion}) AS thoughts,
-             collect(DISTINCT {description: b1.description, category: b1.category, adaptive: b1.adaptive}) +
-             collect(DISTINCT {description: b2.description, category: b2.category, adaptive: b2.adaptive}) AS behaviors
+        OPTIONAL MATCH (em)-[et:ACTIVATED_THOUGHT|ASSOCIATED_WITH]->(th:Thought)
+          WHERE et.t_invalid IS NULL
+            AND coalesce(th.active, true) = true
+            AND coalesce(th.sensitivity_level, 'normal') IN ['normal', 'public', 'personal']
+        OPTIONAL MATCH (em)-[eb:LED_TO_BEHAVIOR]->(b1:Behavior)
+          WHERE eb.t_invalid IS NULL
+            AND coalesce(b1.sensitivity_level, 'normal') IN ['normal', 'public', 'personal']
+            AND coalesce(b1.active, true) = true
+        OPTIONAL MATCH (th)-[tb:LED_TO_BEHAVIOR]->(b2:Behavior)
+          WHERE tb.t_invalid IS NULL
+            AND coalesce(b2.sensitivity_level, 'normal') IN ['normal', 'public', 'personal']
+            AND coalesce(b2.active, true) = true
+
+        WITH e, subjects, triggers, em,
+             collect(DISTINCT {content: th.content, distortion: th.distortion}) AS em_thoughts,
+             collect(DISTINCT {description: b1.description, category: b1.category, adaptive: b1.adaptive, significance: b1.significance}) +
+             collect(DISTINCT {description: b2.description, category: b2.category, adaptive: b2.adaptive, significance: b2.significance}) AS em_behaviors
+
+        WITH e, subjects, triggers,
+             collect(CASE WHEN em IS NULL THEN NULL ELSE {
+                 label: em.label,
+                 thoughts:  [x IN em_thoughts  WHERE x.content     IS NOT NULL][..$thought_cap],
+                 behaviors: [x IN em_behaviors WHERE x.description IS NOT NULL][..$behavior_cap]
+             } END) AS emotion_chains_raw
+
         RETURN e.description                                AS description,
                e.occurred_at                               AS occurred_at,
                e.valence                                   AS valence,
@@ -378,9 +417,7 @@ async def _rehydrate_experience(user_id: str, exp_id: str) -> dict[str, Any] | N
                coalesce(e.sensitivity_level, 'normal')    AS sensitivity_level,
                [x IN subjects  WHERE x IS NOT NULL][..$people_cap]   AS subjects,
                [x IN triggers  WHERE x IS NOT NULL][..$trigger_cap]  AS triggers,
-               [x IN emotions  WHERE x IS NOT NULL][..$emotion_cap]  AS emotions,
-               [x IN thoughts  WHERE x.content IS NOT NULL][..$thought_cap]        AS thoughts,
-               [x IN behaviors WHERE x.description IS NOT NULL][..$behavior_cap]   AS behaviors
+               [x IN emotion_chains_raw WHERE x IS NOT NULL][..$emotion_cap] AS emotion_chains
         """,
         {
             "user_id":     user_id,
@@ -397,13 +434,54 @@ async def _rehydrate_experience(user_id: str, exp_id: str) -> dict[str, Any] | N
     rec = dict(records[0])
     if _is_phq_memory_noise(rec.get("description")):
         return None
+    _add_flat_compat_fields(rec)
     tier = rec.get("sensitivity_level") or "normal"
     importance = float(rec.get("significance") or 0.0)
     return _apply_sensitivity_redaction(rec, tier, importance)
 
 
+def _add_flat_compat_fields(rec: dict[str, Any]) -> None:
+    """Derive the old flat emotions/thoughts/behaviors lists (deduplicated
+    union across emotion_chains) so existing consumers that only check
+    truthiness -- compute_relation_richness (agentic/memory/ranking/candidate.py)
+    and _rehydrate_memory's PHQ-noise filter -- keep working unchanged. These
+    consumers never relied on trigger-to-emotion pairing, only on "is there
+    any data here", so a flat union loses nothing they use."""
+    chains = rec.get("emotion_chains") or []
+    emotions: list[str] = []
+    thoughts: list[dict[str, Any]] = []
+    behaviors: list[dict[str, Any]] = []
+    seen_thoughts: set[str] = set()
+    seen_behaviors: set[str] = set()
+    for chain in chains:
+        if not isinstance(chain, dict):
+            continue
+        label = chain.get("label")
+        if label:
+            emotions.append(label)
+        for th in chain.get("thoughts") or []:
+            key = str(th)
+            if key not in seen_thoughts:
+                seen_thoughts.add(key)
+                thoughts.append(th)
+        for b in chain.get("behaviors") or []:
+            key = str(b)
+            if key not in seen_behaviors:
+                seen_behaviors.add(key)
+                behaviors.append(b)
+    rec["emotions"] = emotions
+    rec["thoughts"] = thoughts
+    rec["behaviors"] = behaviors
+
+
 async def _rehydrate_memory(user_id: str, mem_id: str) -> dict[str, Any] | None:
-    """summarize bounded view w/sensitivity tier policy"""
+    """summarize bounded view w/sensitivity tier policy.
+
+    Subjects/triggers stay a flat DISTINCT-collected list across all
+    experiences under this memory (harmless -- nothing downstream pairs them
+    with anything else). Emotions are isolated into their own UNWIND pass so
+    each emotion keeps only its own Thought/Behavior descendants, instead of
+    every experience's emotions/thoughts/behaviors bucket-mixing together."""
     records = await get_client().execute_read(
         """
         MATCH (u:User {id: $user_id})-[:HAS_MEMORY]->(m:Memory {id: $mem_id})
@@ -418,7 +496,14 @@ async def _rehydrate_memory(user_id: str, mem_id: str) -> dict[str, Any] | None:
             AND ip.t_invalid IS NULL
         OPTIONAL MATCH (e)-[rt:TRIGGERED_BY]->(t:Trigger)
           WHERE rt.t_invalid IS NULL AND coalesce(t.active, true) = true
-        OPTIONAL MATCH (e)-[re:TRIGGERED_EMOTION]->(em:Emotion)
+        WITH m, s,
+             collect(DISTINCT e.description) AS exp_descriptions,
+             collect(DISTINCT p.name)        AS subjects,
+             collect(DISTINCT t.description) AS triggers,
+             collect(DISTINCT e)             AS exp_nodes
+
+        UNWIND (CASE WHEN exp_nodes = [] THEN [null] ELSE exp_nodes END) AS e2
+        OPTIONAL MATCH (e2)-[re:TRIGGERED_EMOTION]->(em:Emotion)
           WHERE re.t_invalid IS NULL AND coalesce(em.active, true) = true
         OPTIONAL MATCH (em)-[et:ACTIVATED_THOUGHT|ASSOCIATED_WITH]->(th:Thought)
           WHERE et.t_invalid IS NULL
@@ -428,13 +513,16 @@ async def _rehydrate_memory(user_id: str, mem_id: str) -> dict[str, Any] | None:
           WHERE eb.t_invalid IS NULL
             AND coalesce(b.active, true) = true
             AND coalesce(b.sensitivity_level, 'normal') IN ['normal', 'public', 'personal']
-        WITH m, s,
-             collect(DISTINCT e.description) AS exp_descriptions,
-             collect(DISTINCT p.name)        AS subjects,
-             collect(DISTINCT t.description) AS triggers,
-             collect(DISTINCT em.label)      AS emotions,
-             collect(DISTINCT {content: th.content, distortion: th.distortion}) AS thoughts,
-             collect(DISTINCT {description: b.description, category: b.category, adaptive: b.adaptive}) AS behaviors
+        WITH m, s, exp_descriptions, subjects, triggers, em,
+             collect(DISTINCT {content: th.content, distortion: th.distortion}) AS em_thoughts,
+             collect(DISTINCT {description: b.description, category: b.category, adaptive: b.adaptive, significance: b.significance}) AS em_behaviors
+        WITH m, s, exp_descriptions, subjects, triggers,
+             collect(CASE WHEN em IS NULL THEN NULL ELSE {
+                 label: em.label,
+                 thoughts:  [x IN em_thoughts  WHERE x.content     IS NOT NULL][..$thought_cap],
+                 behaviors: [x IN em_behaviors WHERE x.description IS NOT NULL][..$behavior_cap]
+             } END) AS emotion_chains_raw
+
         RETURN m.summary                                    AS summary,
                m.importance                                 AS importance,
                m.created_at                                 AS created_at,
@@ -444,9 +532,7 @@ async def _rehydrate_memory(user_id: str, mem_id: str) -> dict[str, Any] | None:
                [x IN exp_descriptions WHERE x IS NOT NULL][..$exp_cap]      AS experiences,
                [x IN subjects         WHERE x IS NOT NULL][..$people_cap]  AS subjects,
                [x IN triggers         WHERE x IS NOT NULL][..$trigger_cap] AS triggers,
-               [x IN emotions         WHERE x IS NOT NULL][..$emotion_cap] AS emotions,
-               [x IN thoughts         WHERE x.content IS NOT NULL][..$thought_cap]        AS thoughts,
-               [x IN behaviors        WHERE x.description IS NOT NULL][..$behavior_cap]   AS behaviors
+               [x IN emotion_chains_raw WHERE x IS NOT NULL][..$emotion_cap] AS emotion_chains
         LIMIT 1
         """,
         {
@@ -467,6 +553,7 @@ async def _rehydrate_memory(user_id: str, mem_id: str) -> dict[str, Any] | None:
     if _is_phq_memory_noise(rec.get("summary")):
         return None
     rec["experiences"] = _without_phq_noise_strings(rec.get("experiences") or [])
+    _add_flat_compat_fields(rec)
     rec["thoughts"] = _without_phq_noise_dicts(rec.get("thoughts") or [], ("content",))
     tier = rec.get("sensitivity_level") or "normal"
     importance = float(rec.get("importance") or 0.0)
@@ -501,7 +588,12 @@ async def _fetch_keyword_experiences(
              toLower(coalesce(e.description, '')) AS exp_text,
              collect(DISTINCT toLower(coalesce(tr.description, ''))) AS trigger_texts,
              collect(DISTINCT toLower(coalesce(em.label, ''))) AS emotion_texts,
-             collect(DISTINCT toLower(coalesce(th.content, ''))) AS thought_texts
+             collect(DISTINCT toLower(coalesce(th.content, ''))) AS thought_texts,
+             collect(DISTINCT coalesce(tr.aliases, [])) AS trigger_alias_lists
+        WITH e, exp_text, trigger_texts, emotion_texts, thought_texts,
+             reduce(acc = [], lst IN trigger_alias_lists | acc + lst) AS trigger_alias_texts_raw
+        WITH e, exp_text, trigger_texts, emotion_texts, thought_texts,
+             [a IN trigger_alias_texts_raw WHERE a IS NOT NULL | toLower(a)] AS trigger_alias_texts
         WITH e,
              reduce(score = 0, term IN $terms |
                 score
@@ -509,6 +601,7 @@ async def _fetch_keyword_experiences(
                 + CASE WHEN any(x IN trigger_texts WHERE x CONTAINS term) THEN 2 ELSE 0 END
                 + CASE WHEN any(x IN thought_texts WHERE x CONTAINS term) THEN 2 ELSE 0 END
                 + CASE WHEN any(x IN emotion_texts WHERE x CONTAINS term) THEN 1 ELSE 0 END
+                + CASE WHEN any(x IN trigger_alias_texts WHERE x CONTAINS term) THEN 2 ELSE 0 END
              ) AS match_score
         WHERE match_score > 0
         RETURN e.id AS id, match_score, coalesce(e.significance, 0.0) AS significance
@@ -529,6 +622,47 @@ async def _fetch_keyword_experiences(
     return hydrated
 
 
+async def _fetch_graph_expansion(
+    user_id: str,
+    seed_exp_id: str,
+    excluded_ids: set[str],
+    *,
+    cap: int = GRAPH_EXPANSION_CAP,
+) -> list[str]:
+    """Spreading activation (Collins & Loftus 1975): given the seed
+    Experience pgvector already found, take one real graph hop to sibling
+    experiences that share the SAME Trigger/Subject node identity -- not
+    text similarity. This is the one place discovery goes beyond
+    "decorate whatever the vector search already picked" into genuinely
+    finding memories a semantic-similarity-only system cannot reach
+    (worded completely differently, same underlying trigger/relationship).
+    pgvector remains the entry point; this only widens from it."""
+    if not seed_exp_id:
+        return []
+    rows = await get_client().execute_read(
+        """
+        MATCH (u:User {id: $user_id})-[:EXPERIENCED]->(seed:Experience {id: $seed_exp_id})
+        MATCH (seed)-[:TRIGGERED_BY|INVOLVES_SUBJECT]->(shared)
+        WHERE shared:Trigger OR shared:Subject
+        MATCH (u)-[:EXPERIENCED]->(other:Experience)-[:TRIGGERED_BY|INVOLVES_SUBJECT]->(shared)
+        WHERE other.id <> seed.id
+          AND NOT other.id IN $excluded_ids
+          AND coalesce(other.active, true) = true
+          AND coalesce(other.sensitivity_level, 'normal') IN ['normal', 'public', 'personal']
+        RETURN DISTINCT other.id AS id, coalesce(other.significance, 0.0) AS significance
+        ORDER BY significance DESC
+        LIMIT $cap
+        """,
+        {
+            "user_id": user_id,
+            "seed_exp_id": seed_exp_id,
+            "excluded_ids": list(excluded_ids),
+            "cap": cap,
+        },
+    )
+    return [str(r["id"]) for r in rows]
+
+
 def _render_thoughts(thoughts: list[Any]) -> list[str]:
     rendered: list[str] = []
     for th in thoughts:
@@ -545,9 +679,14 @@ def _render_thoughts(thoughts: list[Any]) -> list[str]:
 def _render_behaviors(behaviors: list[Any]) -> list[str]:
     rendered: list[str] = []
     seen: set[str] = set()
-    for b in behaviors:
-        if not isinstance(b, dict):
-            continue
+    # Most significant first, so a capped list keeps the behaviors worth
+    # mentioning rather than an arbitrary collect() order.
+    ordered = sorted(
+        (b for b in behaviors if isinstance(b, dict)),
+        key=lambda b: b.get("significance") if isinstance(b.get("significance"), (int, float)) else -1.0,
+        reverse=True,
+    )
+    for b in ordered:
         descb = (b.get("description") or "").strip()
         if not descb:
             continue
@@ -572,27 +711,37 @@ def _render_behaviors(behaviors: list[Any]) -> list[str]:
 def _render_causal_chain(
     *,
     triggers: list[str],
-    emotions: list[str],
-    thoughts: list[str],
-    behaviors: list[str],
+    emotion_chains: list[dict[str, Any]],
 ) -> str:
-    """Render Trigger/Emotion/Thought/Behavior as one directional chain,
-    reflecting the KG relation names (TRIGGERED_BY, TRIGGERED_EMOTION,
-    ACTIVATED_THOUGHT, LED_TO_BEHAVIOR) instead of disjoint category
-    bullets, so the causal link the graph already models is legible to
-    the LLM reading the prompt, not just to the Cypher traversal that
-    fetched it.
+    """Render each Emotion's own Thought/Behavior sub-chain separately,
+    reflecting the KG relation names (TRIGGERED_EMOTION, ACTIVATED_THOUGHT,
+    LED_TO_BEHAVIOR) instead of bucket-collecting every node type into one
+    flat list. Triggers have no Trigger->Emotion edge in the schema to pair
+    against, so they render as shared co-occurring context, never fused
+    into one false arrow when there's more than one trigger or emotion.
     """
     segments: list[str] = []
     if triggers:
         segments.append("Triggers: " + ", ".join(t for t in triggers if t))
-    if emotions:
-        segments.append("Emotions: " + ", ".join(e for e in emotions if e))
-    if thoughts:
-        segments.append("Thoughts: " + "; ".join(thoughts))
-    if behaviors:
-        segments.append("Behaviors: " + "; ".join(behaviors))
-    return " → ".join(segments)
+
+    chain_segments: list[str] = []
+    for chain in emotion_chains:
+        if not isinstance(chain, dict):
+            continue
+        emotion_label = (chain.get("label") or "").strip()
+        if not emotion_label:
+            continue
+        parts = [emotion_label]
+        rendered_thoughts = _render_thoughts(chain.get("thoughts") or [])
+        rendered_behaviors = _render_behaviors(chain.get("behaviors") or [])
+        if rendered_thoughts:
+            parts.append("thought: " + "; ".join(rendered_thoughts))
+        if rendered_behaviors:
+            parts.append("behavior: " + "; ".join(rendered_behaviors))
+        chain_segments.append(" → ".join(parts))
+    if chain_segments:
+        segments.append("Emotion chains: " + " | ".join(chain_segments))
+    return " / ".join(segments)
 
 
 def _format_focused_recall(items: list[dict[str, Any]], *, char_budget: int = FOCUSED_CHAR_BUDGET) -> str:
@@ -625,19 +774,13 @@ def _format_focused_recall(items: list[dict[str, Any]], *, char_budget: int = FO
 
             subjects = it.get("subjects") or []
             triggers = it.get("triggers") or []
-            emotions = it.get("emotions") or []
-            thoughts = it.get("thoughts") or []
-            behaviors = it.get("behaviors") or []
+            emotion_chains = it.get("emotion_chains") or []
             if subjects:
                 lines.append("      * Subjects: " + ", ".join([p for p in subjects if p]))
 
-            rendered_thoughts = _render_thoughts(thoughts)
-            rendered_behaviors = _render_behaviors(behaviors)
             causal_chain = _render_causal_chain(
                 triggers=triggers,
-                emotions=emotions,
-                thoughts=rendered_thoughts,
-                behaviors=rendered_behaviors,
+                emotion_chains=emotion_chains,
             )
             if causal_chain:
                 lines.append("      * " + causal_chain)
@@ -656,14 +799,10 @@ def _format_focused_recall(items: list[dict[str, Any]], *, char_budget: int = FO
             if subjects:
                 lines.append("      * Subjects: " + ", ".join(subjects))
             triggers = [t for t in (it.get("triggers") or []) if t]
-            emotions = [e for e in (it.get("emotions") or []) if e]
-            rendered_thoughts = _render_thoughts(it.get("thoughts") or [])
-            rendered_behaviors = _render_behaviors(it.get("behaviors") or [])
+            emotion_chains = it.get("emotion_chains") or []
             causal_chain = _render_causal_chain(
                 triggers=triggers,
-                emotions=emotions,
-                thoughts=rendered_thoughts,
-                behaviors=rendered_behaviors,
+                emotion_chains=emotion_chains,
             )
             if causal_chain:
                 lines.append("      * " + causal_chain)
@@ -691,6 +830,7 @@ class RetrievedContext:
     active_distortions:   list[dict[str, Any]] = field(default_factory=list)
     recurring_triggers:   list[dict[str, Any]] = field(default_factory=list)
     recurring_themes:     list[dict[str, Any]] = field(default_factory=list)
+    belief_evolution:     list[dict[str, Any]] = field(default_factory=list)
     # audit3 / access
     retrieval_context_dict: dict[str, Any] = field(default_factory=dict)
 
@@ -726,12 +866,14 @@ class RetrievedContext:
             for p in self.important_subjects:
                 name        = p.get("name", "unknown")
                 role        = p.get("role", "unknown")
+                subject_type = p.get("subject_type")
+                type_part   = f" [{subject_type}]" if subject_type and subject_type != "person" else ""
                 sentiment   = p.get("sentiment") or 0.0
                 quality     = p.get("relationship_quality", "neutral")
                 mentions    = p.get("mention_count", 0) or 0
                 experiences = p.get("experiences") or []
                 lines.append(
-                    f"  - {name} ({role}, sentiment {sentiment:+.2f}, "
+                    f"  - {name}{type_part} ({role}, sentiment {sentiment:+.2f}, "
                     f"{quality}, mentioned {mentions}x)"
                 )
                 for exp in experiences:
@@ -762,10 +904,12 @@ class RetrievedContext:
         if self.recurring_triggers:
             lines.append("\n[Recurring triggers]")
             for t in self.recurring_triggers:
+                significance = t.get("significance")
+                sig_part = f", significance {significance:.2f}" if isinstance(significance, (int, float)) else ""
                 lines.append(
                     f"  - [{t.get('category', 'unknown')}] "
                     f"{t.get('description', '')} "
-                    f"(seen {t.get('frequency', 1)}x)"
+                    f"(seen {t.get('frequency', 1)}x{sig_part})"
                 )
 
         if self.recurring_themes:
@@ -783,6 +927,20 @@ class RetrievedContext:
                     valence_label = "positive" if sentiment > 0.1 else ("negative" if sentiment < -0.1 else "neutral")
                     parts.append(f"valence {valence_label}")
                 lines.append("  - " + ", ".join(parts))
+                for example in (t.get("example_experiences") or [])[:2]:
+                    if example:
+                        lines.append(f"      * e.g. {example}")
+
+        if self.belief_evolution:
+            lines.append("\n[Belief evolution]")
+            for item in self.belief_evolution:
+                old = (item.get("old_content") or "").strip()
+                new = (item.get("new_content") or "").strip()
+                if not old or not new:
+                    continue
+                reason = item.get("reason")
+                suffix = f" (reason: {reason})" if reason else ""
+                lines.append(f'  - Used to think/feel: "{old}" -> now: "{new}"{suffix}')
 
         if len(lines) == 1:
             lines.append("  No prior context available for this user.")
@@ -930,6 +1088,7 @@ async def _fetch_subjects(user_id: str) -> list[dict[str, Any]]:
              [d IN all_experiences WHERE d IS NOT NULL][..$exp_cap] AS experiences
         RETURN p.name                  AS name,
                p.role                  AS role,
+               p.subject_type          AS subject_type,
                p.sentiment             AS sentiment,
                coalesce(r.quality, 'unknown') AS relationship_quality,
                coalesce(p.mention_count, 0) AS mention_count,
@@ -1031,10 +1190,11 @@ async def _fetch_recurring_triggers(user_id: str) -> list[dict[str, Any]]:
         MATCH (u:User {id: $user_id})-[:HAS_TRIGGER]->(t:Trigger)
         WHERE t.active = true
           AND coalesce(t.sensitivity_level, 'normal') IN ['normal', 'public', 'personal']
-        RETURN t.category    AS category,
-               t.description AS description,
-               t.frequency   AS frequency
-        ORDER BY t.frequency DESC
+        RETURN t.category      AS category,
+               t.description   AS description,
+               t.frequency     AS frequency,
+               t.significance  AS significance
+        ORDER BY coalesce(t.significance, 0.5) DESC, t.frequency DESC
         LIMIT 3
         """,
         {"user_id": user_id},
@@ -1042,20 +1202,89 @@ async def _fetch_recurring_triggers(user_id: str) -> list[dict[str, Any]]:
 
 
 async def _fetch_themes(user_id: str) -> list[dict[str, Any]]:
-    """top5 themes ranked"""
+    """top5 themes ranked, cross-referenced back to the Experience/Thought
+    that actually produced them via RELATED_TO_TOPIC -- written by the
+    finalizer since kg_extractor extracts it, but never read before this,
+    so recurring themes surfaced as a bare label with no link back to what
+    concretely produced them."""
     return await get_client().execute_read(
         """
         MATCH (u:User {id: $user_id})-[r:HAS_RECURRING_THEME]->(top:Topic)
         WHERE r.t_invalid IS NULL
+        OPTIONAL MATCH (src)-[rel:RELATED_TO_TOPIC]->(top)
+          WHERE rel.t_invalid IS NULL
+            AND (src:Experience OR src:Thought)
+            AND coalesce(src.active, true) = true
+            AND coalesce(src.sensitivity_level, 'normal') IN ['normal', 'public', 'personal']
+        WITH top, r, collect(DISTINCT coalesce(src.description, src.content)) AS linked_texts
         RETURN top.name          AS topic,
                top.category      AS category,
                top.avg_sentiment AS avg_sentiment,
-               r.times_reinforced AS times_reinforced
+               r.times_reinforced AS times_reinforced,
+               [x IN linked_texts WHERE x IS NOT NULL][..3] AS example_experiences
         ORDER BY r.times_reinforced DESC, r.last_reinforced DESC
         LIMIT 5
         """,
         {"user_id": user_id},
     )
+
+
+async def _fetch_belief_evolution(user_id: str, *, limit: int = BELIEF_EVOLUTION_CAP) -> list[dict[str, Any]]:
+    """Surface the SUPERSEDES (Thought)/REAPPRAISED_AS (Experience)/
+    REPLACED_BY (Behavior) lifecycle edges -- written by
+    kg_algorithm/supersession.py and kg_algorithm/lifecycle.py, never read
+    anywhere before this. Note the direction asymmetry: SUPERSEDES points
+    new->old, REAPPRAISED_AS/REPLACED_BY point old->new.
+
+    This is an ambient, always-on signal (like recurring triggers/themes),
+    not gated to this turn's vector search, so it uses a stricter
+    sensitivity gate than per-item focused recall: both sides of a pair
+    must be normal/public/personal, excluding sensitive/trauma entirely --
+    resurfacing a traumatic old belief on an unrelated turn is a materially
+    different risk than surfacing it only when focused recall already
+    judged it relevant to what the user is discussing right now.
+    """
+    client = get_client()
+    thought_rows, exp_rows, behavior_rows = await asyncio.gather(
+        client.execute_read(
+            """
+            MATCH (u:User {id: $user_id})-[:HAS_THOUGHT]->(new:Thought)-[s:SUPERSEDES]->(old:Thought)
+            WHERE coalesce(old.sensitivity_level, 'normal') IN ['normal', 'public', 'personal']
+              AND coalesce(new.sensitivity_level, 'normal') IN ['normal', 'public', 'personal']
+            RETURN 'thought' AS kind, old.content AS old_content, new.content AS new_content,
+                   toString(s.at) AS changed_at, s.reason AS reason
+            ORDER BY s.at DESC LIMIT $limit
+            """,
+            {"user_id": user_id, "limit": limit},
+        ),
+        client.execute_read(
+            """
+            MATCH (u:User {id: $user_id})-[:EXPERIENCED]->(old:Experience)-[r:REAPPRAISED_AS]->(new:Experience)
+            WHERE coalesce(new.active, true) = true
+              AND coalesce(old.sensitivity_level, 'normal') IN ['normal', 'public', 'personal']
+              AND coalesce(new.sensitivity_level, 'normal') IN ['normal', 'public', 'personal']
+            RETURN 'experience' AS kind, old.description AS old_content, new.description AS new_content,
+                   toString(r.t_valid) AS changed_at, r.reason AS reason
+            ORDER BY r.t_valid DESC LIMIT $limit
+            """,
+            {"user_id": user_id, "limit": limit},
+        ),
+        client.execute_read(
+            """
+            MATCH (u:User {id: $user_id})-[:EXHIBITED]->(old:Behavior)-[r:REPLACED_BY]->(new:Behavior)
+            WHERE coalesce(new.active, true) = true
+              AND coalesce(old.sensitivity_level, 'normal') IN ['normal', 'public', 'personal']
+              AND coalesce(new.sensitivity_level, 'normal') IN ['normal', 'public', 'personal']
+            RETURN 'behavior' AS kind, old.description AS old_content, new.description AS new_content,
+                   toString(r.t_valid) AS changed_at, r.reason AS reason
+            ORDER BY r.t_valid DESC LIMIT $limit
+            """,
+            {"user_id": user_id, "limit": limit},
+        ),
+    )
+    merged = [dict(row) for row in (*thought_rows, *exp_rows, *behavior_rows)]
+    merged.sort(key=lambda r: r.get("changed_at") or "", reverse=True)
+    return _without_phq_noise_dicts(merged[:limit], ("old_content", "new_content"))
 
 
 
@@ -1226,6 +1455,7 @@ async def build_context(
         _fetch_active_distortions(user_id),               # 6 — static
         _fetch_recurring_triggers(user_id),               # 7 — static
         _fetch_themes(user_id),                           # 8 — static (themes)
+        _fetch_belief_evolution(user_id),                 # 9 — static (lifecycle)
         return_exceptions=True,
     )
 
@@ -1245,6 +1475,7 @@ async def build_context(
         active_distortions=safe(results[6], []),
         recurring_triggers=safe(results[7], []),
         recurring_themes=safe(results[8], []),
+        belief_evolution=safe(results[9], []),
     )
     query_terms = _query_terms(query_text)
     generic_memory_query = _is_generic_memory_query(query_text)
@@ -1372,6 +1603,43 @@ async def build_context(
                         d = (h.get("description") or "").strip()
                         if d:
                             focused_experience_descriptions.add(d)
+
+                experience_seeds = [h for h in hydrated if h.get("kind") == "Experience" and h.get("neo4j_node_id")]
+                if experience_seeds:
+                    seed = max(experience_seeds, key=lambda h: h.get("similarity") or 0.0)
+                    excluded_ids = {h["neo4j_node_id"] for h in hydrated if h.get("neo4j_node_id")}
+                    try:
+                        expansion_ids = await _fetch_graph_expansion(
+                            user_id, seed["neo4j_node_id"], excluded_ids
+                        )
+                    except Exception as exc:
+                        logger.warning("Graph expansion fetch failed: %s", exc)
+                        expansion_ids = []
+                    for exp_id in expansion_ids:
+                        rec = await _rehydrate_experience(user_id, exp_id)
+                        if not rec:
+                            continue
+                        rec["kind"] = "Experience"
+                        rec["neo4j_node_id"] = exp_id
+                        rec["similarity"] = None
+                        rec["source_signal"] = "graph_expansion"
+                        hydrated.append(rec)
+                        _ranked_candidates.append(Candidate(
+                            id=exp_id,
+                            type="Experience",
+                            text=rec.get("description") or "",
+                            source_signal="graph_expansion",
+                            similarity=0.0,
+                            importance=float(rec.get("significance") or 0.0),
+                            created_at_iso=_to_iso_string(rec.get("occurred_at")),
+                            relation_richness=compute_relation_richness(rec),
+                            hydrated=rec,
+                        ))
+                        d = (rec.get("description") or "").strip()
+                        if d:
+                            focused_experience_descriptions.add(d)
+                    if expansion_ids:
+                        ctx.focused_recall = _format_focused_recall(hydrated, char_budget=effective_focused_budget)
 
             if not hydrated and query_text:
                 hydrated = await _fetch_keyword_experiences(user_id, query_text)

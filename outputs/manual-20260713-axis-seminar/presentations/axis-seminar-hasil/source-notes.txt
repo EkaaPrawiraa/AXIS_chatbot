@@ -1,0 +1,3 @@
+Primary source: docs/thesis_latex/seminar_hasil.pdf and its LaTeX chapters.
+Reference style source: docs/references/PPT_SidangTA_Individu_NextGen_13522110.pdf.
+Claims in the deck use only results stated in Chapter IV. Planned user and voice-latency evaluations are marked as planned.

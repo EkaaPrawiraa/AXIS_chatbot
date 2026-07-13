@@ -1,0 +1,195 @@
+[warning] slide-01.layout.json:tight-text:13: Rancangan, implementasi, dan bukti awal evaluasi text box is tight: height 28px for 2 line(s) at 15px.
+    - shape Rancangan, implementasi, dan bukti awal evaluasi bbox=[856,590,280,28]
+[warning] slide-02.layout.json:tight-text:13: Mahasiswa membutuhkan ruang percakapan non-klinis yang dapat mengikuti konteks hidupnya tanpa mengambil alih peran tenaga profesional. text box is tight: height 48px for 2 line(s) at 21px.
+    - shape Mahasiswa membutuhkan ruang percakapan non-klinis yang dapat mengikuti konteks hidupnya tanpa mengam bbox=[70,155,1040,48]
+[warning] slide-02.layout.json:tight-text:16: 1 text box is tight: height 18px for 1 line(s) at 16px.
+    - shape 1 bbox=[88,272,34,18]
+[warning] slide-02.layout.json:tight-text:21: 2 text box is tight: height 18px for 1 line(s) at 16px.
+    - shape 2 bbox=[490,272,34,18]
+[warning] slide-02.layout.json:tight-text:26: 3 text box is tight: height 18px for 1 line(s) at 16px.
+    - shape 3 bbox=[892,272,34,18]
+[warning] slide-02.layout.json:tight-text:27: Pengguna perlu tetap memegang kendali text box is tight: height 24px for 2 line(s) at 18px.
+    - shape Pengguna perlu tetap memegang kendali bbox=[940,265,251,24]
+[warning] slide-02.layout.json:tight-text:30: Sistem yang ada menunjukkan potongan kemampuan, tetapi belum menyatukan percakapan reflektif, skrining ringan, memori relasional, dan ken... text box is tight: height 70px for 3 line(s) at 24px.
+    - shape Sistem yang ada menunjukkan potongan kemampuan, tetapi belum menyatukan percakapan reflektif, skrini bbox=[70,528,1110,70]
+[warning] slide-02.layout.json:split-inline:4:6: MASALAH and SOLUSI look like manually split inline text.
+    - shape MASALAH bbox=[70,685,116,16]
+    - shape SOLUSI bbox=[198,685,116,16]
+[warning] slide-02.layout.json:split-inline:6:8: SOLUSI and IMPLEMENTASI look like manually split inline text.
+    - shape SOLUSI bbox=[198,685,116,16]
+    - shape IMPLEMENTASI bbox=[326,685,116,16]
+[warning] slide-02.layout.json:split-inline:8:10: IMPLEMENTASI and EVALUASI look like manually split inline text.
+    - shape IMPLEMENTASI bbox=[326,685,116,16]
+    - shape EVALUASI bbox=[454,685,116,16]
+[warning] slide-03.layout.json:tight-text:15: RM1 text box is tight: height 18px for 1 line(s) at 16px.
+    - shape RM1 bbox=[88,188,34,18]
+[warning] slide-03.layout.json:tight-text:20: RM2 text box is tight: height 18px for 1 line(s) at 16px.
+    - shape RM2 bbox=[88,326,34,18]
+[warning] slide-03.layout.json:tight-text:25: RM3 text box is tight: height 18px for 1 line(s) at 16px.
+    - shape RM3 bbox=[88,464,34,18]
+[warning] slide-03.layout.json:tight-text:29: Dibuktikan melalui fungsi komponen, ketahanan skenario kritis, kemampuan pemanggilan kembali memori, serta pembandingan perilaku percakapan. text box is tight: height 28px for 2 line(s) at 17px.
+    - shape Dibuktikan melalui fungsi komponen, ketahanan skenario kritis, kemampuan pemanggilan kembali memori, bbox=[70,634,1070,28]
+[warning] slide-03.layout.json:split-inline:4:6: MASALAH and SOLUSI look like manually split inline text.
+    - shape MASALAH bbox=[70,685,116,16]
+    - shape SOLUSI bbox=[198,685,116,16]
+[warning] slide-03.layout.json:split-inline:6:8: SOLUSI and IMPLEMENTASI look like manually split inline text.
+    - shape SOLUSI bbox=[198,685,116,16]
+    - shape IMPLEMENTASI bbox=[326,685,116,16]
+[warning] slide-03.layout.json:split-inline:8:10: IMPLEMENTASI and EVALUASI look like manually split inline text.
+    - shape IMPLEMENTASI bbox=[326,685,116,16]
+    - shape EVALUASI bbox=[454,685,116,16]
+[warning] slide-04.layout.json:tight-text:15: dirancang untuk menemani proses refleksi sehari-hari, bukan mendiagnosis atau menggantikan bantuan profesional. text box is tight: height 44px for 2 line(s) at 20px.
+    - shape dirancang untuk menemani proses refleksi sehari-hari, bukan mendiagnosis atau menggantikan bantuan p bbox=[108,260,760,44]
+[warning] slide-04.layout.json:split-inline:4:6: MASALAH and SOLUSI look like manually split inline text.
+    - shape MASALAH bbox=[70,685,116,16]
+    - shape SOLUSI bbox=[198,685,116,16]
+[warning] slide-04.layout.json:split-inline:6:8: SOLUSI and IMPLEMENTASI look like manually split inline text.
+    - shape SOLUSI bbox=[198,685,116,16]
+    - shape IMPLEMENTASI bbox=[326,685,116,16]
+[warning] slide-04.layout.json:split-inline:8:10: IMPLEMENTASI and EVALUASI look like manually split inline text.
+    - shape IMPLEMENTASI bbox=[326,685,116,16]
+    - shape EVALUASI bbox=[454,685,116,16]
+[warning] slide-05.layout.json:tight-text:13: K1–K3 menjawab rumusan masalah utama. K4 dan K5 adalah kebutuhan lintas-rumusan agar pengalaman pendampingan tetap aman dan dapat dikenda... text box is tight: height 38px for 2 line(s) at 18px.
+    - shape K1–K3 menjawab rumusan masalah utama. K4 dan K5 adalah kebutuhan lintas-rumusan agar pengalaman pend bbox=[70,158,1120,38]
+[warning] slide-05.layout.json:tight-text:16: K1 text box is tight: height 18px for 1 line(s) at 17px.
+    - shape K1 bbox=[92,294,45,18]
+[warning] slide-05.layout.json:tight-text:20: K2 text box is tight: height 18px for 1 line(s) at 17px.
+    - shape K2 bbox=[320,294,45,18]
+[warning] slide-05.layout.json:tight-text:24: K3 text box is tight: height 18px for 1 line(s) at 17px.
+    - shape K3 bbox=[548,294,45,18]
+[warning] slide-05.layout.json:tight-text:28: K4 text box is tight: height 18px for 1 line(s) at 17px.
+    - shape K4 bbox=[776,294,45,18]
+[warning] slide-05.layout.json:tight-text:32: K5 text box is tight: height 18px for 1 line(s) at 17px.
+    - shape K5 bbox=[1004,294,45,18]
+[warning] slide-05.layout.json:split-inline:4:6: MASALAH and SOLUSI look like manually split inline text.
+    - shape MASALAH bbox=[70,685,116,16]
+    - shape SOLUSI bbox=[198,685,116,16]
+[warning] slide-05.layout.json:split-inline:6:8: SOLUSI and IMPLEMENTASI look like manually split inline text.
+    - shape SOLUSI bbox=[198,685,116,16]
+    - shape IMPLEMENTASI bbox=[326,685,116,16]
+[warning] slide-05.layout.json:split-inline:8:10: IMPLEMENTASI and EVALUASI look like manually split inline text.
+    - shape IMPLEMENTASI bbox=[326,685,116,16]
+    - shape EVALUASI bbox=[454,685,116,16]
+[warning] slide-06.layout.json:tight-text:20: Memahami kondisi text box is tight: height 30px for 2 line(s) at 19px.
+    - shape Memahami kondisi bbox=[322,307,164,30]
+[warning] slide-06.layout.json:tight-text:39: Confession Space adalah percakapan suara sementara. Transkripnya membantu interaksi saat itu, tetapi tidak masuk ke penulisan memori jang... text box is tight: height 35px for 2 line(s) at 17px.
+    - shape Confession Space adalah percakapan suara sementara. Transkripnya membantu interaksi saat itu, tetapi bbox=[250,530,920,35]
+[warning] slide-06.layout.json:split-inline:4:6: MASALAH and SOLUSI look like manually split inline text.
+    - shape MASALAH bbox=[70,685,116,16]
+    - shape SOLUSI bbox=[198,685,116,16]
+[warning] slide-06.layout.json:split-inline:6:8: SOLUSI and IMPLEMENTASI look like manually split inline text.
+    - shape SOLUSI bbox=[198,685,116,16]
+    - shape IMPLEMENTASI bbox=[326,685,116,16]
+[warning] slide-06.layout.json:split-inline:8:10: IMPLEMENTASI and EVALUASI look like manually split inline text.
+    - shape IMPLEMENTASI bbox=[326,685,116,16]
+    - shape EVALUASI bbox=[454,685,116,16]
+[warning] slide-07.layout.json:split-inline:4:6: MASALAH and SOLUSI look like manually split inline text.
+    - shape MASALAH bbox=[70,685,116,16]
+    - shape SOLUSI bbox=[198,685,116,16]
+[warning] slide-07.layout.json:split-inline:6:8: SOLUSI and IMPLEMENTASI look like manually split inline text.
+    - shape SOLUSI bbox=[198,685,116,16]
+    - shape IMPLEMENTASI bbox=[326,685,116,16]
+[warning] slide-07.layout.json:split-inline:8:10: IMPLEMENTASI and EVALUASI look like manually split inline text.
+    - shape IMPLEMENTASI bbox=[326,685,116,16]
+    - shape EVALUASI bbox=[454,685,116,16]
+[warning] slide-08.layout.json:tight-text:30: PHQ-9 diposisikan sebagai skrining dan alat refleksi, bukan diagnosis. text box is tight: height 22px for 2 line(s) at 15px.
+    - shape PHQ-9 diposisikan sebagai skrining dan alat refleksi, bukan diagnosis. bbox=[670,572,455,22]
+[warning] slide-08.layout.json:split-inline:4:6: MASALAH and SOLUSI look like manually split inline text.
+    - shape MASALAH bbox=[70,685,116,16]
+    - shape SOLUSI bbox=[198,685,116,16]
+[warning] slide-08.layout.json:split-inline:6:8: SOLUSI and IMPLEMENTASI look like manually split inline text.
+    - shape SOLUSI bbox=[198,685,116,16]
+    - shape IMPLEMENTASI bbox=[326,685,116,16]
+[warning] slide-08.layout.json:split-inline:8:10: IMPLEMENTASI and EVALUASI look like manually split inline text.
+    - shape IMPLEMENTASI bbox=[326,685,116,16]
+    - shape EVALUASI bbox=[454,685,116,16]
+[warning] slide-09.layout.json:tight-text:27: Nilai graf yang diuji: kesinambungan konteks, relasi, dan lifecycle — bukan klaim otomatis peningkatan empati. text box is tight: height 28px for 2 line(s) at 14px.
+    - shape Nilai graf yang diuji: kesinambungan konteks, relasi, dan lifecycle — bukan klaim otomatis peningkat bbox=[725,559,405,28]
+[warning] slide-09.layout.json:split-inline:4:6: MASALAH and SOLUSI look like manually split inline text.
+    - shape MASALAH bbox=[70,685,116,16]
+    - shape SOLUSI bbox=[198,685,116,16]
+[warning] slide-09.layout.json:split-inline:6:8: SOLUSI and IMPLEMENTASI look like manually split inline text.
+    - shape SOLUSI bbox=[198,685,116,16]
+    - shape IMPLEMENTASI bbox=[326,685,116,16]
+[warning] slide-09.layout.json:split-inline:8:10: IMPLEMENTASI and EVALUASI look like manually split inline text.
+    - shape IMPLEMENTASI bbox=[326,685,116,16]
+    - shape EVALUASI bbox=[454,685,116,16]
+[warning] slide-10.layout.json:tight-text:16: Aplikasi web → gateway → orkestrasi percakapan → respons pengguna. text box is tight: height 36px for 2 line(s) at 17px.
+    - shape Aplikasi web → gateway → orkestrasi percakapan → respons pengguna. bbox=[94,291,430,36]
+[warning] slide-10.layout.json:tight-text:19: Sesi tidak aktif → finalisasi → ekstraksi dan penyimpanan memori hibrid. text box is tight: height 36px for 2 line(s) at 17px.
+    - shape Sesi tidak aktif → finalisasi → ekstraksi dan penyimpanan memori hibrid. bbox=[94,442,430,36]
+[warning] slide-10.layout.json:tight-text:22: Routing utama: masukan audio, mode PHQ-9, eskalasi krisis, dan keluaran suara. text box is tight: height 22px for 2 line(s) at 13px.
+    - shape Routing utama: masukan audio, mode PHQ-9, eskalasi krisis, dan keluaran suara. bbox=[92,631,445,22]
+[warning] slide-10.layout.json:split-inline:4:6: MASALAH and SOLUSI look like manually split inline text.
+    - shape MASALAH bbox=[70,685,116,16]
+    - shape SOLUSI bbox=[198,685,116,16]
+[warning] slide-10.layout.json:split-inline:6:8: SOLUSI and IMPLEMENTASI look like manually split inline text.
+    - shape SOLUSI bbox=[198,685,116,16]
+    - shape IMPLEMENTASI bbox=[326,685,116,16]
+[warning] slide-10.layout.json:split-inline:8:10: IMPLEMENTASI and EVALUASI look like manually split inline text.
+    - shape IMPLEMENTASI bbox=[326,685,116,16]
+    - shape EVALUASI bbox=[454,685,116,16]
+[warning] slide-11.layout.json:tight-text:2: Fitur pengguna menyajikan arsitektur sebagai pengalaman pendampingan text box is tight: height 52px for 2 line(s) at 33px.
+    - shape Fitur pengguna menyajikan arsitektur sebagai pengalaman pendampingan bbox=[70,68,1080,52]
+[warning] slide-11.layout.json:split-inline:4:6: MASALAH and SOLUSI look like manually split inline text.
+    - shape MASALAH bbox=[70,685,116,16]
+    - shape SOLUSI bbox=[198,685,116,16]
+[warning] slide-11.layout.json:split-inline:6:8: SOLUSI and IMPLEMENTASI look like manually split inline text.
+    - shape SOLUSI bbox=[198,685,116,16]
+    - shape IMPLEMENTASI bbox=[326,685,116,16]
+[warning] slide-11.layout.json:split-inline:8:10: IMPLEMENTASI and EVALUASI look like manually split inline text.
+    - shape IMPLEMENTASI bbox=[326,685,116,16]
+    - shape EVALUASI bbox=[454,685,116,16]
+[warning] slide-12.layout.json:tight-text:15: 1 text box is tight: height 18px for 1 line(s) at 16px.
+    - shape 1 bbox=[88,234,34,18]
+[warning] slide-12.layout.json:tight-text:20: 2 text box is tight: height 18px for 1 line(s) at 16px.
+    - shape 2 bbox=[488,234,34,18]
+[warning] slide-12.layout.json:tight-text:21: Kualitas percakapan & memori text box is tight: height 24px for 2 line(s) at 18px.
+    - shape Kualitas percakapan & memori bbox=[536,227,256,24]
+[warning] slide-12.layout.json:tight-text:25: 3 text box is tight: height 18px for 1 line(s) at 16px.
+    - shape 3 bbox=[888,234,34,18]
+[warning] slide-12.layout.json:tight-text:30: Jalur 1 menghasilkan status lulus/gagal. Jalur 2 memberi indikasi yang harus dibaca bersama keterbatasannya. Jalur 3 adalah rencana evalu... text box is tight: height 38px for 2 line(s) at 18px.
+    - shape Jalur 1 menghasilkan status lulus/gagal. Jalur 2 memberi indikasi yang harus dibaca bersama keterbat bbox=[294,519,860,38]
+[warning] slide-12.layout.json:split-inline:4:6: MASALAH and SOLUSI look like manually split inline text.
+    - shape MASALAH bbox=[70,685,116,16]
+    - shape SOLUSI bbox=[198,685,116,16]
+[warning] slide-12.layout.json:split-inline:6:8: SOLUSI and IMPLEMENTASI look like manually split inline text.
+    - shape SOLUSI bbox=[198,685,116,16]
+    - shape IMPLEMENTASI bbox=[326,685,116,16]
+[warning] slide-12.layout.json:split-inline:8:10: IMPLEMENTASI and EVALUASI look like manually split inline text.
+    - shape IMPLEMENTASI bbox=[326,685,116,16]
+    - shape EVALUASI bbox=[454,685,116,16]
+[warning] slide-13.layout.json:tight-text:30: eufemisme krisis tertangkap pada benchmark internal text box is tight: height 25px for 2 line(s) at 12px.
+    - shape eufemisme krisis tertangkap pada benchmark internal bbox=[522,407,246,25]
+[warning] slide-13.layout.json:tight-text:33: cabang tercakup; satu cabang tidak terjangkau oleh desain text box is tight: height 25px for 2 line(s) at 12px.
+    - shape cabang tercakup; satu cabang tidak terjangkau oleh desain bbox=[822,407,246,25]
+[warning] slide-13.layout.json:split-inline:4:6: MASALAH and SOLUSI look like manually split inline text.
+    - shape MASALAH bbox=[70,685,116,16]
+    - shape SOLUSI bbox=[198,685,116,16]
+[warning] slide-13.layout.json:split-inline:6:8: SOLUSI and IMPLEMENTASI look like manually split inline text.
+    - shape SOLUSI bbox=[198,685,116,16]
+    - shape IMPLEMENTASI bbox=[326,685,116,16]
+[warning] slide-13.layout.json:split-inline:8:10: IMPLEMENTASI and EVALUASI look like manually split inline text.
+    - shape IMPLEMENTASI bbox=[326,685,116,16]
+    - shape EVALUASI bbox=[454,685,116,16]
+[warning] slide-14.layout.json:split-inline:4:6: MASALAH and SOLUSI look like manually split inline text.
+    - shape MASALAH bbox=[70,685,116,16]
+    - shape SOLUSI bbox=[198,685,116,16]
+[warning] slide-14.layout.json:split-inline:6:8: SOLUSI and IMPLEMENTASI look like manually split inline text.
+    - shape SOLUSI bbox=[198,685,116,16]
+    - shape IMPLEMENTASI bbox=[326,685,116,16]
+[warning] slide-14.layout.json:split-inline:8:10: IMPLEMENTASI and EVALUASI look like manually split inline text.
+    - shape IMPLEMENTASI bbox=[326,685,116,16]
+    - shape EVALUASI bbox=[454,685,116,16]
+[warning] slide-15.layout.json:tight-text:27: Pengujian pengguna nyata, metrik latensi voice, serta penguatan benchmark bahasa informal dan eufemisme krisis. text box is tight: height 28px for 2 line(s) at 17px.
+    - shape Pengujian pengguna nyata, metrik latensi voice, serta penguatan benchmark bahasa informal dan eufemi bbox=[340,575,820,28]
+[warning] slide-15.layout.json:split-inline:4:6: MASALAH and SOLUSI look like manually split inline text.
+    - shape MASALAH bbox=[70,685,116,16]
+    - shape SOLUSI bbox=[198,685,116,16]
+[warning] slide-15.layout.json:split-inline:6:8: SOLUSI and IMPLEMENTASI look like manually split inline text.
+    - shape SOLUSI bbox=[198,685,116,16]
+    - shape IMPLEMENTASI bbox=[326,685,116,16]
+[warning] slide-15.layout.json:split-inline:8:10: IMPLEMENTASI and EVALUASI look like manually split inline text.
+    - shape IMPLEMENTASI bbox=[326,685,116,16]
+    - shape EVALUASI bbox=[454,685,116,16]
+Checked 15 layout file(s): 0 error(s), 76 warning(s).

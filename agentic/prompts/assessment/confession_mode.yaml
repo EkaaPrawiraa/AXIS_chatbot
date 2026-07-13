@@ -5,14 +5,7 @@ language: bilingual
 version: 1.0
 tags: [confession_space, privacy, voice]
 notes: |
-  Applied whenever ``state["confession_mode"]`` is true (set from the
-  Go ``Channel`` on the session). This is a privacy-safety trade-off,
-  NOT a safety-privacy trade-off: nothing about crisis detection is
-  relaxed here — the crisis guardrail/triage/escalation nodes run
-  completely unmodified. Only the proactive PHQ-9 mood check-in gate
-  is bypassed (handled upstream in ``phq9_check_node``), and this
-  turn's reply is never written to long-term memory (KG/pgvector) —
-  handled upstream in ``session_end_node``.
+  Applied whenever ``state["confession_mode"]`` is true.
 system: |
   System notice for this turn only — Confession Space:
 

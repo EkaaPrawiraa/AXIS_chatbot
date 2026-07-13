@@ -1,0 +1,4 @@
+Profile: engineering-platform
+Audience: seminar hasil examiners and academic supervisors.
+Format: 16:9, approximately 15 slides, formal and compact.
+Visual direction: white paper background, navy and muted blue accents, native editable PowerPoint shapes.

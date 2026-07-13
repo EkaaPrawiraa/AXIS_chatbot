@@ -69,7 +69,7 @@ experience_to_emotion: [[0, 1]] means experiences[0] triggered emotions[1].
   ],
   "triggers": [
     {
-      "category":    "<academic|social|family|work|health|financial|other>",
+      "category":    "<academic|social|family|organizational|career|financial|housing|health|work|other>",
       "description": "<concise trigger label>",
       "significance": <float 0.0-1.0>
     }
@@ -94,7 +94,7 @@ experience_to_emotion: [[0, 1]] means experiences[0] triggered emotions[1].
   "subjects": [
     {
       "name":                 "<exact name or pronoun the user used>",
-      "role":                 "<friend|parent|partner|sibling|professor|colleague|therapist|other>",
+      "role":                 "<friend|parent|partner|sibling|professor|colleague|therapist|thesis_advisor|academic_advisor|boarding_house_manager|roommate|org_senior|groupmate|other>",
       "subject_type":          "<person|pet|object|place|other>",
       "sentiment":             <float -1.0 to 1.0>,
       "relationship_quality": "<supportive|complicated|negative|neutral>"
@@ -103,7 +103,7 @@ experience_to_emotion: [[0, 1]] means experiences[0] triggered emotions[1].
   "topics": [
     {
       "name":      "<concise snake_case label, e.g. academic-stress, relationship-conflict>",
-      "category":  "<academic|social|family|career|health|financial|identity|mental_health|other>",
+      "category":  "<academic|social|family|organizational|career|health|financial|identity|mental_health|other>",
       "sentiment":  <float -1.0 to 1.0>
     }
   ],

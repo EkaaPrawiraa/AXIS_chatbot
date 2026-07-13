@@ -29,6 +29,19 @@ Reply in the user's language and register. Keep the response concise and invite
 the conversation to progress naturally.
 """
 
+# B0 condition: generic companion, no memory retrieval of any kind, no CBT/
+# guardrail/PHQ-9 orchestration beyond the provider's own built-in safety --
+# isolates "does AXIS's overall orchestration beat a plain LLM companion"
+# from "does AXIS's memory specifically beat vector-only memory" (B1 above).
+GENERIC_SYSTEM_PROMPT = """\
+You are a non-clinical AI companion for Indonesian university students.
+Listen carefully, respond warmly, and help the user reflect without diagnosing,
+prescribing medication, or claiming to replace professional support.
+
+Reply in the user's language and register. Keep the response concise and invite
+the conversation to progress naturally.
+"""
+
 
 @dataclass(frozen=True)
 class BaselineTurnResult:
@@ -59,12 +72,17 @@ def baseline_turn(
     top_k: int | None = None,
     config: EvaluationConfig = CONFIG,
     repetition_seed: int | None = None,
+    memory_enabled: bool = True,
 ) -> BaselineTurnResult:
     config.validate_for(baseline=True)
-    memories = retrieve_memories(user_id, user_message, top_k, config=config)
-    system_prompt = BASELINE_SYSTEM_PROMPT.format(
-        memories=_format_memories(memories)
-    )
+    if memory_enabled:
+        memories = retrieve_memories(user_id, user_message, top_k, config=config)
+        system_prompt = BASELINE_SYSTEM_PROMPT.format(
+            memories=_format_memories(memories)
+        )
+    else:
+        memories = []
+        system_prompt = GENERIC_SYSTEM_PROMPT
     messages: list[dict[str, str]] = [{"role": "system", "content": system_prompt}]
     messages.extend(
         {"role": item["role"], "content": item["content"]}
@@ -119,4 +137,18 @@ def chat(
         user_message=user_message,
         history=history,
         top_k=top_k,
+    ).reply
+
+
+def chat_generic(
+    user_id: str,
+    user_message: str,
+    history: Sequence[dict[str, str]] = (),
+) -> str:
+    """B0 condition: generic companion, no memory retrieval at all."""
+    return baseline_turn(
+        user_id=user_id,
+        user_message=user_message,
+        history=history,
+        memory_enabled=False,
     ).reply

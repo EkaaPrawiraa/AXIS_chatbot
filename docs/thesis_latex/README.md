@@ -2,7 +2,7 @@
 
 Sumber LaTeX laporan Tugas Akhir.
 
-**Judul:** Pengembangan Empathic Voice First Companionship Chatbot dengan Memory Based Personalization melalui Knowledge Graph untuk Mahasiswa
+**Judul resmi:** Pengembangan *Companionship Chatbot* dengan Asesmen Depresi melalui Percakapan dan Memori Jangka Panjang Berbasis *Knowledge Graph* untuk Mahasiswa Indonesia
 **Penulis:** Mohammad Nugraha Eka Prawira (NIM 13522001)
 **Pembimbing:** Dr. Agung Dewandaru, S.T., M.Sc.
 **Program Studi:** Teknik Informatika, STEI, ITB
@@ -11,13 +11,17 @@ Sumber LaTeX laporan Tugas Akhir.
 
 ```
 thesis_latex/
-├── main.tex                       # Root document
+├── main.tex                       # Root laporan lengkap; memakai naskah V2 dan menambahkan Bab V
+├── seminar_hasil_v2.tex           # Naskah seminar hasil utama
 ├── preamble.tex                   # Package dan konfigurasi
 ├── chapters/
 │   ├── bab1.tex                   # Pendahuluan
 │   ├── bab2.tex                   # Kajian Pustaka
-│   ├── bab3.tex                   # Deskripsi Solusi (placeholder)
-│   ├── bab4.tex                   # Evaluasi (placeholder)
+│   ├── bab3.tex                   # Deskripsi solusi konseptual
+│   ├── bab4.tex                   # Implementasi dan evaluasi utama
+│   ├── bab4_evaluasi_v2.tex       # Protokol dan pelaporan evaluasi v2
+│   ├── lampiran.tex               # Lampiran teknis dan visual aktif
+│   ├── lampiran_evaluasi_v2.tex   # Instrumen evaluasi aktif
 │   └── bab5.tex                   # Kesimpulan dan Saran (placeholder)
 ├── frontmatter/
 │   ├── cover.tex                  # Halaman sampul
@@ -31,6 +35,22 @@ thesis_latex/
 ├── figures/                       # Gambar (PDF/PNG)
 └── README.md
 ```
+
+## Traceability Naskah
+
+`seminar_hasil_v2.tex` adalah naskah utama untuk seminar hasil. `main.tex` memakai Bab IV dan lampiran V2 yang sama, lalu menambahkan Bab V untuk laporan lengkap. Berkas pembungkus dan naskah seminar lama sudah dibersihkan agar hanya ada satu jalur sumber aktif.
+
+Judul resmi diturunkan ke tiga rumusan masalah sebagai berikut.
+
+| Rumusan masalah | Dasar kajian (Bab II) | Keputusan solusi (Bab III) | Implementasi dan bukti (Bab IV) |
+|---|---|---|---|
+| RM1: percakapan pendamping | Empati, CBT, ragam bahasa mahasiswa, dan batas keselamatan | Persona, percakapan reflektif, serta batas keselamatan | Alur percakapan, kebijakan CBT, dan validasi komponen kritis |
+| RM2: mood dan asesmen skrining depresi | Mood sebagai konteks harian, PHQ-9, penyampaian percakapan, dan JITAI | Mood harian serta PHQ-9 sukarela dan adaptif | Implementasi orkestrasi dan validasi transisi; korpus jawaban bebas masih direncanakan |
+| RM3: memori jangka panjang berbasis graf | Memori personal, konteks permasalahan mahasiswa, representasi relasional, pemeringkatan, dan siklus hidup | Penulisan, penghubungan, pembaruan, serta pemanfaatan konteks permasalahan yang relevan | Arsitektur hibrid, kalibrasi domain finalizer, siklus hidup memori, dan rancangan benchmark berlabel |
+
+Istilah ``asesmen depresi'' pada naskah ini selalu merujuk pada skrining PHQ-9. Istilah tersebut tidak berarti diagnosis maupun klaim efektivitas klinis.
+
+Status evaluasi saat ini: validasi fungsional tersedia. Benchmark berlabel dan pengujian pengguna nyata masih merupakan evaluasi lanjutan; hasilnya tidak ditulis sebagai temuan yang telah diperoleh.
 
 ## Build
 
@@ -50,6 +70,12 @@ Atau dengan latexmk (rekomendasi):
 latexmk -pdf -bibtex main.tex
 ```
 
+Untuk membangun naskah seminar hasil utama:
+
+```bash
+latexmk -pdf -bibtex seminar_hasil_v2.tex
+```
+
 Untuk clean intermediate files:
 
 ```bash
@@ -58,22 +84,23 @@ latexmk -c
 
 ## Konvensi
 
-- Citation menggunakan biblatex APA style dengan backend bibtex.
+- Sitasi menggunakan `natbib` dengan gaya daftar pustaka ITB (`itbnat`).
 - `\textcite{key}` untuk in-text citation (misal "Astutik et al. (2020) menunjukkan...").
 - `\parencite{key}` untuk parenthetical citation (misal "...(Astutik et al., 2020).").
 - Tidak menggunakan em dash. Gunakan tanda kurung biasa atau frasa pengganti.
 - Heading angka Roman untuk chapter (I, II, III, IV, V), Arabic untuk section.
-- Margins: top 2.5 cm, bottom 2.5 cm, left 3 cm, right 2.5 cm (Pedoman ITB).
+- Margin: atas 3 cm, bawah 3 cm, kiri 4 cm, kanan 3 cm.
 - Font Times New Roman 12pt body, line spacing 1.5.
+- Artefak lampiran yang berupa gambar dan tabel memakai nomor serta caption otomatis. Karena itu, artefak tersebut dapat dirujuk dan muncul pada Daftar Gambar atau Daftar Tabel.
 
 ## Status BAB
 
 | BAB | Judul | Status |
 |-----|-------|--------|
-| I | Pendahuluan | Draft v4 (final) |
-| II | Kajian Pustaka | Draft v7 (final, mencakup subbab Persona AXIS) |
-| III | Deskripsi Solusi | Placeholder |
-| IV | Evaluasi | Placeholder |
+| I | Pendahuluan | Menurunkan masalah judul menjadi RM1--RM3 |
+| II | Kajian Pustaka | Dasar netral untuk RM1--RM3 |
+| III | Deskripsi Solusi | Keputusan rancangan konseptual |
+| IV | Implementasi dan Evaluasi | Implementasi serta bukti dan batas evaluasi v2 |
 | V | Kesimpulan dan Saran | Placeholder |
 
 ## Catatan rancangan penting

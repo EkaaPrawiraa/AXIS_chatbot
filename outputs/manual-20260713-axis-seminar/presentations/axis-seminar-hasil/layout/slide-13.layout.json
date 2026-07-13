@@ -1,0 +1,1703 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/id64vv",
+    "id": "id64vv",
+    "slide": 13,
+    "layoutId": "e130e22f-9edf-4253-a180-c1c4fd49812a",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "3006dcdd-5836-4e1e-8228-0a7269cfcc43",
+    "masterLayoutName": "Master",
+    "backgroundColor": "#FFFAF4",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "Arial"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "e130e22f-9edf-4253-a180-c1c4fd49812a",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "3006dcdd-5836-4e1e-8228-0a7269cfcc43",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "3006dcdd-5836-4e1e-8228-0a7269cfcc43",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/z25kb6xk",
+      "id": "1",
+      "bbox": [
+        70,
+        40,
+        600,
+        22
+      ],
+      "geometry": "rect",
+      "text": "EVALUASI",
+      "textPreview": "EVALUASI",
+      "resolvedFontSize": 12,
+      "resolvedTextStyle": {
+        "fontSize": 12,
+        "typeface": "Arial",
+        "color": "#8B5438",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "EVALUASI"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "EVALUASI",
+          "resolvedTextStyle": {
+            "fontSize": 12,
+            "typeface": "Arial",
+            "color": "#8B5438",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "EVALUASI",
+              "fontSize": 12,
+              "typeface": "Arial",
+              "color": "#8B5438",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/onyd0z61",
+      "id": "2",
+      "bbox": [
+        70,
+        68,
+        1080,
+        52
+      ],
+      "geometry": "rect",
+      "text": "Validasi fungsional: komponen kritis dan jejak keputusan bekerja",
+      "textPreview": "Validasi fungsional: komponen kritis dan jejak keputusan bekerja",
+      "resolvedFontSize": 33,
+      "resolvedTextStyle": {
+        "fontSize": 33,
+        "typeface": "Arial",
+        "color": "#2D2119",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Validasi fungsional: komponen kritis dan jejak keputusan bekerja"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Validasi fungsional: komponen kritis dan jejak keputusan bekerja",
+          "resolvedTextStyle": {
+            "fontSize": 33,
+            "typeface": "Arial",
+            "color": "#2D2119",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Validasi fungsional: komponen kritis dan jejak keputusan bekerja",
+              "fontSize": 33,
+              "typeface": "Arial",
+              "color": "#2D2119",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/d8v6psfi",
+      "id": "3",
+      "bbox": [
+        70,
+        130,
+        1140,
+        0
+      ],
+      "geometry": "line",
+      "lineColor": "#E5D4C3",
+      "lineWidth": 1
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/6tovahoz",
+      "id": "4",
+      "bbox": [
+        70,
+        685,
+        116,
+        16
+      ],
+      "geometry": "rect",
+      "text": "MASALAH",
+      "textPreview": "MASALAH",
+      "resolvedFontSize": 10,
+      "resolvedTextStyle": {
+        "fontSize": 10,
+        "typeface": "Arial",
+        "color": "#8A7667",
+        "alignment": "center",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "MASALAH"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "MASALAH",
+          "resolvedTextStyle": {
+            "fontSize": 10,
+            "typeface": "Arial",
+            "color": "#8A7667",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "MASALAH",
+              "fontSize": 10,
+              "typeface": "Arial",
+              "color": "#8A7667"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/vahoza1g",
+      "id": "5",
+      "bbox": [
+        70,
+        705,
+        116,
+        0
+      ],
+      "geometry": "line",
+      "lineColor": "#E5D4C3",
+      "lineWidth": 1
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ovahoza1",
+      "id": "6",
+      "bbox": [
+        198,
+        685,
+        116,
+        16
+      ],
+      "geometry": "rect",
+      "text": "SOLUSI",
+      "textPreview": "SOLUSI",
+      "resolvedFontSize": 10,
+      "resolvedTextStyle": {
+        "fontSize": 10,
+        "typeface": "Arial",
+        "color": "#8A7667",
+        "alignment": "center",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "SOLUSI"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "SOLUSI",
+          "resolvedTextStyle": {
+            "fontSize": 10,
+            "typeface": "Arial",
+            "color": "#8A7667",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "SOLUSI",
+              "fontSize": 10,
+              "typeface": "Arial",
+              "color": "#8A7667"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/dg7adsji",
+      "id": "7",
+      "bbox": [
+        198,
+        705,
+        116,
+        0
+      ],
+      "geometry": "line",
+      "lineColor": "#E5D4C3",
+      "lineWidth": 1
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/61032lsz",
+      "id": "8",
+      "bbox": [
+        326,
+        685,
+        116,
+        16
+      ],
+      "geometry": "rect",
+      "text": "IMPLEMENTASI",
+      "textPreview": "IMPLEMENTASI",
+      "resolvedFontSize": 10,
+      "resolvedTextStyle": {
+        "fontSize": 10,
+        "typeface": "Arial",
+        "color": "#8A7667",
+        "alignment": "center",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "IMPLEMENTASI"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "IMPLEMENTASI",
+          "resolvedTextStyle": {
+            "fontSize": 10,
+            "typeface": "Arial",
+            "color": "#8A7667",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "IMPLEMENTASI",
+              "fontSize": 10,
+              "typeface": "Arial",
+              "color": "#8A7667"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/vmtwra5g",
+      "id": "9",
+      "bbox": [
+        326,
+        705,
+        116,
+        0
+      ],
+      "geometry": "line",
+      "lineColor": "#E5D4C3",
+      "lineWidth": 1
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/b2hwfyxo",
+      "id": "10",
+      "bbox": [
+        454,
+        685,
+        116,
+        16
+      ],
+      "geometry": "rect",
+      "text": "EVALUASI",
+      "textPreview": "EVALUASI",
+      "resolvedFontSize": 10,
+      "resolvedTextStyle": {
+        "fontSize": 10,
+        "typeface": "Arial",
+        "color": "#4F3424",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "EVALUASI"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "EVALUASI",
+          "resolvedTextStyle": {
+            "fontSize": 10,
+            "typeface": "Arial",
+            "color": "#4F3424",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "EVALUASI",
+              "fontSize": 10,
+              "typeface": "Arial",
+              "color": "#4F3424",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 11,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/mhk3q5o7",
+      "id": "11",
+      "bbox": [
+        454,
+        705,
+        116,
+        0
+      ],
+      "geometry": "line",
+      "lineColor": "#4F3424",
+      "lineWidth": 3
+    },
+    {
+      "order": 12,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/t83itgfm",
+      "id": "12",
+      "bbox": [
+        1160,
+        682,
+        50,
+        18
+      ],
+      "geometry": "rect",
+      "text": "13",
+      "textPreview": "13",
+      "resolvedFontSize": 11,
+      "resolvedTextStyle": {
+        "fontSize": 11,
+        "typeface": "Arial",
+        "color": "#8A7667",
+        "alignment": "right",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "13"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "13",
+          "resolvedTextStyle": {
+            "fontSize": 11,
+            "typeface": "Arial",
+            "color": "#8A7667",
+            "alignment": "right"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "13",
+              "fontSize": 11,
+              "typeface": "Arial",
+              "color": "#8A7667"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 13,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/4nap4r65",
+      "id": "13",
+      "bbox": [
+        70,
+        190,
+        230,
+        104
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#FFFDF9",
+      "lineColor": "#E5D4C3",
+      "lineWidth": 1
+    },
+    {
+      "order": 14,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/bq1oryts",
+      "id": "14",
+      "bbox": [
+        70,
+        208,
+        230,
+        37
+      ],
+      "geometry": "rect",
+      "text": "59 / 59",
+      "textPreview": "59 / 59",
+      "resolvedFontSize": 28,
+      "resolvedTextStyle": {
+        "fontSize": 28,
+        "typeface": "Arial",
+        "color": "#4F3424",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "59 / 59"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "59 / 59",
+          "resolvedTextStyle": {
+            "fontSize": 28,
+            "typeface": "Arial",
+            "color": "#4F3424",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "59 / 59",
+              "fontSize": 28,
+              "typeface": "Arial",
+              "color": "#4F3424",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 15,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/m58z25kb",
+      "id": "15",
+      "bbox": [
+        82,
+        253,
+        206,
+        25
+      ],
+      "geometry": "rect",
+      "text": "pengujian guardrail lulus",
+      "textPreview": "pengujian guardrail lulus",
+      "resolvedFontSize": 12,
+      "resolvedTextStyle": {
+        "fontSize": 12,
+        "typeface": "Arial",
+        "color": "#8A7667",
+        "alignment": "center",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "pengujian guardrail lulus"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "pengujian guardrail lulus",
+          "resolvedTextStyle": {
+            "fontSize": 12,
+            "typeface": "Arial",
+            "color": "#8A7667",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "pengujian guardrail lulus",
+              "fontSize": 12,
+              "typeface": "Arial",
+              "color": "#8A7667"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 16,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/twra5gbq",
+      "id": "16",
+      "bbox": [
+        320,
+        190,
+        230,
+        104
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#FFFDF9",
+      "lineColor": "#E5D4C3",
+      "lineWidth": 1
+    },
+    {
+      "order": 17,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/4byhgn29",
+      "id": "17",
+      "bbox": [
+        320,
+        208,
+        230,
+        37
+      ],
+      "geometry": "rect",
+      "text": "48 / 48",
+      "textPreview": "48 / 48",
+      "resolvedFontSize": 28,
+      "resolvedTextStyle": {
+        "fontSize": 28,
+        "typeface": "Arial",
+        "color": "#8B5438",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "48 / 48"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "48 / 48",
+          "resolvedTextStyle": {
+            "fontSize": 28,
+            "typeface": "Arial",
+            "color": "#8B5438",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "48 / 48",
+              "fontSize": 28,
+              "typeface": "Arial",
+              "color": "#8B5438",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 18,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/bm58z25k",
+      "id": "18",
+      "bbox": [
+        332,
+        253,
+        206,
+        25
+      ],
+      "geometry": "rect",
+      "text": "pengujian kebijakan CBT lulus",
+      "textPreview": "pengujian kebijakan CBT lulus",
+      "resolvedFontSize": 12,
+      "resolvedTextStyle": {
+        "fontSize": 12,
+        "typeface": "Arial",
+        "color": "#8A7667",
+        "alignment": "center",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "pengujian kebijakan CBT lulus"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "pengujian kebijakan CBT lulus",
+          "resolvedTextStyle": {
+            "fontSize": 12,
+            "typeface": "Arial",
+            "color": "#8A7667",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "pengujian kebijakan CBT lulus",
+              "fontSize": 12,
+              "typeface": "Arial",
+              "color": "#8A7667"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 19,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/m1cfa9w3",
+      "id": "19",
+      "bbox": [
+        570,
+        190,
+        230,
+        104
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#FFFDF9",
+      "lineColor": "#E5D4C3",
+      "lineWidth": 1
+    },
+    {
+      "order": 20,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/q5o7qpg3",
+      "id": "20",
+      "bbox": [
+        570,
+        208,
+        230,
+        37
+      ],
+      "geometry": "rect",
+      "text": "24 / 24",
+      "textPreview": "24 / 24",
+      "resolvedFontSize": 28,
+      "resolvedTextStyle": {
+        "fontSize": 28,
+        "typeface": "Arial",
+        "color": "#7A6049",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "24 / 24"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "24 / 24",
+          "resolvedTextStyle": {
+            "fontSize": 28,
+            "typeface": "Arial",
+            "color": "#7A6049",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "24 / 24",
+              "fontSize": 28,
+              "typeface": "Arial",
+              "color": "#7A6049",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 21,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/jqh0fepk",
+      "id": "21",
+      "bbox": [
+        582,
+        253,
+        206,
+        25
+      ],
+      "geometry": "rect",
+      "text": "pengujian PHQ-9 lulus",
+      "textPreview": "pengujian PHQ-9 lulus",
+      "resolvedFontSize": 12,
+      "resolvedTextStyle": {
+        "fontSize": 12,
+        "typeface": "Arial",
+        "color": "#8A7667",
+        "alignment": "center",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "pengujian PHQ-9 lulus"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "pengujian PHQ-9 lulus",
+          "resolvedTextStyle": {
+            "fontSize": 12,
+            "typeface": "Arial",
+            "color": "#8A7667",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "pengujian PHQ-9 lulus",
+              "fontSize": 12,
+              "typeface": "Arial",
+              "color": "#8A7667"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 22,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/8bat47y1",
+      "id": "22",
+      "bbox": [
+        820,
+        190,
+        230,
+        104
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#FFFDF9",
+      "lineColor": "#E5D4C3",
+      "lineWidth": 1
+    },
+    {
+      "order": 23,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/1w7mp0bi",
+      "id": "23",
+      "bbox": [
+        820,
+        208,
+        230,
+        37
+      ],
+      "geometry": "rect",
+      "text": "18 / 18",
+      "textPreview": "18 / 18",
+      "resolvedFontSize": 28,
+      "resolvedTextStyle": {
+        "fontSize": 28,
+        "typeface": "Arial",
+        "color": "#C8924F",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "18 / 18"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "18 / 18",
+          "resolvedTextStyle": {
+            "fontSize": 28,
+            "typeface": "Arial",
+            "color": "#C8924F",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "18 / 18",
+              "fontSize": 28,
+              "typeface": "Arial",
+              "color": "#C8924F",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 24,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/qh0fepkz",
+      "id": "24",
+      "bbox": [
+        832,
+        253,
+        206,
+        25
+      ],
+      "geometry": "rect",
+      "text": "node graf keputusan tercakup",
+      "textPreview": "node graf keputusan tercakup",
+      "resolvedFontSize": 12,
+      "resolvedTextStyle": {
+        "fontSize": 12,
+        "typeface": "Arial",
+        "color": "#8A7667",
+        "alignment": "center",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "node graf keputusan tercakup"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "node graf keputusan tercakup",
+          "resolvedTextStyle": {
+            "fontSize": 12,
+            "typeface": "Arial",
+            "color": "#8A7667",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "node graf keputusan tercakup",
+              "fontSize": 12,
+              "typeface": "Arial",
+              "color": "#8A7667"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 25,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/j2t83itg",
+      "id": "25",
+      "bbox": [
+        210,
+        344,
+        270,
+        104
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#FFFDF9",
+      "lineColor": "#E5D4C3",
+      "lineWidth": 1
+    },
+    {
+      "order": 26,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/8nqxs72x",
+      "id": "26",
+      "bbox": [
+        210,
+        362,
+        270,
+        37
+      ],
+      "geometry": "rect",
+      "text": "15 / 15",
+      "textPreview": "15 / 15",
+      "resolvedFontSize": 28,
+      "resolvedTextStyle": {
+        "fontSize": 28,
+        "typeface": "Arial",
+        "color": "#4F3424",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "15 / 15"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "15 / 15",
+          "resolvedTextStyle": {
+            "fontSize": 28,
+            "typeface": "Arial",
+            "color": "#4F3424",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "15 / 15",
+              "fontSize": 28,
+              "typeface": "Arial",
+              "color": "#4F3424",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 27,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/18jqh0fe",
+      "id": "27",
+      "bbox": [
+        222,
+        407,
+        246,
+        25
+      ],
+      "geometry": "rect",
+      "text": "kueri Recall@5 menemukan fakta target",
+      "textPreview": "kueri Recall@5 menemukan fakta target",
+      "resolvedFontSize": 12,
+      "resolvedTextStyle": {
+        "fontSize": 12,
+        "typeface": "Arial",
+        "color": "#8A7667",
+        "alignment": "center",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "kueri Recall@5 menemukan fakta target"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "kueri Recall@5 menemukan fakta target",
+          "resolvedTextStyle": {
+            "fontSize": 12,
+            "typeface": "Arial",
+            "color": "#8A7667",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "kueri Recall@5 menemukan fakta target",
+              "fontSize": 12,
+              "typeface": "Arial",
+              "color": "#8A7667"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 28,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ulwval87",
+      "id": "28",
+      "bbox": [
+        510,
+        344,
+        270,
+        104
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#FFFDF9",
+      "lineColor": "#E5D4C3",
+      "lineWidth": 1
+    },
+    {
+      "order": 29,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/j6tovaho",
+      "id": "29",
+      "bbox": [
+        510,
+        362,
+        270,
+        37
+      ],
+      "geometry": "rect",
+      "text": "14 / 19",
+      "textPreview": "14 / 19",
+      "resolvedFontSize": 28,
+      "resolvedTextStyle": {
+        "fontSize": 28,
+        "typeface": "Arial",
+        "color": "#A85F5D",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "14 / 19"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "14 / 19",
+          "resolvedTextStyle": {
+            "fontSize": 28,
+            "typeface": "Arial",
+            "color": "#A85F5D",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "14 / 19",
+              "fontSize": 28,
+              "typeface": "Arial",
+              "color": "#A85F5D",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 30,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/pwb2hwfy",
+      "id": "30",
+      "bbox": [
+        522,
+        407,
+        246,
+        25
+      ],
+      "geometry": "rect",
+      "text": "eufemisme krisis tertangkap pada benchmark internal",
+      "textPreview": "eufemisme krisis tertangkap pada benchmark internal",
+      "resolvedFontSize": 12,
+      "resolvedTextStyle": {
+        "fontSize": 12,
+        "typeface": "Arial",
+        "color": "#8A7667",
+        "alignment": "center",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "eufemisme krisis tertangkap pada benchmark"
+          },
+          {
+            "index": 2,
+            "text": "internal"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "eufemisme krisis tertangkap pada benchmark internal",
+          "resolvedTextStyle": {
+            "fontSize": 12,
+            "typeface": "Arial",
+            "color": "#8A7667",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "eufemisme krisis tertangkap pada benchmark internal",
+              "fontSize": 12,
+              "typeface": "Arial",
+              "color": "#8A7667"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 31,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/0bi9s36h",
+      "id": "31",
+      "bbox": [
+        810,
+        344,
+        270,
+        104
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#FFFDF9",
+      "lineColor": "#E5D4C3",
+      "lineWidth": 1
+    },
+    {
+      "order": 32,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/7qpg3ex0",
+      "id": "32",
+      "bbox": [
+        810,
+        362,
+        270,
+        37
+      ],
+      "geometry": "rect",
+      "text": "18 / 19",
+      "textPreview": "18 / 19",
+      "resolvedFontSize": 28,
+      "resolvedTextStyle": {
+        "fontSize": 28,
+        "typeface": "Arial",
+        "color": "#8B5438",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "18 / 19"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "18 / 19",
+          "resolvedTextStyle": {
+            "fontSize": 28,
+            "typeface": "Arial",
+            "color": "#8B5438",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "18 / 19",
+              "fontSize": 28,
+              "typeface": "Arial",
+              "color": "#8B5438",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 33,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/i5sneloj",
+      "id": "33",
+      "bbox": [
+        822,
+        407,
+        246,
+        25
+      ],
+      "geometry": "rect",
+      "text": "cabang tercakup; satu cabang tidak terjangkau oleh desain",
+      "textPreview": "cabang tercakup; satu cabang tidak terjangkau oleh desain",
+      "resolvedFontSize": 12,
+      "resolvedTextStyle": {
+        "fontSize": 12,
+        "typeface": "Arial",
+        "color": "#8A7667",
+        "alignment": "center",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "cabang tercakup; satu cabang tidak"
+          },
+          {
+            "index": 2,
+            "text": "terjangkau oleh desain"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "cabang tercakup; satu cabang tidak terjangkau oleh desain",
+          "resolvedTextStyle": {
+            "fontSize": 12,
+            "typeface": "Arial",
+            "color": "#8A7667",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "cabang tercakup; satu cabang tidak terjangkau oleh desain",
+              "fontSize": 12,
+              "typeface": "Arial",
+              "color": "#8A7667"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 34,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/p4r65wju",
+      "id": "34",
+      "bbox": [
+        70,
+        530,
+        155,
+        22
+      ],
+      "geometry": "rect",
+      "text": "Interpretasi",
+      "textPreview": "Interpretasi",
+      "resolvedFontSize": 15,
+      "resolvedTextStyle": {
+        "fontSize": 15,
+        "typeface": "Arial",
+        "color": "#8B5438",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Interpretasi"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Interpretasi",
+          "resolvedTextStyle": {
+            "fontSize": 15,
+            "typeface": "Arial",
+            "color": "#8B5438",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Interpretasi",
+              "fontSize": 15,
+              "typeface": "Arial",
+              "color": "#8B5438",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 35,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/wjudg7ad",
+      "id": "35",
+      "bbox": [
+        70,
+        560,
+        1120,
+        50
+      ],
+      "geometry": "rect",
+      "text": "Orkestrasi komponen kritis dapat dijalankan pada skenario yang diuji. Benchmark eufemisme tetap menunjukkan lima kasus yang belum tertangkap, sehingga belum cukup untuk menyatakan perlindungan krisis telah sempurna.",
+      "textPreview": "Orkestrasi komponen kritis dapat dijalankan pada skenario yang diuji. Benchmark eufemisme tetap menunjukkan lima kasus yang belum tertang...",
+      "resolvedFontSize": 18,
+      "resolvedTextStyle": {
+        "fontSize": 18,
+        "typeface": "Arial",
+        "color": "#2D2119",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Orkestrasi komponen kritis dapat dijalankan pada skenario yang diuji. Benchmark eufemisme tetap menunjukkan lima kasus yang"
+          },
+          {
+            "index": 2,
+            "text": "belum tertangkap, sehingga belum cukup untuk menyatakan perlindungan krisis telah sempurna."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Orkestrasi komponen kritis dapat dijalankan pada skenario yang diuji. Benchmark eufemisme tetap menunjukkan lima kasus yang belum tertangkap, sehingga belum cukup untuk menyatakan perlindungan krisis telah sempurna.",
+          "resolvedTextStyle": {
+            "fontSize": 18,
+            "typeface": "Arial",
+            "color": "#2D2119",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Orkestrasi komponen kritis dapat dijalankan pada skenario yang diuji. Benchmark eufemisme tetap menunjukkan lima kasus yang belum tertangkap, sehingga belum cukup untuk menyatakan perlindungan krisis telah sempurna.",
+              "fontSize": 18,
+              "typeface": "Arial",
+              "color": "#2D2119",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    }
+  ],
+  "composeRuns": []
+}

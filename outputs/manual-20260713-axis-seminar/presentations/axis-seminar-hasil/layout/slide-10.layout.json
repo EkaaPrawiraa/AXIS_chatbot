@@ -1,0 +1,1589 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/ys7dsd",
+    "id": "ys7dsd",
+    "slide": 10,
+    "layoutId": "e130e22f-9edf-4253-a180-c1c4fd49812a",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "3006dcdd-5836-4e1e-8228-0a7269cfcc43",
+    "masterLayoutName": "Master",
+    "backgroundColor": "#FFFAF4",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "Arial"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "e130e22f-9edf-4253-a180-c1c4fd49812a",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "3006dcdd-5836-4e1e-8228-0a7269cfcc43",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "3006dcdd-5836-4e1e-8228-0a7269cfcc43",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/6dcbulwv",
+      "id": "1",
+      "bbox": [
+        70,
+        40,
+        600,
+        22
+      ],
+      "geometry": "rect",
+      "text": "IMPLEMENTASI",
+      "textPreview": "IMPLEMENTASI",
+      "resolvedFontSize": 12,
+      "resolvedTextStyle": {
+        "fontSize": 12,
+        "typeface": "Arial",
+        "color": "#8B5438",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "IMPLEMENTASI"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "IMPLEMENTASI",
+          "resolvedTextStyle": {
+            "fontSize": 12,
+            "typeface": "Arial",
+            "color": "#8B5438",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "IMPLEMENTASI",
+              "fontSize": 12,
+              "typeface": "Arial",
+              "color": "#8B5438",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/d4vmtwra",
+      "id": "2",
+      "bbox": [
+        70,
+        68,
+        1080,
+        52
+      ],
+      "geometry": "rect",
+      "text": "Topologi pipeline agentik AXIS",
+      "textPreview": "Topologi pipeline agentik AXIS",
+      "resolvedFontSize": 33,
+      "resolvedTextStyle": {
+        "fontSize": 33,
+        "typeface": "Arial",
+        "color": "#2D2119",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Topologi pipeline agentik AXIS"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Topologi pipeline agentik AXIS",
+          "resolvedTextStyle": {
+            "fontSize": 33,
+            "typeface": "Arial",
+            "color": "#2D2119",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Topologi pipeline agentik AXIS",
+              "fontSize": 33,
+              "typeface": "Arial",
+              "color": "#2D2119",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/oj2t83it",
+      "id": "3",
+      "bbox": [
+        70,
+        130,
+        1140,
+        0
+      ],
+      "geometry": "line",
+      "lineColor": "#E5D4C3",
+      "lineWidth": 1
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/vmtwra5g",
+      "id": "4",
+      "bbox": [
+        70,
+        685,
+        116,
+        16
+      ],
+      "geometry": "rect",
+      "text": "MASALAH",
+      "textPreview": "MASALAH",
+      "resolvedFontSize": 10,
+      "resolvedTextStyle": {
+        "fontSize": 10,
+        "typeface": "Arial",
+        "color": "#8A7667",
+        "alignment": "center",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "MASALAH"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "MASALAH",
+          "resolvedTextStyle": {
+            "fontSize": 10,
+            "typeface": "Arial",
+            "color": "#8A7667",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "MASALAH",
+              "fontSize": 10,
+              "typeface": "Arial",
+              "color": "#8A7667"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/61032lsz",
+      "id": "5",
+      "bbox": [
+        70,
+        705,
+        116,
+        0
+      ],
+      "geometry": "line",
+      "lineColor": "#E5D4C3",
+      "lineWidth": 1
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/dsji5sne",
+      "id": "6",
+      "bbox": [
+        198,
+        685,
+        116,
+        16
+      ],
+      "geometry": "rect",
+      "text": "SOLUSI",
+      "textPreview": "SOLUSI",
+      "resolvedFontSize": 10,
+      "resolvedTextStyle": {
+        "fontSize": 10,
+        "typeface": "Arial",
+        "color": "#8A7667",
+        "alignment": "center",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "SOLUSI"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "SOLUSI",
+          "resolvedTextStyle": {
+            "fontSize": 10,
+            "typeface": "Arial",
+            "color": "#8A7667",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "SOLUSI",
+              "fontSize": 10,
+              "typeface": "Arial",
+              "color": "#8A7667"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/o7qpg3ex",
+      "id": "7",
+      "bbox": [
+        198,
+        705,
+        116,
+        0
+      ],
+      "geometry": "line",
+      "lineColor": "#E5D4C3",
+      "lineWidth": 1
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/vahoza1g",
+      "id": "8",
+      "bbox": [
+        326,
+        685,
+        116,
+        16
+      ],
+      "geometry": "rect",
+      "text": "IMPLEMENTASI",
+      "textPreview": "IMPLEMENTASI",
+      "resolvedFontSize": 10,
+      "resolvedTextStyle": {
+        "fontSize": 10,
+        "typeface": "Arial",
+        "color": "#4F3424",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "IMPLEMENTASI"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "IMPLEMENTASI",
+          "resolvedTextStyle": {
+            "fontSize": 10,
+            "typeface": "Arial",
+            "color": "#4F3424",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "IMPLEMENTASI",
+              "fontSize": 10,
+              "typeface": "Arial",
+              "color": "#4F3424",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/6tovahoz",
+      "id": "9",
+      "bbox": [
+        326,
+        705,
+        116,
+        0
+      ],
+      "geometry": "line",
+      "lineColor": "#4F3424",
+      "lineWidth": 3
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/c3ylc7u5",
+      "id": "10",
+      "bbox": [
+        454,
+        685,
+        116,
+        16
+      ],
+      "geometry": "rect",
+      "text": "EVALUASI",
+      "textPreview": "EVALUASI",
+      "resolvedFontSize": 10,
+      "resolvedTextStyle": {
+        "fontSize": 10,
+        "typeface": "Arial",
+        "color": "#8A7667",
+        "alignment": "center",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "EVALUASI"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "EVALUASI",
+          "resolvedTextStyle": {
+            "fontSize": 10,
+            "typeface": "Arial",
+            "color": "#8A7667",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "EVALUASI",
+              "fontSize": 10,
+              "typeface": "Arial",
+              "color": "#8A7667"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 11,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/1kre1w7m",
+      "id": "11",
+      "bbox": [
+        454,
+        705,
+        116,
+        0
+      ],
+      "geometry": "line",
+      "lineColor": "#E5D4C3",
+      "lineWidth": 1
+    },
+    {
+      "order": 12,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/uxc3ylc7",
+      "id": "12",
+      "bbox": [
+        1160,
+        682,
+        50,
+        18
+      ],
+      "geometry": "rect",
+      "text": "10",
+      "textPreview": "10",
+      "resolvedFontSize": 11,
+      "resolvedTextStyle": {
+        "fontSize": 11,
+        "typeface": "Arial",
+        "color": "#8A7667",
+        "alignment": "right",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "10"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "10",
+          "resolvedTextStyle": {
+            "fontSize": 11,
+            "typeface": "Arial",
+            "color": "#8A7667",
+            "alignment": "right"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "10",
+              "fontSize": 11,
+              "typeface": "Arial",
+              "color": "#8A7667"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 13,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ji5snelo",
+      "id": "13",
+      "bbox": [
+        70,
+        180,
+        410,
+        28
+      ],
+      "geometry": "rect",
+      "text": "Alur pemrosesan pesan",
+      "textPreview": "Alur pemrosesan pesan",
+      "resolvedFontSize": 22,
+      "resolvedTextStyle": {
+        "fontSize": 22,
+        "typeface": "Arial",
+        "color": "#4F3424",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Alur pemrosesan pesan"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Alur pemrosesan pesan",
+          "resolvedTextStyle": {
+            "fontSize": 22,
+            "typeface": "Arial",
+            "color": "#4F3424",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Alur pemrosesan pesan",
+              "fontSize": 22,
+              "typeface": "Arial",
+              "color": "#4F3424",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 14,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/crmhk3q5",
+      "id": "14",
+      "bbox": [
+        70,
+        232,
+        490,
+        120
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#F0DFCF",
+      "lineColor": "#E5D4C3",
+      "lineWidth": 1
+    },
+    {
+      "order": 15,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/1cfa9w3m",
+      "id": "15",
+      "bbox": [
+        94,
+        255,
+        180,
+        22
+      ],
+      "geometry": "rect",
+      "text": "Jalur sinkron",
+      "textPreview": "Jalur sinkron",
+      "resolvedFontSize": 18,
+      "resolvedTextStyle": {
+        "fontSize": 18,
+        "typeface": "Arial",
+        "color": "#4F3424",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Jalur sinkron"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Jalur sinkron",
+          "resolvedTextStyle": {
+            "fontSize": 18,
+            "typeface": "Arial",
+            "color": "#4F3424",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Jalur sinkron",
+              "fontSize": 18,
+              "typeface": "Arial",
+              "color": "#4F3424",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 16,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ulwval87",
+      "id": "16",
+      "bbox": [
+        94,
+        291,
+        430,
+        36
+      ],
+      "geometry": "rect",
+      "text": "Aplikasi web → gateway → orkestrasi percakapan → respons pengguna.",
+      "textPreview": "Aplikasi web → gateway → orkestrasi percakapan → respons pengguna.",
+      "resolvedFontSize": 17,
+      "resolvedTextStyle": {
+        "fontSize": 17,
+        "typeface": "Arial",
+        "color": "#2D2119",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Aplikasi web → gateway → orkestrasi percakapan →"
+          },
+          {
+            "index": 2,
+            "text": "respons pengguna."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Aplikasi web → gateway → orkestrasi percakapan → respons pengguna.",
+          "resolvedTextStyle": {
+            "fontSize": 17,
+            "typeface": "Arial",
+            "color": "#2D2119",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Aplikasi web → gateway → orkestrasi percakapan → respons pengguna.",
+              "fontSize": 17,
+              "typeface": "Arial",
+              "color": "#2D2119",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 17,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/j6tovaho",
+      "id": "17",
+      "bbox": [
+        70,
+        383,
+        490,
+        120
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#EFE6D4",
+      "lineColor": "#E5D4C3",
+      "lineWidth": 1
+    },
+    {
+      "order": 18,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/8nqxs72x",
+      "id": "18",
+      "bbox": [
+        94,
+        406,
+        190,
+        22
+      ],
+      "geometry": "rect",
+      "text": "Jalur asinkron",
+      "textPreview": "Jalur asinkron",
+      "resolvedFontSize": 18,
+      "resolvedTextStyle": {
+        "fontSize": 18,
+        "typeface": "Arial",
+        "color": "#7A6049",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Jalur asinkron"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Jalur asinkron",
+          "resolvedTextStyle": {
+            "fontSize": 18,
+            "typeface": "Arial",
+            "color": "#7A6049",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Jalur asinkron",
+              "fontSize": 18,
+              "typeface": "Arial",
+              "color": "#7A6049",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 19,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/18jqh0fe",
+      "id": "19",
+      "bbox": [
+        94,
+        442,
+        430,
+        36
+      ],
+      "geometry": "rect",
+      "text": "Sesi tidak aktif → finalisasi → ekstraksi dan penyimpanan memori hibrid.",
+      "textPreview": "Sesi tidak aktif → finalisasi → ekstraksi dan penyimpanan memori hibrid.",
+      "resolvedFontSize": 17,
+      "resolvedTextStyle": {
+        "fontSize": 17,
+        "typeface": "Arial",
+        "color": "#2D2119",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Sesi tidak aktif → finalisasi → ekstraksi dan"
+          },
+          {
+            "index": 2,
+            "text": "penyimpanan memori hibrid."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Sesi tidak aktif → finalisasi → ekstraksi dan penyimpanan memori hibrid.",
+          "resolvedTextStyle": {
+            "fontSize": 17,
+            "typeface": "Arial",
+            "color": "#2D2119",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Sesi tidak aktif → finalisasi → ekstraksi dan penyimpanan memori hibrid.",
+              "fontSize": 17,
+              "typeface": "Arial",
+              "color": "#2D2119",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 20,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/1032lszq",
+      "id": "20",
+      "bbox": [
+        70,
+        542,
+        490,
+        50
+      ],
+      "geometry": "rect",
+      "text": "Pemisahan ini menjaga pekerjaan ekstraksi memori tidak menambah waktu tunggu pada giliran chat.",
+      "textPreview": "Pemisahan ini menjaga pekerjaan ekstraksi memori tidak menambah waktu tunggu pada giliran chat.",
+      "resolvedFontSize": 17,
+      "resolvedTextStyle": {
+        "fontSize": 17,
+        "typeface": "Arial",
+        "color": "#8A7667",
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Pemisahan ini menjaga pekerjaan ekstraksi memori tidak"
+          },
+          {
+            "index": 2,
+            "text": "menambah waktu tunggu pada giliran chat."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Pemisahan ini menjaga pekerjaan ekstraksi memori tidak menambah waktu tunggu pada giliran chat.",
+          "resolvedTextStyle": {
+            "fontSize": 17,
+            "typeface": "Arial",
+            "color": "#8A7667",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Pemisahan ini menjaga pekerjaan ekstraksi memori tidak menambah waktu tunggu pada giliran chat.",
+              "fontSize": 17,
+              "typeface": "Arial",
+              "color": "#8A7667"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 21,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/cfa9w3m9",
+      "id": "21",
+      "bbox": [
+        70,
+        615,
+        490,
+        54
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#FFFDF9",
+      "lineColor": "#E5D4C3",
+      "lineWidth": 1
+    },
+    {
+      "order": 22,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/judg7ads",
+      "id": "22",
+      "bbox": [
+        92,
+        631,
+        445,
+        22
+      ],
+      "geometry": "rect",
+      "text": "Routing utama: masukan audio, mode PHQ-9, eskalasi krisis, dan keluaran suara.",
+      "textPreview": "Routing utama: masukan audio, mode PHQ-9, eskalasi krisis, dan keluaran suara.",
+      "resolvedFontSize": 13,
+      "resolvedTextStyle": {
+        "fontSize": 13,
+        "typeface": "Arial",
+        "color": "#8A7667",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Routing utama: masukan audio, mode PHQ-9, eskalasi krisis, dan"
+          },
+          {
+            "index": 2,
+            "text": "keluaran suara."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Routing utama: masukan audio, mode PHQ-9, eskalasi krisis, dan keluaran suara.",
+          "resolvedTextStyle": {
+            "fontSize": 13,
+            "typeface": "Arial",
+            "color": "#8A7667",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Routing utama: masukan audio, mode PHQ-9, eskalasi krisis, dan keluaran suara.",
+              "fontSize": 13,
+              "typeface": "Arial",
+              "color": "#8A7667",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 23,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/u9knih4b",
+      "id": "23",
+      "bbox": [
+        615,
+        150,
+        595,
+        510
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#FFFDF9",
+      "lineColor": "#E5D4C3",
+      "lineWidth": 1
+    },
+    {
+      "order": 24,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/1orytsvu",
+      "id": "24",
+      "bbox": [
+        650,
+        170,
+        470,
+        18
+      ],
+      "geometry": "rect",
+      "text": "Topologi satu giliran percakapan",
+      "textPreview": "Topologi satu giliran percakapan",
+      "resolvedFontSize": 13,
+      "resolvedTextStyle": {
+        "fontSize": 13,
+        "typeface": "Arial",
+        "color": "#2D2119",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Topologi satu giliran percakapan"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Topologi satu giliran percakapan",
+          "resolvedTextStyle": {
+            "fontSize": 13,
+            "typeface": "Arial",
+            "color": "#2D2119",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Topologi satu giliran percakapan",
+              "fontSize": 13,
+              "typeface": "Arial",
+              "color": "#2D2119",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 25,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/c7u54zid",
+      "id": "25",
+      "bbox": [
+        642,
+        202,
+        164,
+        387
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#FFFAF4",
+      "lineColor": "#E5D4C3",
+      "lineWidth": 1
+    },
+    {
+      "order": 26,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/jm1cfa9w",
+      "id": "26",
+      "bbox": [
+        652,
+        214,
+        144,
+        26
+      ],
+      "geometry": "rect",
+      "text": "Masukan & konteks",
+      "textPreview": "Masukan & konteks",
+      "resolvedFontSize": 11,
+      "resolvedTextStyle": {
+        "fontSize": 11,
+        "typeface": "Arial",
+        "color": "#4F3424",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Masukan & konteks"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Masukan & konteks",
+          "resolvedTextStyle": {
+            "fontSize": 11,
+            "typeface": "Arial",
+            "color": "#4F3424",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Masukan & konteks",
+              "fontSize": 11,
+              "typeface": "Arial",
+              "color": "#4F3424",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 27,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/5o7qpg3e",
+      "id": "27",
+      "bbox": [
+        650,
+        244,
+        148,
+        330
+      ],
+      "alt": "Masukan & konteks dalam topologi pipeline agentik AXIS",
+      "contentType": "image/png",
+      "imageFit": "contain",
+      "asset": {
+        "assetId": "5af9bc7e-759e-4727-8115-e723671811dd",
+        "contentType": "image/png",
+        "byteLength": 72694
+      }
+    },
+    {
+      "order": 28,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/5gbq1ory",
+      "id": "28",
+      "bbox": [
+        825,
+        202,
+        164,
+        387
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#FFFAF4",
+      "lineColor": "#E5D4C3",
+      "lineWidth": 1
+    },
+    {
+      "order": 29,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/cvixczed",
+      "id": "29",
+      "bbox": [
+        835,
+        214,
+        144,
+        26
+      ],
+      "geometry": "rect",
+      "text": "Pemilihan respons",
+      "textPreview": "Pemilihan respons",
+      "resolvedFontSize": 11,
+      "resolvedTextStyle": {
+        "fontSize": 11,
+        "typeface": "Arial",
+        "color": "#4F3424",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Pemilihan respons"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Pemilihan respons",
+          "resolvedTextStyle": {
+            "fontSize": 11,
+            "typeface": "Arial",
+            "color": "#4F3424",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Pemilihan respons",
+              "fontSize": 11,
+              "typeface": "Arial",
+              "color": "#4F3424",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 30,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/dsji5sne",
+      "id": "30",
+      "bbox": [
+        833,
+        244,
+        148,
+        330
+      ],
+      "alt": "Pemilihan respons dalam topologi pipeline agentik AXIS",
+      "contentType": "image/png",
+      "imageFit": "contain",
+      "asset": {
+        "assetId": "8bcb35d8-1eb8-41ae-bc65-fbd0e986dc22",
+        "contentType": "image/png",
+        "byteLength": 72600
+      }
+    },
+    {
+      "order": 31,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/fepkzupw",
+      "id": "31",
+      "bbox": [
+        1008,
+        202,
+        164,
+        387
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#FFFAF4",
+      "lineColor": "#E5D4C3",
+      "lineWidth": 1
+    },
+    {
+      "order": 32,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/4zidonyd",
+      "id": "32",
+      "bbox": [
+        1018,
+        214,
+        144,
+        26
+      ],
+      "geometry": "rect",
+      "text": "Keselamatan & keluaran",
+      "textPreview": "Keselamatan & keluaran",
+      "resolvedFontSize": 11,
+      "resolvedTextStyle": {
+        "fontSize": 11,
+        "typeface": "Arial",
+        "color": "#4F3424",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Keselamatan & keluaran"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Keselamatan & keluaran",
+          "resolvedTextStyle": {
+            "fontSize": 11,
+            "typeface": "Arial",
+            "color": "#4F3424",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Keselamatan & keluaran",
+              "fontSize": 11,
+              "typeface": "Arial",
+              "color": "#4F3424",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 33,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/61032lsz",
+      "id": "33",
+      "bbox": [
+        1016,
+        244,
+        148,
+        330
+      ],
+      "alt": "Keselamatan & keluaran dalam topologi pipeline agentik AXIS",
+      "contentType": "image/png",
+      "imageFit": "contain",
+      "asset": {
+        "assetId": "118a2703-b905-4646-8241-6ee18a0da59e",
+        "contentType": "image/png",
+        "byteLength": 81634
+      }
+    },
+    {
+      "order": 34,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/mlkjm1cf",
+      "id": "34",
+      "bbox": [
+        650,
+        597,
+        520,
+        19
+      ],
+      "geometry": "rect",
+      "text": "Urutan asli dibaca dari kiri ke kanan: tiga panel adalah potongan berurutan dari satu diagram LangGraph.",
+      "textPreview": "Urutan asli dibaca dari kiri ke kanan: tiga panel adalah potongan berurutan dari satu diagram LangGraph.",
+      "resolvedFontSize": 11,
+      "resolvedTextStyle": {
+        "fontSize": 11,
+        "typeface": "Arial",
+        "color": "#8A7667",
+        "alignment": "center",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Urutan asli dibaca dari kiri ke kanan: tiga panel adalah potongan berurutan dari satu diagram LangGraph."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Urutan asli dibaca dari kiri ke kanan: tiga panel adalah potongan berurutan dari satu diagram LangGraph.",
+          "resolvedTextStyle": {
+            "fontSize": 11,
+            "typeface": "Arial",
+            "color": "#8A7667",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Urutan asli dibaca dari kiri ke kanan: tiga panel adalah potongan berurutan dari satu diagram LangGraph.",
+              "fontSize": 11,
+              "typeface": "Arial",
+              "color": "#8A7667"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 35,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/f6dcbulw",
+      "id": "35",
+      "bbox": [
+        632,
+        625,
+        560,
+        18
+      ],
+      "geometry": "rect",
+      "text": "Gambar IV.2 — topologi implementasi pipeline agentik AXIS",
+      "textPreview": "Gambar IV.2 — topologi implementasi pipeline agentik AXIS",
+      "resolvedFontSize": 11,
+      "resolvedTextStyle": {
+        "fontSize": 11,
+        "typeface": "Arial",
+        "color": "#8A7667",
+        "alignment": "center",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Gambar IV.2 — topologi implementasi pipeline agentik AXIS"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Gambar IV.2 — topologi implementasi pipeline agentik AXIS",
+          "resolvedTextStyle": {
+            "fontSize": 11,
+            "typeface": "Arial",
+            "color": "#8A7667",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Gambar IV.2 — topologi implementasi pipeline agentik AXIS",
+              "fontSize": 11,
+              "typeface": "Arial",
+              "color": "#8A7667"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    }
+  ],
+  "composeRuns": []
+}

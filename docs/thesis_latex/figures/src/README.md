@@ -79,6 +79,13 @@ terminator untuk awal/akhir giliran, persegi panjang untuk proses, dan belah
 ketupat untuk keputusan, sehingga jalur penawaran, pengisian, serta eskalasi
 dapat dibaca tanpa garis balik yang menutupi label.
 
+Untuk naskah potret, keluaran tersebut dipotong menjadi dua artefak turunan:
+`../phq9_state_machine_offer.pdf` dan
+`../phq9_state_machine_completion.pdf`. Keduanya menampilkan fase penawaran
+serta fase pengisian/penyelesaian pada halaman terpisah, tanpa mengubah sumber
+Draw.io. Jika sumber diekspor ulang, perbarui kedua potongan tersebut sebelum
+kompilasi LaTeX.
+
 `system_architecture.drawio` adalah sumber aktif untuk
 `../system_architecture.pdf` agar lapisan layanan dan tanggung jawab
 penyimpanannya dapat ditata vertikal tanpa garis yang saling menimpa.

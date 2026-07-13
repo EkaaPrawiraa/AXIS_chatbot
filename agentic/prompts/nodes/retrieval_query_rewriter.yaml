@@ -12,9 +12,7 @@ notes: |
   experiences surface for the response generator. Raw last-message
   embeddings lose information when the user replies tersely
   ("iya bener", "lanjut") or relies on anaphora ("yang itu masih
-  bikin pusing"). This rewriter inflates short replies with the bits of
-  conversational context that disambiguate them, while staying compact
-  enough that the embedding does not get diluted.
+  bikin pusing").
 
   Constraints:
     - Output ONE line. No bullet points, no quotes, no preamble.

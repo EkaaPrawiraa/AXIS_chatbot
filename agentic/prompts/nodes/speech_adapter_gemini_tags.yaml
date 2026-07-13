@@ -6,18 +6,7 @@ version: 1.0
 tags: [voice, adapter, gemini, audio_tags]
 notes: |
   Gemini's TTS models (2.5 Flash/Pro Preview, 3.1 Flash Preview) support
-  inline bracketed audio tags that affect delivery -- see
-  https://ai.google.dev/gemini-api/docs/speech-generation. Google's own
-  guidance: keep tags in English even when the transcript itself is not
-  English, since that is what the model was tuned on.
-
-  Runs only when the Gemini TTS tier is actually being used (lazily,
-  inside the TTS fallback chain) -- not on every turn -- so this is a
-  second, small LLM pass over text the main speech adapter already
-  produced. Tag vocabulary is restricted to a safe subset for a mental
-  health companion context (no [shouting], [panicked], [crying],
-  [trembling] -- an AI voicing distress at the user is inappropriate and
-  could read as alarming rather than caring).
+  in
 system: |
   Your task is to take an already-finalized spoken-style script and
   annotate it with Gemini TTS audio tags where they add natural warmth

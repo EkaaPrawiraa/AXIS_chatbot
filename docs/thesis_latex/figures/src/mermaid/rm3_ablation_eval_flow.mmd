@@ -1,0 +1,41 @@
+flowchart TD
+    A([Mulai])
+    B["Tulis fakta benih pengguna<br/>melalui session finalizer nyata"]
+    C["Kueri susulan berparafrase,<br/>tidak mengulang kata benih"]
+    D["Jalankan build_context<br/>pada kondisi vektor saja"]
+    E["Jalankan build_context<br/>pada kondisi hibrid"]
+    F{"Konteks memuat<br/>kata kunci jangkar domain?"}
+    G["Hitung Recall@5<br/>kondisi vektor saja"]
+    H["Hitung Recall@5<br/>kondisi hibrid"]
+    I["Kasus bertarget: dua Experience<br/>berbagi satu Trigger identik,<br/>tanpa kesamaan leksikal"]
+    J{"Penelusuran satu hop<br/>ke Trigger yang sama?"}
+    K["Kondisi vektor saja<br/>tidak menemukan pasangan"]
+    L["Kondisi hibrid menemukan<br/>pasangan melalui graph expansion"]
+    M["Bandingkan Recall@5 dan<br/>keberhasilan kueri berbagi entitas"]
+    N([Selesai])
+
+    A --> B --> C
+    C --> D
+    C --> E
+    D --> F
+    E --> F
+    F --> G
+    F --> H
+    G --> M
+    H --> M
+
+    A -.-> I
+    I --> J
+    J -->|Tidak, vektor saja| K
+    J -->|Ya, hibrid| L
+    K --> M
+    L --> M
+    M --> N
+
+    classDef terminator fill:#ffffff,stroke:#111111,stroke-width:1.4px,color:#111111
+    classDef process fill:#ffffff,stroke:#111111,stroke-width:1.2px,color:#111111
+    classDef decision fill:#f2f2f2,stroke:#111111,stroke-width:1.2px,color:#111111
+
+    class A,N terminator
+    class B,C,D,E,G,H,I,K,L,M process
+    class F,J decision

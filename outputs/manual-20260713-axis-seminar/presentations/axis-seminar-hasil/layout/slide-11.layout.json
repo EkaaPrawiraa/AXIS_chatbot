@@ -1,0 +1,1084 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/yjzbkp",
+    "id": "yjzbkp",
+    "slide": 11,
+    "layoutId": "e130e22f-9edf-4253-a180-c1c4fd49812a",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "3006dcdd-5836-4e1e-8228-0a7269cfcc43",
+    "masterLayoutName": "Master",
+    "backgroundColor": "#FFFAF4",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "Arial"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "e130e22f-9edf-4253-a180-c1c4fd49812a",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "3006dcdd-5836-4e1e-8228-0a7269cfcc43",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "3006dcdd-5836-4e1e-8228-0a7269cfcc43",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/61032lsz",
+      "id": "1",
+      "bbox": [
+        70,
+        40,
+        600,
+        22
+      ],
+      "geometry": "rect",
+      "text": "IMPLEMENTASI",
+      "textPreview": "IMPLEMENTASI",
+      "resolvedFontSize": 12,
+      "resolvedTextStyle": {
+        "fontSize": 12,
+        "typeface": "Arial",
+        "color": "#8B5438",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "IMPLEMENTASI"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "IMPLEMENTASI",
+          "resolvedTextStyle": {
+            "fontSize": 12,
+            "typeface": "Arial",
+            "color": "#8B5438",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "IMPLEMENTASI",
+              "fontSize": 12,
+              "typeface": "Arial",
+              "color": "#8B5438",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/dsji5sne",
+      "id": "2",
+      "bbox": [
+        70,
+        68,
+        1080,
+        52
+      ],
+      "geometry": "rect",
+      "text": "Fitur pengguna menyajikan arsitektur sebagai pengalaman pendampingan",
+      "textPreview": "Fitur pengguna menyajikan arsitektur sebagai pengalaman pendampingan",
+      "resolvedFontSize": 33,
+      "resolvedTextStyle": {
+        "fontSize": 33,
+        "typeface": "Arial",
+        "color": "#2D2119",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Fitur pengguna menyajikan arsitektur sebagai pengalaman"
+          },
+          {
+            "index": 2,
+            "text": "pendampingan"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Fitur pengguna menyajikan arsitektur sebagai pengalaman pendampingan",
+          "resolvedTextStyle": {
+            "fontSize": 33,
+            "typeface": "Arial",
+            "color": "#2D2119",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Fitur pengguna menyajikan arsitektur sebagai pengalaman pendampingan",
+              "fontSize": 33,
+              "typeface": "Arial",
+              "color": "#2D2119",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/o7qpg3ex",
+      "id": "3",
+      "bbox": [
+        70,
+        130,
+        1140,
+        0
+      ],
+      "geometry": "line",
+      "lineColor": "#E5D4C3",
+      "lineWidth": 1
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/vy90je9c",
+      "id": "4",
+      "bbox": [
+        70,
+        685,
+        116,
+        16
+      ],
+      "geometry": "rect",
+      "text": "MASALAH",
+      "textPreview": "MASALAH",
+      "resolvedFontSize": 10,
+      "resolvedTextStyle": {
+        "fontSize": 10,
+        "typeface": "Arial",
+        "color": "#8A7667",
+        "alignment": "center",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "MASALAH"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "MASALAH",
+          "resolvedTextStyle": {
+            "fontSize": 10,
+            "typeface": "Arial",
+            "color": "#8A7667",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "MASALAH",
+              "fontSize": 10,
+              "typeface": "Arial",
+              "color": "#8A7667"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/6dcbulwv",
+      "id": "5",
+      "bbox": [
+        70,
+        705,
+        116,
+        0
+      ],
+      "geometry": "line",
+      "lineColor": "#E5D4C3",
+      "lineWidth": 1
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/d4vmtwra",
+      "id": "6",
+      "bbox": [
+        198,
+        685,
+        116,
+        16
+      ],
+      "geometry": "rect",
+      "text": "SOLUSI",
+      "textPreview": "SOLUSI",
+      "resolvedFontSize": 10,
+      "resolvedTextStyle": {
+        "fontSize": 10,
+        "typeface": "Arial",
+        "color": "#8A7667",
+        "alignment": "center",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "SOLUSI"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "SOLUSI",
+          "resolvedTextStyle": {
+            "fontSize": 10,
+            "typeface": "Arial",
+            "color": "#8A7667",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "SOLUSI",
+              "fontSize": 10,
+              "typeface": "Arial",
+              "color": "#8A7667"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/oj2t83it",
+      "id": "7",
+      "bbox": [
+        198,
+        705,
+        116,
+        0
+      ],
+      "geometry": "line",
+      "lineColor": "#E5D4C3",
+      "lineWidth": 1
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/z25kb6xk",
+      "id": "8",
+      "bbox": [
+        326,
+        685,
+        116,
+        16
+      ],
+      "geometry": "rect",
+      "text": "IMPLEMENTASI",
+      "textPreview": "IMPLEMENTASI",
+      "resolvedFontSize": 10,
+      "resolvedTextStyle": {
+        "fontSize": 10,
+        "typeface": "Arial",
+        "color": "#4F3424",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "IMPLEMENTASI"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "IMPLEMENTASI",
+          "resolvedTextStyle": {
+            "fontSize": 10,
+            "typeface": "Arial",
+            "color": "#4F3424",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "IMPLEMENTASI",
+              "fontSize": 10,
+              "typeface": "Arial",
+              "color": "#4F3424",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/6hcrmhk3",
+      "id": "9",
+      "bbox": [
+        326,
+        705,
+        116,
+        0
+      ],
+      "geometry": "line",
+      "lineColor": "#4F3424",
+      "lineWidth": 3
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/gr2p8nqx",
+      "id": "10",
+      "bbox": [
+        454,
+        685,
+        116,
+        16
+      ],
+      "geometry": "rect",
+      "text": "EVALUASI",
+      "textPreview": "EVALUASI",
+      "resolvedFontSize": 10,
+      "resolvedTextStyle": {
+        "fontSize": 10,
+        "typeface": "Arial",
+        "color": "#8A7667",
+        "alignment": "center",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "EVALUASI"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "EVALUASI",
+          "resolvedTextStyle": {
+            "fontSize": 10,
+            "typeface": "Arial",
+            "color": "#8A7667",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "EVALUASI",
+              "fontSize": 10,
+              "typeface": "Arial",
+              "color": "#8A7667"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 11,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/9cvixcze",
+      "id": "11",
+      "bbox": [
+        454,
+        705,
+        116,
+        0
+      ],
+      "geometry": "line",
+      "lineColor": "#E5D4C3",
+      "lineWidth": 1
+    },
+    {
+      "order": 12,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ylc7u54z",
+      "id": "12",
+      "bbox": [
+        1160,
+        682,
+        50,
+        18
+      ],
+      "geometry": "rect",
+      "text": "11",
+      "textPreview": "11",
+      "resolvedFontSize": 11,
+      "resolvedTextStyle": {
+        "fontSize": 11,
+        "typeface": "Arial",
+        "color": "#8A7667",
+        "alignment": "right",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "11"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "11",
+          "resolvedTextStyle": {
+            "fontSize": 11,
+            "typeface": "Arial",
+            "color": "#8A7667",
+            "alignment": "right"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "11",
+              "fontSize": 11,
+              "typeface": "Arial",
+              "color": "#8A7667"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 13,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/r65wjudg",
+      "id": "13",
+      "bbox": [
+        125,
+        170,
+        270,
+        360
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#FFFDF9",
+      "lineColor": "#E5D4C3",
+      "lineWidth": 1
+    },
+    {
+      "order": 14,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/bat47y1k",
+      "id": "14",
+      "bbox": [
+        139,
+        184,
+        242,
+        322
+      ],
+      "alt": "Chat dan refleksi",
+      "contentType": "image/png",
+      "imageFit": "contain",
+      "asset": {
+        "assetId": "eb033278-5239-4f9f-a5c7-7be6fbfab388",
+        "contentType": "image/png",
+        "byteLength": 1276072
+      }
+    },
+    {
+      "order": 15,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/5o7qpg3e",
+      "id": "15",
+      "bbox": [
+        140,
+        548,
+        240,
+        27
+      ],
+      "geometry": "rect",
+      "text": "Chat dan refleksi",
+      "textPreview": "Chat dan refleksi",
+      "resolvedFontSize": 18,
+      "resolvedTextStyle": {
+        "fontSize": 18,
+        "typeface": "Arial",
+        "color": "#4F3424",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Chat dan refleksi"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Chat dan refleksi",
+          "resolvedTextStyle": {
+            "fontSize": 18,
+            "typeface": "Arial",
+            "color": "#4F3424",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Chat dan refleksi",
+              "fontSize": 18,
+              "typeface": "Arial",
+              "color": "#4F3424",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 16,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/yxobm58z",
+      "id": "16",
+      "bbox": [
+        137,
+        584,
+        246,
+        50
+      ],
+      "geometry": "rect",
+      "text": "Percakapan utama, teknik CBT, pilihan PHQ-9, dan respons keselamatan.",
+      "textPreview": "Percakapan utama, teknik CBT, pilihan PHQ-9, dan respons keselamatan.",
+      "resolvedFontSize": 13,
+      "resolvedTextStyle": {
+        "fontSize": 13,
+        "typeface": "Arial",
+        "color": "#8A7667",
+        "alignment": "center",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Percakapan utama, teknik CBT, pilihan"
+          },
+          {
+            "index": 2,
+            "text": "PHQ-9, dan respons keselamatan."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Percakapan utama, teknik CBT, pilihan PHQ-9, dan respons keselamatan.",
+          "resolvedTextStyle": {
+            "fontSize": 13,
+            "typeface": "Arial",
+            "color": "#8A7667",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Percakapan utama, teknik CBT, pilihan PHQ-9, dan respons keselamatan.",
+              "fontSize": 13,
+              "typeface": "Arial",
+              "color": "#8A7667"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 17,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/nih4byhg",
+      "id": "17",
+      "bbox": [
+        487,
+        170,
+        270,
+        360
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#FFFDF9",
+      "lineColor": "#E5D4C3",
+      "lineWidth": 1
+    },
+    {
+      "order": 18,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/b2hwfyxo",
+      "id": "18",
+      "bbox": [
+        501,
+        184,
+        242,
+        322
+      ],
+      "alt": "Suara sementara",
+      "contentType": "image/png",
+      "imageFit": "contain",
+      "asset": {
+        "assetId": "4743b09e-b282-4c89-a79a-b18be20e760f",
+        "contentType": "image/png",
+        "byteLength": 34709
+      }
+    },
+    {
+      "order": 19,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/9s36hcrm",
+      "id": "19",
+      "bbox": [
+        502,
+        548,
+        240,
+        27
+      ],
+      "geometry": "rect",
+      "text": "Suara sementara",
+      "textPreview": "Suara sementara",
+      "resolvedFontSize": 18,
+      "resolvedTextStyle": {
+        "fontSize": 18,
+        "typeface": "Arial",
+        "color": "#4F3424",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Suara sementara"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Suara sementara",
+          "resolvedTextStyle": {
+            "fontSize": 18,
+            "typeface": "Arial",
+            "color": "#4F3424",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Suara sementara",
+              "fontSize": 18,
+              "typeface": "Arial",
+              "color": "#4F3424",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 20,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/twra5gbq",
+      "id": "20",
+      "bbox": [
+        499,
+        584,
+        246,
+        50
+      ],
+      "geometry": "rect",
+      "text": "Confession Space untuk bicara dengan subtitle tanpa menjadi memori jangka panjang AXIS.",
+      "textPreview": "Confession Space untuk bicara dengan subtitle tanpa menjadi memori jangka panjang AXIS.",
+      "resolvedFontSize": 13,
+      "resolvedTextStyle": {
+        "fontSize": 13,
+        "typeface": "Arial",
+        "color": "#8A7667",
+        "alignment": "center",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 3,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Confession Space untuk bicara dengan"
+          },
+          {
+            "index": 2,
+            "text": "subtitle tanpa menjadi memori jangka"
+          },
+          {
+            "index": 3,
+            "text": "panjang AXIS."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Confession Space untuk bicara dengan subtitle tanpa menjadi memori jangka panjang AXIS.",
+          "resolvedTextStyle": {
+            "fontSize": 13,
+            "typeface": "Arial",
+            "color": "#8A7667",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Confession Space untuk bicara dengan subtitle tanpa menjadi memori jangka panjang AXIS.",
+              "fontSize": 13,
+              "typeface": "Arial",
+              "color": "#8A7667"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 21,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/4byhgn29",
+      "id": "21",
+      "bbox": [
+        849,
+        170,
+        270,
+        360
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#FFFDF9",
+      "lineColor": "#E5D4C3",
+      "lineWidth": 1
+    },
+    {
+      "order": 22,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/cj6tovah",
+      "id": "22",
+      "bbox": [
+        863,
+        184,
+        242,
+        322
+      ],
+      "alt": "Memori dan kendali",
+      "contentType": "image/png",
+      "imageFit": "contain",
+      "asset": {
+        "assetId": "3e2cf485-407b-4602-8212-5508243e4cf1",
+        "contentType": "image/png",
+        "byteLength": 1446616
+      }
+    },
+    {
+      "order": 23,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/m58z25kb",
+      "id": "23",
+      "bbox": [
+        864,
+        548,
+        240,
+        27
+      ],
+      "geometry": "rect",
+      "text": "Memori dan kendali",
+      "textPreview": "Memori dan kendali",
+      "resolvedFontSize": 18,
+      "resolvedTextStyle": {
+        "fontSize": 18,
+        "typeface": "Arial",
+        "color": "#4F3424",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Memori dan kendali"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Memori dan kendali",
+          "resolvedTextStyle": {
+            "fontSize": 18,
+            "typeface": "Arial",
+            "color": "#4F3424",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Memori dan kendali",
+              "fontSize": 18,
+              "typeface": "Arial",
+              "color": "#4F3424",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 24,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/t83itgfm",
+      "id": "24",
+      "bbox": [
+        861,
+        584,
+        246,
+        50
+      ],
+      "geometry": "rect",
+      "text": "Melihat memori, menyembunyikan konten sensitif, mengubah atau menghapus data.",
+      "textPreview": "Melihat memori, menyembunyikan konten sensitif, mengubah atau menghapus data.",
+      "resolvedFontSize": 13,
+      "resolvedTextStyle": {
+        "fontSize": 13,
+        "typeface": "Arial",
+        "color": "#8A7667",
+        "alignment": "center",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Melihat memori, menyembunyikan konten"
+          },
+          {
+            "index": 2,
+            "text": "sensitif, mengubah atau menghapus data."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Melihat memori, menyembunyikan konten sensitif, mengubah atau menghapus data.",
+          "resolvedTextStyle": {
+            "fontSize": 13,
+            "typeface": "Arial",
+            "color": "#8A7667",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Melihat memori, menyembunyikan konten sensitif, mengubah atau menghapus data.",
+              "fontSize": 13,
+              "typeface": "Arial",
+              "color": "#8A7667"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    }
+  ],
+  "composeRuns": []
+}

@@ -5,9 +5,6 @@
 \chapter{DESKRIPSI SOLUSI}
 \label{ch:deskripsi-solusi}
 
-% Bab ini menerjemahkan masalah pada BAB I menjadi rancangan solusi yang utuh. Ketiga rumusan masalah tersebut, betapapun berbeda kebutuhan teknisnya, sesungguhnya menuntut satu syarat yang sama: pengguna harus merasa berhadapan dengan satu pendamping yang konsisten, bukan kumpulan fitur yang berdiri sendiri. BAB I menunjukkan bahwa perubahan persona pada pembaruan sistem dapat merusak hubungan yang sudah terbentuk antara pengguna dan chatbot pendampingnya (\textit{identity discontinuity}). Dengan alasan yang sama, chatbot pendamping pada tugas akhir ini memerlukan identitas tunggal yang menjadi titik ikat bagi seluruh kemampuannya, dari percakapan reflektif hingga memori jangka panjang.
-
-% Chatbot pendamping yang dirancang pada tugas akhir ini diberi nama AXIS, diambil dari kata \textit{axis} yang berarti poros atau sumbu. Sebagaimana poros menjadi pusat tempat berbagai bagian berputar tanpa berubah posisi, AXIS diposisikan sebagai titik tetap tempat percakapan reflektif, pemantauan kondisi emosional, dan memori jangka panjang pengguna bertumpu pada satu identitas yang sama. Nama tunggal ini dipakai konsisten pada seluruh rancangan solusi berikut, sehingga pembahasan diarahkan pada alasan mengapa AXIS perlu memiliki percakapan pendamping, pemeriksaan suasana hati, dan memori jangka panjang yang dapat berubah mengikuti pengguna. Rincian mengenai layanan, basis data, alur pemrosesan teknis, dan implementasi perangkat lunak ditempatkan pada BAB IV agar batas antara rancangan dan realisasi tetap jelas.
 
 \section{Analisis Kebutuhan Solusi}
 \label{sec:analisis-kebutuhan-solusi}
@@ -18,9 +15,9 @@ Kebutuhan ini menuntut percakapan yang empatik, tetapi tetap berada pada batas n
 
 Percakapan pendamping juga membutuhkan kendali pengguna. Jika sistem dirancang untuk digunakan berulang kali, pengguna tidak hanya berhadapan dengan respons hari ini, tetapi juga dengan jejak cerita yang mungkin dibawa ke sesi berikutnya. Karena itu, rancangan companionship tidak cukup hanya membahas empati dan memori. Sistem juga perlu memberi pilihan kepada pengguna: kapan cerita boleh menjadi memori, kapan percakapan cukup berlangsung sementara, bagaimana memori dapat dilihat atau dihapus, dan bagaimana preferensi pengalaman dapat diatur. Kendali ini penting agar personalisasi tidak berubah menjadi rasa diawasi.
 
-Rumusan masalah kedua menambahkan kebutuhan pemantauan kondisi emosional. Pengguna tidak selalu datang dengan masalah yang siap dijelaskan panjang lebar. Kadang kondisinya hanya tertangkap lewat sinyal ringan seperti sedang sangat sedih, biasa saja, atau cukup baik. Catatan suasana hati harian membantu AXIS membaca nada awal tersebut. Untuk pemantauan yang lebih terstruktur, dipilih instrumen PHQ-9: kuesioner sembilan butir yang dapat diisi sendiri dan telah tervalidasi luas sebagai skrining depresi \parencite{kroenke2001phq9}, termasuk pada populasi Indonesia \parencite{yulia2022phq9indo}, dengan ulasan lebih lengkap pada Subbab~\ref{subsec:phq9-instrumen}. Penyampaiannya tidak boleh terasa seperti formulir yang memutus pengalaman pendampingan, sehingga sistem perlu menawarkannya pada waktu yang wajar, menyampaikannya satu per satu, dan menjelaskan hasilnya sebagai skrining, bukan diagnosis.
+Rumusan masalah kedua menambahkan dua kebutuhan yang saling melengkapi. Pengguna tidak selalu datang dengan masalah yang siap dijelaskan panjang lebar, sehingga catatan suasana hati harian membantu AXIS membaca nada awal pada hari itu. Namun mood sesaat tidak cukup untuk merefleksikan pola gejala selama dua minggu. Untuk kebutuhan yang lebih terstruktur, dipilih PHQ-9, yaitu instrumen sembilan butir yang telah tervalidasi sebagai skrining depresi \parencite{kroenke2001phq9}, termasuk pada populasi Indonesia \parencite{yulia2022phq9indo}. Penyampaiannya perlu sukarela, muncul pada waktu yang wajar, diberikan satu per satu, dan menjelaskan hasil sebagai skrining, bukan diagnosis.
 
-Rumusan masalah ketiga menuntut memori jangka panjang. Percakapan dengan mahasiswa tidak dapat dipahami sebagai kumpulan pesan terpisah. Cerita tentang revisi skripsi hari ini bisa berkaitan dengan kegagalan presentasi bulan lalu, komentar dosen pembimbing, ekspektasi keluarga, atau perasaan tertinggal dari teman seangkatan. Jika AXIS hanya mengingat potongan teks yang mirip, hubungan semacam itu mudah hilang. Karena itu, sistem membutuhkan memori yang dapat menulis cerita pengguna, menghubungkannya dengan konteks lain, memperbaruinya ketika pemahaman pengguna berubah, dan memilih kembali memori yang relevan pada percakapan berikutnya.
+Rumusan masalah ketiga menuntut memori jangka panjang. Percakapan dengan mahasiswa tidak dapat dipahami sebagai kumpulan pesan terpisah. Cerita tentang revisi skripsi hari ini bisa berkaitan dengan kegagalan presentasi bulan lalu, komentar dosen pembimbing, ekspektasi keluarga, atau perasaan tertinggal dari teman seangkatan. Jika AXIS hanya mengingat potongan teks yang mirip, hubungan semacam itu mudah hilang. Karena itu, sistem membutuhkan memori yang dapat mengenali konteks permasalahan yang relevan dalam kehidupan mahasiswa, menulis cerita pengguna, menghubungkannya dengan konteks lain, memperbaruinya ketika pemahaman pengguna berubah, dan memilih kembali memori yang relevan pada percakapan berikutnya. Pengenalan konteks tersebut berfungsi sebagai jangkar, bukan daftar topik tertutup yang dipaksakan pada setiap cerita pengguna.
 
 Kebutuhan tersebut diringkas pada Tabel \ref{tab:kebutuhan-solusi}. Tabel ini tidak dimaksudkan menggantikan narasi, tetapi membantu menunjukkan hubungan antara masalah yang dibawa dari BAB I dan arah rancangan yang diambil pada bab ini.
 
@@ -34,9 +31,9 @@ Kebutuhan tersebut diringkas pada Tabel \ref{tab:kebutuhan-solusi}. Tabel ini ti
 \rowcolor{tableheadgray}
 \textbf{Kebutuhan} & \textbf{Alasan} & \textbf{Arah rancangan} \\
 \hline
-K1: Percakapan bermakna & Pengguna membutuhkan ruang yang tidak hanya membalas pesan, tetapi memahami emosi, konteks, dan gaya bahasa. & Persona pendamping stabil, refleksi berbasis CBT non-klinis, pengayaan bahasa informal dan bahasa campur. \\
+K1: Respons suportif kontekstual & Pengguna membutuhkan ruang yang tidak hanya membalas pesan, tetapi memahami emosi, konteks, dan gaya bahasa. & Persona pendamping stabil, refleksi berbasis CBT non-klinis, pengayaan bahasa informal dan bahasa campur. \\
 \hline
-K2: Mood dan PHQ-9 & Kondisi pengguna perlu dipahami secara ringan harian dan lebih terstruktur secara berkala. & Mood harian sebagai konteks, PHQ-9 sebagai skrining percakapan adaptif. \\
+K2: Mood dan asesmen skrining depresi & Mood memberi konteks harian, sedangkan gejala dua mingguan memerlukan skrining depresi yang tervalidasi. & Mood harian sebagai konteks, PHQ-9 sebagai skrining percakapan adaptif dan sukarela. \\
 \hline
 K3: Memori jangka panjang & Cerita pengguna saling terkait lintas sesi dan dapat berubah makna. & Memori relasional, siklus hidup memori, dan pemilihan konteks yang relevan. \\
 \hline
@@ -112,6 +109,8 @@ Rancangan berikut menjawab K1 pada Tabel~\ref{tab:kebutuhan-solusi}. Peran AXIS 
 
 Prinsip CBT dipakai sebagai kerangka refleksi, bukan sebagai terapi. AXIS dapat membantu pengguna melihat hubungan antara situasi, pikiran, emosi, dan perilaku. Jika pengguna menunjukkan kritik diri, sistem dapat mengajak pengguna melihat cara bicara kepada diri sendiri. Jika pengguna menunjukkan kepanikan, sistem dapat menawarkan latihan penjangkaran (\textit{grounding}). Jika pengguna menunjukkan pikiran katastrofik, sistem dapat mengajak pengguna menimbang kemungkinan lain. Semua latihan tersebut tetap berada dalam batas non-klinis dan harus terasa sebagai undangan, bukan kewajiban.
 
+Perancangan respons reflektif ini memisahkan proses secara eksplisit menjadi dua tahap berurutan: memahami, baru kemudian menyuarakan. Pemisahan ini mengikuti pembedaan empati kognitif dan empati belas kasih pada Subbab~\ref{subsec:model-empati} \parencite{decetyCowell2014}, karena memahami mengapa pengguna merasakan sesuatu dalam konteks yang spesifik adalah proses yang berbeda dari memutuskan tindakan respons yang membantu. Tahap pemahaman menyusun model psikologis pengguna dari memori yang tersedia mengikuti struktur situasi-emosi-pikiran-perilaku pada model \textit{hot cross bun} \parencite{greenbergerPadesky1995}, memperlakukan distorsi kognitif yang terdeteksi sebagai skema yang dapat dievaluasi terprogram \parencite{beck1979}, tanpa pernah menyusun kalimat balasan itu sendiri. Tahap penyuaraan menerima hasil pemahaman tersebut dan menerjemahkannya menjadi kalimat yang hangat, tanpa pernah menyebutkan mekanisme analisis yang mendasarinya kepada pengguna. Pemisahan ini dirancang agar kedalaman pemahaman memperkaya ketepatan dan nada respons, bukan ditunjukkan sebagai proses analitis yang terlihat pengguna.
+
 Alur pemilihan teknik ditunjukkan pada Gambar \ref{fig:cbt-dialogue-flow}. Teknik tidak dipilih sebagai langkah otomatis yang selalu muncul. Sistem lebih dahulu memeriksa apakah percakapan sedang berada dalam alur skrining atau kondisi risiko, menghormati penolakan yang baru saja diberikan pengguna, menimbang apakah muatan emosi dan kesiapan pengguna sudah cukup, dan baru memilih teknik yang sesuai dengan sinyal dominan pada pesan. Dengan cara ini, CBT memperkaya percakapan tanpa memaksa pengguna masuk ke format latihan.
 
 \begin{figure}[!htbp]
@@ -172,7 +171,7 @@ Kalibrasi ini tidak berhenti pada label topik. Kategori Subjek membedakan dosen 
 
 Tidak seluruh kategori memerlukan kosakata tetap, dan ketiadaan itu adalah keputusan rancangan, bukan celah yang terlewat. Catatan Pengalaman, Pikiran, dan Emosi tetap ditulis mendekati kata-kata asli pengguna karena tujuannya merekam narasi personal apa adanya. Ketiganya hanya diberi contoh pengenalan pola kehidupan mahasiswa yang umum terjadi, seperti sidang yang ditolak, rasa tidak pantas melanjutkan studi, atau rasa bersalah terkait beban finansial keluarga, agar pola yang memang muncul tidak luput dicatat tanpa memaksakan frasa baku menggantikan kata-kata pengguna. Hasil PHQ-9 sengaja tidak dikalibrasi sama sekali karena instrumen skrining harus konsisten lintas populasi agar tetap valid. Ringkasan sesi justru diperkuat instruksinya agar mempertahankan detail relasi yang spesifik, misalnya tetap membedakan dosen pembimbing dari dosen wali alih-alih meratakan keduanya menjadi ``masalah akademik''. Kalibrasi ini ditutup pada sisi penyusunan respons: peran yang berbeda pada memori tetap dihormati perbedaannya saat direfleksikan kembali ke pengguna.
 
-\subsection{Rancangan Mood Harian dan PHQ-9}
+\subsection{Rancangan Mood Harian dan Asesmen Skrining Depresi PHQ-9}
 \label{subsec:rancangan-mood-phq9}
 \label{subsec:rancangan-jitai-gate}
 \label{subsec:rancangan-state-phq9}
@@ -207,7 +206,7 @@ Jeda adaptif & Setelah penolakan, tawaran ulang ditunda. Jeda memendek ketika di
 \begin{figure}[!htbp]
   \centering
   \includegraphics[width=0.85\textwidth]{figures/phq9_concept_flow.pdf}
-  \caption[Flowchart mood dan PHQ-9]{\textit{Flowchart} konseptual pemeriksaan mood harian dan PHQ-9 sebagai skrining percakapan bertahap.}
+  \caption[Flowchart mood harian dan asesmen PHQ-9]{\textit{Flowchart} konseptual mood harian dan asesmen skrining depresi PHQ-9 secara percakapan bertahap.}
   \label{fig:phq9-state-machine}
 \end{figure}
 
@@ -225,6 +224,8 @@ Rancangan berikut menjawab K3 pada Tabel~\ref{tab:kebutuhan-solusi}. Memori AXIS
   \caption[Flowchart penulisan dan siklus hidup memori]{\textit{Flowchart} konseptual penulisan dan siklus hidup memori jangka panjang AXIS.}
   \label{fig:memory-concept-flow}
 \end{figure}
+
+Penggunaan graf pada rancangan ini tidak dibatasi hanya sebagai pengaya representasi setelah kandidat memori ditemukan. Mengikuti prinsip \textit{spreading activation} \parencite{collinsloftus1975} pada Subbab~\ref{subsec:hybrid-retrieval}, penelusuran graf juga dirancang untuk berperan pada tahap penemuan kandidat itu sendiri: dari satu memori benih yang ditemukan pencarian semantik, penelusuran satu langkah ke entitas relasi yang sama (Pemicu atau Subjek yang identik) dapat menemukan pengalaman lain milik pengguna yang sama sekali tidak mirip secara leksikal maupun semantik dengan pesan pengguna saat itu, tetapi terhubung secara nyata lewat identitas relasi yang sama pada graf. Kemampuan ini dirancang khusus untuk jenis kueri yang secara struktural tidak dapat dijawab pencarian semantik semata, terlepas dari besar korpus atau kualitas model \textit{embedding} yang dipakai.
 
 Keputusan memakai memori relasional membawa konsekuensi. Sistem perlu menjaga struktur, sinkronisasi, dan relevansi memori. Namun, konsekuensi tersebut diterima karena memori personal tidak berbentuk daftar fakta yang statis. Mahasiswa dapat mengubah cara memaknai pengalaman. Dosen yang awalnya terasa menekan bisa kemudian dipahami sebagai pembimbing yang peduli, dan revisi yang awalnya terasa gagal bisa kemudian dipahami sebagai proses memperbaiki karya. Jika memori tidak memiliki \textit{lifecycle}, sistem berisiko mengulang pemahaman lama yang tidak lagi tepat.
 
@@ -294,32 +295,47 @@ Pada percakapan biasa, \textit{guardrail} tidak boleh membuat AXIS terasa sepert
 \section{Rancangan Evaluasi}
 \label{sec:rancangan-evaluasi}
 
-Evaluasi dirancang untuk menilai sejauh mana tiga rumusan masalah tidak hanya dijawab pada tingkat gagasan, tetapi juga tampak pada perilaku sistem. Kebutuhan ini tidak dapat dipenuhi oleh satu bentuk pengukuran saja. Sebagian perilaku bersifat diskrit dan dapat diperiksa benar-salahnya, misalnya apakah \textit{guardrail} memblokir sinyal risiko atau apakah memori administratif ikut tersimpan, sehingga cocok diukur secara kuantitatif melalui pengujian fungsional. Sebagian perilaku lain, seperti apakah suatu respons terasa empatik dan personal atau justru generik, bersifat interpretatif dan lebih sesuai dinilai secara kualitatif melalui pembacaan transkrip. Kombinasi metode kuantitatif dan kualitatif semacam ini lazim dipakai pada evaluasi chatbot pendamping, termasuk pada Wysa, yang mengevaluasi keterlibatan pengguna secara kuantitatif sekaligus nilai terapeutik yang dirasakan secara kualitatif \parencite{inkster2018}. Karena itu, evaluasi pada tugas akhir ini dirancang tiga jalur. Jalur pertama adalah evaluasi fungsional, yaitu pemeriksaan kuantitatif apakah alur percakapan, PHQ-9, \textit{guardrail}, penulisan memori, dan pengambilan konteks berjalan sesuai rancangan. Jalur kedua adalah studi kasus ilustratif, yaitu pengamatan kualitatif perilaku AXIS dibanding chatbot generik pada skenario pengguna baru dan pengguna lama, tanpa skrip percakapan tetap sehingga hasilnya belum setara pengukuran terkontrol. Jalur ketiga adalah pengujian pengguna nyata untuk melihat apakah pengalaman tersebut dapat digunakan dan dirasakan membantu oleh mahasiswa, menggabungkan data kuantitatif (skala kegunaan) dan kualitatif (masukan bebas). Pada tahap purwarupa, jalur pertama menjadi bukti implementasi utama, jalur kedua menjadi gambaran kualitatif pendukung, sedangkan jalur ketiga disiapkan sebagai evaluasi lanjutan yang memerlukan partisipan nyata dan tata kelola data yang lebih ketat.
+Evaluasi dirancang sebagai arsitektur bukti yang langsung mengikuti klaim pada tiga rumusan masalah. Bukti primer berasal dari pengujian kontrak, \textit{benchmark} berlabel, penilaian buta, dan ablasi terkendali. Studi kasus naratif hanya digunakan sebagai ilustrasi perilaku sistem, sedangkan pengujian pengguna nyata digunakan untuk menilai pengalaman awal memakai purwarupa.
 
-\begin{figure}[!htbp]
-  \centering
-  \includegraphics[width=0.9\textwidth]{figures/evaluation_three_tracks.pdf}
-  \caption[Tiga jalur evaluasi AXIS]{Tiga jalur evaluasi AXIS: evaluasi fungsional, studi kasus ilustratif, dan evaluasi pengguna nyata.}
-  \label{fig:evaluation-three-tracks}
-\end{figure}
+Lima blok evaluasi digunakan sebagai berikut.
 
-Hubungan antara rumusan masalah, rancangan solusi, indikator keberhasilan, dan evaluasi diringkas pada Tabel \ref{tab:pemetaan-rumusan-rancangan}. Tabel ini menjadi jembatan menuju BAB IV, tempat setiap rancangan diwujudkan dan diuji.
+\begin{enumerate}[label=\arabic*.,leftmargin=*,itemsep=4pt]
+  \item \textbf{Validasi kontrak sistem.} Pengujian unit dan integrasi memeriksa transisi, rute, persistensi, dan operasi data yang memiliki keluaran benar atau salah secara eksplisit. Blok ini membuktikan kesesuaian implementasi terhadap rancangan, bukan kualitas respons terbuka.
+
+  \item \textbf{\textit{Benchmark} berlabel.} Korpus yang dibekukan digunakan untuk menguji deteksi risiko, pemetaan jawaban bebas PHQ-9, penulisan graf memori, \textit{retrieval}, pembaruan \textit{lifecycle}, dan penggunaan memori pada jawaban. Untuk kontrak yang memiliki keluaran deterministik, label acuan ditetapkan langsung dari aturan instrumen dan skenario. Untuk keluaran terbuka, label referensi operasional disusun dengan pedoman tertulis, dua konfigurasi model penilai yang berbeda, dan penentuan akhir oleh model ketiga pada kasus yang tidak selaras.
+
+  \item \textbf{Penilaian buta respons.} Respons AXIS dan \textit{baseline} untuk skenario yang sama diacak serta disembunyikan identitasnya. Dua konfigurasi \textit{LLM-as-judge} menerapkan rubrik ordinal untuk validasi emosi, pemahaman konteks, eksplorasi, ketepatan CBT, batas non-klinis, kesesuaian ragam bahasa, dan \textit{groundedness} ketika memori digunakan. Ketidaksesuaian yang material diperiksa oleh konfigurasi penilai ketiga.
+
+  \item \textbf{Ablasi terkendali.} Kondisi retrieval vektor saja dibandingkan dengan retrieval hibrid menggunakan korpus, kueri, model, prompt, parameter decoding, jumlah kandidat, dan batas konteks yang sama. Perbandingan dilakukan berpasangan pada tingkat kueri.
+
+  \item \textbf{Pengujian pengguna nyata.} Mahasiswa menggunakan purwarupa untuk menilai kegunaan, rasa didampingi, kejelasan skrining, kesinambungan memori, dan pemahaman kendali data. Hasilnya dibaca sebagai pengalaman awal penggunaan, bukan bukti efektivitas klinis.
+\end{enumerate}
+
+Korpus, \textit{prompt}, profil model, konfigurasi decoding, dan versi artefak dibekukan sebelum evaluasi. Hasil kuantitatif dilaporkan bersama interval kepercayaan ketika relevan. Penilaian otomatis melaporkan kesepakatan antarkonfigurasi model penilai; pengujian pengguna nyata tetap mengumpulkan persepsi mahasiswa melalui kuesioner. Hasil yang berkaitan dengan domain bahasa dilaporkan menurut ragam formal, informal, bahasa campur, dan eufemistik.
+
+Hubungan antara klaim, unit evaluasi, dan bukti utama dirangkum pada Tabel~\ref{tab:pemetaan-rumusan-rancangan}.
 
 \begin{table}[!htbp]
 \centering
-\caption{Pemetaan rumusan masalah, indikator keberhasilan, dan evaluasi}
+\caption{Pemetaan klaim penelitian dan rancangan evaluasi}
 \label{tab:pemetaan-rumusan-rancangan}
 {\footnotesize
-\begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}p{3.0cm}|>{\raggedright\arraybackslash}X|>{\raggedright\arraybackslash}X|}
+\begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}p{2.3cm}|>{\raggedright\arraybackslash}p{3.2cm}|>{\raggedright\arraybackslash}X|}
 \hline
 \rowcolor{tableheadgray}
-\textbf{Rumusan masalah} & \textbf{Indikator keberhasilan rancangan} & \textbf{Cara evaluasi} \\
+\textbf{Klaim} & \textbf{Unit evaluasi} & \textbf{Bukti dan metrik utama} \\
 \hline
-Percakapan empatik dan aman & Respons memvalidasi emosi tanpa klaim klinis, teknik CBT muncul sebagai tawaran yang relevan, bahasa respons mengikuti ragam pengguna, dan risiko tinggi dialihkan ke bantuan yang sesuai. & Evaluasi fungsional \textit{guardrail}/CBT dan evaluasi pengguna terhadap kualitas empati, rasa aman, dan naturalitas bahasa. \\
+RM1a: kualitas respons suportif & Respons AXIS dan \textit{baseline} pada skenario yang sama & Penilaian buta dengan rubrik ordinal berbasis EPITOME dan dimensi tambahan; median atau distribusi per dimensi; preferensi berpasangan; \textit{weighted kappa} atau Krippendorff's alpha \\
 \hline
-Mood harian dan PHQ-9 & Mood harian menjadi konteks percakapan, PHQ-9 berjalan bertahap tanpa memutus alur chat, hasil disampaikan sebagai skrining, dan item risiko memicu batas keselamatan. & Evaluasi tahapan alur PHQ-9, penyimpanan \textit{assessment}, dan persepsi pengguna terhadap alur skrining. \\
+RM1b: keselamatan percakapan & Pesan berisiko tinggi dan pesan pembanding tanpa risiko & Sensitivitas sebagai metrik primer; spesifisitas; presisi; $F_2$; jumlah \textit{false negative}; kepatuhan respons aman \\
 \hline
-Memori jangka panjang & Sesi yang layak ditulis menjadi memori, relasi antarmemori terbentuk, memori administratif seperti item PHQ-9 tidak ikut tersimpan, memori lama dapat diperbarui, dan konteks relevan dipilih kembali pada sesi baru. & Evaluasi penulisan/pengambilan memori, siklus hidup memori, dan studi kasus ilustratif pengguna baru/lama. \\
+RM1c: kesesuaian ragam bahasa & Skenario formal, informal, bahasa campur, dan eufemistik & Skor kesesuaian bahasa dan preferensi per ragam; metrik keselamatan dilaporkan per ragam \\
+\hline
+RM2: penyampaian skrining PHQ-9 & Transisi orkestrasi, jawaban bebas, skor total, dan item kesembilan & Tingkat kelulusan kontrak; \textit{quadratic weighted kappa}; \textit{macro-F1}; akurasi; ICC dan Bland--Altman bila tersedia data berpasangan; sensitivitas, spesifisitas, dan ketepatan rute item kesembilan \\
+\hline
+RM3: memori jangka panjang & Penulisan, retrieval, pembaruan, penggunaan, dan ablasi & Presisi, \textit{recall}, dan \textit{macro-F1} node serta relasi; \textit{P@5}, \textit{Recall@5}, MRR, nDCG@5; \textit{update correctness}; \textit{stale-memory rate}; \textit{grounded-answer rate}; kontradiksi; \textit{false-personalization rate}; selisih berpasangan dan 95\% CI \\
+\hline
+K5: kendali pengguna sebagai kebutuhan pendukung & Tugas pengelolaan memori dan data personal & Kelulusan kontrak fungsional, keberhasilan tugas pengguna, dan pemahaman kontrol; tidak diperlakukan sebagai rumusan masalah terpisah \\
 \hline
 \end{tabularx}
 }

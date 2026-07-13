@@ -228,6 +228,58 @@ def _profile_context_block(state: ConversationState) -> str:
     return "\n".join(parts)
 
 
+def _understanding_synthesis_block(state: ConversationState) -> str:
+    """v3 pipeline only: format the understanding_synthesis node's output
+    as a context block for response_generator_v3's prompt. Absent/empty on
+    v2 (node never runs), and deliberately absent whenever insufficient_data
+    is true -- that is exactly the cold-start case where the prompt's own
+    fallback instructions (ask, don't assume) should take over instead of
+    handing the model a mostly-null block to interpret."""
+    understanding = state.get("user_understanding")
+    if not isinstance(understanding, dict) or understanding.get("insufficient_data"):
+        return ""
+
+    lines: list[str] = ["[Understanding Synthesis]"]
+    field_labels = (
+        ("current_emotion", "current_emotion"),
+        ("unmet_need", "unmet_need"),
+        ("active_pattern", "active_pattern"),
+        ("grounding_experience", "grounding_experience"),
+        ("triggering_pattern", "triggering_pattern"),
+        ("unspoken_undercurrent", "unspoken_undercurrent"),
+        ("response_guidance", "response_guidance"),
+    )
+    has_content = False
+    for key, label in field_labels:
+        value = understanding.get(key)
+        if isinstance(value, str) and value.strip():
+            lines.append(f"{label}: {value.strip()}")
+            has_content = True
+
+    explanations = understanding.get("possible_explanations") or []
+    if isinstance(explanations, list) and explanations:
+        rendered = []
+        for item in explanations:
+            if not isinstance(item, dict):
+                continue
+            hypothesis = item.get("hypothesis")
+            weight = item.get("weight")
+            if not hypothesis:
+                continue
+            if isinstance(weight, (int, float)):
+                rendered.append(f"  - {hypothesis} (weight {weight:.2f})")
+            else:
+                rendered.append(f"  - {hypothesis}")
+        if rendered:
+            lines.append("possible_explanations:")
+            lines.extend(rendered)
+            has_content = True
+
+    if not has_content:
+        return ""
+    return "\n".join(lines)
+
+
 _SECTION_SEP = "\n\n" + "=" * 50 + "\n\n"
 
 
@@ -267,6 +319,17 @@ def _recent_name_usage_note(state: ConversationState) -> str:
 
 _QUESTION_ENDING_STREAK_THRESHOLD: int = 3
 
+# Techniques whose overlay makes the closing question the technique's core
+# mechanism, not a stylistic default (reframe.yaml: "ask ONE open Socratic
+# question" is the whole point of the technique; thought_record echoes a
+# deterministic step question verbatim). Found via a real 20-turn run on
+# 2026-07-13: the streak guard fired on the exact turn the router picked
+# reframe, and the model dropped the required Socratic question entirely to
+# comply with the guard, silently defeating the technique that turn.
+_QUESTION_MANDATORY_TECHNIQUES: frozenset[str] = frozenset(
+    {CBTTechnique.REFRAME.value, CBTTechnique.THOUGHT_RECORD.value}
+)
+
 
 def _question_ending_note(state: ConversationState) -> str:
     """Same deterministic-guard approach as _recent_name_usage_note above,
@@ -277,6 +340,9 @@ def _question_ending_note(state: ConversationState) -> str:
     history and stating it as a concrete fact ("your last N responses did
     X") is the part a model can reliably act on; asking it to track a
     running count across a long system prompt is not."""
+    if state.get("cbt_node_active") in _QUESTION_MANDATORY_TECHNIQUES:
+        return ""
+
     history = state.get("messages") or []
     recent_assistant_turns = [
         (m.get("content") or "").strip()
@@ -300,6 +366,115 @@ def _question_ending_note(state: ConversationState) -> str:
             "asking. The goal is to keep exploring the person, just "
             "without the punctuation mark."
         )
+    return ""
+
+
+_OPENER_STREAK_THRESHOLD: int = 3
+_OPENER_LOOKBACK_WORDS: int = 2
+
+
+def _repetitive_opener_note(state: ConversationState) -> str:
+    """Same deterministic-guard approach as _question_ending_note above,
+    applied to a third pattern found via a real 20-turn run on 2026-07-13:
+    12 of 19 AXIS turns opened with some form of "Jadi..."/"Oh, jadi..." to
+    paraphrase the user back before continuing. The technique itself
+    (reflective paraphrase) is fine; reusing the same lead-in word turn
+    after turn is what reads as templated. Deliberately word-agnostic (no
+    hardcoded "jadi"/"oh" list) so this generalizes to whatever opener the
+    model happens to overuse, not just the one caught in this run."""
+    history = state.get("messages") or []
+    recent_assistant_turns = [
+        (m.get("content") or "").strip()
+        for m in history[-(_OPENER_STREAK_THRESHOLD * 2):]
+        if m.get("role") == "assistant"
+    ]
+    streak = recent_assistant_turns[-_OPENER_STREAK_THRESHOLD:]
+    if len(streak) < _OPENER_STREAK_THRESHOLD:
+        return ""
+
+    openers = [
+        set(re.findall(r"[a-zA-Z']+", turn.lower())[:_OPENER_LOOKBACK_WORDS])
+        for turn in streak
+    ]
+    if not all(openers):
+        return ""
+
+    shared = set.intersection(*openers)
+    if shared:
+        repeated_word = sorted(shared)[0]
+        return (
+            f'STYLE GUARD: Your last {_OPENER_STREAK_THRESHOLD} responses '
+            f'in a row all opened with "{repeated_word}" among their first '
+            f'{_OPENER_LOOKBACK_WORDS} words -- a paraphrase-back opener '
+            "reused turn after turn. Do NOT open this response the same "
+            "way. The reflective-paraphrase move itself is fine, just vary "
+            "how you lead into it: start with a feeling name, a direct "
+            "observation, a short reaction, or drop the lead-in entirely "
+            "and respond directly."
+        )
+    return ""
+
+
+_MEMORY_KEYWORD_STOPWORDS = {
+    "aku", "gua", "gue", "saya", "kamu", "lu", "lo", "dan", "atau", "yang",
+    "lagi", "jadi", "karena", "dengan", "untuk", "dari", "itu", "ini",
+    "apa", "gimana", "bagaimana", "bikin", "merasa", "ngerasa", "soal",
+    "pernah", "cerita", "ceritakan", "takut", "masih", "sudah", "belum",
+    "kalau", "juga", "saja", "sama", "banget", "kayak", "kayaknya",
+    "the", "and", "that", "with", "from", "about", "your", "this", "have",
+}
+_MEMORY_REPEAT_LOOKBACK_TURNS: int = 2
+_MEMORY_REPEAT_MIN_SHARED_KEYWORDS: int = 2
+
+
+def _memory_keyword_set(text: str) -> set[str]:
+    words = re.findall(r"[a-zA-Z']+", text.lower())
+    return {w for w in words if len(w) >= 4 and w not in _MEMORY_KEYWORD_STOPWORDS}
+
+
+def _memory_repetition_note(state: ConversationState) -> str:
+    """Same deterministic-guard approach as the three guards above, applied
+    to memory-callback repetition now that response_generator_v3.yaml no
+    longer caps callbacks at 1-per-response (2026-07-14): once the surface
+    cap is gone, the thing that actually needs bounding is naming the same
+    grounding_experience/active_pattern turn after turn, not the count of
+    callbacks. Detected via lexical overlap against recent assistant turns,
+    same signal source as _repetitive_opener_note, because named entities
+    and domain nouns (e.g. "Agung", "skripsi") survive the prompt's own
+    paraphrase-don't-quote rule even when the surrounding sentence doesn't."""
+    understanding = state.get("user_understanding")
+    if not isinstance(understanding, dict) or understanding.get("insufficient_data"):
+        return ""
+
+    focus_text = " ".join(
+        str(understanding.get(field) or "")
+        for field in ("grounding_experience", "active_pattern")
+    ).strip()
+    focus_keywords = _memory_keyword_set(focus_text)
+    if len(focus_keywords) < _MEMORY_REPEAT_MIN_SHARED_KEYWORDS:
+        return ""
+
+    history = state.get("messages") or []
+    recent_assistant_turns = [
+        (m.get("content") or "").strip()
+        for m in history[-(_MEMORY_REPEAT_LOOKBACK_TURNS * 2):]
+        if m.get("role") == "assistant"
+    ][-_MEMORY_REPEAT_LOOKBACK_TURNS:]
+
+    for turn in recent_assistant_turns:
+        if not turn:
+            continue
+        shared = focus_keywords & _memory_keyword_set(turn)
+        if len(shared) >= _MEMORY_REPEAT_MIN_SHARED_KEYWORDS:
+            return (
+                "STYLE GUARD: The memory/pattern this turn's understanding "
+                "points to overlaps with what you already said in a recent "
+                f"response (shared reference: {', '.join(sorted(shared))}). "
+                "Do not surface that same memory again this turn -- either "
+                "build on it with something genuinely new, or leave memory "
+                "out of this response entirely and just respond to what the "
+                "user is saying right now."
+            )
     return ""
 
 
@@ -329,6 +504,10 @@ def _build_messages(state: ConversationState) -> list[Any]:
     if kg_context and not bot_prompt:
         parts.append(kg_context)
 
+    understanding_block = _understanding_synthesis_block(state)
+    if understanding_block and not bot_prompt:
+        parts.append(understanding_block)
+
     url_context = (state.get("url_context") or "").strip()
     if url_context:
         parts.append(url_context)
@@ -344,6 +523,14 @@ def _build_messages(state: ConversationState) -> list[Any]:
     question_guard = _question_ending_note(state)
     if question_guard:
         parts.append(question_guard)
+
+    opener_guard = _repetitive_opener_note(state)
+    if opener_guard:
+        parts.append(opener_guard)
+
+    memory_repeat_guard = _memory_repetition_note(state)
+    if memory_repeat_guard:
+        parts.append(memory_repeat_guard)
 
     phq9_state = state.get("phq9_state") or {}
     if (

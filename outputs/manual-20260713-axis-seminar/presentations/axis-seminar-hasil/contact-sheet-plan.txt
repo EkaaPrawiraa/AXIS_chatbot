@@ -1,0 +1,1 @@
+Slides 1-15: title, gap, questions, contribution, design principles, solution flow, conversation, mood/PHQ-9, memory lifecycle, architecture, user control, evaluation design, functional evidence, comparative evidence, conclusion.

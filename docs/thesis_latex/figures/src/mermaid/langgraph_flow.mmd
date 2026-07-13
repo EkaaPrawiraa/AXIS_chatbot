@@ -8,6 +8,7 @@ flowchart TD
     E[phq9_check]
     F[crisis_guardrail]
     G[memory_retrieval]
+    G2[understanding_synthesis]
     H[dialogue_policy]
     I{Mode respons}
     J[phq9_delivery]
@@ -27,6 +28,7 @@ flowchart TD
     U -->|Ya| V --> C
     U -->|Tidak| C
     C --> D --> E --> F --> G --> H --> I
+    G -.->|opsional, konfigurasi alternatif| G2 -.-> H
     I -->|PHQ-9 aktif| J
     I -->|Percakapan normal| K
     J --> L
@@ -42,6 +44,8 @@ flowchart TD
     classDef terminator fill:#ffffff,stroke:#111111,stroke-width:1.4px,color:#111111;
     classDef node fill:#ffffff,stroke:#111111,stroke-width:1.2px,color:#111111;
     classDef decision fill:#f2f2f2,stroke:#111111,stroke-width:1.2px,color:#111111;
+    classDef optional fill:#ffffff,stroke:#111111,stroke-width:1.2px,color:#111111,stroke-dasharray:4 3;
     class A,T terminator;
     class B,V,C,D,E,F,G,H,J,K,L,N,O,P,Q,R,S node;
     class U,I,M,W decision;
+    class G2 optional;

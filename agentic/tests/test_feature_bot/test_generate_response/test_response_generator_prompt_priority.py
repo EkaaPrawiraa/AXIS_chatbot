@@ -7,7 +7,7 @@ def test_thought_record_bot_prompt_suppresses_kg_context_in_system_prompt() -> N
         "messages": [],
         "current_message": "Aku yakin semuanya bakal gagal.",
         "resolved_language": "id",
-        "kg_context": "[Important people]\n- Ziga: supportive friend",
+        "kg_context": "[Important people]\n- Farida: supportive friend",
         "cbt_node_active": CBTTechnique.THOUGHT_RECORD.value,
         "cbt_directive": {
             "payload": {
@@ -20,4 +20,4 @@ def test_thought_record_bot_prompt_suppresses_kg_context_in_system_prompt() -> N
 
     assert "Apa pikiran otomatis yang muncul saat itu?" in system_text
     assert "[Important people]" not in system_text
-    assert "Ziga" not in system_text
+    assert "Farida" not in system_text

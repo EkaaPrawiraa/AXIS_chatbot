@@ -1,18 +1,20 @@
 flowchart TD
     A[/Pesan pengguna terbaru/] --> B[Bangun kueri pencarian]
-    B --> C[Ambil kandidat<br/>semantik dan relasional]
-    C --> D[Gabungkan kandidat]
+    B --> C[Ambil kandidat semantik<br/>pgvector sebagai titik masuk]
+    C --> C2[Perluasan graf<br/>satu langkah ke Trigger/Subject<br/>yang sama, spreading activation]
+    C2 --> D[Gabungkan kandidat<br/>reciprocal rank fusion]
     D --> E[Ranking konteks<br/>relevansi, kepentingan, kebaruan,<br/>kekayaan relasi, keselamatan]
     E --> F{Konteks berulang<br/>atau terlalu mirip?}
-    F -- Ya --> G[Kurangi duplikasi]
+    F -- Ya --> G[Kurangi duplikasi<br/>maximal marginal relevance]
     F -- Tidak --> H[Pertahankan kandidat]
-    G --> I[/Konteks akhir untuk respons/]
-    H --> I
+    G --> I2[Gabungkan dengan sinyal selalu aktif<br/>trigger/tema berulang, evolusi keyakinan]
+    H --> I2
+    I2 --> I[/Konteks akhir untuk respons/]
 
     classDef io fill:#ffffff,stroke:#111111,stroke-width:1.5px,color:#111111;
     classDef process fill:#f2f2f2,stroke:#111111,stroke-width:1.5px,color:#111111;
     classDef decision fill:#ffffff,stroke:#111111,stroke-width:1.5px,color:#111111;
 
-    class A,K io;
-    class B,C,D,E,F,H,I,J process;
-    class G decision;
+    class A,I io;
+    class B,C,C2,D,E,H,G,I2 process;
+    class F decision;

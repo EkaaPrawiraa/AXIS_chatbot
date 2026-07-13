@@ -1,0 +1,1 @@
+The reference deck uses a concise academic flow: problem, objectives, scope, solution flow, implementation, evaluation, conclusion. It uses a high-contrast white and blue visual system, one dominant idea per slide, simple diagrams, and sparse text.

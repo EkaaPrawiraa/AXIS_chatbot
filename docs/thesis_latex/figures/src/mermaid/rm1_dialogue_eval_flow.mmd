@@ -1,0 +1,32 @@
+flowchart TD
+    A([Mulai])
+    B[Skenario satu giliran dengan konteks pengguna]
+    C[AXIS menghasilkan respons]
+    D[Baseline menghasilkan respons]
+    E[Respons diberi kode A/B, urutan diacak]
+    F[Konfigurasi model penilai 1 menilai rubrik dan preferensi]
+    G[Konfigurasi model penilai 2 menilai rubrik dan preferensi]
+    H{Selisih label besar\nantarkonfigurasi?}
+    I[Model penilai ketiga sebagai adjudikasi]
+    J[Hitung weighted kappa\nper dimensi rubrik]
+    K[Agregasi median skor\ndan preferensi berpasangan]
+    L([Selesai])
+
+    A --> B --> C
+    B --> D
+    C --> E
+    D --> E
+    E --> F
+    E --> G
+    F --> H
+    G --> H
+    H -->|Ya| I --> J
+    H -->|Tidak| J
+    J --> K --> L
+
+    classDef terminator fill:#ffffff,stroke:#111111,stroke-width:1.4px,color:#111111;
+    classDef process fill:#ffffff,stroke:#111111,stroke-width:1.2px,color:#111111;
+    classDef decision fill:#f2f2f2,stroke:#111111,stroke-width:1.2px,color:#111111;
+    class A,L terminator;
+    class B,C,D,E,F,G,I,J,K process;
+    class H decision;

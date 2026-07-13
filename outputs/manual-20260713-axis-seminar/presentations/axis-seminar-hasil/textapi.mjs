@@ -1,0 +1,1 @@
+import { Presentation } from '@oai/artifact-tool'; const p=Presentation.create({slideSize:{width:1280,height:720}}),s=p.slides.add();const sh=s.shapes.add({geometry:'rect',position:{left:1,top:1,width:1,height:1}});console.log(Object.getOwnPropertyNames(Object.getPrototypeOf(sh.text))); console.log(sh.text.add.toString().slice(0,2000));

@@ -59,11 +59,22 @@ def build_manifest(
 ) -> dict[str, Any]:
     status = _git("status", "--porcelain")
     scenario_payload = [scenario.snapshot() for scenario in scenarios]
+
+    # Resolve the response_generator prompt actually in effect (v2 or v3,
+    # via AXIS_RESPONSE_PIPELINE_VERSION) rather than hardcoding v2 -- a v3
+    # run must not have its manifest silently claim v2's prompt file ran.
+    agentic_path = str(REPO_ROOT / "agentic")
+    if agentic_path not in sys.path:
+        sys.path.insert(0, agentic_path)
+    from agentic.config.llm_models import RESPONSE_GENERATOR
+
+    response_generator_ref = RESPONSE_GENERATOR.resolved_prompt_ref
+
     prompt_paths = {
         "axis_identity": REPO_ROOT
         / "agentic/prompts/system/axis_identity.yaml",
         "axis_response_generator": REPO_ROOT
-        / "agentic/prompts/nodes/response_generator_v2.yaml",
+        / "agentic/prompts" / f"{response_generator_ref}.yaml",
         "axis_kg_extractor": REPO_ROOT
         / "agentic/prompts/nodes/kg_extractor.yaml",
     }

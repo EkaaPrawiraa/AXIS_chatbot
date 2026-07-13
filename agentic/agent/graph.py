@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import logging
+import os
 from typing import Any, Awaitable, Callable
 
 from agentic.agent.audit.guardrail_events import (
@@ -33,6 +34,7 @@ from agentic.agent.nodes.output_guardrail import output_guardrail_node
 from agentic.agent.nodes.phq9_check import phq9_check_node
 from agentic.agent.nodes.phq9_delivery import phq9_delivery_node
 from agentic.agent.nodes.response_generator import response_generator_node
+from agentic.agent.nodes.understanding_synthesis import understanding_synthesis_node
 from agentic.agent.nodes.session_end import session_end_node
 from agentic.agent.nodes.speech_adapter import speech_adapter_node
 from agentic.agent.nodes.speech_to_text import (
@@ -361,6 +363,8 @@ def build_graph(
     dialogue_policy_node_fn: NodeFn | None = None,
     response_generator_node_fn: NodeFn | None = None,
     session_end_node_fn: NodeFn | None = None,
+    understanding_synthesis_llm: Any | None = None,
+    understanding_synthesis_node_fn: NodeFn | None = None,
 ) -> Any:
     """build&compile"""
     from langgraph.graph import END, StateGraph
@@ -407,6 +411,13 @@ def build_graph(
             return await dialogue_policy_node_fn(state)
         return await dialogue_policy_node(
             state, audit=audit, judge_llm=cbt_judge_llm,
+        )
+
+    async def understanding_wrapped(state: ConversationState) -> ConversationState:
+        if understanding_synthesis_node_fn is not None:
+            return await understanding_synthesis_node_fn(state)
+        return await understanding_synthesis_node(
+            state, audit=audit, llm=understanding_synthesis_llm,
         )
 
     async def memory_wrapped(state: ConversationState) -> ConversationState:
@@ -487,6 +498,16 @@ def build_graph(
     g.add_node("phq9_check", audited_node("phq9_check", phq9_check_wrapped))
     g.add_node("crisis_guardrail", audited_node("crisis_guardrail", crisis_guard_wrapped))
     g.add_node("memory_retrieval", audited_node("memory_retrieval", memory_wrapped))
+    # v3 pipeline only (AXIS_RESPONSE_PIPELINE_VERSION=v3): node is not even
+    # added to the graph on v2, so v2 pays zero extra latency/cost for it --
+    # this keeps a v2-vs-v3 comparison an honest whole-pipeline comparison,
+    # not a partial mix.
+    response_pipeline_version = os.getenv("AXIS_RESPONSE_PIPELINE_VERSION", "v2").strip().lower()
+    if response_pipeline_version == "v3":
+        g.add_node(
+            "understanding_synthesis",
+            audited_node("understanding_synthesis", understanding_wrapped),
+        )
     g.add_node("dialogue_policy", audited_node("dialogue_policy", dialogue_policy_wrapped))
     g.add_node("phq9_delivery", audited_node("phq9_delivery", phq9_delivery_wrapped))
     g.add_node("response_generator", audited_node("response_generator", response_wrapped))
@@ -541,7 +562,11 @@ def build_graph(
         },
     )
 
-    g.add_edge("memory_retrieval", "dialogue_policy")
+    if response_pipeline_version == "v3":
+        g.add_edge("memory_retrieval", "understanding_synthesis")
+        g.add_edge("understanding_synthesis", "dialogue_policy")
+    else:
+        g.add_edge("memory_retrieval", "dialogue_policy")
 
     g.add_conditional_edges(
         "dialogue_policy",

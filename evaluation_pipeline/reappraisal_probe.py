@@ -6,6 +6,13 @@ experience, session 2 (after finalize() on session 1, so user_kg_context can
 surface the prior thought/experience id) explicitly revises that belief.
 Checks Neo4j directly for the resulting relations.
 
+Extended to also verify the READ side (previously this probe only checked
+Neo4j directly and never exercised context_builder.py at all): a third turn
+calls build_context() + as_prompt_block() and asserts "[Belief evolution]"
+actually renders, and that no raw graph/clinical vocabulary (SUPERSEDES,
+REAPPRAISED_AS, t_valid, node ids) leaks into the text that would reach the
+LLM.
+
 Run from repo root: cd agentic && ../.venv/bin/python -m evaluation_pipeline.reappraisal_probe
 """
 
@@ -53,6 +60,8 @@ SESSION_2_TURNS = [
     "eh inget ga waktu itu gue sempet bilang takut sidang bakal gagal total? kemarin gue coba presentasi latihan di depan temen-temen, ternyata lumayan lancar dan mereka kasih masukan positif. jadi sekarang gue mikirnya beda, kayaknya ga akan seburuk yang gue bayangin dulu.",
     "terus soal komentar ketus dospem waktu itu, kalau gue pikir ulang sekarang, kayaknya itu bukan karena dia kecewa sama gue, tapi dianya emang lagi banyak beban kerjaan aja pas hari itu. jadi maknanya beda buat gue sekarang dibanding waktu itu.",
 ]
+
+SESSION_3_FOLLOWUP = "btw gimana ya, kayaknya sidang gue emang bakal lancar-lancar aja deh"
 
 
 def _ensure_user(user_id: str) -> None:
@@ -197,6 +206,24 @@ async def main() -> None:
     print(f"\nAll Thought nodes after session 2: {json.dumps(all_thoughts_after, ensure_ascii=False, indent=2, default=str)}")
     print(f"\nAll Experience nodes after session 2: {json.dumps(all_experiences_after, ensure_ascii=False, indent=2, default=str)}")
 
+    print("\n--- Session 3 (read-side check): build_context() over the lifecycle we just wrote ---")
+    from agentic.memory.context_builder import build_context
+
+    ctx = await build_context(
+        user_id=user_id,
+        query_embedding=None,
+        query_text=SESSION_3_FOLLOWUP,
+    )
+    block = ctx.as_prompt_block()
+    belief_evolution_present = "[Belief evolution]" in block
+    leaked_terms = [
+        term for term in ("SUPERSEDES", "REAPPRAISED_AS", "t_valid", "t_invalid")
+        if term in block
+    ]
+    print(f"  [Belief evolution] section present: {belief_evolution_present}")
+    print(f"  Raw graph vocabulary leaked into rendered block: {leaked_terms or 'none'}")
+    print("\n  Rendered kg_context block:\n" + block)
+
     with open(ROOT / "evaluation_pipeline" / "results" / "reappraisal_probe.json", "w", encoding="utf-8") as f:
         json.dump(
             {
@@ -208,6 +235,9 @@ async def main() -> None:
                 "reappraised_as_relations": reappraisals,
                 "all_thoughts_after": all_thoughts_after,
                 "all_experiences_after": all_experiences_after,
+                "belief_evolution_present": belief_evolution_present,
+                "leaked_graph_vocabulary": leaked_terms,
+                "rendered_kg_context_block": block,
             },
             f, ensure_ascii=False, indent=2, default=str,
         )

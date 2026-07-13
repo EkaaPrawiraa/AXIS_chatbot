@@ -11,7 +11,10 @@ flowchart TB
     EXP -->|TRIGGERED_EMOTION| EMO((Emotion))
     EMO -->|ACTIVATED_THOUGHT| TH((Thought))
     TH -->|LED_TO_BEHAVIOR| BEH((Behavior))
-    TH -->|PART_OF_RECORD| REC((ThoughtRecord))
+    U -->|HAS_THOUGHT_RECORD| REC((ThoughtRecord))
+    EXP -.->|RELATED_TO_TOPIC| TOP
+    EMO -.->|RELATED_TO_TOPIC| TOP
+    TH -.->|RELATED_TO_TOPIC| TOP
     TH -. pemaknaan ulang .-> OLD((Thought lama))
     OLD -->|REAPPRAISED_AS| NEW((Thought baru))
     NEW -->|SUPERSEDES| OLD
