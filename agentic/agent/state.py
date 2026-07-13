@@ -7,7 +7,7 @@ from typing import Any, List, Literal, Optional, TypedDict
 
 
 OutputModality = Literal["text", "voice", "both"]
-# legacy, preview, shorter, gemini_tts_tiers.
+# skip, gemini, tiers, shorter.
 TTSModelChoice = Literal[
     "v2_5_turbo",
     "v3",
@@ -32,7 +32,7 @@ class VoiceState(TypedDict, total=False):
     transcript_language: Optional[str]    # detected by STT
     transcript_segments: Optional[list]   # optional STT word/segment detail
 
-    # ekstrak data
+    # ekstrak
     output_modality: OutputModality
     voice_id: Optional[str]               # selected voice id (catalog key)
     voice_provider_id: Optional[str]      # provider-specific id (ElevenLabs)
@@ -50,7 +50,7 @@ class VoiceState(TypedDict, total=False):
 # init state
 
 
-PHQ9Tier = Literal["scheduled", "event"]
+PHQ9Tier = Literal["scheduled", "event", "onboarding"]
 PHQ9Phase = Literal[
     "idle",            # no offer pending
     "offer_pending",   # gate passed, waiting for warm-up turns
@@ -67,7 +67,7 @@ PHQ9Phase = Literal[
 
 
 class CBTState(TypedDict, total=False):
-    """``ConversationState["cbt_state"]``"""
+    """set cbt_state"""
 
     last_offered: Optional[str]            # technique name from CBTTechnique
     declined_last_offer: bool
@@ -75,10 +75,11 @@ class CBTState(TypedDict, total=False):
     thought_record_active: bool
     thought_record: Optional[dict]         # ThoughtRecordSubState.to_dict()
     last_directive: Optional[dict]         # last CBTDecision payload (audit)
+    turns_since_technique: int             # consecutive validate/none turns since last real technique
 
 
 class PHQ9SessionState(TypedDict, total=False):
-    """set by PHQ-9"""
+    """set PHQ-9"""
 
     phase: PHQ9Phase
     tier: Optional[PHQ9Tier]
@@ -103,19 +104,21 @@ class PHQ9SessionState(TypedDict, total=False):
 
 
 class ProfileContext(TypedDict, total=False):
-    """minimal profile"""
+    """buat nyimpen profile"""
 
     display_name: Optional[str]
     preferred_language: Optional[str]
+    onboarding_complete: bool
 
 
 
 class ConversationState(TypedDict, total=False):
     """init state"""
 
-    # ident dan dialog
+    # ident, dialog
     user_id: str
     session_id: str
+    current_message_id: Optional[str]
     messages: List[dict]
     current_message: str
     session_turn: int
@@ -135,7 +138,7 @@ class ConversationState(TypedDict, total=False):
     input_guardrail: Optional[dict]  # Layer 2 verdict ({decision, reason, matched})
     crisis_escalated: bool           # True when crisis_escalation_node already wrote final_response
 
-    # mem & gen
+    # memgen
     kg_context: Optional[str]
     url_context: Optional[str]  # Gemini url_context tool output, gemini-provider only
     retrieval_context: Optional[dict]   # structured bucket view (Phase 1/2 ranking)
@@ -154,8 +157,9 @@ class ConversationState(TypedDict, total=False):
     phq9_state: Optional[PHQ9SessionState]
     phq9_declined_note: Optional[bool]   # True when user just declined PHQ offer this turn
 
-    # confess space" "no-long-term-memory" "PHQ-9-gate-bypassed" "voice mode" "crisis guardrail" "flag" "active
+    # confess" "space" "PHQ-9" "gate" "bypassed" "voice" "mode" "crisis" "guardrail" "flag" "active
     confession_mode: bool
+    graph_trace: Optional[dict]
 
 
 
@@ -216,6 +220,7 @@ def empty_cbt_state() -> CBTState:
         thought_record_active=False,
         thought_record=None,
         last_directive=None,
+        turns_since_technique=0,
     )
 
 
@@ -229,6 +234,7 @@ def empty_conversation_state(
     return ConversationState(
         user_id=user_id,
         session_id=session_id,
+        current_message_id=None,
         messages=[],
         current_message="",
         session_turn=0,
@@ -252,6 +258,7 @@ def empty_conversation_state(
         phq9_state=empty_phq9_state(),
         phq9_declined_note=None,
         confession_mode=False,
+        graph_trace=None,
     )
 
 

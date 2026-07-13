@@ -1,4 +1,4 @@
-"""cd Downloads .venv/bin/python -m scripts.demo_session_finalizer"""
+"""cd Downloads"""
 
 from __future__ import annotations
 
@@ -40,7 +40,7 @@ def _json_default(v: Any) -> str:
 
 
 async def fetch_sessions(pool: Any, user_id: str) -> list[dict]:
-    """ngambil data"""
+    """ambil data"""
     async with pool.acquire() as conn:
         rows = await conn.fetch(
             """
@@ -66,7 +66,7 @@ async def fetch_sessions(pool: Any, user_id: str) -> list[dict]:
 
 
 async def fetch_messages(pool: Any, session_id: str) -> list[dict]:
-    """get msgs"""
+    """getmsgs"""
     async with pool.acquire() as conn:
         rows = await conn.fetch(
             """
@@ -95,7 +95,7 @@ async def main() -> None:
         print("❌ Cannot connect to Postgres. Check PG_* env vars.")
         sys.exit(1)
 
-    # fetch ses
+    # ngambil ses
     sessions = await fetch_sessions(pool, USER_ID)
     if not sessions:
         print(f"❌ No sessions found for user {USER_ID}")
@@ -113,7 +113,7 @@ async def main() -> None:
               f"kg_processed={s['kg_processed']}")
     print()
 
-    # ngambil pesan
+    # ambil pesan
     all_session_messages: dict[str, list[dict]] = {}
     for s in sessions:
         sid = s["session_id"]
@@ -151,7 +151,7 @@ async def main() -> None:
         print(f"  [{msg['turn_index']:>3}] {role_label}: {content_preview}")
     print()
 
-    # run kg extractor
+    # extract kg
     print(f"\n{'='*80}")
     print("  RUNNING KG EXTRACTOR (same prompt as session finalizer)")
     print(f"{'='*80}\n")
@@ -163,7 +163,7 @@ async def main() -> None:
     summarizer = make_summarizer()
     _CONTEXT_WINDOW_MSGS = 6
 
-    # summarize transcript
+    # summarize  transcript
     transcript_parts = []
     for msg in demo_messages:
         role = msg.get("role", "other")
@@ -174,7 +174,7 @@ async def main() -> None:
         transcript_parts.append(f"{label}: {content}")
     transcript = "\n".join(transcript_parts)
 
-    # run summarizer
+    # summarizer.run()
     print("  ⏳ Running session summarizer...")
     try:
         summary = await summarizer(transcript=transcript, language="id")
@@ -232,7 +232,7 @@ async def main() -> None:
         else:
             print(f"  ⊘  Turn {msg['turn_index']}: no extractable facts (trivial/phatic)")
 
-    # show full kg
+    # show kg full
     print(f"\n{'='*80}")
     print("  AGGREGATED KNOWLEDGE GRAPH EXTRACTION RESULTS")
     print(f"{'='*80}\n")
@@ -240,7 +240,7 @@ async def main() -> None:
     agg = _aggregate_facts(all_extracted)
     print(json.dumps(agg, ensure_ascii=False, indent=2, default=_json_default))
 
-    # `skip vec`
+    # skip it
     print(f"\n{'='*80}")
     print("  KNOWLEDGE GRAPH vs VECTOR-ONLY COMPARISON")
     print(f"{'='*80}\n")
@@ -264,7 +264,7 @@ def _count_items(fact: dict) -> int:
 
 
 def _print_fact_summary(fact: dict) -> None:
-    """print facts"""
+    """print(facts)"""
     for key in ("thoughts", "emotions", "experiences", "triggers",
                 "behaviors", "subjects", "topics"):
         items = fact.get(key)
@@ -355,7 +355,7 @@ def _aggregate_facts(all_extracted: list[dict]) -> dict:
 
 
 def _print_comparison(agg: dict, summary: str, all_extracted: list[dict]) -> None:
-    """print comparison kg vs. vector-only"""
+    """print kg vs. vector-only"""
 
     print("  ┌─────────────────────────────────────────────────────────────────┐")
     print("  │              VECTOR/SEMANTIC SEARCH ONLY                        │")
@@ -399,7 +399,7 @@ def _print_comparison(agg: dict, summary: str, all_extracted: list[dict]) -> Non
     print(f"  └─────────────────────────────────────────────────────────────────┘")
     print()
 
-    # show examples
+    # show ex
     if agg.get("all_thoughts"):
         print("  🔍 EXAMPLE: Cognitive Distortion Tracking (KG-only capability)")
         print("  ─────────────────────────────────────────────────────────────")

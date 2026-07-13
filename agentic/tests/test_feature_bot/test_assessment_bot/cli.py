@@ -16,7 +16,7 @@ from agentic.agent.state import ConversationState, empty_conversation_state, emp
 from agentic.assessment.phq9 import NUM_ITEMS, options_with_scores
 
 
-# fake_repo  llm
+# fake_repo llm
 
 
 @dataclass
@@ -41,7 +41,7 @@ class _DistressSnapshot:
 
 
 class InMemoryAssessmentRepository:
-    """`PHQ-9`"""
+    """`tambah ke list`"""
 
     def __init__(self) -> None:
         self.last: _LastPhq9 | None = None
@@ -68,7 +68,7 @@ class InMemoryAssessmentRepository:
         return self.distress
 
     async def schedule_retry(self, *, user_id: str, days: int, reason: str) -> Any:
-        # keep next_attempt_at "now
+        # now
         self.pending_retry = _PendingRetry(next_attempt_at=datetime.now(timezone.utc), reason=reason)
 
         class _Schedule:
@@ -93,7 +93,7 @@ class _FakeAIMessage:
 
 
 class FakeLLM:
-    """tiny stand-in"""
+    """stand"""
 
     def __init__(self, responder) -> None:
         self._responder = responder
@@ -101,7 +101,7 @@ class FakeLLM:
 
     async def ainvoke(self, messages: list[Any]) -> _FakeAIMessage:
         self.calls.append(messages)
-        # send [SystemMessage, HumanMessage]
+        # [sys,hum]
         human = None
         for m in reversed(messages):
             if m.__class__.__name__ == "HumanMessage" or getattr(m, "type", None) == "human":
@@ -115,7 +115,7 @@ _USER_ANSWER_RE = re.compile(r"User answer:\n\"\"\"\n(.*?)\n\"\"\"", re.DOTALL)
 
 
 def _extract_user_answer_from_prompt(prompt: str) -> str:
-    """skips scorer"""
+    """skip scorer"""
     if not prompt:
         return ""
     m = _USER_ANSWER_RE.search(prompt)
@@ -128,10 +128,10 @@ def _extract_user_answer_from_prompt(prompt: str) -> str:
 def build_fake_scorer_llm() -> FakeLLM:
     def respond(user_prompt: str) -> str:
         answer = _extract_user_answer_from_prompt(user_prompt).lower()
-        # clarify testing
+        # tambahkan log
         if "ambig" in answer:
             return json.dumps({"score": 1, "confidence": 0.3})
-        # heuristics, multilingual
+        # heur, multilingual
         if "hampir setiap" in answer or "nearly every" in answer:
             return json.dumps({"score": 3, "confidence": 0.95})
         if "lebih dari setengah" in answer or "more than half" in answer:
@@ -140,7 +140,7 @@ def build_fake_scorer_llm() -> FakeLLM:
             return json.dumps({"score": 1, "confidence": 0.9})
         if "tidak sama sekali" in answer or "not at all" in answer:
             return json.dumps({"score": 0, "confidence": 0.95})
-        # default: med.
+        # med.
         return json.dumps({"score": 0, "confidence": 0.6})
 
     return FakeLLM(responder=respond)
@@ -190,7 +190,7 @@ def build_phq9_metadata(state: ConversationState) -> dict[str, Any] | None:
         payload["progress"] = {"current": item_id, "total": NUM_ITEMS}
         return payload
 
-    # treat as plain chat
+    # chat mode
     payload["active"] = False
     payload["progress"] = {"current": NUM_ITEMS, "total": NUM_ITEMS}
     return payload
@@ -214,15 +214,15 @@ def _print_assistant(state: ConversationState) -> None:
 
 
 async def _step(state: ConversationState, *, repo: Any, scorer_llm: Any, feedback_llm: Any) -> ConversationState:
-    # `eval idempotent`
+    # `skip`
     state = await phq9_check_node(state, repo=repo)
 
-    # engage & route
+    # eng & route
     phq9 = state.get("phq9_state") or {}
     if phq9.get("phase") in ("offer_pending", "offered", "in_progress", "awaiting_clar"):
         state = await phq9_delivery_node(state, repo=repo, scorer_llm=scorer_llm, feedback_llm=feedback_llm)
 
-    # buat nyimpan msg ke history
+    # buat nyimpan ke db
     if state.get("response_draft"):
         state["messages"].append({"role": "assistant", "content": state["response_draft"]})
 
@@ -237,7 +237,7 @@ def _bootstrap_state(*, args: argparse.Namespace) -> ConversationState:
         language_pref=lang_pref,
     )
 
-    # force start phase
+    # start nggak cepet?
     if args.bootstrap_phase and args.bootstrap_phase != "idle":
         phq9 = empty_phq9_state()
         phq9["phase"] = args.bootstrap_phase  # type: ignore[assignment]
@@ -268,7 +268,7 @@ async def main() -> int:
     state = _bootstrap_state(args=args)
 
     scorer_llm = build_fake_scorer_llm()
-    # set resolved lang
+    # set lang
     feedback_llm = build_fake_feedback_llm(args.language if args.language != "auto" else "id")
 
     print("Assessment CLI bot (PHQ-9)")
@@ -292,7 +292,7 @@ async def main() -> int:
         state["current_message"] = user_text
         state["messages"].append({"role": "user", "content": user_text})
 
-        # clear prev. response
+        # skip prev.
         state.pop("response_draft", None)
 
         state = await _step(state, repo=repo, scorer_llm=scorer_llm, feedback_llm=feedback_llm)

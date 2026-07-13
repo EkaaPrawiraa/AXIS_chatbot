@@ -1,4 +1,4 @@
-"""fake data"""
+"""fake"""
 
 from __future__ import annotations
 
@@ -196,7 +196,7 @@ class _FakeAIMessage:
 
 @dataclass
 class FakeAdapterLLM:
-    """fake speech, echo/rekt formality"""
+    """echo/fake"""
 
     reply: str | None = None
     error: bool = False
@@ -208,7 +208,7 @@ class FakeAdapterLLM:
             raise RuntimeError("simulated adapter failure")
         if self.reply is not None:
             return _FakeAIMessage(self.reply)
-        # tukar 'saya' ke 'aku
+        # aku
         user_text = ""
         for m in messages:
             cls = m.__class__.__name__

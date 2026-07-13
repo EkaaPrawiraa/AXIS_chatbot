@@ -1,4 +1,4 @@
-"""import compat"""
+"""compat"""
 
 from agentic.memory.knowledge_graph.kg_algorithm.supersession import (
     supersede_thought,

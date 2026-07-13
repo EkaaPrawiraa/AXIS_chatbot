@@ -1,4 +1,4 @@
-"""buat bot cli"""
+"""buat cli"""
 
 from __future__ import annotations
 
@@ -21,7 +21,7 @@ from agentic.agent.tools.context_awareness_tool import (
     web_search,
 )
 
-# `langchain providers`
+# `langchain` `prov`
 try:
     from langchain_openai import ChatOpenAI
 except Exception:  # pragma: no cover -- langchain-openai not installed
@@ -51,12 +51,12 @@ from agentic.agent.state import (
 )
 from agentic.agent.audit.guardrail_events import GuardrailEvent, GuardrailLogger
 
-# import per mod.
+# mod.import.
 from agentic.memory import neo4j_client as nc
 from agentic.memory.context_builder import build_context
 
 from agentic.memory.knowledge_graph.kg_retriever import (
-    # inisialisasi data
+    # init state
     BehaviorInput,
     EmotionInput,
     ExperienceInput,
@@ -64,17 +64,17 @@ from agentic.memory.knowledge_graph.kg_retriever import (
     PersonInput,
     ThoughtInput,
     TriggerInput,
-    # buat ngbuild relas.
+    # buat ngbuild
     link_emotion_to_thought,
     link_experience_to_emotion,
     link_experience_to_person,
     link_experience_to_trigger,
     link_thought_emotion_association,
     link_to_behavior,
-    # look up provenance
+    # find source
     facts_for_message,
     nodes_for_message,
-    # per-label point-reads
+    # pintar2 nge-read
     read_behavior,
     read_emotion,
     read_experience,
@@ -95,7 +95,7 @@ from agentic.memory.knowledge_graph.kg_writer import (
 from agentic.memory.knowledge_graph.kg_modifier import update_node_property
 from agentic.memory.knowledge_graph.kg_algorithm import run_memory_decay, supersede_thought
 
-# arch / purge pgvector in one call
+# purge pgvector
 from agentic.memory.cross_store_sync import (
     invalidate_message_full,
     purge_message_full,
@@ -103,7 +103,7 @@ from agentic.memory.cross_store_sync import (
     sweep_unsynced,
 )
 
-# pgvec adapter - only embedder needed. Cosine search & dedup transparent.
+# pgvec - embedder only. Cosine & dedup transparent.
 from agentic.memory.pg_vector import embed_text
 
 
@@ -115,7 +115,7 @@ logger = logging.getLogger("test_bot")
 
 
 class StdoutGuardrailLogger:
-    """log debug/trace"""
+    """log d/t"""
 
     def __init__(
         self,
@@ -178,7 +178,7 @@ def _init_node_state(*, user_id: str, session_id: str) -> ConversationState:
 
 
 def _reset_turn_transients(state: ConversationState) -> None:
-    """cleanup"""
+    """clean"""
     state["response_draft"] = None
     state["final_response"] = None
     state["kg_context"] = None
@@ -187,7 +187,7 @@ def _reset_turn_transients(state: ConversationState) -> None:
     state.pop("crisis_escalated", None)
 
 
-# aware
+# skip
 
 BOT_TOOLS = [
     current_context,
@@ -199,7 +199,7 @@ _TOOLS_BY_NAME = {t.name: t for t in BOT_TOOLS}
 
 
 def _bind_tools_if_supported(llm: Any) -> Any:
-    """bind tools"""
+    """bind 2go 4go"""
     binder = getattr(llm, "bind_tools", None)
     if callable(binder):
         try:
@@ -210,7 +210,7 @@ def _bind_tools_if_supported(llm: Any) -> Any:
 
 
 def _get_tool_calls(msg: Any) -> list[dict[str, Any]]:
-    """skip klo error"""
+    """skip error"""
     calls = getattr(msg, "tool_calls", None)
     if isinstance(calls, list):
         return [c for c in calls if isinstance(c, dict)]
@@ -223,7 +223,7 @@ def _get_tool_calls(msg: Any) -> list[dict[str, Any]]:
 
 
 async def _ainvoke_with_tools(llm: Any, messages: list[Any], *, max_hops: int = 6) -> AIMessage:
-    """run llm with tools"""
+    """run llm, use tools"""
     working: list[Any] = list(messages)
     web_urls: list[str] = []
     web_seen: set[str] = set()
@@ -250,7 +250,7 @@ async def _ainvoke_with_tools(llm: Any, messages: list[Any], *, max_hops: int = 
                 except Exception as exc:
                     result = {"error": f"tool failed: {exc}"}
 
-            # capture ref urls
+            # skip klo error
             if name == "web_search" and isinstance(result, dict):
                 rows = result.get("results")
                 if isinstance(rows, list):
@@ -274,7 +274,7 @@ async def _ainvoke_with_tools(llm: Any, messages: list[Any], *, max_hops: int = 
         last.additional_kwargs = dict(getattr(last, "additional_kwargs", {}) or {})
         last.additional_kwargs["web_search_urls"] = web_urls
         return last
-    # wrap unkown return.
+    # wrap rtrnk.
     msg = AIMessage(content=str(getattr(last, "content", last)))
     msg.additional_kwargs = dict(getattr(msg, "additional_kwargs", {}) or {})
     msg.additional_kwargs["web_search_urls"] = web_urls
@@ -330,12 +330,12 @@ Long-term memory context for this user (use it; do not repeat verbatim):
 {{KG_CONTEXT}}
 """
 
-# skip klo error
+# skip error
 _KG_CONTEXT_SENTINEL = "{{KG_CONTEXT}}"
 
 
 def render_system_prompt(kg_context: str) -> str:
-    """inject live kg into static prompt"""
+    """inject live kg"""
     return SYSTEM_PROMPT.replace(_KG_CONTEXT_SENTINEL, kg_context)
 
 
@@ -369,7 +369,7 @@ class _GroqChatAdapter:
             elif isinstance(m, AIMessage):
                 role = "assistant"
             else:
-                # fallback for any other msg type
+                # fallback
                 role = getattr(m, "type", None) or "user"
 
             content = getattr(m, "content", "")
@@ -385,7 +385,7 @@ class _GroqChatAdapter:
         if self._max_completion_tokens is not None:
             payload["max_completion_tokens"] = self._max_completion_tokens
 
-        # skip klo async
+        # skip async
         def _call():
             return self._client.chat.completions.create(**payload)
 
@@ -411,7 +411,7 @@ def _make_groq_llm() -> _GroqChatAdapter:
 
 
 def _make_llm():
-    """`ng ambil client`"""
+    """ambil client"""
     provider = (os.getenv("LLM_PROVIDER") or "").strip().lower()
     print(provider)
 
@@ -440,7 +440,7 @@ def _make_llm():
     if provider == "groq":
         return _make_groq_llm()
 
-    # default pri: OpenAI, then Anthropic, then Groq.
+    # default pri: OpenAI, Anthropic, Groq.
     if os.getenv("OPENAI_API_KEY") and ChatOpenAI is not None:
         return _make_openai()
     if os.getenv("ANTHROPIC_API_KEY") and ChatAnthropic is not None:
@@ -466,7 +466,7 @@ class TurnOutput:
 
 
 def parse_turn(raw: str) -> TurnOutput:
-    """pull reply, block, optional, parse fail, return raw text."""
+    """pull, block, opt, parse fail, return raw."""
     reply_match = _REPLY_RE.search(raw)
     kg_match    = _KG_RE.search(raw)
 
@@ -480,11 +480,11 @@ def parse_turn(raw: str) -> TurnOutput:
     return TurnOutput(reply=reply, kg=kg)
 
 
-# track msg_id, skip errors
+# track msg_id, skip errs
 
 @dataclass
 class TurnRecord:
-    """ngambil ids"""
+    """ambil ids"""
     index:      int
     message_id: str
     user_text:  str
@@ -493,7 +493,7 @@ class TurnRecord:
 
 
 class TurnLog:
-    """mbungkus data, akses `/`"""
+    """mbungkus, akses /"""
 
     def __init__(self, capacity: int = 50) -> None:
         self._records: list[TurnRecord] = []
@@ -514,7 +514,7 @@ class TurnLog:
         return None
 
     def resolve(self, ref: str) -> str | None:
-        """resolve msg_id"""
+        """msg_id"""
         ref = ref.strip()
         if not ref:
             return None
@@ -529,7 +529,7 @@ class TurnLog:
 
 
 
-# Labels, update_node, validate_input.
+# update_node validate_input
 _READABLE_LABELS: dict[str, Callable[[str], Awaitable[Any]]] = {
     "Behavior":   read_behavior,
     "Emotion":    read_emotion,
@@ -546,7 +546,7 @@ def _now_iso() -> str:
 
 
 async def _safe_embed(text: str | None) -> list[float] | None:
-    """None on fail. Sync'd by retry sweep."""
+    """skip on fail."""
     if not text or not text.strip():
         return None
     try:
@@ -556,7 +556,7 @@ async def _safe_embed(text: str | None) -> list[float] | None:
         return None
 
 
-# log every byte to Neo4j/pgvector
+# log every byte
 
 trace = logging.getLogger("test_bot.trace")
 
@@ -589,7 +589,7 @@ def _log_kg_write(
     *,
     embedding: list[float] | None = None,
 ) -> None:
-    """log line per writer, payload trimmed."""
+    """log writer payload"""
     trace.info(
         "[KG WRITE] %-10s | %s | payload=%s",
         label,
@@ -628,7 +628,7 @@ def _log_pg_read(line: str, embedding: list[float] | None) -> None:
 
 
 def _log_kg_read_summary(retrieved: Any) -> None:
-    """get data"""
+    """ambil data"""
     trace.info(
         "[KG READ]  context | recency=%d semantic=%d salient=%d "
         "experiences=%d people=%d emotions=%d distortions=%d triggers=%d",
@@ -690,7 +690,7 @@ async def apply_kg_block(
             "source_message_id": message_id,
         }
         _log_kg_write("Emotion", emo_payload, embedding=None)
-        # pyrefly: ignore [unexpected-keyword]
+        # ignore [unexpected-keyword]
         ids["emotion"] = await write_emotion(EmotionInput(**emo_payload))
         _log_kg_write_result("Emotion", ids["emotion"])
 
@@ -761,7 +761,7 @@ async def apply_kg_block(
         ids["subject"] = await write_person(PersonInput(**per_payload))
         _log_kg_write_result("Subject", ids["subject"])
 
-    # wire up edges, use source_msg_id, trace edges, see full graph.
+    # wire edges, use src, trace, see.
     if ids["experience"] and ids["trigger"]:
         _log_kg_edge("Experience", ids["experience"], "TRIGGERED_BY",
                      "Trigger", ids["trigger"])
@@ -850,7 +850,7 @@ def _append_references(reply: str, urls: list[str]) -> str:
     return out.rstrip()
 
 async def _run_cbt_dialogue_policy(state: dict[str, Any]) -> dict[str, Any]:
-    """skip klo error"""
+    """skip error"""
     try:
         module = importlib.import_module("agentic.agent.nodes.dialogue_policy")
     except Exception:
@@ -891,10 +891,10 @@ def _format_search(result: dict[str, Any]) -> str:
     return "\n".join(out)
 
 
-# `helpers`
+# `skip`
 
 def _parse_value(raw: str) -> Any:
-    """update values: json, then str."""
+    """update json str."""
     try:
         return json.loads(raw)
     except json.JSONDecodeError:
@@ -967,7 +967,7 @@ async def cmd_snapshot(user_id: str) -> str:
     )
 
 
-# buat ngequery
+# buat ngequery db
 
 def cmd_history(log: TurnLog, n: int = 10) -> str:
     records = log.latest(n)
@@ -1015,7 +1015,7 @@ async def cmd_update(label: str, node_id: str, prop: str, value_raw: str) -> str
     return f"  update_node_property({label}, {node_id}, {{{prop!r}: {value!r}}}) -> {affected} updated"
 
 
-# purge, sync, delete.
+# purge, sync, del.
 
 async def cmd_soft(log: TurnLog, ref: str, reason: str) -> str:
     message_id = log.resolve(ref)
@@ -1037,7 +1037,7 @@ async def cmd_purge(log: TurnLog, ref: str) -> str:
 
 
 async def cmd_sweep() -> str:
-    """reconcile stuck nodes."""
+    """skip stuck nodes"""
     counters = await sweep_unsynced()
     return f"  sweep_unsynced() -> {json.dumps(counters)}"
 
@@ -1048,7 +1048,7 @@ async def cmd_wipe_user(target_user_id: str) -> str:
     return f"  purge_user_full({target_user_id}) -> {json.dumps(counters)}"
 
 
-# supersede
+# sup
 
 async def cmd_supersede(
     *,
@@ -1084,7 +1084,7 @@ _SUMMARY_SYSTEM_PROMPT = (
 
 
 async def _summarize_history(llm: Any, history: list[Any]) -> str:
-    """compress into one par", "mention subjects/exps/emotions", "fallback on error"""
+    """compress into 1 par", "mention subj/exps/emos", "fallback on err"""
     if not history:
         return "Session had no user messages."
 
@@ -1122,11 +1122,11 @@ class BotContext:
 
 
 async def dispatch_command(line: str, ctx: BotContext) -> bool:
-    """run slash cmd, returns true if shutdown, false otherwise."""
+    """run cmd, check bool."""
     parts = line.split()
     cmd, args = parts[0], parts[1:]
 
-    # `skip`
+    # skip
     if cmd == "/help":
         print(HELP_TEXT)
         return False
@@ -1206,10 +1206,10 @@ async def dispatch_command(line: str, ctx: BotContext) -> bool:
         print(cmd_history(ctx.log, n))
         return False
 
-    # mem lifecycle
+    # skip klo error
     if cmd == "/flush":
         async def session_flush(_uid: str, _sid: str) -> None:
-            # skip idle sweep
+            # skip idle
             if _uid == ctx.user_id and _sid == ctx.session_id:
                 summary = await _summarize_history(ctx.llm, ctx.history)
             else:
@@ -1242,7 +1242,7 @@ async def dispatch_command(line: str, ctx: BotContext) -> bool:
         print(await cmd_sweep())
         return False
 
-    # buat ngehitung
+    # buat hitung
     if cmd == "/facts":
         if not args:
             print("  usage: /facts <#turn|message_id>")
@@ -1305,9 +1305,9 @@ async def dispatch_command(line: str, ctx: BotContext) -> bool:
         ))
         return False
 
-    # shut down.
+    # shut.
     if cmd == "/end":
-        # summarize user" "compress in-memory" "semantic retrieval
+        # summarize user's compress in mem semantic retrieval
         if args:
             summary = " ".join(args)
         else:
@@ -1362,7 +1362,7 @@ async def chat_loop(user_id: str, session_id: str) -> None:
         if not line:
             continue
 
-        # `skip`
+        # skip
         if line.startswith("/"):
             try:
                 shutdown = await dispatch_command(line, ctx)
@@ -1378,7 +1378,7 @@ async def chat_loop(user_id: str, session_id: str) -> None:
         turn_index += 1
         message_id = f"msg-{uuid.uuid4()}"
 
-        # if _safe_embed() is None:     build_context()
+        # build_context()
         query_embedding = await _safe_embed(line)
         _log_pg_read(line, query_embedding)
 
@@ -1466,7 +1466,7 @@ async def chat_loop_nodes(
     trace_cbt: bool = False,
     trace_metadata: bool = False,
 ) -> None:
-    """buat ngambil data"""
+    """ambil data"""
     llm = _bind_tools_if_supported(_make_llm())
     history: list[Any] = []
     log = TurnLog()
@@ -1530,7 +1530,7 @@ async def chat_loop_nodes(
         _reset_turn_transients(state)
         state["current_message"] = line
 
-        # run focused node pipeline
+        # run focused node
         try:
             state = await memory_retrieval_node(state, audit=audit)
             state = await dialogue_policy_node(state, audit=audit)
@@ -1540,12 +1540,12 @@ async def chat_loop_nodes(
             print(f"[bot error: {exc}]")
             continue
 
-        # treat as final
+        # finalize
         state["final_response"] = (state.get("response_draft") or "").strip() or None
 
         # append to transcript
         state = await session_end_node(state, audit=audit)
-        # log: CBT
+        # log: cbt
         kg_context = (state.get("kg_context") or "")
         directive = state.get("cbt_directive") or {}
         technique = state.get("cbt_node_active")
@@ -1575,7 +1575,7 @@ async def chat_loop_nodes(
 
 
 async def _bootstrap_user_and_session(user_id: str | None) -> tuple[str, str]:
-    """if user, ok := db.Get("user").(map[string]interface{}) {     user["id"].(string) } if session, ok := db.Get("session").(map[string]interface{}) {     session["id"].(string) }"""
+    """user, ok := db.Get("user").(map[string]interface{}) if ok {     user["id"].(string) }  session, ok := db.Get("session").(map[string]interface{}) if ok {     session["id"].(string) }"""
     client = nc.get_client()
     user_id    = user_id or f"cli-user-{uuid.uuid4()}"
     session_id = f"cli-sess-{uuid.uuid4()}"
@@ -1643,7 +1643,7 @@ async def main(argv: list[str]) -> int:
         else:
             await chat_loop(user_id, session_id)
     finally:
-        # stamp ended_at & last_activity
+        # end_at, last_act
         await nc.get_client().execute_write(
             """
             MATCH (s:Session {id: $sid})

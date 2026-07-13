@@ -1,4 +1,4 @@
-"""clarify meaning"""
+"""clarify"""
 
 from __future__ import annotations
 
@@ -29,7 +29,7 @@ def _state_for_item(*, user_text: str, language: str = "id"):
 
 @pytest.mark.asyncio
 async def test_explanation_request_uses_llm(fake_repo) -> None:
-    # force judge to choose clarify
+    # choose clarify
     judge_llm = FakeLLM(
         script=[
             json.dumps(

@@ -1,4 +1,4 @@
-"""scoring core PHQ-9"""
+"""scoring"""
 
 from __future__ import annotations
 
@@ -58,7 +58,7 @@ OPTION_LABELS_EN: tuple[str, ...] = (
 )
 
 
-# skp klo error
+# skip error
 NUM_ITEMS: int = 9
 ITEM9_INDEX_ZERO_BASED: int = 8
 ITEM9_INDEX_ONE_BASED: int = 9
@@ -85,7 +85,7 @@ _SEVERITY_BANDS: tuple[tuple[int, int, PHQ9Severity], ...] = (
 
 
 def compute_severity(total: int) -> PHQ9Severity:
-    """map 0..27 to severity band"""
+    """bandung"""
     if not 0 <= total <= 27:
         raise ValueError(f"PHQ-9 total must be in [0, 27], got {total}")
     for low, high, band in _SEVERITY_BANDS:
@@ -152,7 +152,7 @@ class PHQ9Result:
 
     @property
     def item9_flagged(self) -> bool:
-        """score != 0"""
+        """ngapain ngga"""
         return self.item9_score >= 1
 
 
@@ -166,7 +166,7 @@ def score_phq9(
     previous_total: int | None = None,
     administered_at: datetime | None = None,
 ) -> PHQ9Result:
-    """aggregate responses"""
+    """res aggregatin"""
     by_item: dict[int, PHQ9Response] = {}
     for r in responses:
         if r.item_id in by_item:
@@ -203,12 +203,12 @@ DEFAULT_LANGUAGE: str = "id"
 
 
 def get_items(language: str) -> tuple[str, ...]:
-    """ret prompts 9"""
+    """ret 9"""
     return ITEMS_ID if _normalize_lang(language) == "id" else ITEMS_EN
 
 
 def get_option_labels(language: str) -> tuple[str, ...]:
-    """ret four lbls 0..3"""
+    """ret lbls 0..3"""
     return (
         OPTION_LABELS_ID
         if _normalize_lang(language) == "id"
@@ -238,7 +238,7 @@ _ID_HINT_TOKENS: frozenset[str] = frozenset(
 
 
 def detect_language_lightweight(text: str) -> str:
-    """en" or "id"""
+    """en" ng"""
     if not text or not text.strip():
         return DEFAULT_LANGUAGE
     tokens = set(re.findall(r"[a-zA-ZÀ-ÿ]+", text.lower()))
@@ -250,11 +250,13 @@ def resolve_language(
     user_pref: str | None,
     recent_messages: Sequence[str] | None = None,
 ) -> str:
-    """`set lang`"""
+    """set lang"""
     if user_pref:
-        normalized = _normalize_lang(user_pref)
-        if normalized in SUPPORTED_LANGUAGES:
-            return normalized
+        code = user_pref.strip().lower()
+        if code.startswith("id"):
+            return "id"
+        if code.startswith("en"):
+            return "en"
     if recent_messages:
         for msg in reversed(recent_messages):
             if msg and msg.strip():
@@ -264,20 +266,20 @@ def resolve_language(
 
 
 def item_text(item_id: int, language: str) -> str:
-    """ret prompt 1"""
+    """ngambil data 1"""
     if not 1 <= item_id <= NUM_ITEMS:
         raise ValueError(f"item_id must be in [1, {NUM_ITEMS}]")
     return get_items(language)[item_id - 1]
 
 
 def options_with_scores(language: str) -> tuple[tuple[int, str], ...]:
-    """return ((0, label0), (1, label1), ...)"""
+    """(return (0 label0) (1 label1) ...))"""
     labels = get_option_labels(language)
     return tuple((i, labels[i]) for i in range(4))
 
 
 def to_storage_payload(result: PHQ9Result) -> Mapping[str, object]:
-    """serialize PHQ9Result to assessments table"""
+    """serialize to table"""
     return {
         "user_id": result.user_id,
         "session_id": result.session_id,

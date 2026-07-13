@@ -1,0 +1,88 @@
+% =====================================================================
+% main.tex
+% Laporan Tugas Akhir
+% Pengembangan Arsitektur Perangkat Lunak Companionship Chatbot dengan
+% Memori Jangka Panjang Berbasis Knowledge Graph untuk Mahasiswa Indonesia
+% Penulis: Mohammad Nugraha Eka Prawira (NIM 13522001)
+% Pembimbing: Dr. Agung Dewandaru, S.T., M.Sc.
+% Program Studi Teknik Informatika, STEI, Institut Teknologi Bandung
+% =====================================================================
+
+\documentclass[12pt,a4paper,oneside,openany]{report}
+
+\input{preamble}
+
+\begin{document}
+
+\onehalfspacing
+
+% ---------------------------------------------------------------------
+% FRONTMATTER
+% ---------------------------------------------------------------------
+\pagenumbering{roman}
+\setcounter{page}{1}
+
+\input{frontmatter/cover}
+\cleardoublepage
+
+\input{frontmatter/approval}
+\cleardoublepage
+
+\input{frontmatter/declaration}
+\cleardoublepage
+
+\input{frontmatter/abstract}
+\cleardoublepage
+
+\input{frontmatter/abstract_en}
+\cleardoublepage
+
+\input{frontmatter/preface}
+\cleardoublepage
+
+\tableofcontents
+\cleardoublepage
+
+% \addcontentsline eksplisit karena \newlistof tidak auto-add ke TOC dengan [titles] option
+\phantomsection
+\addcontentsline{toc}{chapter}{DAFTAR LAMPIRAN}
+\listoflampiran
+\cleardoublepage
+
+\listoffigures
+\cleardoublepage
+
+\listoftables
+\cleardoublepage
+
+% ---------------------------------------------------------------------
+% MAIN MATTER
+% ---------------------------------------------------------------------
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+% Aktifkan prefix "BAB" untuk chapter entry di DAFTAR ISI
+\addtocontents{toc}{\protect\renewcommand{\protect\cftchappresnum}{BAB }}
+
+\input{chapters/bab1}
+\input{chapters/bab2}
+\input{chapters/bab3}
+\input{chapters/bab4}
+\input{chapters/bab5}
+
+% Nonaktifkan prefix "BAB" setelah bab selesai (untuk DAFTAR PUSTAKA dll)
+\addtocontents{toc}{\protect\renewcommand{\protect\cftchappresnum}{}}
+
+% ---------------------------------------------------------------------
+% BACKMATTER
+% ---------------------------------------------------------------------
+% Daftar Pustaka (sebelum Lampiran, sesuai pedoman II.3)
+\renewcommand{\bibname}{DAFTAR PUSTAKA}
+\bibliography{bibliography/references}
+
+% ---------------------------------------------------------------------
+% LAMPIRAN (setelah Daftar Pustaka)
+% ---------------------------------------------------------------------
+\input{chapters/lampiran}
+
+\end{document}

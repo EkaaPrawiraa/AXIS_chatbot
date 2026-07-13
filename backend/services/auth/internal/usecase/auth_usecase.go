@@ -23,12 +23,12 @@ import (
 // refreshTTL: 30 hari AccessTTL: 24 jam
 const refreshTTL = 30 * 24 * time.Hour
 
-// `purge data`
+// `hapus semua`
 type MemoryPurger interface {
 	PurgeAccount(ctx context.Context, userID string) error
 }
 
-// inject' 'googleauth' 'Verify
+// googleauth' 'Verify
 type GoogleVerifier interface {
 	Verify(ctx context.Context, idToken string, clientID string) (*googleauth.Claims, error)
 }
@@ -92,7 +92,7 @@ type AuthOutput struct {
 	Profile      ProfileDTO `json:"profile"`
 }
 
-// logoutInput ngambil data sesi pengguna.
+// logoutInput ngambil sesi.
 type LogoutInput struct {
 	UserID       string
 	AccessJTI    string
@@ -199,7 +199,7 @@ type GoogleLoginInput struct {
 	IDToken string
 }
 
-// ```plaintext "google_id" sudah dipakai -> langsung login "email belum terdaftar" -> akun baru ```
+// ```plaintext login email belum terdaftar buat akun baru ```
 func (u *AuthUsecase) GoogleLogin(ctx context.Context, input GoogleLoginInput) (AuthOutput, error) {
 	idToken := strings.TrimSpace(input.IDToken)
 	if idToken == "" {
@@ -213,7 +213,7 @@ func (u *AuthUsecase) GoogleLogin(ctx context.Context, input GoogleLoginInput) (
 	if err != nil {
 		return AuthOutput{}, apperrors.Unauthorized("invalid google sign-in")
 	}
-	// skip klo unverified email
+	// skip email ngga valid
 	if !claims.EmailVerified {
 		return AuthOutput{}, apperrors.Unauthorized("google account email is not verified")
 	}
@@ -259,7 +259,7 @@ func (u *AuthUsecase) GoogleLogin(ctx context.Context, input GoogleLoginInput) (
 	return out, nil
 }
 
-// `refresh token`
+// refresh_token
 func (u *AuthUsecase) Refresh(ctx context.Context, refreshToken string) (AuthOutput, error) {
 	refreshToken = strings.TrimSpace(refreshToken)
 	if refreshToken == "" {
@@ -279,7 +279,7 @@ func (u *AuthUsecase) Refresh(ctx context.Context, refreshToken string) (AuthOut
 	if user == nil || user.AccountStatus != entity.UserStatusActive {
 		return AuthOutput{}, apperrors.Unauthorized("unauthorized")
 	}
-	// `skip token`
+	// skip this
 	if err := u.users.RevokeRefreshToken(ctx, stored.TokenHash); err != nil {
 		return AuthOutput{}, err
 	}
@@ -294,7 +294,7 @@ func (u *AuthUsecase) Refresh(ctx context.Context, refreshToken string) (AuthOut
 	return out, nil
 }
 
-// logout, delete refresh token, add to blacklist, prevent session renewal.
+// logout, delete, blacklist, prevent renewal.
 func (u *AuthUsecase) Logout(ctx context.Context, input LogoutInput) error {
 	if refreshToken := strings.TrimSpace(input.RefreshToken); refreshToken != "" {
 		if err := u.users.RevokeRefreshToken(ctx, hashToken(refreshToken)); err != nil {
@@ -432,7 +432,7 @@ func (u *AuthUsecase) UpdateProfile(ctx context.Context, input UpdateProfileInpu
 	return profileDTO(updated), nil
 }
 
-// DeleteAccount memverifikasi password, memurge data, lalu anonimkan baris. Purge dipanggil di sini untuk jaminan server. Kegagalan purge log dengan jelas.
+// delete account, purge data, anonim, purge, server, log error
 func (u *AuthUsecase) DeleteAccount(ctx context.Context, input DeleteAccountInput) error {
 	if err := validateUUID("userId", input.UserID); err != nil {
 		return err
@@ -521,7 +521,7 @@ func newToken(userID string) (string, error) {
 	return axisauth.Sign(userID, 24*time.Hour, axisauth.SecretFromEnv())
 }
 
-// newRefreshToken: random acak (client), hash SHA-256 (server).
+// random acak, hash SHA-256.
 func newRefreshToken() (string, string, error) {
 	var b [32]byte
 	if _, err := rand.Read(b[:]); err != nil {
@@ -531,7 +531,7 @@ func newRefreshToken() (string, string, error) {
 	return plain, hashToken(plain), nil
 }
 
-// hashToken: "64-hex SHA-256 token
+// hashToken: "64-hex SHA-256
 func hashToken(token string) string {
 	sum := sha256.Sum256([]byte(token))
 	return hex.EncodeToString(sum[:])

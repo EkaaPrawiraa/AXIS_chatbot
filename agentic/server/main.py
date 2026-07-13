@@ -1,4 +1,4 @@
-"""entry point"""
+"""skip klo error"""
 
 from __future__ import annotations
 
@@ -23,7 +23,7 @@ def _load_env_file(env_path: Path) -> None:
 
 def _load_local_env() -> None:
     base_dir = Path(__file__).resolve().parents[1]
-    # loads first, values take precedence
+    # loads first, vals take prec.
     _load_env_file(base_dir / ".env.local")
     _load_env_file(base_dir / ".env")
 
@@ -35,7 +35,7 @@ from agentic.gateway.app import create_app
 
 logger = logging.getLogger(__name__)
 
-# `init obj`
+# inisialisasi objek
 app = create_app()
 
 

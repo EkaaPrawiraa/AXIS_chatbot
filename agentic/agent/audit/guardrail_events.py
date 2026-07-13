@@ -1,4 +1,4 @@
-"""telemetry."""
+"""telem."""
 
 from __future__ import annotations
 
@@ -41,7 +41,7 @@ class GuardrailEventSeverity(str, Enum):
 
 @dataclass(frozen=True)
 class GuardrailEvent:
-    """check db"""
+    """db check"""
 
     user_id: str | None
     session_id: str | None
@@ -55,7 +55,7 @@ class GuardrailEvent:
     created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
 
     def to_log_line(self) -> str:
-        """log compact"""
+        """log ckm"""
         return (
             f"guardrail layer={self.layer.value} type={self.event_type} "
             f"decision={self.decision.value} severity={self.severity.value} "
@@ -65,7 +65,7 @@ class GuardrailEvent:
         )
 
 
-# log + impl
+# log impl
 
 
 class GuardrailLogger(Protocol):
@@ -86,7 +86,7 @@ class NullGuardrailLogger:
 
 
 class PostgresGuardrailLogger:
-    """writes to guardrail_events asyncpg pool log() schedules background task chat turn skips db never waits _pending_tasks keep prevent garbage collector"""
+    """writes asyncpg log skips db never waits _pending_tasks keep prevent gc"""
 
     def __init__(self, pg_pool: Any) -> None:
         self._pool = pg_pool
@@ -94,18 +94,18 @@ class PostgresGuardrailLogger:
         self._pending_tasks: set[asyncio.Task[None]] = set()
 
     async def log(self, event: GuardrailEvent) -> None:
-        # log() async, event loop always.
+        # log() async, loop.
         task: asyncio.Task[None] = asyncio.create_task(self._insert(event))
         self._pending_tasks.add(task)
         task.add_done_callback(self._pending_tasks.discard)
 
     async def _insert(self, event: GuardrailEvent) -> None:
-        """retry, session_id = None"""
+        """`set session_id`"""
         try:
             await self._insert_row(event.session_id, event)
         except Exception as exc:
             exc_str = str(exc)
-            # `check error name`
+            # `skip error`
             is_fk_error = (
                 "ForeignKeyViolation" in type(exc).__name__
                 or "foreign key constraint" in exc_str.lower()
@@ -136,7 +136,7 @@ class PostgresGuardrailLogger:
     async def _insert_row(
         self, session_id: str | None, event: GuardrailEvent
     ) -> None:
-        """exec insert with session_id"""
+        """exec insert"""
         async with self._pool.acquire() as conn:
             await conn.execute(
                 """

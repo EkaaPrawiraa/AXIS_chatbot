@@ -1,4 +1,4 @@
-"""ssot LLM sel di LangGraph"""
+"""lang graph"""
 
 from __future__ import annotations
 
@@ -14,7 +14,7 @@ LLMProvider = Literal["openai", "gemini", "local"]
 
 @dataclass(frozen=True)
 class LLMSpec:
-    """name: id model: model temperature: temp max_tokens: max timeout_s: timeout prompt_ref: ref reasoning_effort: effort extra_kwargs: kwargs"""
+    """buat ngambil data"""
 
     name: str
     model: str
@@ -27,7 +27,7 @@ class LLMSpec:
 
     @property
     def system_prompt(self) -> str:
-        """resolve prompt yaml lazily"""
+        """lazy resolve prompt yaml"""
         from agentic.prompts import load_prompt
 
         return load_prompt(self.prompt_ref)
@@ -56,6 +56,23 @@ _GEMINI_MODEL_RETRIEVAL_QUERY_REWRITER = os.getenv(
     "GEMINI_RETRIEVAL_QUERY_REWRITER_MODEL",
     _GEMINI_MODEL_CHEAP,
 )
+
+
+def _env_int(name: str, default: int) -> int:
+    raw = os.getenv(name)
+    if raw is None or raw.strip() == "":
+        return default
+    try:
+        return int(raw)
+    except ValueError:
+        return default
+
+
+def _env_bool(name: str, default: bool = False) -> bool:
+    raw = os.getenv(name)
+    if raw is None:
+        return default
+    return raw.strip().lower() in {"1", "true", "yes", "on"}
 
 _GEMINI_CHEAP_SPEC_NAMES = {
     "phq9_scorer",
@@ -131,7 +148,7 @@ def llm_provider() -> LLMProvider:
 
 
 def resolve_llm_model(model: str, *, spec_name: str | None = None) -> str:
-    """resolve provider-specific model ids"""
+    """get model ids"""
     provider = llm_provider()
     requested = (model or "").strip()
     if requested.startswith("models/gemini-"):
@@ -250,7 +267,7 @@ KG_EXTRACTOR = LLMSpec(
 )
 
 
-# layer 3 rewrite + ctb helpers
+# rewrite + helpers
 
 
 GUARDRAIL_REWRITE = LLMSpec(
@@ -326,7 +343,7 @@ SPEECH_ADAPTER_V3 = LLMSpec(
 )
 
 
-# limit tps
+# skip klo error
 SPEECH_ADAPTER_GEMINI_TAGS = LLMSpec(
     name="speech_adapter_gemini_tags",
     model=_DEFAULT_CHEAP,
@@ -351,7 +368,7 @@ CRISIS_EMPATHY = LLMSpec(
 
 
 def build_llm(spec: LLMSpec) -> Any:
-    """Construct a LangChain chat client from spec.      Import inside func, cheap import for envs w/o provider deps.      Pass `reasoning_effort` for o-series; forward `temperature`."""
+    """import cheap_import pass_reasoning_effort forward_temperature"""
     provider = llm_provider()
     model = resolve_llm_model(spec.model, spec_name=spec.name)
 
@@ -388,16 +405,33 @@ def build_llm(spec: LLMSpec) -> Any:
             },
         )
 
-    from langchain_google_genai import ChatGoogleGenerativeAI
+    from langchain_google_genai import (
+        ChatGoogleGenerativeAI,
+        HarmBlockThreshold,
+        HarmCategory,
+    )
 
     kwargs = {
         "model": model,
         "temperature": spec.temperature,
         "max_tokens": spec.max_tokens,
         "timeout": spec.timeout_s,
-        # `skip kwarg`
+        "safety_settings": {
+            HarmCategory.HARM_CATEGORY_HARASSMENT: HarmBlockThreshold.BLOCK_NONE,
+            HarmCategory.HARM_CATEGORY_HATE_SPEECH: HarmBlockThreshold.BLOCK_NONE,
+            HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT: HarmBlockThreshold.BLOCK_NONE,
+            HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT: HarmBlockThreshold.BLOCK_NONE,
+        },
         **spec.extra_kwargs,
     }
+    if spec.name == "response_generator":
+        thinking_budget = _env_int("GEMINI_RESPONSE_GENERATOR_THINKING_BUDGET", 1024)
+        if thinking_budget != 0:
+            kwargs["thinking_budget"] = thinking_budget
+        kwargs["include_thoughts"] = _env_bool(
+            "GEMINI_RESPONSE_GENERATOR_INCLUDE_THOUGHTS",
+            False,
+        )
     api_key = os.getenv("GOOGLE_API_KEY") or os.getenv("GEMINI_API_KEY")
     if api_key:
         kwargs["google_api_key"] = api_key

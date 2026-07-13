@@ -165,7 +165,7 @@ func (r *UserRepository) UpdateProfile(ctx context.Context, user entity.User) (e
 	return updated, nil
 }
 
-// SoftDeleteAccount anonimkan data pribadi, tandai akun sebagai terhapus.
+// anonimkan, tandai, hapus.
 func (r *UserRepository) SoftDeleteAccount(ctx context.Context, userID string) error {
 	res, err := r.db.ExecContext(ctx, `
 		UPDATE users

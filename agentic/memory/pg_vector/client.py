@@ -1,4 +1,4 @@
-"""async pg vector mirror tables"""
+"""skip klo error"""
 
 from __future__ import annotations
 
@@ -37,7 +37,7 @@ _unavailable: bool = False
 
 
 async def get_pool():
-    """return None"""
+    """None"""
     global _pool, _unavailable
 
     if _pool is not None:
@@ -82,7 +82,7 @@ async def get_pool():
 
 
 async def close_pool() -> None:
-    """close pool, safe to call."""
+    """close pool. safe to call."""
     global _pool, _unavailable
     if _pool is not None:
         try:
@@ -93,7 +93,7 @@ async def close_pool() -> None:
 
 
 async def is_available() -> bool:
-    """skip try/except"""
+    """skip except"""
     pool = await get_pool()
     return pool is not None
 

@@ -11,7 +11,7 @@ type RedisConfig struct {
 	DB       int
 }
 
-// lazy redis client
+// redis client lazy
 func NewRedisClient(cfg RedisConfig) *redis.Client {
 	return redis.NewClient(&redis.Options{
 		Addr:     cfg.Addr,

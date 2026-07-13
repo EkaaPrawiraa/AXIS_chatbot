@@ -1,4 +1,4 @@
-"""`skip`"""
+"""skip"""
 
 from __future__ import annotations
 
@@ -32,7 +32,7 @@ async def phq9_delivery_node(
     clarification_llm: Any | None = None,
     audit: GuardrailLogger | None = None,
 ) -> ConversationState:
-    """delegate to phq-9 subgraph. preserve for backward comp; use scorer_llm if not provided."""
+    """delegasi ke subgraph phq-9. tetapkan untuk kompabilitas kelewatan, gunakan scorer_llm jika tidak diberikan."""
     audit = audit or NullGuardrailLogger()
     return await phq9_subgraph_node(
         state,

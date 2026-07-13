@@ -1,4 +1,4 @@
-"""retrieve policy"""
+"""get pol"""
 
 from __future__ import annotations
 
@@ -99,7 +99,7 @@ class MemoryCandidate:
 
 @dataclass(frozen=True)
 class RenderedMemory:
-    """append to prompt"""
+    """append_to_prompt"""
 
     id: str
     text: str
@@ -123,7 +123,7 @@ async def apply_sensitivity_policy(
     counts_per_tier: dict[int, int] = {}
 
     for c in candidates:
-        # hard gate
+        # gate
         if policy.bitemporal_validity_required and not c.valid:
             await audit.log(
                 GuardrailEvent(
@@ -138,7 +138,7 @@ async def apply_sensitivity_policy(
             )
             continue
 
-        # supgate
+        # sup
         if policy.suppress_flag_required and c.suppressed:
             await audit.log(
                 GuardrailEvent(
@@ -155,7 +155,7 @@ async def apply_sensitivity_policy(
 
         tier = policy.tiers.get(c.sensitivity_level)
         if tier is None:
-            # treat as lvl 3
+            # lvl3
             tier = policy.tiers.get(3)
             if tier is None:
                 continue
@@ -209,7 +209,7 @@ def _render(c: MemoryCandidate, tier: SensitivityTier) -> str | None:
             return c.summary
         if c.category:
             return f"Pola emosional terkait kategori: {c.category}"
-        # pick first sent
+        # pilih sent
         snippet = (c.content or "").split(".", 1)[0]
         return snippet.strip() or None
     if tier.retrieval == "category_only":
@@ -220,7 +220,7 @@ def _render(c: MemoryCandidate, tier: SensitivityTier) -> str | None:
 
 
 def serialize_block(rendered: Iterable[RenderedMemory]) -> str:
-    """buat block prompt"""
+    """buat prompt"""
     by_mode: dict[str, list[str]] = {}
     for r in rendered:
         by_mode.setdefault(r.mode, []).append(r.text)

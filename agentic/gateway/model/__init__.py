@@ -1,4 +1,4 @@
-"""init schemas"""
+"""init s."""
 
 from agentic.gateway.model.chat import (
     ChatMessage,

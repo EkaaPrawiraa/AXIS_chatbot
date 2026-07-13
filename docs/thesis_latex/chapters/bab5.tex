@@ -1,0 +1,66 @@
+% =====================================================================
+% BAB V KESIMPULAN DAN SARAN
+% =====================================================================
+
+\chapter{KESIMPULAN DAN SARAN}
+\label{ch:kesimpulan}
+
+\section{Kesimpulan}
+\label{sec:kesimpulan}
+
+\textit{Placeholder --- bab ini dikosongkan sementara karena fokus saat ini adalah seminar hasil (BAB I--IV dan lampiran terkait). Isi sebelumnya dipertahankan pada blok \texttt{\textbackslash iffalse} di bawah dan akan dikerjakan ulang menjelang sidang akhir.}
+
+\section{Keterbatasan}
+\label{sec:keterbatasan}
+
+\textit{Placeholder --- lihat catatan pada Subbab~\ref{sec:kesimpulan}.}
+
+\section{Saran}
+\label{sec:saran}
+
+\textit{Placeholder --- lihat catatan pada Subbab~\ref{sec:kesimpulan}.}
+
+\iffalse
+% =====================================================================
+% Isi asli BAB V (dipertahankan untuk dikerjakan ulang menjelang sidang akhir)
+% =====================================================================
+
+\section{Kesimpulan}
+\label{sec:kesimpulan}
+
+Tugas akhir ini mengembangkan AXIS sebagai \textit{chatbot} pendamping non-klinis untuk mahasiswa Indonesia. Berdasarkan rancangan, implementasi, dan evaluasi awal yang telah dilakukan, terdapat tiga kesimpulan utama.
+
+Pertama, AXIS menunjukkan bahwa percakapan pendamping dapat dibuat lebih bermakna ketika sistem tidak hanya membalas pesan terakhir, tetapi juga membaca konteks bahasa, sinyal emosi, batas keselamatan, dan kesiapan pengguna untuk menerima latihan reflektif. Prinsip CBT ditempatkan sebagai alat bantu percakapan, bukan sebagai bentuk diagnosis atau terapi. \textit{Guardrail} tetap diimplementasikan karena sistem berhadapan dengan data emosional dan kemungkinan ekspresi krisis, tetapi perannya adalah pagar keselamatan, bukan pusat kontribusi tugas akhir. Dengan pendekatan ini, AXIS dapat mempertahankan posisi sebagai pendamping non-klinis yang memberi ruang bercerita, memberi respons empatik, dan tetap mengetahui kapan respons harus diarahkan ke bantuan yang lebih sesuai.
+
+Kedua, mood harian dan PHQ-9 dapat diorkestrasikan ke dalam alur percakapan tanpa harus selalu tampil sebagai formulir terpisah. Mood harian memberi sinyal ringan mengenai kondisi pengguna pada hari itu, sedangkan PHQ-9 memberi skrining yang lebih terstruktur ketika konteks percakapan atau permintaan pengguna mendukungnya. Implementasi juga memisahkan hasil PHQ-9 sebagai \textit{assessment}, bukan sebagai memori pengalaman hidup biasa. Pemisahan ini penting agar memori jangka panjang tidak dipenuhi item administratif kuesioner. Validasi awal menunjukkan bahwa penyimpanan hasil dan eskalasi item risiko sudah berjalan, meskipun pengalaman ketika pengguna menolak tawaran PHQ-9 masih perlu diperbaiki.
+
+Ketiga, memori jangka panjang AXIS tidak dibangun sebagai riwayat chat linear, melainkan sebagai arsitektur hibrid yang menggabungkan \textit{knowledge graph} dan pencarian semantik. \textit{Knowledge graph} menyimpan hubungan antara pengalaman, emosi, pikiran, perilaku, subjek, topik, dan \textit{assessment}, sedangkan pgvector membantu menemukan kandidat memori yang relevan secara semantik. Session \textit{finalizer}, \textit{lifecycle} memori, dan \textit{context builder} membuat memori dapat ditulis, dipilih kembali, dan diperbarui. Pada studi kasus ilustratif yang diamati, AXIS mengindikasikan nilai yang lebih terlihat pada pengguna dengan riwayat memori yang kaya, karena sistem secara proaktif merujuk konteks lama pada giliran pembuka, sedangkan \textit{baseline} pada eksekusi yang sama tidak menyinggungnya sama sekali begitu topik pengguna bergeser jauh dari kata kunci memori tersimpan. Kuantifikasi EPITOME pada studi kasus yang sama menunjukkan hasil yang bercampur dan berubah antar-eksekusi: \textit{baseline} setara atau lebih tinggi daripada AXIS pada ketiga dimensi EPITOME sekaligus pada eksekusi terbaru, termasuk pada dimensi eksplorasi topik yang pada eksekusi sebelumnya sempat menjadi titik unggul AXIS, sehingga klaim yang dapat dipertanggungjawabkan bukan "AXIS lebih empatik secara umum", melainkan "AXIS lebih konsisten menyisipkan rujukan memori lama secara proaktif, tanpa jaminan keunggulan pada kualitas empati yang diukur EPITOME". Studi kasus ini juga tidak dapat memisahkan secara pasti apakah perilaku tersebut berasal dari penalaran graf itu sendiri atau dari lapisan kebijakan dialog yang menentukan kapan sebuah konteks disisipkan, karena kedua lapisan berubah bersamaan pada perbandingan ini (lihat Subbab~\ref{sec:evaluasi-komparatif}). Kebijakan dialog CBT menahan latihan reflektif sampai eksplorasi memadai atau sinyal akut yang murni muncul, meskipun dua isu yang lebih halus (penyampaian teknik yang masih berurutan seperti daftar periksa, dan gerbang giliran yang berlaku seragam tanpa mempertimbangkan tingkat keakutan sinyal) masih memerlukan penyempurnaan lanjutan.
+
+Secara keseluruhan, kontribusi utama tugas akhir ini berada pada penggabungan percakapan pendamping, mood/PHQ-9, dan \textit{lifecycle} memori jangka panjang dalam satu arsitektur yang dapat diaudit. Hasil yang tersedia pada tahap ini cukup untuk menunjukkan kelayakan purwarupa dan arah manfaatnya, tetapi belum cukup untuk mengklaim efektivitas klinis atau dampak longitudinal penuh.
+
+\section{Keterbatasan}
+\label{sec:keterbatasan}
+
+Terdapat beberapa keterbatasan yang perlu dibaca bersama kesimpulan di atas. Pertama, evaluasi fungsional yang tersedia mencakup validasi komponen kritis secara terisolasi maupun validasi orkestrasi graf keputusan secara menyeluruh (Subbab~\ref{sec:evaluasi-graf}), tetapi cakupan ini membuktikan setiap node dan cabang tereksekusi pada skenario terkontrol, bukan seluruh kombinasi kondisi yang mungkin terjadi pada percakapan bebas di dunia nyata. Kedua, evaluasi pengguna nyata masih berada pada tahap rancangan instrumen, sehingga klaim mengenai rasa didampingi, kemudahan penggunaan, dan kenyamanan pengguna harus menunggu data partisipan. Ketiga, evaluasi komparatif melalui skenario Arya dan Budi bersifat kualitatif. Hasilnya membantu membaca perbedaan respons dan dilengkapi oleh probe \textit{Recall@5} pada 15 kueri domain kampus (Tabel~\ref{tab:retrieval-recall}), tetapi probe tersebut masih berskala kecil dan belum menggantikan metrik kuantitatif yang diukur pada sampel populasi yang lebih besar.
+
+Keempat, fitur \textit{Confession Space} belum memiliki pengukuran latensi suara seperti \textit{time-to-first-audio}. Padahal Bab II menunjukkan bahwa latensi adalah \textit{trade-off} penting pada interaksi suara. Kelima, integrasi Neo4j dan pgvector menggunakan pendekatan konsistensi eventual, bukan transaksi terdistribusi. Pendekatan ini cukup sesuai untuk purwarupa, tetapi tetap menyisakan kemungkinan keterlambatan sinkronisasi antara graf dan tabel vektor. Keenam, \textit{lifecycle} memori seperti decay, supersession, dan reappraisal sudah diimplementasikan, tetapi validasi longitudinal pada rentang 60--180 hari belum dilakukan.
+
+Ketujuh, rumusan masalah pertama mengenai pemahaman bahasa informal dan bahasa campur mahasiswa Indonesia belum divalidasi secara terukur. Korpus linguistik yang disusun (Lampiran~\ref{lamp:korpus}) sebagian besar bersumber dari korpus kosakata gaul umum berbahasa Indonesia yang tidak spesifik konteks kampus. Sebagian kecil entri (21 dari 350) dikurasi manual dari kosakata kehidupan akademik mahasiswa untuk memperkuat kalibrasi domain, tetapi porsi ini masih terbatas dan belum diuji sebagai pengujian akurasi deteksi terhadap sampel bahasa yang lebih luas. Klaim pemahaman bahasa campur pada tugas akhir ini karenanya masih bersifat kualitatif berdasarkan pengamatan pada studi kasus, bukan angka presisi/recall yang terukur, dan kalibrasi domain kampus pada korpus saat ini lebih tepat disebut sebagai langkah awal daripada cakupan yang memadai.
+
+Kedelapan, studi kasus ilustratif pada Subbab~\ref{sec:evaluasi-komparatif} membandingkan AXIS dan \textit{chatbot} \textit{baseline} yang berbeda tidak hanya pada mekanisme \textit{retrieval} (graf berbanding pencarian semantik murni), tetapi juga pada volume konteks yang diterima, keberadaan riwayat percakapan pada \textit{baseline}, dan jumlah lapisan pemrosesan (\textit{guardrail}, kebijakan dialog CBT) yang hanya dimiliki AXIS. Dengan demikian, studi kasus ini tidak dapat mengisolasi kontribusi \textit{knowledge graph} secara spesifik dari faktor-faktor lain tersebut. Klaim yang dapat dipertanggungjawabkan terbatas pada perilaku AXIS secara keseluruhan dibanding \textit{baseline}, bukan pada penalaran graf sebagai satu-satunya penyebab perbedaan yang teramati.
+
+\section{Saran}
+\label{sec:saran}
+
+Pengembangan berikutnya sebaiknya dimulai dari penguatan evaluasi. Pengujian fungsional end-to-end perlu dijalankan untuk mengisi seluruh skenario utama: chat normal, CBT, PHQ-9, \textit{guardrail}, \textit{Confession Space}, penulisan memori, \textit{retrieval}, dan \textit{lifecycle}. Setelah itu, pengujian pengguna nyata perlu dilakukan pada kelompok mahasiswa Indonesia dengan instrumen yang telah disiapkan. Jika jumlah partisipan masih terbatas, studi skala kecil tetap lebih baik daripada tidak ada data, selama batasnya dijelaskan secara jujur.
+
+Pada sisi percakapan, gerbang giliran minimum dan ambang keyakinan pada kebijakan dialog CBT perlu disempurnakan lebih lanjut agar tidak berlaku seragam untuk semua tingkat keakutan sinyal. Jalur pintas pada keyakinan yang sangat tinggi perlu dipertimbangkan agar distres akut yang sungguhan muncul sangat dini tidak ikut tertunda oleh gerbang yang sama. Penyampaian teknik reflektif, terutama \textit{grounding}, juga perlu dibuat lebih luwes lintas giliran agar tidak terkesan mengikuti daftar periksa begitu teknik itu aktif.
+
+Pada sisi mood dan PHQ-9, kasus penolakan tawaran perlu diperbaiki agar pengguna tetap mendapat respons yang hangat dan tidak merasa dipaksa. Selain itu, trend mood harian dan skor PHQ-9 dapat dievaluasi sebagai sinyal konteks jangka panjang, bukan sebagai dasar diagnosis. Jika penelitian selanjutnya ingin mengukur efek psikologis secara klinis, maka studi tersebut harus berada di bawah protokol etik dan pengawasan profesional.
+
+Pada sisi memori, evaluasi \textit{retrieval} perlu dibuat lebih kuantitatif. Pengujian dapat mengukur apakah AXIS mengambil entitas, peristiwa, dan relasi yang benar dari memori pengguna. Bobot \textit{context builder}, graph reranker, dan MMR juga perlu dibandingkan terhadap \textit{baseline} \textit{retrieval} sederhana. Agar kontribusi \textit{knowledge graph} dapat diisolasi dari faktor lain sebagaimana dicatat pada Keterbatasan (poin kedelapan), perbandingan berikutnya sebaiknya menyertakan varian \textit{baseline} yang menerima volume konteks dan riwayat percakapan setara dengan AXIS, disalurkan lewat templat \textit{prompt} yang sama, sehingga perbedaan yang teramati benar-benar berasal dari mekanisme \textit{retrieval}, bukan dari perbedaan volume konteks atau lapisan pemrosesan lain. Selain itu, \textit{lifecycle} memori perlu diuji pada data jangka panjang agar klaim decay dan pembaruan memori tidak hanya valid secara implementasi, tetapi juga berguna pada penggunaan nyata. Taksonomi peran Subject juga perlu diperluas. Pengujian menemukan bahwa peran dosen penguji sidang saat ini masih dipetakan ke label generik karena belum dibedakan dari dosen pembimbing skripsi, padahal keduanya adalah relasi yang berbeda dalam pengalaman mahasiswa.
+
+Pada sisi suara, \textit{Confession Space} perlu diukur menggunakan metrik latensi seperti STT latency, \textit{time-to-first-token}, \textit{time-to-first-audio}, dan total round-trip. Pengukuran ini penting karena pengalaman suara sangat bergantung pada jeda. Pengembangan lanjutan juga dapat mempertimbangkan \textit{speech emotion recognition}, tetapi hanya sebagai sinyal tambahan yang hati-hati, bukan sebagai dasar penilaian klinis.
+
+Terakhir, arsitektur hibrid Neo4j dan pgvector perlu diperkuat pada sisi observabilitas. Sistem sudah memakai retry dan \textit{flag} sinkronisasi, tetapi dashboard internal untuk melihat node yang belum tersinkron, kegagalan \textit{finalizer}, dan kualitas ranking memori akan membuat pengembangan berikutnya lebih mudah diaudit. Perbaikan ini sejalan dengan karakter AXIS sebagai sistem pendamping yang tidak hanya perlu pintar, tetapi juga dapat ditelusuri keputusan dan memorinya.
+\fi

@@ -1,4 +1,4 @@
-"""Tests for web_search's LLM_PROVIDER-driven provider ordering and Gemini ground-chunk normalization."""
+"""Tests for web_search, LLM_PROVIDER, provider ordering, Gemini, ground-chunk, normalizing."""
 from __future__ import annotations
 
 from types import SimpleNamespace

@@ -1,1 +1,1 @@
-"""aplikasi gw gateway"""
+"""aplikasi gw"""

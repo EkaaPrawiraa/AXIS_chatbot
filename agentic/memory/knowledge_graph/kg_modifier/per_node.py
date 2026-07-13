@@ -1,4 +1,4 @@
-"""wrappers around update_node_property."""
+"""update_node_property."""
 
 from __future__ import annotations
 
@@ -7,7 +7,7 @@ from typing import Any
 from agentic.memory.knowledge_graph.kg_modifier.update_node import update_node_property
 
 
-# `skip kwargs`
+# skip
 
 _NOT_GIVEN: Any = object()
 
@@ -16,7 +16,7 @@ def _collect(**kwargs: Any) -> dict[str, Any]:
     return {k: v for k, v in kwargs.items() if v is not _NOT_GIVEN}
 
 
-# wrappers
+# wraps
 
 async def update_emotion(
     emotion_id: str,
@@ -121,7 +121,7 @@ async def update_experience(
     sensitivity_level: Any = _NOT_GIVEN,
     embedding_synced:  Any = _NOT_GIVEN,
 ) -> int:
-    """patch node:Experience"""
+    """patch node"""
     return await update_node_property(
         "Experience",
         experience_id,
@@ -144,7 +144,7 @@ async def update_subject(
     sentiment:         Any = _NOT_GIVEN,
     sensitivity_level: Any = _NOT_GIVEN,
 ) -> int:
-    """patch node:Subject"""
+    """patch node"""
     return await update_node_property(
         "Subject",
         subject_id,
@@ -166,7 +166,7 @@ async def update_person(
     sentiment:         Any = _NOT_GIVEN,
     sensitivity_level: Any = _NOT_GIVEN,
 ) -> int:
-    """`update_subject`"""
+    """`update`"""
     return await update_subject(
         person_id,
         name=name,
@@ -203,7 +203,7 @@ async def mark_embedding_synced(
     *,
     synced: bool = True,
 ) -> int:
-    """# sync embeds"""
+    """skip embeds"""
     return await update_node_property(
         label, node_id, {"embedding_synced": bool(synced)},
     )

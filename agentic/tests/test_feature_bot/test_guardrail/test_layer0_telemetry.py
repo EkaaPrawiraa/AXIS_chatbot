@@ -1,4 +1,4 @@
-"""test logger test dataclasses"""
+"""log test data"""
 
 from __future__ import annotations
 

@@ -16,7 +16,7 @@ type UserRepository interface {
 	UpdateProfile(ctx context.Context, user entity.User) (entity.User, error)
 	SoftDeleteAccount(ctx context.Context, userID string) error
 
-	// refresh & blacklist
+	// refresh&blacklist
 	CreateRefreshToken(ctx context.Context, token entity.RefreshToken) error
 	FindRefreshToken(ctx context.Context, tokenHash string) (*entity.RefreshToken, error)
 	RevokeRefreshToken(ctx context.Context, tokenHash string) error

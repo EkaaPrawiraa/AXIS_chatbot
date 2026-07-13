@@ -1,4 +1,4 @@
-"""layer 3 post-gen validate"""
+"""validate"""
 
 from __future__ import annotations
 
@@ -59,7 +59,7 @@ def load_postgen_rules(*, force_reload: bool = False) -> PostGenRules:
     bundle = load_prompt_bundle("guardrails/post_generation")
     instruction_text = bundle.system
 
-    # parse yaml
+    # parse
     parsed = _parse_yaml_tail(instruction_text)
 
     diagnostic = tuple(
@@ -82,14 +82,14 @@ def load_postgen_rules(*, force_reload: bool = False) -> PostGenRules:
 
 
 def _parse_yaml_tail(text: str) -> dict[str, Any]:
-    """parse whole text as yaml, fail -> extract first valid segment."""
+    """parse as yaml, fail -> extract first valid."""
     try:
         data = yaml.safe_load(text)
         if isinstance(data, dict):
             return data
     except yaml.YAMLError:
         pass
-    # DIAGNOSTIC_PATTERNS:
+    # diagnostic_patterns
     marker = "DIAGNOSTIC_PATTERNS:"
     idx = text.find(marker)
     if idx == -1:
@@ -127,7 +127,7 @@ def find_violations(
 
 
 
-# re-use fallback msg classes
+# re-use fallback msg
 try:  # pragma: no cover - import behavior depends on environment
     from langchain_core.messages import (  # type: ignore[import-not-found]
         HumanMessage as _HumanMessage,
@@ -152,7 +152,7 @@ async def _request_rewrite(
     llm: Any,
     language_hint: str = "",
 ) -> str:
-    """call llm w/ orig draft"""
+    """llm call"""
     prefix = (
         f"Language preservation (mandatory): {language_hint}\n\n"
         if language_hint
@@ -223,7 +223,7 @@ async def output_guardrail_node(
     rewrite_llm: Any | None = None,
     rules: PostGenRules | None = None,
 ) -> ConversationState:
-    """validate draft, skip if final resp exists"""
+    """skip if final resp exists"""
     audit = audit or NullGuardrailLogger()
 
     if state.get("crisis_escalated"):  # type: ignore[typeddict-unknown-key]
@@ -251,7 +251,7 @@ async def output_guardrail_node(
 
     violations = find_violations(draft, rules=rules)
     if not violations:
-        # audit pass rate in db.
+        # audit pass rate.
         elapsed_ms = int((time.perf_counter() - started) * 1000)
         state["final_response"] = draft
         await audit.log(

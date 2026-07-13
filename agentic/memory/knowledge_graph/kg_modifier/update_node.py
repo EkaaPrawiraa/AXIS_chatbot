@@ -1,4 +1,4 @@
-"""buat patch node"""
+"""buat patch"""
 
 from __future__ import annotations
 
@@ -19,7 +19,7 @@ async def update_node_property(
     node_id: str,
     updates: dict[str, Any],
 ) -> int:
-    """surgically update node props"""
+    """surg. update node props"""
     label = validate_label(label)
     if not node_id:
         raise ValueError("node_id is required")
@@ -27,7 +27,7 @@ async def update_node_property(
 
     client = get_client()
 
-    # `skip param`
+    # skip param
     set_clauses = ", ".join(
         f"n.{prop} = $updates.{prop}" for prop in updates
     )

@@ -1,4 +1,4 @@
-"""buat node writer"""
+"""buat writer"""
 
 from __future__ import annotations
 
@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 
 async def write_behavior(inp: BehaviorInput) -> str:
-    """merge:increment freq."""
+    """merge:freq."""
     _require(inp.category,    "category")
     _require(inp.description, "description")
     _require(inp.user_id,     "user_id")

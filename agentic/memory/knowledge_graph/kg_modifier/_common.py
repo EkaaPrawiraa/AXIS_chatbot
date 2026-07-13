@@ -16,7 +16,7 @@ DERIVED_LABELS: frozenset[str] = frozenset({
 })
 
 
-# ``set to true
+# `enable`
 UPDATABLE_PROPERTIES: dict[str, frozenset[str]] = {
     "Experience": frozenset({
         "description", "valence", "significance", "sensitivity_level",
@@ -65,7 +65,7 @@ def validate_label(label: str) -> str:
 
 
 def validate_updates(label: str, updates: dict) -> None:
-    """raise empty updates"""
+    """empty updates"""
     if not updates:
         raise ValueError("updates dict cannot be empty")
     allowed = UPDATABLE_PROPERTIES[label]

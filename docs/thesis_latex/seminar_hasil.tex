@@ -1,0 +1,82 @@
+% =====================================================================
+% seminar_hasil.tex
+% Draft Seminar Hasil Tugas Akhir
+% Memuat frontmatter, BAB I--BAB IV, daftar pustaka, dan lampiran.
+% main.tex tetap digunakan untuk laporan lengkap (BAB I--BAB V + lampiran).
+% =====================================================================
+
+\documentclass[12pt,a4paper,oneside,openany]{report}
+
+\input{preamble}
+\newcommand{\seminarhasilmode}{}
+
+\begin{document}
+
+\onehalfspacing
+
+% ---------------------------------------------------------------------
+% FRONTMATTER
+% ---------------------------------------------------------------------
+\pagenumbering{roman}
+\setcounter{page}{1}
+
+\input{frontmatter/cover}
+\cleardoublepage
+
+\input{frontmatter/approval}
+\cleardoublepage
+
+% \input{frontmatter/declaration}
+% \cleardoublepage
+
+% \input{frontmatter/abstract}
+% \cleardoublepage
+
+% \input{frontmatter/abstract_en}
+% \cleardoublepage
+
+% \input{frontmatter/preface}
+% \cleardoublepage
+
+\tableofcontents
+\cleardoublepage
+
+% \addcontentsline eksplisit karena \newlistof tidak auto-add ke TOC dengan [titles] option
+\phantomsection
+\addcontentsline{toc}{chapter}{DAFTAR LAMPIRAN}
+\listoflampiran
+\cleardoublepage
+
+\listoffigures
+\cleardoublepage
+
+\listoftables
+\cleardoublepage
+
+% ---------------------------------------------------------------------
+% MAIN MATTER: SEMINAR HASIL (BAB I--IV)
+% ---------------------------------------------------------------------
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+\addtocontents{toc}{\protect\renewcommand{\protect\cftchappresnum}{BAB }}
+
+\input{chapters/bab1}
+\input{chapters/bab2}
+\input{chapters/bab3}
+\input{chapters/bab4}
+
+\addtocontents{toc}{\protect\renewcommand{\protect\cftchappresnum}{}}
+
+% ---------------------------------------------------------------------
+% BACKMATTER
+% ---------------------------------------------------------------------
+\renewcommand{\bibname}{DAFTAR PUSTAKA}
+\bibliography{bibliography/references}
+
+% ---------------------------------------------------------------------
+% LAMPIRAN
+% ---------------------------------------------------------------------
+\input{chapters/lampiran}
+
+\end{document}

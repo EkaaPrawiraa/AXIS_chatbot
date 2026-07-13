@@ -16,7 +16,7 @@ async def invalidate_message(
     *,
     reason: str = "user_deleted_message",
 ) -> dict[str, Any]:
-    """Soft-delete every KG fact with `message_id`.     Returns report dict with node counts."""
+    """`delete KG fact`  `report dict`"""
     if not message_id:
         raise ValueError("message_id is required")
 
@@ -48,7 +48,7 @@ async def invalidate_message(
     )
     edges_touched: int = phase1[0]["edges_touched"] if phase1 else 0
 
-    # deactivate orphaned nodes, scope to phase 1 nodes, return primary label.
+    # deactivate, scope, phase 1, return primary.
     deactivated_rows: list[dict[str, Any]] = []
     if touched_node_ids:
         deactivated_rows = await client.execute_write(

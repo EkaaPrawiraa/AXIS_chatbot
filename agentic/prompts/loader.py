@@ -1,4 +1,4 @@
-"""resolves prompt"""
+"""skip klo error"""
 
 from __future__ import annotations
 
@@ -20,17 +20,17 @@ ALLOWED_LAYERS: frozenset[str] = frozenset(
 
 
 class PromptNotFoundError(FileNotFoundError):
-    """file not found"""
+    """nlf dgn dlm"""
 
 
 class PromptSchemaError(ValueError):
-    """yaml error"""
+    """yaml ngeluar"""
 
 
 
 @dataclass(frozen=True)
 class PromptBundle:
-    """buat ngambil metadata"""
+    """ambil metadata"""
 
     ref: str
     name: str
@@ -49,18 +49,18 @@ _CACHE: dict[str, PromptBundle] = {}
 
 
 def clear_cache() -> None:
-    """drop cache, use dev hot reload."""
+    """drop cache, use hot reload."""
     _CACHE.clear()
 
 
 
 def load_prompt(ref: str) -> str:
-    """return prompt"""
+    """ngk kalo ngotot"""
     return load_prompt_bundle(ref).system
 
 
 def load_prompt_bundle(ref: str) -> PromptBundle:
-    """retire full bundle"""
+    """retire"""
     normalized = _normalize_ref(ref)
     cached = _CACHE.get(normalized)
     if cached is not None:
@@ -73,11 +73,11 @@ def load_prompt_bundle(ref: str) -> PromptBundle:
 
 
 def list_prompts() -> tuple[str, ...]:
-    """`get all prompts`"""
+    """`get all`"""
     refs: list[str] = []
     for path in sorted(PROMPTS_ROOT.rglob("*.yaml")):
         if path.parent == PROMPTS_ROOT:
-            # expose stem only
+            # expose stem
             refs.append(path.stem)
             continue
         rel = path.relative_to(PROMPTS_ROOT).with_suffix("")
@@ -96,14 +96,14 @@ def _normalize_ref(ref: str) -> str:
 
 
 def _resolve_path(ref: str) -> Path:
-    """look up yaml path"""
+    """find yaml path"""
     candidates = [
         PROMPTS_ROOT / f"{ref}.yaml",
         PROMPTS_ROOT / f"{ref}.yml",
     ]
     for cand in candidates:
         if cand.is_file():
-            # `skip dir traversal`
+            # skip dir
             if PROMPTS_ROOT not in cand.resolve().parents:
                 raise PromptNotFoundError(
                     f"resolved path escapes prompts root: {cand}"

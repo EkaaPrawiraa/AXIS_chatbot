@@ -1,4 +1,4 @@
-"""test routing"""
+"""routing"""
 
 from __future__ import annotations
 
@@ -15,9 +15,14 @@ from agentic.agent.state import empty_phq9_state
 
 
 class TestRouteAfterDialogue:
+    def test_offer_pending_routes_to_response_generator(self) -> None:
+        phq9 = empty_phq9_state()
+        phq9["phase"] = "offer_pending"
+        assert route_after_dialogue({"phq9_state": phq9}) == "response_generator"
+
     @pytest.mark.parametrize(
         "phase",
-        ["offer_pending", "offered", "in_progress", "awaiting_clar"],
+        ["offered", "in_progress", "awaiting_clar"],
     )
     def test_active_phases_route_to_phq9(self, phase: str) -> None:
         phq9 = empty_phq9_state()
@@ -37,7 +42,7 @@ class TestRouteAfterDialogue:
         assert route_after_dialogue({}) == "response_generator"
 
 
-# guard rail after
+# buat ngelip
 
 
 class TestRouteAfterGuardrail:

@@ -1,4 +1,4 @@
-"""fakes, PHQ-9, suite, Postgres, run, without, suite, Postgres, without, Postgres, without, Postgres, without, Postgres, without, Postgres, without, Postgres, without, Postgres, without, Postgres, without, Post"""
+"""fake, PHQ-9, suite, Postgres, run, without, suite, Postgres, without, Postgres, without, Postgres, without, Postgres, without, Postgres, without, Postgres, without, Postgres, without, Postgres, without, Postgres"""
 
 from __future__ import annotations
 
@@ -116,7 +116,7 @@ class _FakeAIMessage:
 
 
 class FakeLLM:
-    """script_mode responder_mode"""
+    """script responder"""
 
     def __init__(
         self,
@@ -135,7 +135,7 @@ class FakeLLM:
             for m in messages:
                 cls_name = m.__class__.__name__
                 msg_type = getattr(m, "type", "")
-                # stand-in by both class name and type.
+                # stand-in
                 if "Human" in cls_name or msg_type == "human":
                     user_text = m.content
             return _FakeAIMessage(self.responder(user_text))
@@ -152,13 +152,13 @@ def fake_repo() -> FakeAssessmentRepository:
 
 @pytest.fixture
 def scorer_llm_factory():
-    """fake llm json"""
+    """fake llm-json"""
 
     def builder() -> FakeLLM:
         import re as _re
 
         def respond(user_prompt: str) -> str:
-            # match only user answer.
+            # match user only
             m = _re.search(
                 r'User answer:\s*"""\s*(.*?)\s*"""',
                 user_prompt,

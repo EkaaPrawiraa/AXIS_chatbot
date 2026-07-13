@@ -1,4 +1,4 @@
-"""UPSERT into pgvector mirrors."""
+"""`mirrors`."""
 
 from __future__ import annotations
 
@@ -27,7 +27,7 @@ async def _upsert(
     embedding: list[float],
     importance: float,
 ) -> bool:
-    """update_mirror"""
+    """update"""
     require_str(user_id,       "user_id")
     require_str(neo4j_node_id, "neo4j_node_id")
     require_str(content,       "content")

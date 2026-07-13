@@ -1,4 +1,4 @@
-"""judge routing"""
+"""routing"""
 
 from __future__ import annotations
 
@@ -17,7 +17,7 @@ from agentic.gateway.monitoring import observe_langchain_usage
 logger = logging.getLogger(__name__)
 
 
-# langchain, fallback
+# skip
 
 
 try:  # pragma: no cover
@@ -41,7 +41,7 @@ except Exception:  # pragma: no cover
 
 @dataclass(frozen=True)
 class JudgeOutcome:
-    """parsed, distortion, confidence"""
+    """distortion, confidence"""
 
     technique: CBTTechnique
     reason: str
@@ -68,6 +68,8 @@ _USER_TEMPLATE = (
     "Recent conversation turns:\n{recent_turns}\n\n"
     "Opt-out cooldown info: declined_last={declined_last}, "
     "last_offered={last_offered}\n\n"
+    "Consecutive validate/none turns since last real technique: "
+    "{turns_since_technique}\n\n"
     "Respond with the JSON object only."
 )
 
@@ -84,7 +86,7 @@ def _format_last_directive(cbt_state: dict[str, Any]) -> str:
 
 
 def _format_linguistic_signals(signals: dict[str, Any] | None) -> str:
-    """render as str"""
+    """str"""
     if not signals:
         return "(unavailable)"
     parts: list[str] = []
@@ -116,7 +118,7 @@ def _format_recent_turns(
         text = (entry.get("content") or entry.get("text") or "").strip()
         if not text:
             continue
-        # trim lines, keep judge input short.
+        # trim lines, judge short.
         snippet = text[:240]
         lines.append(f"[{role}] {snippet}")
     return "\n".join(lines) if lines else "(none)"
@@ -128,7 +130,7 @@ async def judge_technique(
     *,
     llm: Any | None = None,
 ) -> JudgeOutcome | None:
-    """run judge call"""
+    """run judge"""
     client = llm if llm is not None else _build_default_client()
     if client is None:
         return None
@@ -151,6 +153,7 @@ async def judge_technique(
         recent_turns=_format_recent_turns(state.get("conversation_history")),
         declined_last=bool(cbt_state.get("declined_last_offer")),
         last_offered=cbt_state.get("last_offered") or "none",
+        turns_since_technique=int(cbt_state.get("turns_since_technique", 0)),
     )
 
     try:

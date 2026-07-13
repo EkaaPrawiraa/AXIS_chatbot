@@ -1,4 +1,4 @@
-"""bench manual OpenAI models"""
+"""bench manual"""
 
 from __future__ import annotations
 

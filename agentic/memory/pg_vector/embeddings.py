@@ -1,4 +1,4 @@
-"""wrappin' embdngs"""
+"""wrap"""
 
 from __future__ import annotations
 
@@ -33,7 +33,7 @@ EMBED_MODEL: str = os.getenv(
 )
 
 
-# emb3-small
+# emb3-s
 
 _openai_client = None
 _gemini_client = None
@@ -41,7 +41,7 @@ _online_disabled: bool = False
 
 
 def _try_get_openai_client():
-    """lazy-load OpenAI client, returns None if unavailable."""
+    """lazy-load None if unavailable."""
     global _openai_client, _online_disabled
     if _online_disabled:
         return None
@@ -64,7 +64,7 @@ def _try_get_openai_client():
 
 
 def _try_get_gemini_client():
-    """lazy-load None if unavailable."""
+    """load None lazy"""
     global _gemini_client, _online_disabled
     if _online_disabled:
         return None
@@ -153,7 +153,7 @@ def _embed_ollama(text: str) -> list[float] | None:
             if values:
                 return _fit_dimension(values, source="ollama")
         except urllib.error.HTTPError as exc:
-            # fallback to stub
+            # fallback
             if path == "/api/embed" and exc.code == 404:
                 continue
             logger.warning("Ollama embed call failed (%s). Falling back to stub.", exc)
@@ -247,7 +247,7 @@ def _embed_offline(text: str) -> list[float]:
 
 
 async def embed_text(text: str) -> list[float]:
-    """return [emb] * EMBED_DIM"""
+    """[emb] * EMBED_DIM"""
     if not text or not text.strip():
         return [0.0] * EMBED_DIM
 

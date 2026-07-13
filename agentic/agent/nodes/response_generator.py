@@ -1,4 +1,4 @@
-"""gen resp"""
+"""res ngirim"""
 
 from __future__ import annotations
 
@@ -42,6 +42,15 @@ _NON_HUMAN_DISPLAY_NAME_PARTS = {
     "local",
     "example",
     "admin",
+    "eval",
+    "evaluasi",
+    "evaluation",
+    "demo",
+    "dummy",
+    "sample",
+    "placeholder",
+    "staging",
+    "sandbox",
 }
 
 
@@ -60,7 +69,7 @@ def _looks_like_human_display_name(value: str) -> bool:
 
 
 def _polish_companion_style(text: str) -> str:
-    """cleanup, rules, prompt, phrases, deterministic, models."""
+    """cleanup, rules, prompt, phrases, models."""
     cleaned = (text or "").strip()
     cleaned = re.sub(
         r"^\s*wah,\s*",
@@ -222,6 +231,78 @@ def _profile_context_block(state: ConversationState) -> str:
 _SECTION_SEP = "\n\n" + "=" * 50 + "\n\n"
 
 
+def _recent_name_usage_note(state: ConversationState) -> str:
+    """deterministic guard: LLM self-counting name usage across a long system
+    prompt is unreliable in practice (verified via real scripted-persona runs
+    on 2026-07-12 -- name still appeared in 4 consecutive turns despite an
+    explicit prompt-only cap), so compute it in code instead"""
+    profile = state.get("profile_context") or {}
+    display_name = str(profile.get("display_name") or "").strip() if isinstance(profile, dict) else ""
+    if not display_name or not _looks_like_human_display_name(display_name):
+        return ""
+
+    history = state.get("messages") or []
+    recent_assistant_turns = [
+        (m.get("content") or "") for m in history[-6:] if m.get("role") == "assistant"
+    ]
+    last_two = recent_assistant_turns[-2:]
+    used_last_turn = bool(last_two) and display_name.lower() in last_two[-1].lower()
+    used_in_last_two = any(display_name.lower() in t.lower() for t in last_two)
+
+    if used_last_turn:
+        return (
+            "STYLE GUARD: You used the user's name in your immediately "
+            "preceding turn. Do NOT use their name anywhere in this "
+            "response, no exceptions."
+        )
+    if used_in_last_two:
+        return (
+            "STYLE GUARD: You used the user's name recently. Only use it "
+            "again this turn if the moment genuinely calls for it (a "
+            "serious disclosure, checking in after something hard) -- "
+            "default to not using it."
+        )
+    return ""
+
+
+_QUESTION_ENDING_STREAK_THRESHOLD: int = 3
+
+
+def _question_ending_note(state: ConversationState) -> str:
+    """Same deterministic-guard approach as _recent_name_usage_note above,
+    applied to a second pattern found unreliable when left to prompt-only
+    self-counting: verified via real 2-session/20-turn runs on 2026-07-13,
+    19-18 of 20 turns still ended in '?' despite an explicit prompt cap on
+    consecutive question-endings. Computing the actual streak from real
+    history and stating it as a concrete fact ("your last N responses did
+    X") is the part a model can reliably act on; asking it to track a
+    running count across a long system prompt is not."""
+    history = state.get("messages") or []
+    recent_assistant_turns = [
+        (m.get("content") or "").strip()
+        for m in history[-(_QUESTION_ENDING_STREAK_THRESHOLD * 2):]
+        if m.get("role") == "assistant"
+    ]
+    streak = recent_assistant_turns[-_QUESTION_ENDING_STREAK_THRESHOLD:]
+    if len(streak) < _QUESTION_ENDING_STREAK_THRESHOLD:
+        return ""
+    if all(t.endswith("?") for t in streak if t):
+        return (
+            f"STYLE GUARD: Your last {_QUESTION_ENDING_STREAK_THRESHOLD} "
+            "responses in a row all ended with a question. Do NOT end "
+            "this response with a question. This does NOT mean go flat: a "
+            "bare compliment or acknowledgement with nothing else ('Bagus "
+            "banget itu.', 'Progres yang penting.') reads as closed-off, "
+            "not warmer. Close instead with a genuine interpretive "
+            "observation -- name a feeling or a pattern the user hasn't "
+            "said outright but that this moment implies -- or an inviting "
+            "statement that leaves room to continue without literally "
+            "asking. The goal is to keep exploring the person, just "
+            "without the punctuation mark."
+        )
+    return ""
+
+
 def _build_messages(state: ConversationState) -> list[Any]:
     parts: list[str] = []
 
@@ -243,7 +324,7 @@ def _build_messages(state: ConversationState) -> list[Any]:
             "reply, after one short acknowledgement):\n\n" + bot_prompt
         )
 
-    # mem context dulu, offer overlay, PHQ di belakang
+    # overlay di belakang
     kg_context = (state.get("kg_context") or "").strip()
     if kg_context and not bot_prompt:
         parts.append(kg_context)
@@ -255,6 +336,14 @@ def _build_messages(state: ConversationState) -> list[Any]:
     profile_context = _profile_context_block(state)
     if profile_context:
         parts.append(profile_context)
+
+    name_guard = _recent_name_usage_note(state)
+    if name_guard:
+        parts.append(name_guard)
+
+    question_guard = _question_ending_note(state)
+    if question_guard:
+        parts.append(question_guard)
 
     phq9_state = state.get("phq9_state") or {}
     if (
@@ -293,7 +382,7 @@ def _build_messages(state: ConversationState) -> list[Any]:
         except Exception as exc:  # pragma: no cover
             logger.warning("confession_mode overlay load failed: %s", exc)
 
-    # mirror lang
+    # buat nyimpen
     signals = state.get("linguistic_signals") or {}
     detected = (
         signals.get("language")
@@ -370,7 +459,7 @@ _URL_RE = re.compile(r"https?://\S+")
 
 
 async def _maybe_fetch_gemini_url_context(message: str) -> str | None:
-    """ngambil isi url"""
+    """ambil url"""
     if llm_provider() != "gemini":
         return None
     if not message or not _URL_RE.search(message):
@@ -413,6 +502,65 @@ def _response_generator_spec(state: ConversationState):
     return spec
 
 
+def _gemini_thinking_request_metadata(client: Any) -> dict[str, Any]:
+    budget = getattr(client, "thinking_budget", None)
+    include = getattr(client, "include_thoughts", None)
+    if budget is None and include is None:
+        return {}
+    return {
+        "thinking_budget": budget,
+        "include_thoughts": bool(include) if include is not None else None,
+    }
+
+
+def _safe_usage_metadata(response: Any) -> dict[str, Any]:
+    usage_metadata = getattr(response, "usage_metadata", None) or {}
+    response_metadata = getattr(response, "response_metadata", None) or {}
+    token_usage = (
+        response_metadata.get("token_usage")
+        or response_metadata.get("usage_metadata")
+        or response_metadata.get("usage")
+        or {}
+    )
+    usage: dict[str, Any] = {}
+    for source in (usage_metadata, token_usage):
+        if not isinstance(source, dict):
+            continue
+        for key, value in source.items():
+            lower = str(key).lower()
+            if "token" in lower or "thought" in lower or "reason" in lower:
+                usage[str(key)] = value
+    return usage
+
+
+def _visible_ai_text(response: Any) -> str:
+    """Extract only user-visible text from provider responses.
+
+    Gemini can return content blocks containing internal ``thinking`` when
+    include_thoughts is enabled during local audits. Those blocks must never be
+    copied into the chat reply.
+    """
+
+    content = getattr(response, "content", "")
+    if isinstance(content, str):
+        return content
+    if isinstance(content, list):
+        chunks: list[str] = []
+        for item in content:
+            if isinstance(item, str):
+                chunks.append(item)
+                continue
+            if not isinstance(item, dict):
+                continue
+            if item.get("thought") or item.get("thinking"):
+                continue
+            text = item.get("text") or item.get("content")
+            if isinstance(text, str):
+                chunks.append(text)
+        return "\n".join(chunks)
+    return str(content or "")
+
+
 async def response_generator_node(
     state: ConversationState,
     *,
@@ -440,6 +588,7 @@ async def response_generator_node(
         state["url_context"] = url_context
 
     base_client = llm if llm is not None else build_llm(_response_generator_spec(state))
+    thinking_request = _gemini_thinking_request_metadata(base_client)
     bound_tools = _resolve_tools(tools)
     client = _maybe_bind_tools(base_client, bound_tools)
     tools_by_name = {t.name: t for t in bound_tools if hasattr(t, "name")} if bound_tools else {}
@@ -462,6 +611,7 @@ async def response_generator_node(
             tools_by_name=tools_by_name,
             state=state,
             audit=audit,
+            thinking_request=thinking_request,
         )
 
     elapsed_ms = int((time.perf_counter() - started) * 1000)
@@ -477,7 +627,7 @@ async def response_generator_node(
             if mode == "v3":
                 voice["speech_response_tags"] = adapted
                 voice["speech_response"] = _strip_v3_tags(adapted)
-                # skip v3 tags
+                # skip v3
                 draft = voice["speech_response"]
             else:
                 voice["speech_response"] = adapted
@@ -522,6 +672,12 @@ async def response_generator_node(
                 "history_pairs_used": len(_format_history(state)) // 2,
                 "tool_iterations": tool_iterations,
                 "tools_bound": list(tools_by_name.keys()),
+                "llm_provider": llm_provider(),
+                "llm_model": resolve_llm_model(
+                    _response_generator_spec(state).model,
+                    spec_name=RESPONSE_GENERATOR.name,
+                ),
+                "thinking_request": thinking_request,
             },
         )
     )
@@ -571,6 +727,7 @@ async def _run_tool_loop(
     tools_by_name: dict,
     state: ConversationState,
     audit: GuardrailLogger,
+    thinking_request: dict[str, Any] | None = None,
 ) -> tuple[str, int]:
     iterations = 0
     final_text = ""
@@ -579,13 +736,20 @@ async def _run_tool_loop(
         try:
             ai = await client.ainvoke(messages)
             observe_langchain_usage(ai, fallback_model=getattr(client, "model_name", None))
+            thinking = thinking_request or _gemini_thinking_request_metadata(client)
+            if thinking and os.getenv("AXIS_LOG_LLM_THINKING", "0").strip() in {"1", "true", "yes", "on"}:
+                logger.info(
+                    "response_generator Gemini thinking requested=%s usage=%s",
+                    thinking,
+                    _safe_usage_metadata(ai),
+                )
         except Exception as exc:
             logger.warning("response generator LLM failed: %s", exc)
             return _safe_fallback_reply(state), iterations
 
         tool_calls = _extract_tool_calls(ai)
         if not tool_calls or not tools_by_name:
-            text = ai.content if isinstance(ai.content, str) else str(ai.content)
+            text = _visible_ai_text(ai)
             final_text = (text or "").strip()
             if not final_text:
                 final_text = _safe_fallback_reply(state)
@@ -593,7 +757,7 @@ async def _run_tool_loop(
 
         if iterations >= MAX_TOOL_ITERATIONS:
             logger.warning("tool loop hit cap at %d iterations", iterations)
-            text = ai.content if isinstance(ai.content, str) else str(ai.content)
+            text = _visible_ai_text(ai)
             final_text = (text or "").strip() or _safe_fallback_reply(state)
             return final_text, iterations
 

@@ -1,4 +1,4 @@
-"""eval script"""
+"""skip eval script"""
 
 from __future__ import annotations
 
@@ -8,7 +8,7 @@ import os
 import sys
 from datetime import datetime
 
-# skip klo error
+# skip error
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 from dotenv import load_dotenv
 load_dotenv(os.path.join(os.path.dirname(__file__), "..", ".env"))

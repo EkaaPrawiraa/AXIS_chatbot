@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 
 
 async def write_trigger(inp: TriggerInput) -> str:
-    """# on_match: #   * freq += 1 #   * last_seen = now #   * aliases += incoming_desc  # on_create: #   * aliases = inp.aliases #   * embedding_synced = False #   * pgvector_synced"""
+    """freq += 1 last_seen = now aliases += incoming_desc"""
     _require(inp.category,    "category")
     _require(inp.description, "description")
     _require(inp.user_id,     "user_id")
@@ -29,7 +29,7 @@ async def write_trigger(inp: TriggerInput) -> str:
     client = get_client()
     significance = inp.significance if inp.significance is not None else 0.5
 
-    # match fast
+    # match fast.
     existing = await client.execute_read_single(
         """
         MATCH (u:User {id: $user_id})-[:HAS_TRIGGER]->(t:Trigger)
@@ -47,7 +47,7 @@ async def write_trigger(inp: TriggerInput) -> str:
         },
     )
 
-    # skip fast path
+    # skip fast
     if existing is None and inp.embedding is not None:
         similar = await find_similar_node(
             label="Trigger",
@@ -66,7 +66,7 @@ async def write_trigger(inp: TriggerInput) -> str:
             )
 
     if existing:
-        # build aliases list: new phrasing + caller-supplied aliases. drop canonical desc; Cypher dedup ex. aliases.
+        # build list: new phrasing + caller-supplied aliases. drop canonical desc; Cypher dedup ex. aliases.
         canonical = existing["canonical"]
         candidate_aliases: list[str] = []
         if inp.description and inp.description != canonical:
@@ -117,7 +117,7 @@ async def write_trigger(inp: TriggerInput) -> str:
         )
         return existing["id"]
 
-    # buat nyimpen config
+    # buat nyimpan config
     node_id = _new_id()
     await client.execute_write(
         """

@@ -1,4 +1,4 @@
-"""validate 2nd layer input"""
+"""2nd layer inp"""
 
 from __future__ import annotations
 
@@ -43,21 +43,21 @@ class InputDecision:
 
 @dataclass(frozen=True)
 class InputRules:
-    # pre-compile keywords
+    # compile now
     crisis_keywords_id: tuple[re.Pattern[str], ...]
     crisis_keywords_en: tuple[re.Pattern[str], ...]
     jailbreak_patterns: tuple[re.Pattern[str], ...]
     off_scope_patterns: tuple[re.Pattern[str], ...]
 
 
-# char class
+# char
 _LETTER = r"[A-Za-zÀ-ɏḀ-ỿ]"
 _BOUND_PRE = rf"(?<!{_LETTER})"
 _BOUND_POST = rf"(?!{_LETTER})"
 
 
 def _compile_keyword(kw: str) -> re.Pattern[str]:
-    """compile crisis with unicode boundaries"""
+    """compile crisis"""
     return re.compile(
         _BOUND_PRE + re.escape(kw.lower()) + _BOUND_POST,
         re.IGNORECASE,
@@ -68,13 +68,13 @@ _RULES_CACHE: InputRules | None = None
 
 
 def load_input_rules(*, force_reload: bool = False) -> InputRules:
-    """`yaml parse`"""
+    """parse yaml"""
     global _RULES_CACHE
     if _RULES_CACHE is not None and not force_reload:
         return _RULES_CACHE
 
     bundle = load_prompt_bundle("guardrails/input_validation")
-    # parse yaml, extract lists, keep yaml file.
+    # parse, extract, keep.
     try:
         parsed = yaml.safe_load(bundle.system) or {}
     except yaml.YAMLError as exc:
@@ -113,7 +113,7 @@ def load_input_rules(*, force_reload: bool = False) -> InputRules:
 
 
 def evaluate_input(message: str, rules: InputRules | None = None) -> InputDecision:
-    """evaluate, crisis, jailbreak, allow"""
+    """eval, crs, jail, allow"""
     rules = rules or load_input_rules()
     if not message:
         return InputDecision(decision="allow", reason="empty_message")
@@ -144,7 +144,7 @@ def evaluate_input(message: str, rules: InputRules | None = None) -> InputDecisi
                 matched=m.group(0)[:120],
             )
 
-    # distress signal
+    # distress:signal
     for pat in rules.off_scope_patterns:
         m = pat.search(message)
         if m:
@@ -201,7 +201,7 @@ async def input_guardrail_node(
 
     state["input_guardrail"] = verdict.to_dict()
 
-    # response now graph LLM-bearing downstream crisis_escalated output_guardrail unchanged
+    # buat grafik LLM
     if verdict.decision == "block" and verdict.reason == "off_scope":
         state["final_response"] = _off_scope_refusal_text(state)
         state["crisis_escalated"] = True

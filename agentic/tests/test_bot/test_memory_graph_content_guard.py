@@ -1,4 +1,4 @@
-"""sanitize_updates, allowlist, enum, crisis, history, guardrail"""
+"""sanitize, allowlist, enum, crisis, history, guardrail"""
 from __future__ import annotations
 
 import pytest
@@ -40,7 +40,7 @@ class TestLegitimateContentStillAllowed:
         assert updates["description"] == "Aku ngerasa capek banget minggu ini karena tugas kuliah numpuk."
 
     def test_crisis_related_content_is_not_blocked_here(self) -> None:
-        """buat nyimpen history krisis"""
+        """buat nyimpan history Krisis"""
         cfg = _cfg("experience")
         updates = _sanitize_updates(
             cfg, {"description": "Waktu itu aku sempat kepikiran ingin bunuh diri, tapi sekarang sudah lebih baik."},

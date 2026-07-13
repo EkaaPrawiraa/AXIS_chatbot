@@ -1,4 +1,4 @@
-"""test convo layer"""
+"""test convo"""
 
 from __future__ import annotations
 
@@ -61,7 +61,7 @@ class TestPromptBuilders:
         assert "4" in ack
 
 
-# free-scoring
+# free-scor
 
 
 class TestScoreTextResponse:

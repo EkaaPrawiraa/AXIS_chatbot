@@ -12,7 +12,7 @@ import (
 	"github.com/redis/go-redis/v9"
 )
 
-// rate limit config
+// buat nyimpen config
 type RateLimitConfig struct {
 	MaxTurnsPerHour        int
 	MaxMessagesPerDay      int
@@ -20,7 +20,7 @@ type RateLimitConfig struct {
 	MaxAuthAttemptsPerHour int
 }
 
-// DefaultRateLimitConfig returns limits from input_validation.yaml. MaxMessagesPerDay is a thesis-scope (not abuse prevention). LLM budget caps daily messages.
+// DefaultRateLimitConfig returns limits from input_validation.yaml. MaxMessagesPerDay is thesis-scope (not abuse prevention). LLM caps daily msgs.
 func DefaultRateLimitConfig() RateLimitConfig {
 	return RateLimitConfig{
 		MaxTurnsPerHour:        30,
@@ -30,14 +30,14 @@ func DefaultRateLimitConfig() RateLimitConfig {
 	}
 }
 
-// rate limit redis
+// limit redis
 type RateLimiter struct {
 	rdb    *redis.Client
 	cfg    RateLimitConfig
 	prefix string // key namespace prefix, default "rl"
 }
 
-// Redis rate limiter.
+// rate lim.
 func NewRateLimiter(rdb *redis.Client, cfg RateLimitConfig) *RateLimiter {
 	return &RateLimiter{
 		rdb:    rdb,
@@ -46,7 +46,7 @@ func NewRateLimiter(rdb *redis.Client, cfg RateLimitConfig) *RateLimiter {
 	}
 }
 
-// TurnLimit limits hourly & daily messages — both fail open on Redis errors.
+// turn limit, fail open, redis errors
 func (rl *RateLimiter) TurnLimit(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodPost {
@@ -98,7 +98,7 @@ func (rl *RateLimiter) TurnLimit(next http.Handler) http.Handler {
 	})
 }
 
-// limit new conv, fail on err.
+// skip on err
 func (rl *RateLimiter) SessionLimit(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodPost {
@@ -163,7 +163,7 @@ func (rl *RateLimiter) AuthLimit(next http.Handler) http.Handler {
 	})
 }
 
-// checkLimit increments Redis counter, returns quota. Uses EXPIRE to set TTL once.
+// checkLimit, ttl, EXPIRE.
 func (rl *RateLimiter) checkLimit(
 	ctx context.Context,
 	redisKey string,
@@ -186,13 +186,13 @@ func (rl *RateLimiter) checkLimit(
 	return true, limit - count
 }
 
-// clientKey uses token or IP.
+// use token or ip.
 func (rl *RateLimiter) clientKey(r *http.Request) string {
 	auth := r.Header.Get("Authorization")
 	if strings.HasPrefix(auth, "Bearer ") {
 		token := strings.TrimPrefix(auth, "Bearer ")
 		if len(token) > 8 {
-			// skp klo nggak pake id
+			// skip klo nggak pake id
 			if len(token) > 32 {
 				token = token[:32]
 			}
@@ -200,7 +200,7 @@ func (rl *RateLimiter) clientKey(r *http.Request) string {
 		}
 	}
 
-	// `fallback ip`
+	// `skip fallback`
 	ip, _, err := net.SplitHostPort(r.RemoteAddr)
 	if err != nil {
 		ip = r.RemoteAddr

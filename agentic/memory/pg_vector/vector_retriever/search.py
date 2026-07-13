@@ -1,4 +1,4 @@
-"""cosine_search_k_top"""
+"""cosine_search_k_top_k_top_k_top_k_top_k_top_k_top_k_top_k_top_k_top_k_top_k_top_k_top_k_top_k_top_k_top_k_top_k_top_k_top_k_top_k_top_k_top_k_top_k_top_k_top_k_top_k_top_k_top_k_top_k"""
 
 from __future__ import annotations
 
@@ -38,7 +38,7 @@ async def _search(
     importance_weighted_rank: bool = False,
     touch_last_accessed: bool = False,
 ) -> list[SearchHit]:
-    """return top_k_active_rows(label, user_id, min_sim_floor)"""
+    """ngk ngambil data"""
     require_str(user_id,  "user_id")
     require_vector(embedding, EMBED_DIM)
     if top_k <= 0:
@@ -112,7 +112,7 @@ async def search_memory(
     min_similarity: float | None = 0.5,
     min_importance: float | None = 0.5,
 ) -> list[SearchHit]:
-    """memrows koreksi"""
+    """skip koreksi"""
     return await _search(
         "Memory",
         user_id=user_id,
@@ -166,7 +166,7 @@ async def search_trigger(
     top_k: int = 1,
     min_similarity: float | None = None,
 ) -> list[SearchHit]:
-    """write, dedup, probe, trigger, slow, path, miss"""
+    """write, dedup, probe, trigger, slow, miss"""
     return await _search(
         "Trigger",
         user_id=user_id,

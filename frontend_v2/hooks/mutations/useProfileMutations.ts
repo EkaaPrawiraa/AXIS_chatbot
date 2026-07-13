@@ -13,14 +13,3 @@ export function useUpdateProfile() {
     },
   });
 }
-
-export function useGeneratePersonalityInsights() {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: (userId: ID) => profileAPI.generatePersonalityInsights(userId),
-    onSuccess: (data, userId) => {
-      queryClient.invalidateQueries({ queryKey: ['profile', userId, 'insights'] });
-    },
-  });
-}

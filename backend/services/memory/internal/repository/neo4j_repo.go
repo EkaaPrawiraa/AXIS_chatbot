@@ -1,4 +1,4 @@
-// mem service queries
+// skip queries
 package repository
 
 import (
@@ -9,7 +9,7 @@ import (
 	"github.com/neo4j/neo4j-go-driver/v5/neo4j"
 )
 
-// neo4j_repo_handles_graph_operations
+// neo4j_repo_handles_graph
 type Neo4jRepo struct {
 	driver neo4j.DriverWithContext
 }
@@ -19,9 +19,9 @@ func New(driver neo4j.DriverWithContext) *Neo4jRepo {
 	return &Neo4jRepo{driver: driver}
 }
 
-// user.
+// user
 
-// UpsertUser checks if user exists, then updates last_active.
+// UpsertUser checks user exists & updates last_active.
 func (r *Neo4jRepo) UpsertUser(ctx context.Context, userID, displayName string) error {
 	session := r.driver.NewSession(ctx, neo4j.SessionConfig{AccessMode: neo4j.AccessModeWrite})
 	defer session.Close(ctx)
@@ -49,7 +49,7 @@ func (r *Neo4jRepo) UpsertUser(ctx context.Context, userID, displayName string) 
 	return nil
 }
 
-// get user returns nil if not found.
+// check db conn first.
 func (r *Neo4jRepo) GetUser(ctx context.Context, userID string) (map[string]any, error) {
 	session := r.driver.NewSession(ctx, neo4j.SessionConfig{AccessMode: neo4j.AccessModeRead})
 	defer session.Close(ctx)
@@ -99,9 +99,9 @@ func (r *Neo4jRepo) MarkOnboardingComplete(ctx context.Context, userID string) e
 	return nil
 }
 
-// ses.
+// save config
 
-// open session, link to user, get session id.
+// open, link, get.
 func (r *Neo4jRepo) OpenSession(ctx context.Context, sessionID, userID, channel string) error {
 	session := r.driver.NewSession(ctx, neo4j.SessionConfig{AccessMode: neo4j.AccessModeWrite})
 	defer session.Close(ctx)
@@ -138,7 +138,7 @@ func (r *Neo4jRepo) OpenSession(ctx context.Context, sessionID, userID, channel 
 	return nil
 }
 
-// set ended_at, llm_summary, senti_avg
+// set_at, llm_summary, senti_avg
 func (r *Neo4jRepo) CloseSession(
 	ctx context.Context,
 	sessionID, summary string,
@@ -166,7 +166,7 @@ func (r *Neo4jRepo) CloseSession(
 	return nil
 }
 
-// set phq9_administered=true
+// set admin=true
 func (r *Neo4jRepo) MarkPHQ9Administered(ctx context.Context, sessionID string) error {
 	session := r.driver.NewSession(ctx, neo4j.SessionConfig{AccessMode: neo4j.AccessModeWrite})
 	defer session.Close(ctx)
@@ -184,9 +184,9 @@ func (r *Neo4jRepo) MarkPHQ9Administered(ctx context.Context, sessionID string) 
 	return nil
 }
 
-// assess.
+// assess check verify validate inspect review audit scrutinize inspect verify check validate review audit scrutinize inspect verify check validate review audit scrutinize inspect verify check
 
-// Assessment node, User, Session, PHQ-9, GAD-7, IPIP.
+// assess, user, session, phq9, gad7, iip.
 func (r *Neo4jRepo) WriteAssessment(ctx context.Context, a AssessmentInput) error {
 	session := r.driver.NewSession(ctx, neo4j.SessionConfig{AccessMode: neo4j.AccessModeWrite})
 	defer session.Close(ctx)
@@ -236,7 +236,7 @@ func (r *Neo4jRepo) WriteAssessment(ctx context.Context, a AssessmentInput) erro
 	return nil
 }
 
-// get latest ass fetch 14-day interval
+// get ass 14d
 func (r *Neo4jRepo) GetLatestAssessment(
 	ctx context.Context,
 	userID, instrument string,
@@ -278,7 +278,7 @@ func (r *Neo4jRepo) GetLatestAssessment(
 
 // upsert pure freq inc Go handlers
 
-// UpsertTopic Called from Python via gRPC.
+// UpsertTopic: Python -> gRPC
 func (r *Neo4jRepo) UpsertTopic(
 	ctx context.Context,
 	topicID, userID, name string,
@@ -316,7 +316,7 @@ func (r *Neo4jRepo) UpsertTopic(
 	return nil
 }
 
-// read signal
+// baca signal
 
 // get signals before session open
 func (r *Neo4jRepo) GetEscalationSignals(
@@ -330,7 +330,7 @@ func (r *Neo4jRepo) GetEscalationSignals(
 		res, err := tx.Run(ctx, `
 			MATCH (u:User {id: $user_id})
 
-			// emotenya di masa lalu 48 jam
+			// skip klo error
 			OPTIONAL MATCH (u)-[:FELT]->(emo:Emotion)
 			WHERE emo.active = true
 			  AND emo.timestamp > datetime() - duration('PT48H')
@@ -338,7 +338,7 @@ func (r *Neo4jRepo) GetEscalationSignals(
 			ORDER BY emo.timestamp DESC
 			LIMIT 1
 
-			// check phq9 score
+			// check phq9
 			OPTIONAL MATCH (u)-[:COMPLETED_ASSESSMENT]->(a:Assessment)
 			WHERE a.instrument = 'PHQ-9'
 			WITH u, emo, a
@@ -400,7 +400,7 @@ func (r *Neo4jRepo) GetEscalationSignals(
 
 // privacy.
 
-// archive mem nodes, set active=false, clear privacy_cleared_at.
+// archive, set active=false, clear privacy_cleared_at.
 func (r *Neo4jRepo) ArchiveUserMemory(ctx context.Context, userID string) error {
 	session := r.driver.NewSession(ctx, neo4j.SessionConfig{AccessMode: neo4j.AccessModeWrite})
 	defer session.Close(ctx)
@@ -421,7 +421,7 @@ func (r *Neo4jRepo) ArchiveUserMemory(ctx context.Context, userID string) error 
 
 // set inputs/outputs
 
-// assess groups fields
+// fields
 type AssessmentInput struct {
 	ID                string
 	UserID            string
@@ -434,7 +434,7 @@ type AssessmentInput struct {
 	ItemResponsesJSON string // raw JSON string of item_responses map
 }
 
-// EscalationSignals holds signals.
+// EscalationSignals.
 type EscalationSignals struct {
 	LatestValence    float64
 	LatestIntensity  float64
@@ -445,17 +445,17 @@ type EscalationSignals struct {
 	LastPHQ9At       *time.Time
 }
 
-// nggunin 48-hr rule
+// rule 48-hr
 func (s *EscalationSignals) ShouldSuppressReminder() bool {
 	return s.LatestValence < -0.6 && s.LatestIntensity > 0.7
 }
 
-// is crisis true q9 >= 1
+// true
 func (s *EscalationSignals) IsCrisis() bool {
 	return s.Q9Score >= 1
 }
 
-// `PHQ9 delta > 3` & `last 7 days`
+// `delta > 3` & `last 7 days`
 func (s *EscalationSignals) ShouldSuppressPHQ9() bool {
 	if s.LastPHQ9At == nil {
 		return false
@@ -464,7 +464,7 @@ func (s *EscalationSignals) ShouldSuppressPHQ9() bool {
 	return withinWindow && s.PHQ9Delta >= 3
 }
 
-// check soc conn
+// check soc
 func (s *EscalationSignals) ShouldNudgeSocialConnection() bool {
 	return s.SessionsThisWeek > 20
 }

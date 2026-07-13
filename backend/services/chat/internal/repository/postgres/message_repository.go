@@ -89,7 +89,7 @@ func (r *MessageRepository) UpdateContent(ctx context.Context, messageID string,
 	return msg, nil
 }
 
-// Ulangin konten" along with safety_flag/crisis_tier.
+// ulangin, safety_flag, cris.
 func (r *MessageRepository) UpdateRegeneratedContent(
 	ctx context.Context,
 	messageID string,

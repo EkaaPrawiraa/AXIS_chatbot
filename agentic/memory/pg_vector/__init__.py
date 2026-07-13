@@ -35,7 +35,7 @@ from agentic.memory.pg_vector.vector_modifier  import (
 )
 
 __all__ = [
-    # buat nyimpen config
+    # buat nyimpan config
     "PgvectorConfig",
     "get_pool",
     "close_pool",
@@ -44,13 +44,13 @@ __all__ = [
     "EMBED_DIM",
     "embed_text",
     "embed_many",
-    # write
+    # write it short
     "upsert_memory",
     "upsert_experience",
     "upsert_thought",
     "upsert_trigger",
     "upsert_behavior",
-    # ngbaca
+    # baca
     "SearchHit",
     "search_memory",
     "search_experience",

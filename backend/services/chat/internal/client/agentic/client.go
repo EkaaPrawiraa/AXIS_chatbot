@@ -27,7 +27,7 @@ func New(baseURL, privateKey string) *Client {
 		baseURL:    strings.TrimRight(baseURL, "/"),
 		privateKey: privateKey,
 		httpClient: &http.Client{Timeout: 60 * time.Second},
-		// `skip klo error`
+		// skip error
 		streamClient: &http.Client{Timeout: 5 * time.Minute},
 	}
 }

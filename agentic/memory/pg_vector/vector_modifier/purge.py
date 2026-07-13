@@ -1,4 +1,4 @@
-"""hard delete"""
+"""hard_del"""
 
 from __future__ import annotations
 
@@ -14,7 +14,7 @@ from agentic.memory.pg_vector.client import get_pool
 logger = logging.getLogger(__name__)
 
 
-# hard delete
+# hard_del
 
 async def purge_node(label: str, neo4j_node_id: str) -> int:
     """rm row from mirror table 1"""
@@ -41,7 +41,7 @@ async def purge_node(label: str, neo4j_node_id: str) -> int:
 # hard delete full user, every table
 
 async def purge_user(user_id: str) -> dict[str, int]:
-    """drop embeddings return dict pool unavailable"""
+    """drop embeddings dict pool unavailable"""
     require_str(user_id, "user_id")
 
     deleted: dict[str, int] = {label: 0 for label in EMBEDDABLE_LABELS}

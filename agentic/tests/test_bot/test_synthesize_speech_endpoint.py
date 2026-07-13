@@ -1,4 +1,4 @@
-"""synthesize_speech"""
+"""synth_speech"""
 from __future__ import annotations
 
 import pytest
@@ -27,7 +27,7 @@ def _patch_providers(monkeypatch, *, elevenlabs, openai_tts, gemini_tts):
     monkeypatch.setattr(tts_module, "ElevenLabsClient", lambda **_: elevenlabs)
     monkeypatch.setattr(tts_module, "OpenAITTSClient", lambda **_: openai_tts)
     monkeypatch.setattr(tts_module, "GeminiTTSClient", lambda **_: gemini_tts)
-    # try_gemini inject_gemini_audio_tags
+    # inject_gemini_audio_tags
     monkeypatch.setattr(tts_module, "_inject_gemini_audio_tags", _no_op_tag_injection)
 
 
@@ -56,7 +56,7 @@ class TestSynthesizeSpeechGeminiVoiceCharacter:
         assert response.tts_provider == "gemini_tts"
         assert response.audio_output_base64 is not None
         assert response.voice_error is None
-        # gemini
+        # gemini:skip
         assert openai_tts.calls == []
         assert gemini_tts.calls
 
@@ -64,7 +64,7 @@ class TestSynthesizeSpeechGeminiVoiceCharacter:
     async def test_gemini_tier_alias_is_not_collapsed_to_elevenlabs_mode(
         self, service, monkeypatch,
     ) -> None:
-        """resolve_gemini_tier"""
+        """skip tier"""
         elevenlabs = FakeElevenLabsTTS(error="voice_id_not_configured")
         openai_tts = FakeOpenAITTS(error="should not be needed")
         gemini_tts = FakeGeminiTTS(error=None)
@@ -138,7 +138,7 @@ class TestSynthesizeSpeechGeminiVoiceCharacter:
     async def test_response_is_a_single_audio_blob_not_a_streaming_generator(
         self, service, monkeypatch,
     ) -> None:
-        """off streaming"""
+        """skip stream"""
         elevenlabs = FakeElevenLabsTTS(error=None)
         openai_tts = FakeOpenAITTS()
         gemini_tts = FakeGeminiTTS()

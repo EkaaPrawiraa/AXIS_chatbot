@@ -1,4 +1,4 @@
-"""load slang corpus"""
+"""load slangs"""
 
 from __future__ import annotations
 
@@ -26,7 +26,7 @@ _DEFAULT_CORPUS_PATH = (
 
 @dataclass(frozen=True)
 class CorpusEntry:
-    """buat entry"""
+    """buat ent."""
 
     term: str                       # lowercased surface form
     category: str                   # "L1" | "L2" | "L3"
@@ -46,7 +46,7 @@ class CorpusEntry:
 
 
 def _coerce_entry(raw: dict) -> CorpusEntry | None:
-    """jsonl row to corpusentry"""
+    """buat jsonl2corpusentry"""
     term = raw.get("term")
     if not isinstance(term, str) or not term.strip():
         return None
@@ -64,7 +64,7 @@ def _coerce_entry(raw: dict) -> CorpusEntry | None:
 
 @dataclass
 class LinguisticCorpus:
-    """_single_word: words exactly one token     _multi_word: phrases two or more tokens"""
+    """single_word: tokenize multi_word: lexicon"""
 
     entries: tuple[CorpusEntry, ...] = field(default_factory=tuple)
     _single_word: dict[str, CorpusEntry] = field(default_factory=dict, repr=False)
@@ -100,10 +100,10 @@ class LinguisticCorpus:
             _single_pattern=pattern,
         )
 
-    # ngambil data
+    # ambil data
 
     def matches(self, text: str) -> list[CorpusEntry]:
-        """retreive corpus entries in ``text``"""
+        """get corpus entries in text"""
         if not text:
             return []
         lowered = text.lower()
@@ -131,7 +131,7 @@ _corpus_cache: dict[str, LinguisticCorpus] = {}
 
 
 def load_corpus(path: Path) -> LinguisticCorpus:
-    """load cache corpus JSONL"""
+    """load cache"""
     abs_path = str(path.resolve())
     cached = _corpus_cache.get(abs_path)
     if cached is not None:

@@ -1,4 +1,4 @@
-"""req id" "log timing"""
+"""log timing"""
 
 from __future__ import annotations
 
@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 
 
 class RequestLoggingMiddleware(BaseHTTPMiddleware):
-    """ekstrak id permintaan"""
+    """ekstrak"""
 
     async def dispatch(
         self, request: Request, call_next: RequestResponseEndpoint

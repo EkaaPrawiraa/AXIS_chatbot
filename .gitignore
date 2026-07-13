@@ -64,7 +64,9 @@ docker-compose.override.yml
 *.docx
 
 # ---------- Local-only docs (kept on disk, not pushed) ----------
-docs/
+docs/*
+!docs/thesis_latex/
+
 
 # ---------- Dev/debug scratch scripts ----------
 frontend_v2/scripts/
@@ -85,6 +87,17 @@ yarn-error.log*
 next-env.d.ts
 .vercel
 dashboard.txt
+
+# ---------- Evaluation pipeline generated/local data ----------
+evaluation_pipeline/.env
+evaluation_pipeline/__pycache__/
+evaluation_pipeline/tests/__pycache__/
+evaluation_pipeline/logs/
+evaluation_pipeline/results/
+evaluation_pipeline/runs/
+evaluation_pipeline/*.bak
+evaluation_pipeline/graph.png
+evaluation_pipeline/budi.md
 
 # ---------- WhatsApp Bot (local session) ----------
 whatsapp_bot/auth/

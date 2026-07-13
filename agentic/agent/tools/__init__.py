@@ -1,4 +1,4 @@
-"""buat ngambil data"""
+"""ambil data"""
 
 from agentic.agent.tools.context_awareness_tool import (
     calculate_math,
@@ -8,7 +8,7 @@ from agentic.agent.tools.context_awareness_tool import (
 )
 
 
-# stabil name -> tool map.
+# stabil -> map.
 TOOL_REGISTRY: dict = {
     "current_context": current_context,
     "web_search": web_search,
@@ -32,7 +32,7 @@ def get_default_toolset() -> list:
 
 
 def lookup(name: str):
-    """ret 'name' callable or raise KeyError"""
+    """ret 'name' or raise KeyError"""
     return TOOL_REGISTRY[name]
 
 

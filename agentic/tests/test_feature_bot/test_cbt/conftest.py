@@ -1,4 +1,4 @@
-"""btwn ctb tests"""
+"""btwn ctb"""
 
 from __future__ import annotations
 

@@ -1,1 +1,1 @@
-"""fastapi agentic runtime"""
+"""skip agentic runtime"""

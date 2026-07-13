@@ -1,4 +1,4 @@
-"""init state" "layer 3" "pipeline" "tiered" "response" "pipeline" "safety" "layer 3" "tiered" "pipeline" "safety" "response" "pipeline" "safety" "layer 3" "tiered"""
+"""init state" "layer 3" "pipeline" "safety"""
 
 from __future__ import annotations
 
@@ -20,6 +20,7 @@ from agentic.agent.audit.guardrail_events import (
     GuardrailLogger,
     NullGuardrailLogger,
 )
+from agentic.agent.audit.graph_trace import trace_route
 from agentic.agent.state import ConversationState
 from agentic.gateway.monitoring import increment, observe_langchain_usage
 from agentic.prompts import load_prompt_bundle
@@ -35,6 +36,7 @@ logger = logging.getLogger(__name__)
 class PreGenRules:
     crisis_phrases: tuple[str, ...]
     threshold: float
+    min_content_overlap: int
     embedding_model: str | None
 
 
@@ -52,12 +54,14 @@ def load_pregen_rules(*, force_reload: bool = False) -> PreGenRules:
         raise ValueError("pre_generation system block must parse to a mapping")
 
     phrases = tuple(parsed.get("CRISIS_SIGNAL_PHRASES") or [])
-    threshold = float(parsed.get("CRISIS_SEMANTIC_THRESHOLD", 0.82))
+    threshold = float(parsed.get("CRISIS_SEMANTIC_THRESHOLD", 0.4))
+    min_content_overlap = int(parsed.get("CRISIS_MIN_CONTENT_OVERLAP", 1))
     model = parsed.get("EMBEDDING_MODEL")
 
     _PREGEN_CACHE = PreGenRules(
         crisis_phrases=tuple(p.lower() for p in phrases),
         threshold=threshold,
+        min_content_overlap=min_content_overlap,
         embedding_model=str(model) if model else None,
     )
     return _PREGEN_CACHE
@@ -66,16 +70,106 @@ def load_pregen_rules(*, force_reload: bool = False) -> PreGenRules:
 _TOKEN_RE = re.compile(r"[a-zA-ZÀ-ÿ']+")
 
 
+_STOPWORDS = frozenset(
+    {
+        "aku", "saya", "gue", "gw", "kamu", "kau", "dia", "mereka", "kita",
+        "kami", "ingin", "mau", "pengen", "kepengen", "ada", "adanya",
+        "akan", "nggak", "gak", "ga", "enggak", "tidak", "yang", "dari",
+        "ini", "itu", "dan", "di", "ke", "buat", "untuk", "kalau", "kalo",
+        "juga", "sama", "aja", "deh", "sih", "lagi", "sudah", "udah",
+        "lebih", "jadi", "biar", "bisa", "banget", "terus", "rasanya",
+        "kayaknya", "mungkin", "semua", "semuanya", "kok", "gitu", "ya",
+        "nya", "the", "a", "an", "to", "i", "me", "my", "and", "just",
+        "it", "all",
+        # "lain" ("other/different") is generic on its own -- e.g. "contoh
+        # lain", "cara lain" -- and only becomes diagnostic for the phrase
+        # "jadi beban buat orang lain" when paired with "orang"/"beban".
+        # Without this, any message mentioning "jadi" (a common discourse
+        # marker, "so...") and "lain" anywhere coincidentally clears the
+        # containment threshold against that phrase; confirmed false
+        # positive on "kemarin aku nyari contoh skripsi lain" (2026-07-13).
+        "lain",
+        # "orang" ("person/people") is just as generic as "lain" above and
+        # trips the same phrase on its own -- confirmed false positive on
+        # "makin pusing lihat postingan orang lain yang udah pada wisuda"
+        # (2026-07-13), where "orang"+"lain" alone hit containment with
+        # zero burden/hopelessness content actually present.
+        "orang",
+        # "besok" ("tomorrow") is generic on its own -- e.g. "coba lagi
+        # besok" -- and only becomes diagnostic for "tidak usah bangun
+        # lagi besok" when paired with "bangun". Confirmed false positive
+        # on "Nanti coba lagi besok, tapi tetep aja nggak nemu" (2026-07-13),
+        # where "besok" alone (with the already-stopworded "lagi") hit
+        # containment without "bangun" being present at all.
+        "besok",
+    }
+)
+# NOTE: "baik" was tried as a stopword addition here (same rationale as
+# "lain"/"orang"/"besok" above -- it's the coincidental match behind a
+# false positive on "pembimbingku baik banget, malah dia yang nyuruh aku
+# istirahat", 2026-07-13) but reverted: it broke recall on a genuine
+# adversarial positive, "aku ngerasa kosong banget, kayaknya lebih baik
+# aku nggak usah lahir aja", which depends on "baik" to clear containment
+# for "dunia lebih baik tanpa aku". Disclosed, accepted residual limitation
+# rather than a fix -- same category as the pre-existing "aku ingin pergi
+# selamanya" false-positive case already documented in
+# docs/thesis_review/adversarial-crisis-benchmark-2026-07-13.md.
+
+
 def _tokenize(text: str) -> set[str]:
     return set(_TOKEN_RE.findall(text.lower()))
 
 
-def _dice(a: Iterable[str], b: Iterable[str]) -> float:
-    """shorten exact matches"""
-    sa, sb = set(a), set(b)
-    if not sa or not sb:
+def _content_tokens(tokens: set[str]) -> set[str]:
+    return tokens - _STOPWORDS
+
+
+def _containment(phrase_tokens: set[str], message_tokens: set[str]) -> float:
+    """Fraction of the phrase's own tokens found in the message.
+
+    Asymmetric by design: unlike Dice/Jaccard, this is not diluted by
+    message length, so a short canonical phrase can still match when it
+    is paraphrased inside a much longer real conversational sentence.
+    """
+    if not phrase_tokens:
         return 0.0
-    return 2 * len(sa & sb) / (len(sa) + len(sb))
+    return len(phrase_tokens & message_tokens) / len(phrase_tokens)
+
+
+_NEGATION_MARKERS = ("tidak", "gak", "ga", "enggak", "nggak")
+_NEGATION_ADA_RE = re.compile(
+    r"\b(?:" + "|".join(_NEGATION_MARKERS) + r")\s+ada\b"
+)
+
+
+def _phrase_needs_negation_ada(phrase_tokens: set[str]) -> bool:
+    """True for phrases built on a "tidak ada" (there-is-no) construction,
+    e.g. "tidak ada harapan lagi". "ada" alone is unigram-identical whether
+    the speaker means "there is no X" or "there still IS X" ("masih ada
+    harapan") -- token overlap can't tell those apart, so for these phrases
+    specifically, require the negation to actually sit next to "ada" in the
+    message, not just appear anywhere in it. Confirmed false positive on
+    "Kayaknya masih ada harapan sih... nggak yakin juga bakal kelar tepat
+    waktu" (2026-07-13): "nggak" was present but attached to "yakin", not
+    "ada" -- a plain unigram check for "any negation word present" would
+    have missed this and still misfired."""
+    return "ada" in phrase_tokens and any(m in phrase_tokens for m in _NEGATION_MARKERS)
+
+
+# A phrase whose own content-token footprint (after stopword stripping) is
+# down to a single word is too weak to trust at the normal containment
+# threshold -- that one leftover word is often polysemous (e.g. "beban" means
+# burden-of-stress in "beban pikiran"/"beban tugas", completely ordinary,
+# as well as interpersonal burden in "beban buat orang lain"). Confirmed
+# false positive on "...makin nambah beban pikiran" (2026-07-13): stripping
+# "orang"/"lain" as generic connectors (see _STOPWORDS below) left "jadi
+# beban buat orang lain" needing only "beban" to satisfy the content-overlap
+# gate, well below what's needed to distinguish the two senses. Requiring
+# more overall token overlap for these weak phrases restores that margin
+# without reintroducing the "orang"/"lain" false positives the stopword
+# additions were meant to fix.
+_WEAK_PHRASE_CONTENT_SIZE: int = 2
+_WEAK_PHRASE_THRESHOLD: float = 0.6
 
 
 @dataclass(frozen=True)
@@ -88,22 +182,43 @@ class PreGenDecision:
 def evaluate_pregen(
     message: str, rules: PreGenRules | None = None
 ) -> PreGenDecision:
-    """tokenize, compute Dice, flag high match."""
+    """Tokenize, score containment per phrase, flag on ratio + content-word gate."""
     rules = rules or load_pregen_rules()
     if not message.strip():
         return PreGenDecision(crisis=False, similarity=0.0, matched_phrase=None)
 
+    lowered = message.lower()
     msg_tokens = _tokenize(message)
+    msg_content = _content_tokens(msg_tokens)
+
     best_score = 0.0
     best_phrase: str | None = None
+    crisis = False
     for phrase in rules.crisis_phrases:
-        s = _dice(msg_tokens, _tokenize(phrase))
-        if s > best_score:
-            best_score = s
+        phrase_tokens = _tokenize(phrase)
+        score = _containment(phrase_tokens, msg_tokens)
+        if score > best_score:
+            best_score = score
             best_phrase = phrase
+        phrase_content = _content_tokens(phrase_tokens)
+        content_overlap = len(phrase_content & msg_content)
+        effective_threshold = (
+            _WEAK_PHRASE_THRESHOLD
+            if len(phrase_content) < _WEAK_PHRASE_CONTENT_SIZE
+            else rules.threshold
+        )
+        eligible = score >= effective_threshold and content_overlap >= rules.min_content_overlap
+        if (
+            eligible
+            and _phrase_needs_negation_ada(phrase_tokens)
+            and not _NEGATION_ADA_RE.search(lowered)
+        ):
+            eligible = False
+        if eligible:
+            crisis = True
 
     return PreGenDecision(
-        crisis=best_score >= rules.threshold,
+        crisis=crisis,
         similarity=best_score,
         matched_phrase=best_phrase,
     )
@@ -118,7 +233,7 @@ _PHQ9_ACTIVE_PHASES = frozenset(
 
 
 def _phq9_is_active(state: ConversationState) -> bool:
-    """`defer crisis`"""
+    """crisis defer"""
     phq9 = state.get("phq9_state") or {}
     phase = phq9.get("phase", "idle")
     return phase in _PHQ9_ACTIVE_PHASES
@@ -127,13 +242,13 @@ def _phq9_is_active(state: ConversationState) -> bool:
 
 @dataclass(frozen=True)
 class _Tier1Keywords:
-    """`skip inactive`"""
+    """skip inactive"""
 
     patterns_id: tuple[re.Pattern[str], ...]
     patterns_en: tuple[re.Pattern[str], ...]
 
     def matches(self, text: str) -> bool:
-        """return True if 'text' contains tier 1 keyword"""
+        """check for tier 1 keyword in text"""
         lowered = text.lower()
         return any(
             pat.search(lowered) is not None
@@ -155,7 +270,7 @@ def _compile_kw(kw: str) -> re.Pattern[str]:
 
 
 def _load_tier1_keywords(*, force_reload: bool = False) -> _Tier1Keywords:
-    """Load TIER1_CRISIS_KEYWORDS_ID/EN from guardrails/input_validation.yaml."""
+    """load from guardrails/input_validation.yaml"""
     global _TIER1_CACHE
     if _TIER1_CACHE is not None and not force_reload:
         return _TIER1_CACHE
@@ -183,7 +298,7 @@ def _classify_crisis_tier(
     state: ConversationState,
     tier1_kws: _Tier1Keywords,
 ) -> str:
-    """1" or "2"""
+    """or "2"""
     phq9 = state.get("phq9_state") or {}
     if phq9.get("route_to_crisis_after"):
         return "2"
@@ -223,7 +338,7 @@ async def crisis_guardrail_node(
     audit = audit or NullGuardrailLogger()
     started = time.perf_counter()
 
-    # skip layer 2
+    # skip l2
     input_decision = (state.get("input_guardrail") or {}).get("decision")
     if input_decision == "escalate_crisis":
         if not _phq9_is_active(state):
@@ -237,7 +352,7 @@ async def crisis_guardrail_node(
 
     if verdict.crisis:
         if _phq9_is_active(state):
-            # mark deferral, clear sig, _turn_init_node.
+            # mark, clear, _turn.
             state["deferred_crisis_signal"] = True
             increment("crisis_guardrail_events_total", tier="semantic", route="deferred_phq9")
             await audit.log(
@@ -283,7 +398,7 @@ async def crisis_triage_node(
     audit: GuardrailLogger | None = None,
     tier1_kws: _Tier1Keywords | None = None,
 ) -> ConversationState:
-    """reads trigger, classifies signal     writes tier to state     routes to next node"""
+    """reads, classifies, writes, routes"""
     audit = audit or NullGuardrailLogger()
     kws = tier1_kws or _load_tier1_keywords()
     tier = _classify_crisis_tier(state, kws)
@@ -307,11 +422,21 @@ async def crisis_triage_node(
 
 
 def route_after_crisis_triage(state: ConversationState) -> str:
-    """tier 1: crisis_escalation tier 2: crisis_empathy"""
-    return (
-        "crisis_escalation"
-        if state.get("crisis_tier") == "1"
-        else "crisis_empathy"
+    """tier 1: crisis tier 2: empathy"""
+    if state.get("crisis_tier") == "1":
+        return trace_route(
+            state,
+            source="crisis_triage",
+            target="crisis_escalation",
+            reason="tier_1_high_risk",
+            condition={"crisis_tier": state.get("crisis_tier")},
+        )
+    return trace_route(
+        state,
+        source="crisis_triage",
+        target="crisis_empathy",
+        reason="tier_2_supportive_crisis_response",
+        condition={"crisis_tier": state.get("crisis_tier")},
     )
 
 
@@ -319,7 +444,7 @@ def route_after_crisis_triage(state: ConversationState) -> str:
 
 
 def _render_hotline_context(resources: CrisisResources | None = None) -> str:
-    """name — contact"""
+    """buat nyimpen contact"""
     try:
         cat = resources or load_crisis_resources()
     except Exception:
@@ -337,7 +462,7 @@ def render_resource_block(
     resources: CrisisResources | None = None,
     state: ConversationState | None = None,
 ) -> str:
-    """build block llm response"""
+    """build llm res"""
     lines = (resources or load_crisis_resources()).selected_lines(state)
     return f"Kontak bantuan dari sistem yang bisa kamu hubungi:\n\n{lines}"
 
@@ -349,7 +474,7 @@ async def crisis_empathy_node(
     audit: GuardrailLogger | None = None,
     resources: CrisisResources | None = None,
 ) -> ConversationState:
-    """llm: LangChain     llm = functools.partial(llm, llm_spec="CRISIS_EMPATHY")     llm = llm.partial"""
+    """llm_spec="CRISIS_EMPATHY" llm = llm.partial()"""
     audit = audit or NullGuardrailLogger()
     started = time.perf_counter()
 
@@ -366,7 +491,7 @@ async def crisis_empathy_node(
 
     from agentic.config.llm_models import CRISIS_EMPATHY
 
-    # pass canonical hotline list as context
+    # pass `hotline_list` as `context`
     resource_ctx = _render_hotline_context(resources)
     system_prompt = CRISIS_EMPATHY.system_prompt
     if resource_ctx:
@@ -389,7 +514,7 @@ async def crisis_empathy_node(
             exc,
         )
         increment("crisis_guardrail_events_total", tier="2", route="empathy_fallback")
-        # fallback to tier 1 template
+        # fallback to tier 1
         state["final_response"] = render_crisis_response(resources, state=state)
         _clear_handled_phq9_crisis_route(state)
         state["crisis_escalated"] = True  # type: ignore[typeddict-unknown-key]
@@ -418,7 +543,7 @@ async def crisis_empathy_node(
     return state
 
 
-# crisis, tier 1, deterministic
+# tier 1, deterministic
 
 
 @dataclass(frozen=True)
@@ -571,7 +696,7 @@ def _contains_any(text: str, terms: Iterable[str]) -> bool:
 def _select_resource_keys(
     state: ConversationState | None = None,
 ) -> tuple[str, ...]:
-    """pilih set data"""
+    """pilih"""
     text = _state_text_for_resource_selection(state)
     keys = ["emergency", "primary", "secondary"]
 
@@ -689,7 +814,7 @@ def render_crisis_response(
     resources: CrisisResources | None = None,
     state: ConversationState | None = None,
 ) -> str:
-    """render crisis  without llm."""
+    """skip llm"""
     bundle = load_prompt_bundle("guardrails/crisis_response")
     template = bundle.system
     args = (resources or load_crisis_resources()).as_template_args(state)
@@ -706,7 +831,7 @@ async def crisis_escalation_node(
     audit: GuardrailLogger | None = None,
     resources: CrisisResources | None = None,
 ) -> ConversationState:
-    """tier 1 crisis response"""
+    """respon 1"""
     audit = audit or NullGuardrailLogger()
     phq9 = state.get("phq9_state") or {}
     input_decision = state.get("input_guardrail") or {}
@@ -715,7 +840,7 @@ async def crisis_escalation_node(
         reason = "phq9_item9"
         trigger_layer = GuardrailEventLayer.PRE_GEN
     elif input_decision.get("reason"):
-        # initiate
+        # init
         reason = input_decision["reason"]
         trigger_layer = GuardrailEventLayer.INPUT
     else:
@@ -760,7 +885,7 @@ __all__ = [
     "load_crisis_resources",
     "render_crisis_response",
     "crisis_escalation_node",
-    # empathy tier 2
+    # tier 2
     "render_resource_block",
     "crisis_empathy_node",
 ]

@@ -1,4 +1,4 @@
-"""buat nyimpen config"""
+"""buat nyimpan config"""
 
 from agentic.config.llm_models import (
     LLMSpec,

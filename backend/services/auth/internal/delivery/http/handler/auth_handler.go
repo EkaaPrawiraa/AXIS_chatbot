@@ -125,7 +125,7 @@ type refreshRequest struct {
 	RefreshToken string `json:"refreshToken"`
 }
 
-// refresh token.
+// refresh.
 func (h *AuthHandler) Refresh(w http.ResponseWriter, r *http.Request) {
 	refreshToken := ""
 	if c, err := r.Cookie(refreshCookieName); err == nil {
@@ -372,17 +372,6 @@ func readAccessToken(r *http.Request) string {
 		return c.Value
 	}
 	return ""
-}
-
-func (h *AuthHandler) PersonalityInsights(w http.ResponseWriter, r *http.Request) {
-	response.OK(w, map[string]any{
-		"openness":          50,
-		"conscientiousness": 50,
-		"extraversion":      50,
-		"agreeableness":     50,
-		"neuroticism":       50,
-		"descriptions":      []string{"Personality insights will appear after enough conversation history is available."},
-	})
 }
 
 func firstNonEmpty(values ...string) string {

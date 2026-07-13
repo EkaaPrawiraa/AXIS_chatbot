@@ -1,4 +1,4 @@
-"""archive row"""
+"""arw[row]"""
 
 from __future__ import annotations
 
@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 
 async def archive_node(label: str, neo4j_node_id: str) -> int:
-    """set active to false return rows updated"""
+    """set to false, ret updated rows"""
     require_str(neo4j_node_id, "neo4j_node_id")
 
     pool = await get_pool()

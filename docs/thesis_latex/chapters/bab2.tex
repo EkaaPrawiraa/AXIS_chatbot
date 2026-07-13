@@ -1,0 +1,274 @@
+% =====================================================================
+% BAB II KAJIAN PUSTAKA
+% =====================================================================
+
+
+\chapter{KAJIAN PUSTAKA}
+\label{ch:kajian-pustaka}
+
+% Bab ini menyusun dasar pemahaman yang diperlukan untuk membaca persoalan chatbot pendamping secara utuh. Urutan pembahasan mengikuti tiga kelompok persoalan pada BAB I: kebutuhan dukungan emosional non-klinis, empati, CBT, dan interaksi suara; \textit{guardrail} dan PHQ-9; serta personalisasi melalui memori percakapan. Pembahasan kemudian ditutup dengan ragam bahasa mahasiswa Indonesia dan prinsip arsitektur perangkat lunak. Bab ini tidak menetapkan bentuk solusi tertentu. Setiap pendekatan dibaca berdasarkan kemampuan, keterbatasan, dan bukti yang tersedia agar keputusan rancangan pada BAB III memiliki dasar yang dapat ditelusuri.
+
+\section{Kebutuhan Dukungan Emosional Non-Klinis pada Mahasiswa Indonesia}
+\label{sec:dukungan-non-klinis}
+
+Mahasiswa adalah kelompok yang berada di tengah dua transisi besar sekaligus. Transisi pertama bersifat sosial: jaringan pertemanan masa sekolah terurai sebelum jaringan baru di kampus terbentuk stabil. Transisi kedua bersifat eksistensial: tekanan akademik, ketidakpastian karier, dan pembentukan identitas diri bekerja secara kumulatif. \textcite{hawkleyCacioppo2010} menunjukkan bahwa kesepian bukan ditentukan oleh jumlah interaksi sosial, melainkan oleh persepsi kebermaknaan hubungan yang dimiliki. Seseorang dapat merasa kesepian di tengah kampus yang ramai. Sebaliknya, seseorang dapat merasa terhubung meski jarang berinteraksi secara fisik.
+
+Untuk konteks Indonesia, data prevalensi kesehatan mental usia muda perlu dibaca pada dua level. Pada level populasi umum, Riskesdas 2018 \parencite{kemenkes2019} mencatat prevalensi gangguan mental emosional sebesar 9,8\% pada penduduk usia 15 tahun ke atas. Pada level subpopulasi mahasiswa, angka yang dilaporkan sejumlah studi lebih tinggi. \textcite{astutik2020} melaporkan 25\% mahasiswa Indonesia mengalami gejala depresi yang secara klinis relevan dan 51\% mengalami gejala kecemasan. Studi oleh \textcite{putri2024} terhadap mahasiswa di tiga universitas Indonesia menunjukkan bahwa beban gejala afektif tetap ditemukan setelah masa pandemi. Untuk gejala kesepian, studi lintas budaya oleh \textcite{ashilah2024} menemukan perbedaan antara kelompok mahasiswa Indonesia dan kelompok pembanding di Malaysia. Perbedaan populasi, instrumen, dan metode sampling membuat angka-angka tersebut tidak dapat dibandingkan secara langsung, tetapi menunjukkan perlunya membaca konteks mahasiswa secara khusus.
+
+Kesenjangan layanan memperburuk gambaran ini. \textcite{who2022} memperkirakan 76 hingga 85 persen individu dengan gangguan mental di negara berpenghasilan menengah bawah tidak menerima layanan yang memadai, kesenjangan yang di Indonesia turut diperparah oleh terbatasnya jumlah tenaga profesional kesehatan mental. \textcite{eisenberg2021} menambahkan bahwa bahkan ketika layanan konseling tersedia, utilisasinya rendah karena stigma dan persepsi bahwa masalah yang dirasakan terlalu ringan untuk dibawa ke konselor. Kondisi tersebut mendorong penelitian mengenai dukungan non-klinis berbasis teknologi sebagai salah satu lapisan pendamping, dengan penegasan bahwa fungsinya berbeda dari layanan konseling profesional.
+
+\textcite{pinho2020} menunjukkan bahwa persepsi dukungan sosial yang cukup berkorelasi positif dengan kesejahteraan afektif mahasiswa. Pada ranah dukungan digital, \textcite{defreitasLoneliness2024} melaporkan hubungan antara interaksi berulang dengan chatbot pendamping dan penurunan kesepian. \textcite{maples2024} juga mencatat bahwa sebagian dari 1.006 mahasiswa pengguna Replika mempersepsikan aplikasi tersebut sebagai sumber dukungan. Tiga persen partisipan bahkan melaporkan bahwa interaksi dengan chatbot berkaitan dengan berhentinya ideasi bunuh diri. Temuan ini perlu dibaca secara hati-hati karena studinya bersifat \textit{cross-sectional}, menggunakan sampel \textit{self-selected}, dan tidak membuktikan hubungan kausal maupun efektivitas klinis chatbot.
+
+Literatur tersebut memperlihatkan tiga dimensi yang perlu dipertimbangkan ketika dukungan emosional dimediasi teknologi: kemudahan memulai interaksi, kualitas konteks dalam respons, dan kejelasan batas antara pendampingan non-klinis dengan layanan profesional. Ketiganya tidak dengan sendirinya menentukan bentuk sistem yang harus dibangun, tetapi menyediakan kriteria untuk membaca pendekatan-pendekatan pada subbab berikutnya.
+
+\section{Empati dalam Sistem Percakapan AI}
+\label{sec:empati}
+
+\subsection{Model Multidimensi Empati}
+\label{subsec:model-empati}
+
+Bidang psikologi membedakan empati ke dalam beberapa komponen dengan tanda perilaku yang berbeda. \textcite{cuff2016} merangkum literatur multidimensi dan menyimpulkan bahwa empati paling tepat dipahami sebagai konstruk gabungan, bukan satu kemampuan tunggal. \textcite{decetyCowell2014} membedakan empati afektif, empati kognitif, dan motivasi prososial atau belas kasih. \textcite{pendse2022} menambahkan dimensi empati budaya sebagai syarat operasional untuk sistem AI yang berinteraksi lintas komunitas bahasa.
+
+Empati afektif adalah kemampuan mendeteksi dan mencerminkan kondisi emosional lawan bicara. Dalam sistem AI, komponen ini dapat didekati melalui analisis sentimen, klasifikasi emosi, atau sinyal suara. \textcite{inkster2018} menunjukkan bahwa refleksi emosi merupakan pola yang umum pada chatbot kesehatan mental, tetapi respons berbasis kelas emosi saja belum tentu menangkap pengalaman individual pengguna.
+
+Empati kognitif adalah kemampuan memahami mengapa seseorang merasakan sesuatu dalam konteks yang spesifik. Dalam sistem AI, konteks tersebut dapat diperoleh dari percakapan yang sedang berlangsung, profil pengguna, atau riwayat interaksi. \textcite{sharma2023} memberikan bukti empiris bahwa respons AI yang memanfaatkan konteks personal dinilai lebih membantu dibanding respons yang hanya akurat secara semantik. Akan tetapi, semakin banyak riwayat yang digunakan, semakin besar pula persoalan relevansi, privasi, dan kemungkinan sistem membawa konteks lama yang sudah tidak tepat.
+
+Empati belas kasih berkaitan dengan dorongan untuk memberi respons yang membantu, bukan sekadar mengenali keadaan emosional. Pada sistem percakapan, bentuknya dapat berupa pertanyaan lanjutan, tawaran langkah kecil, penundaan saran ketika pengguna belum siap, atau rujukan ke dukungan lain. Pilihan-pilihan tersebut tetap bergantung pada konteks dan batas peran sistem, karena tidak setiap ekspresi emosi memerlukan tindakan yang sama.
+
+Empati budaya, dalam dokumentasi \textcite{pendse2022}, bukan komponen keempat yang berdiri sendiri, tetapi dimensi yang bersifat lintas komponen. Respons AI yang tidak selaras dengan kebiasaan komunikasi suatu komunitas dapat dialami sebagai invalidasi, bahkan ketika isi respons secara teknis akurat. Ekspresi tidak langsung dan penggunaan kode bahasa tertentu juga meningkatkan kemungkinan salah tafsir ketika model hanya mengandalkan pola komunikasi dari komunitas lain.
+
+Pembagian tersebut menunjukkan bahwa empati pada chatbot tidak cukup dinilai dari pilihan kata yang terdengar hangat. Penilaiannya juga mencakup ketepatan membaca emosi, penggunaan konteks personal, kesesuaian tindakan respons, dan kepekaan terhadap kebiasaan komunikasi. Dimensi-dimensi ini dapat digunakan sebagai kerangka analisis tanpa mengasumsikan bahwa satu teknik komputasi tertentu selalu paling tepat untuk mewujudkannya.
+
+Kerangka EPITOME \parencite{sharma2020epitome} mengoperasionalkan sebagian dimensi ini menjadi skema penilaian berbasis teks yang dikembangkan khusus untuk domain dukungan kesehatan mental daring, memecah empati yang teramati pada satu giliran respons menjadi tiga dimensi yang dapat dinilai terpisah: reaksi emosional, interpretasi, dan eksplorasi. Kerangka inilah yang dipakai untuk mengukur kualitas respons pada evaluasi di BAB IV.
+
+\subsection{Bukti Empiris Sistem Chatbot Empatik}
+\label{subsec:bukti-empiris}
+
+Woebot, Wysa, Tess, HopeBot, dan Replika merupakan lima contoh yang banyak dibahas dalam literatur chatbot kesehatan mental non-klinis dan chatbot pendamping. Masing-masing menekankan fungsi yang berbeda dan dievaluasi dengan metode yang berbeda pula. Oleh sebab itu, perbandingan berikut dibaca sebagai pemetaan karakteristik, bukan pemeringkatan mutu keseluruhan sistem.
+
+\textcite{fitzpatrick2017} melaporkan uji acak terkendali terhadap Woebot, chatbot berbasis CBT yang ditujukan untuk mahasiswa. Setelah dua minggu, kelompok pengguna Woebot mengalami penurunan gejala depresi yang signifikan secara statistik dibanding kelompok pembanding. Temuan ini menunjukkan kelayakan penyampaian unsur CBT melalui percakapan digital dalam cakupan studi tersebut. \textcite{heinz2025} memperluas bukti melalui uji acak terkendali terhadap Therabot, meskipun perbedaan model, populasi, dan protokol membuat besar efek kedua studi tidak dapat dibandingkan secara langsung.
+
+\textcite{inkster2018} mengevaluasi Wysa melalui studi \textit{mixed methods}. Pengguna menyoroti pola validasi emosi, refleksi, pertanyaan terbuka, dan tawaran langkah kecil yang bersifat opsional. Temuan tersebut memperlihatkan pentingnya konsistensi pola dialog, tetapi tidak mengisolasi pola itu sebagai satu-satunya faktor yang memengaruhi pengalaman pengguna.
+
+\textcite{fulmer2018} mengevaluasi Tess, chatbot yang mengirimkan pesan dukungan emosional secara proaktif melalui SMS. Interaksi selama dua minggu berhubungan dengan penurunan gejala depresi dan kecemasan pada kelompok mahasiswa yang diteliti. Hasil ini menyediakan bukti awal bagi pendekatan proaktif, tetapi tidak dengan sendirinya menunjukkan bahwa pendekatan tersebut selalu lebih baik daripada interaksi reaktif pada konteks lain. \textcite{dosovitsky2021} kemudian mengevaluasi penyampaian PHQ-9 melalui Tess dengan konsistensi internal yang mendekati versi kertas.
+
+\textcite{guo2025} mengembangkan HopeBot, chatbot berbasis GPT-4o yang menyampaikan PHQ-9 secara percakapan interaktif. Nilai ICC antara skor HopeBot dan versi \textit{self-administered} mencapai 0,91 pada 132 partisipan. Tujuh puluh satu persen partisipan melaporkan kepercayaan lebih tinggi pada versi chatbot karena struktur yang lebih jelas dan nada yang lebih suportif. Cakupan studi tersebut berpusat pada penyampaian skrining, sementara memori lintas sesi dan dialog reflektif berbasis CBT tidak menjadi objek evaluasinya.
+
+Replika adalah kasus yang lebih kompleks. Serangkaian studi mendokumentasikan bahwa pengguna dapat mengembangkan keterikatan terhadap Replika \parencite{skjuve2021, skjuve2022}. \textcite{maples2024} menemukan bahwa pengguna mahasiswa Replika melaporkan dukungan sosial yang tinggi dari aplikasi. Pada sisi lain, \textcite{boine2023} dan \textcite{defreitasReplika2024} mencatat \textit{identity discontinuity} setelah pembaruan aplikasi: sebagian pengguna mengalami distres ketika persona yang telah dikenal berubah. Kedua sisi ini menunjukkan bahwa keterikatan dapat menjadi sumber dukungan sekaligus menciptakan kerentanan ketika identitas dan batas layanan berubah.
+
+Berdasarkan tinjauan terhadap kelima studi kasus tersebut, terlihat bahwa kekuatan sistem chatbot pendamping masih sering muncul secara terpisah. Ada sistem yang kuat pada CBT, ada yang menonjol pada relasi jangka panjang, ada yang mulai menyampaikan skrining, dan ada yang menekankan konsistensi persona. Tabel~\ref{tab:perbandingan-sistem} menyajikan perbandingan terstruktur untuk menunjukkan ruang rancangan yang telah dieksplorasi oleh sistem-sistem tersebut.
+
+\begin{table}[htbp]
+  \centering
+  \footnotesize
+  \caption{Perbandingan beberapa sistem \textit{chatbot} pendamping terkait}
+  \label{tab:perbandingan-sistem}
+  \begin{tabularx}{\textwidth}{|l|*{6}{>{\centering\arraybackslash}X|}}
+    \hline
+\rowcolor{tableheadgray}
+    \textbf{Sistem} &
+    \textbf{Interaksi Suara} &
+    \textbf{Memori Lintas Sesi} &
+    \textbf{Pola Dialog CBT} &
+    \textbf{PHQ-9 Dinamis} &
+    \textbf{\textit{Guardrail} Berlapis} &
+    \textbf{Persona Stabil} \\
+    \hline
+    Woebot  & Tidak & Tidak & Ya    & Tidak & Parsial & Ya \\
+    \hline
+    Wysa    & Tidak & Tidak & Ya    & Tidak & Parsial & Ya \\
+    \hline
+    Tess    & Tidak & Tidak & Ya    & Ya\textsuperscript{a} & Tidak & Ya \\
+    \hline
+    HopeBot & Tidak & Tidak & Tidak & Ya\textsuperscript{b} & Tidak & Tidak \\
+    \hline
+    Replika & Tidak & Ya\textsuperscript{c} & Tidak & Tidak & Tidak & Tidak Stabil\textsuperscript{d} \\
+    \hline
+  \end{tabularx}
+  \vspace{4pt}
+  \begin{minipage}{\textwidth}
+    \footnotesize
+    \textsuperscript{a}~PHQ-9 disampaikan melalui SMS tanpa mekanisme JITAI adaptif \parencite{dosovitsky2021}.
+    \textsuperscript{b}~PHQ-9 percakapan interaktif, namun tanpa memori lintas sesi atau komponen CBT aktif \parencite{guo2025}.
+    \textsuperscript{c}~Memori berbasis \textit{proprietary system}, tanpa representasi relasional yang dapat diaudit.
+    \textsuperscript{d}~Persona berubah signifikan setelah pembaruan aplikasi 2023, menyebabkan \textit{identity discontinuity} \parencite{defreitasReplika2024, boine2023}.
+    Tabel ini tidak dimaksudkan sebagai penilaian mutu keseluruhan setiap sistem, melainkan sebagai ringkasan dimensi yang relevan ketika chatbot pendamping digunakan secara berulang, pada konteks emosional, dan dengan kebutuhan batas peran non-klinis.
+  \end{minipage}
+\end{table}
+
+\subsection{Stabilitas Persona pada Chatbot Pendamping}
+\label{subsec:persona-stabil}
+
+Pembahasan empati pada subbab sebelumnya berfokus pada respons per giliran. Subbab ini membahas identitas chatbot pendamping sepanjang waktu. \textcite{reevesNass1996} dalam karya \textit{The Media Equation} menunjukkan bahwa pengguna memperlakukan sistem komputasi sebagai aktor sosial dan menerapkan harapan interpersonal pada interaksinya. Dalam konteks tersebut, persona dapat dipahami sebagai konfigurasi nada, batas peran, dan gaya respons yang membentuk ekspektasi pengguna terhadap sistem.
+
+\textcite{bickmorePicard2005} menunjukkan bahwa kepercayaan terhadap agen percakapan terbentuk melalui akumulasi interaksi, bukan hanya kualitas satu respons. Konsistensi menjadi salah satu faktor yang dapat membantu pengguna membangun ekspektasi, tetapi pengaruhnya berinteraksi dengan faktor lain seperti kegunaan, kualitas respons, dan frekuensi penggunaan. Literatur ini menjadikan stabilitas persona relevan untuk dikaji tanpa menganggapnya sebagai satu-satunya penentu hubungan jangka panjang.
+
+Studi sistem berskala besar menyediakan konteks empiris bagi pembahasan ini. \textcite{zhou2020xiaoice} mendokumentasikan XiaoIce, chatbot pendamping emosional Microsoft Asia yang menempatkan konsistensi persona sebagai salah satu batas desain. Metrik \textit{Conversations Per Session} menunjukkan keterlibatan berulang yang tinggi, tetapi hubungan kausal antara konsistensi persona dan keterlibatan tidak dapat dipisahkan sepenuhnya dari faktor lain seperti kualitas model, ketersediaan layanan, dan strategi produk.
+
+Risiko perubahan persona dibahas oleh \textcite{defreitasReplika2024} melalui kasus \textit{identity discontinuity} pada Replika. \textcite{boine2023} memperluas persoalan ini dari sudut hukum Eropa dengan menyoroti ketergantungan emosional pada persona AI yang dapat berubah secara sepihak. Kasus \textit{Garcia v.\ Character Technologies} \parencite{garciaCharacterAI2024} juga memperlihatkan bahwa kebebasan pembentukan persona, moderasi, dan perlindungan pengguna tidak dapat dipisahkan begitu saja. Kasus-kasus tersebut berbeda secara faktual dan tidak membuktikan bahwa ketidakstabilan persona selalu menyebabkan bahaya, tetapi menunjukkan adanya konsekuensi etis ketika pengguna membangun ekspektasi relasional terhadap sistem.
+
+Secara keseluruhan, literatur memperlihatkan hubungan antara persona, ekspektasi sosial, keterlibatan berulang, dan risiko perubahan layanan. Stabilitas persona dapat membantu pengguna memahami nada dan batas sistem, sedangkan persona yang lebih fleksibel memungkinkan penyesuaian yang lebih luas. Keduanya membawa \textit{trade-off} antara konsistensi, personalisasi, dan kendali penyedia layanan. Keputusan mengenai tingkat standardisasi persona karena itu merupakan persoalan rancangan yang dibahas pada BAB III.
+
+\section{Cognitive Behavioral Therapy sebagai Kerangka Reflektif Non-Klinis}
+\label{sec:cbt}
+
+Cognitive Behavioral Therapy (CBT) bekerja pada premis bahwa respons emosional seseorang tidak ditentukan oleh peristiwa itu sendiri, melainkan oleh cara individu menafsirkan peristiwa tersebut. \textcite{beck1979} memformulasikan kerangka klinis ini dan mengidentifikasi sepuluh distorsi kognitif yang paling sering muncul pada individu dengan depresi dan kecemasan: \textit{catastrophizing}, \textit{all-or-nothing thinking}, \textit{mind reading}, \textit{fortune telling}, \textit{emotional reasoning}, \textit{should statements}, \textit{labeling}, \textit{magnification}, \textit{personalization}, dan \textit{overgeneralization}. Dalam konteks komputasional, distorsi-distorsi kognitif ini berpotensi untuk dimodelkan sebagai bagian dari skema pengetahuan (\textit{knowledge schema}) yang dapat dievaluasi secara terprogram.
+
+\textcite{greenbergerPadesky1995} memformulasikan \textit{hot cross bun model} yang merepresentasikan hubungan bidireksional antara empat dimensi pengalaman: situasi, emosi, pikiran, dan perilaku. Setiap dimensi memengaruhi yang lain. Dalam sistem komputasional, hubungan tersebut dapat direpresentasikan melalui formulir terstruktur, \textit{state} percakapan, basis data relasional, maupun graf. Pilihan representasinya bergantung pada kebutuhan penggunaan kembali dan penelusuran hubungan antarelemen.
+
+Penerapan CBT pada chatbot non-klinis memerlukan adaptasi yang hati-hati. \textcite{fitzpatrick2017} mengevaluasi penyampaian teknik seperti \textit{thought record}, \textit{cognitive restructuring}, dan \textit{behavioral activation} melalui percakapan digital. Hasil studi menunjukkan perubahan pada populasi dan periode pengujian tersebut, tetapi tidak menyamakan chatbot dengan terapi oleh profesional. \textcite{hill2014} menyediakan kerangka \textit{Helping Skills} yang lebih luas melalui tahap eksplorasi, \textit{insight}, dan aksi. Kerangka ini dapat digunakan untuk menganalisis urutan dialog, bersama pendekatan lain yang tidak berangkat dari CBT.
+
+\textcite{boucher2021} menambahkan dimensi etis yang sering terlewat. Chatbot CBT non-klinis menghadapi risiko \textit{boundary issues}: pengguna dapat secara perlahan bergeser ke topik yang melampaui kompetensi sistem. Literatur mengusulkan beberapa bentuk mitigasi, antara lain pernyataan batas peran, pembatasan jenis saran, moderasi, dan deteksi krisis. Efektivitas masing-masing mekanisme bergantung pada konteks penggunaan dan tidak dapat diasumsikan hanya dari keberadaannya.
+
+\textcite{lee2024cactus} membangun korpus percakapan konseling multi-giliran yang secara eksplisit mengikuti struktur teknik CBT dan memvalidasi kualitasnya terhadap kriteria evaluasi sesi konseling psikologis yang mapan. Karya ini menunjukkan bahwa struktur teknik CBT dapat diikuti secara eksplisit oleh sistem generatif tanpa kehilangan kealamian percakapan, tetapi tidak menentukan apakah orkestrasi terbaik harus berbentuk \textit{state machine}, klasifikator, aturan, atau mekanisme lain.
+
+\section{Interaksi Suara dalam Dukungan Emosional}
+\label{sec:interaksi-suara}
+
+Modalitas suara dan teks menawarkan karakteristik interaksi yang berbeda. \textcite{pradhan2020} menunjukkan bahwa percakapan suara dapat terasa lebih intuitif pada konteks ekspresif karena pengguna tidak perlu merapikan seluruh perasaannya menjadi kalimat tertulis terlebih dahulu. Di sisi lain, teks memberi waktu lebih panjang untuk menyusun pesan, mudah ditinjau kembali, dan tidak memerlukan lingkungan yang memungkinkan pengguna berbicara dengan bebas.
+
+Pilihan suara juga berkaitan dengan persepsi kehadiran sosial. \textcite{bickmorePicard2005} menunjukkan bahwa hubungan dengan agen percakapan dipengaruhi oleh pengalaman interaksi yang konsisten. Suara dapat memperkuat kesan kehadiran, tetapi juga menambah persoalan privasi, aksesibilitas, kesalahan transkripsi, dan ekspektasi terhadap naturalitas percakapan. Pemilihan suara, teks, atau kombinasi keduanya karena itu bergantung pada tujuan serta kondisi penggunaan.
+
+Secara arsitektural, interaksi suara umumnya melewati rantai \textit{Speech-to-Text} (STT), model bahasa, dan \textit{Text-to-Speech} (TTS). Setiap tahap menambah waktu pemrosesan, sementara pemrosesan paralel dan \textit{streaming} dapat menurunkan waktu tunggu dengan kompleksitas tambahan. Karena itu, kajian interaksi suara perlu mempertimbangkan ketepatan transkripsi, waktu menuju respons awal, kualitas keluaran audio, serta perlindungan data suara secara bersamaan.
+
+\subsection{Landasan Ruang Bercerita Sementara}
+\label{subsec:landasan-confession-space}
+
+Ruang bercerita sementara dapat dipahami melalui prinsip pengungkapan dengan jejak data yang dibatasi. Berbeda dari percakapan persisten yang memungkinkan personalisasi lintas sesi, ruang sementara mengurangi akumulasi data personal tetapi tidak dapat memanfaatkan isi percakapan sebagai memori pada interaksi berikutnya. Dengan demikian, persistensi dan sifat sementara mewakili kebutuhan pengguna yang berbeda, bukan tingkatan mutu yang dapat diurutkan secara sederhana.
+
+\textcite{pennebaker1997} menunjukkan hubungan antara pengungkapan pengalaman emosional dan sejumlah perubahan psikologis maupun fisik pada kondisi penelitian tertentu. Temuan itu tidak berarti setiap pengungkapan otomatis memberi manfaat, tetapi memperlihatkan bahwa nilai aktivitas bercerita tidak selalu bergantung pada penyimpanan permanen. Pada sistem digital, pembatasan persistensi juga membawa \textit{trade-off}: privasi meningkat, tetapi kontinuitas dan kemampuan audit dapat berkurang.
+
+\section{Pendekatan \textit{Guardrail} dan Eskalasi Krisis}
+\label{sec:guardrail}
+
+LLM yang menangani topik emosional dapat menghasilkan respons yang tidak tepat, memberikan informasi berbahaya, atau gagal mengenali sinyal krisis. \textcite{weidinger2022} mengelompokkan risiko model bahasa ke dalam enam kategori, termasuk bahaya psikologis dan kekeliruan representasi kapabilitas sistem. \textcite{bender2021stochastic} mengingatkan bahwa kelancaran teks tidak identik dengan pemahaman. Kedua argumen tersebut menjelaskan mengapa luaran model pada konteks sensitif tidak dapat dinilai hanya dari kefasihan bahasanya.
+
+NIST AI Risk Management Framework \parencite{nistAirmf2023} dan OWASP Top 10 for LLM Applications \parencite{owaspLlmTop10_2025} membahas pendekatan \textit{defense in depth}, yaitu pengendalian berlapis agar kegagalan satu mekanisme tidak langsung mengekspos pengguna pada risiko. \textcite{deChoudhury2023} juga mendokumentasikan manfaat sekaligus keterbatasan AI berbasis teks dalam memahami kondisi kesehatan mental. Literatur tersebut menempatkan keselamatan sebagai persoalan berlapis, tetapi tidak menetapkan satu jumlah lapisan atau susunan \textit{pipeline} yang berlaku untuk semua sistem.
+
+Mekanisme keselamatan dapat ditempatkan pada beberapa titik, seperti pembatasan peran dalam instruksi sistem, pemeriksaan masukan, penilaian konteks sebelum generasi, peninjauan luaran, dan penyediaan respons eskalasi. Pemeriksaan berbasis aturan mudah diaudit dan cepat, tetapi cenderung rapuh terhadap variasi bahasa. Pemeriksaan berbasis model lebih lentur terhadap konteks, tetapi membawa ketidakpastian serta biaya komputasi. Sementara itu, peninjauan manusia memberikan tingkat pertimbangan yang berbeda, tetapi tidak selalu tersedia untuk percakapan waktu nyata. Susunan yang dipilih perlu menyeimbangkan keterlacakan, cakupan bahasa, latensi, dan tingkat risiko.
+
+Keluarga metrik berbasis tumpang tindih token, seperti Jaccard \parencite{niwattanakul2013jaccard} dan koefisien Dice \parencite{dice1945measures}, dapat digunakan untuk mencocokkan variasi frasa tanpa pelatihan model. Kelebihannya terletak pada skor yang mudah ditelusuri dan biaya komputasi rendah. Keterbatasannya adalah ketergantungan pada bentuk leksikal: eufemisme, negasi, konteks percakapan, dan kemiripan yang kebetulan dapat menghasilkan \textit{false negative} maupun \textit{false positive}. Karena itu, metrik ini merupakan salah satu pilihan deteksi, bukan bukti bahwa risiko telah dipahami secara semantik.
+
+Literatur eskalasi krisis membedakan indikasi distres umum dari indikasi bahaya yang lebih langsung. Respons deterministik mengurangi variasi dan risiko halusinasi pada kondisi berisiko tinggi, tetapi dapat terasa kaku atau tidak sesuai konteks. Respons generatif lebih fleksibel, tetapi memerlukan batas yang lebih ketat. AFSP Safe Messaging Guidelines \parencite{afsp2023} menekankan pengakuan terhadap beban pengguna sebelum penyampaian informasi bantuan. Pencatatan keputusan juga membantu audit, meskipun audit trail tidak menggantikan evaluasi terhadap akurasi deteksi dan kualitas respons.
+
+\section{Instrumen Skrining Kesehatan Mental dalam Chatbot Percakapan}
+\label{sec:phq9}
+
+\subsection{Patient Health Questionnaire-9 (PHQ-9)}
+\label{subsec:phq9-instrumen}
+
+PHQ-9 adalah instrumen skrining depresi yang terdiri dari sembilan item, mengukur frekuensi gejala depresi dalam dua minggu terakhir pada skala Likert empat tingkat. \textcite{kroenke2001phq9} menunjukkan sensitivitas 88\% dan spesifisitas 88\% untuk deteksi episode depresi mayor. Item 9 secara khusus menanyakan ideasi bunuh diri atau pikiran menyakiti diri sendiri. Skor PHQ-9 dikelompokkan ke lima tingkat keparahan: minimal (0 sampai 4), ringan (5 sampai 9), sedang (10 sampai 14), sedang berat (15 sampai 19), dan berat (20 sampai 27).
+
+Validasi versi Bahasa Indonesia PHQ-9 dilakukan oleh beberapa kelompok riset. \textcite{yulia2022phq9indo} memvalidasi PHQ-9 versi Bahasa Indonesia pada 500 mahasiswa kedokteran dengan forward-backward translation, melaporkan Cronbach alpha 0,885 dan AUC 92,0\% dengan cut-off 5,5 (sensitivitas 0,907 dan spesifisitas 0,865). Hasil pemvalidasian instrumen ini menyokong kelayakan penggunaannya pada populasi mahasiswa luring di Indonesia, meskipun sampel tersebut berasal dari mahasiswa kedokteran sehingga generalisasi ke populasi mahasiswa non-kedokteran perlu dibaca dengan kehati-hatian yang wajar.
+
+\subsection{Penyampaian PHQ-9 secara Percakapan}
+\label{subsec:phq9-delivery}
+
+Pertanyaan kritisnya adalah apakah PHQ-9 yang disampaikan melalui percakapan mempertahankan reliabilitas psikometriknya. Sebagaimana disebutkan pada Subbab~\ref{subsec:bukti-empiris}, Dosovitsky dan Guo melaporkan reliabilitas penyampaian PHQ-9 secara percakapan yang mendekati versi kertas, dengan tingkat kepercayaan pengguna yang justru lebih tinggi pada format chatbot. Hasil tersebut mendukung kelayakan format percakapan pada populasi studi masing-masing, tetapi tidak dapat langsung digeneralisasi ke chatbot, bahasa, atau populasi lain tanpa validasi tersendiri.
+
+Studi-studi tersebut menggunakan beberapa pola penyampaian yang berulang: item diberikan satu per satu, opsi jawaban dipertahankan sebagai jangkar Likert, dan kalimat transisi digunakan agar pergantian item tidak terasa mendadak. Pola ini menyediakan alternatif terhadap formulir sekaligus menimbulkan persoalan baru, antara lain durasi percakapan, kemungkinan pengguna menjawab di luar opsi, dan risiko perubahan makna item apabila sistem terlalu bebas melakukan parafrasa.
+
+\subsection{Just-in-Time Adaptive Intervention untuk Timing}
+\label{subsec:jitai}
+
+Waktu pemberian asesmen dalam konteks chatbot emosional bukan keputusan teknis yang netral. \textcite{nahumshani2018jitai} memperkenalkan kerangka Just-in-Time Adaptive Intervention (JITAI) sebagai pendekatan formal untuk menjawab pertanyaan kapan intervensi paling tepat disampaikan, untuk siapa, dan dalam kondisi apa. Inti gagasan JITAI adalah bahwa intervensi yang sama dapat membantu dalam satu konteks dan justru merugikan dalam konteks lain. Notifikasi PHQ-9 yang muncul pada momen yang salah dapat memicu rasa bersalah ketika pengguna tidak merespons, yang berlawanan dengan tujuan dukungan.
+
+Dalam sistem digital, prinsip JITAI dapat diterjemahkan melalui aturan waktu, jumlah interaksi, perubahan kondisi pengguna, maupun respons terhadap tawaran sebelumnya. Aturan yang terlalu agresif dapat membuat asesmen terasa memaksa, sedangkan aturan yang terlalu konservatif dapat melewatkan saat yang relevan. Indikasi bahaya pada item kesembilan juga membuat alur skrining tidak dapat diperlakukan sebagai urutan pertanyaan biasa karena keselamatan dapat mengambil prioritas sebelum skor total selesai dihitung.
+
+Skor yang diperoleh melalui skrining percakapan tetap merupakan hasil skrining, bukan diagnosis \parencite{kroenke2001phq9}. Penyampaiannya perlu membedakan skor, interpretasi rentang, dan keputusan klinis. Cara membedakan ketiganya dapat diwujudkan melalui bahasa respons, penjelasan antarmuka, maupun rujukan profesional, dan bentuk akhirnya bergantung pada konteks sistem yang dirancang.
+
+\section{Pendekatan Personalisasi Berbasis Memori}
+\label{sec:kg}
+
+Bagian ini membahas beberapa pendekatan untuk mempertahankan konteks personal lintas sesi. Pembahasan dimulai dari teori memori, dilanjutkan dengan pencarian semantik berbasis RAG, representasi graf, dimensi temporal, serta pendekatan hibrid. Tujuannya bukan menetapkan satu teknologi sebagai pilihan mutlak, melainkan membandingkan jenis pertanyaan yang dapat dijawab, biaya pengelolaan data, dan keterbatasan setiap representasi.
+
+\subsection{Teori Memori dan Personalisasi Akumulatif}
+\label{subsec:teori-memori}
+
+\textcite{tulving1972} mendefinisikan dua tipe memori jangka panjang yang relevan untuk sistem percakapan: \textit{episodic memory} yang menyimpan peristiwa spesifik dengan konteks waktu dan tempat, dan \textit{semantic memory} yang menyimpan pengetahuan umum yang sudah terabstraksi. Untuk chatbot pendamping, kedua tipe ini dibutuhkan. Pengguna menceritakan peristiwa spesifik (episodic), dan dari kumpulan peristiwa itu sistem menarik pola dan preferensi (semantic).
+
+Dalam konteks operasional percakapan, \textcite{baddeley1992} menambahkan model \textit{working memory} yang merepresentasikan lapisan jangka pendek dalam sesi yang sedang berlangsung. Pentingnya pemisahan lapisan memori ini juga dikonfirmasi oleh \textcite{park2023generative} dalam karya Generative Agents, yang menunjukkan bahwa kombinasi memori jangka pendek dan panjang menghasilkan perilaku agen yang lebih koheren dan \textit{believable}.
+
+Personalisasi memiliki dua paradigma dalam literatur \textit{user modeling}. \textcite{fischer2001} menyebut yang pertama sebagai \textit{static personalization}, yang mengandalkan profil atau kategori sebelum interaksi. Paradigma kedua adalah \textit{memory-based personalization}, di mana pemahaman sistem berkembang dari interaksi ke interaksi. Pendekatan statis lebih mudah dikendalikan tetapi lambat mengikuti perubahan pengguna. Pendekatan berbasis memori lebih adaptif, tetapi bergantung pada kualitas ekstraksi, pembaruan, dan pemilihan kembali informasi.
+
+\textcite{bickmorePicard2005} menunjukkan bahwa kontinuitas berperan dalam pembentukan hubungan pengguna dengan agen percakapan. Namun, kontinuitas tidak selalu menuntut penyimpanan seluruh riwayat. Hubungan berkelanjutan dapat dibangun melalui profil, ringkasan, fakta terpilih, atau struktur memori lain. \textcite{zhong2024memorybank} mengeksplorasi penyimpanan, pemanggilan, dan pembaruan memori yang terinspirasi kurva lupa Ebbinghaus, sedangkan \textcite{wu2024longmemeval} mengevaluasi asisten percakapan pada lima kemampuan inti memori jangka panjang (ekstraksi informasi, penalaran lintas sesi, penalaran temporal, pembaruan pengetahuan, dan \textit{abstention}), menunjukkan bahwa sistem yang menyimpan seluruh riwayat percakapan tidak otomatis unggul pada kelima kemampuan tersebut. Kedua karya tersebut juga menegaskan bahwa banyaknya informasi tersimpan tidak identik dengan relevansi konteks yang dipanggil kembali.
+
+\subsection{RAG Standar dan Keterbatasannya untuk Memori Personal}
+\label{subsec:rag-keterbatasan}
+
+\textcite{lewis2020rag} memperkenalkan \textit{Retrieval-Augmented Generation} (RAG) untuk melengkapi pengetahuan parametrik model dengan dokumen yang diambil saat inferensi. Dalam RAG berbasis vektor, kandidat diurutkan berdasarkan kedekatan representasi semantik lalu dimasukkan ke konteks model. Pendekatan ini relatif sederhana, fleksibel terhadap teks tidak terstruktur, dan efektif ketika relevansi dapat didekati melalui kemiripan makna.
+
+Keterbatasan muncul ketika pertanyaan tidak hanya meminta teks yang serupa, tetapi juga urutan waktu, hubungan antarfakta, atau perubahan informasi. \textit{Benchmark} personalisasi seperti LaMP \parencite{salemi2024lamp} menunjukkan bahwa kualitas \textit{retrieval} dipengaruhi oleh jenis tugas dan cara riwayat pengguna direpresentasikan. Tiga kelas pertanyaan berikut memperlihatkan batas yang perlu diperhatikan pada pencarian semantik murni.
+
+Pertama, pertanyaan \textit{multi-hop}. Pertanyaan tentang hubungan antara seseorang, peristiwa, dan emosi dapat dijawab oleh pencarian semantik apabila semua informasi muncul dalam satu potongan teks atau metadata yang memadai. Ketika faktanya tersebar, struktur graf memberi jalur hubungan yang lebih eksplisit, sebagaimana dibahas pada GraphRAG \parencite{edge2024graphrag}. Sebaliknya, graf hanya dapat menelusuri relasi yang sebelumnya berhasil diekstraksi, sehingga relasi yang hilang atau salah akan membatasi hasil traversal.
+
+Kedua, pertanyaan temporal. \textit{Vector store} dapat menyimpan waktu sebagai metadata dan melakukan penyaringan, sedangkan model graf dapat menempatkan waktu pada node atau relasi. Graphiti \parencite{rasmussen2025zep} mengeksplorasi representasi perubahan fakta secara temporal. Tidak satu pun pendekatan otomatis menjamin ketepatan waktu: keduanya tetap bergantung pada normalisasi ekspresi relatif, seperti ``kemarin'', dan kualitas timestamp yang dicatat.
+
+Ketiga, pertanyaan yang melibatkan perubahan fakta. Pencarian vektor dapat menonaktifkan dokumen lama melalui metadata atau versi, sedangkan graf dapat menyatakan perubahan melalui properti temporal atau relasi khusus. Graf menyediakan bentuk hubungan yang lebih eksplisit, tetapi menambah kebutuhan pemeliharaan konsistensi. Dengan demikian, persoalan utama bukan sekadar media penyimpanan, melainkan keberadaan operasi pembaruan yang dapat mencegah fakta lama dipakai seolah masih berlaku.
+
+\subsection{\textit{Knowledge Graph} sebagai Representasi Memori Terstruktur}
+\label{subsec:kg-struktur}
+
+\textit{Knowledge graph} (KG) mengorganisasi entitas dan hubungan dalam graf berarah berlabel. Relasi menjadi bagian eksplisit dari data, sehingga traversal lintas entitas dapat dilakukan tanpa terlebih dahulu menyatukan seluruh informasi ke dalam satu dokumen. \textcite{pan2024} membahas integrasi LLM dan KG pada tugas yang memerlukan penalaran lintas entitas, sedangkan \textcite{edge2024graphrag} mengevaluasi GraphRAG pada \textit{query-focused summarization}. Hasil keduanya bergantung pada domain, kualitas pembentukan graf, dan bentuk pertanyaan yang diuji.
+
+Pada memori personal, KG menawarkan relasi eksplisit, traversal \textit{multi-hop}, serta kemungkinan menempatkan informasi temporal dan perubahan fakta pada relasi. Kelebihan tersebut dibayar dengan proses ekstraksi ontologi, validasi hubungan, migrasi skema, dan biaya traversal. Graf juga tidak unggul pada setiap jenis pencarian, karena ujaran baru yang secara semantik relevan tetapi belum memiliki relasi dapat lebih mudah ditemukan melalui pencarian vektor.
+
+\subsection{Skema POLE+O Diadaptasi untuk Domain Afektif}
+\label{subsec:pole-o}
+
+Skema POLE+O adalah konvensi ontologi \textit{top-level} yang diadopsi dari praktik analisis intelijen penegakan hukum dan kemudian diadaptasi untuk \textit{knowledge graph} umum \parencite{neo4jPoleO2024}. Akronim ini merepresentasikan lima tipe entitas: \textit{Person}, \textit{Object}, \textit{Location}, \textit{Event}, dan \textit{Organization}. Dalam skema ini, \textit{Person} bertindak sebagai simpul akar yang mengawali seluruh penelusuran memori. Secara teoretis, skema semacam ini sangat terbuka untuk diadaptasi ke dalam domain afektif dengan menambahkan simpul-simpul baru yang mewakili kerangka CBT, seperti pengalaman (\textit{Experience}), emosi (\textit{Emotion}), dan pikiran (\textit{Thought}).
+
+\textcite{mehrabianRussell1974} memperkenalkan model PAD (Pleasure-Arousal-Dominance), yang merepresentasikan emosi dalam tiga dimensi kontinu. Model ini menjadi standar di affective computing karena mampu membedakan kondisi yang memiliki label kategoris sama tetapi profil berbeda. Kecemasan dan kemarahan keduanya memiliki \textit{arousal} tinggi tetapi berbeda pada dimensi \textit{dominance}. \textcite{grochla2021grisera} mengimplementasikan model PAD dalam GRISERA, sebuah kerangka KG yang dirancang eksplisit untuk \textit{affective computing}. Dalam praktiknya, penyederhanaan dimensi dapat dilakukan tergantung pada kebutuhan komputasi di sisi hilir (\textit{downstream}).
+
+Pada simpul yang mewakili pikiran, properti dapat digunakan untuk menyimpan label distorsi kognitif \parencite{beck1979}. Representasi graf memudahkan penelusuran kategoris dan relasional apabila ontologi serta relasinya telah tersedia. Pencarian vektor dapat mencapai fungsi serupa melalui metadata dan penggabungan hasil, tetapi hubungan kausalnya tidak tersimpan sebagai struktur utama. Perbandingan efisiensi keduanya bergantung pada ukuran data, indeks, pola kueri, dan biaya ekstraksi.
+
+\subsection{Representasi Relasional Hot Cross Bun}
+\label{subsec:hot-cross-bun-kg}
+
+Secara konseptual, model \textit{hot cross bun} \parencite{greenbergerPadesky1995} sesuai untuk representasi relasional karena menghubungkan situasi, emosi, pikiran, dan perilaku. Graf dapat membuat hubungan tersebut dapat ditelusuri secara eksplisit, sedangkan formulir atau dokumen terstruktur dapat menyimpan komponen yang sama dengan cara yang lebih sederhana. Nilai graf baru muncul ketika hubungan lintas peristiwa atau lintas sesi benar-benar diperlukan dan berhasil dibentuk dengan cukup akurat.
+
+Dalam kajian chatbot pendamping, model \textit{hot cross bun} dapat dipakai sebagai jembatan antara teori CBT dan representasi pengalaman pengguna. Situasi, emosi, pikiran, dan perilaku tidak dipahami sebagai daftar terpisah, tetapi sebagai rangkaian yang saling memengaruhi. Cara pandang ini penting karena percakapan pendamping sering berisi pengalaman yang tidak berdiri sendiri: keluhan akademik dapat terkait dengan emosi cemas, pikiran otomatis, dan perilaku menghindar.
+
+\subsection{Relasi Dwi-temporal untuk Kueri Longitudinal}
+\label{subsec:bi-temporal}
+
+Relasi bi-temporal memisahkan waktu berlakunya fakta dari waktu pencatatan fakta oleh sistem. Kerangka seperti Graphiti \parencite{rasmussen2025zep} memanfaatkan pemisahan ini untuk \textit{retrieval} temporal dan pembaruan fakta. Model tersebut memberikan jejak perubahan yang eksplisit, tetapi memerlukan ekstraksi waktu dan aturan invalidasi yang dapat dipertanggungjawabkan. Pendekatan berbasis versi dokumen juga dapat menyimpan perubahan, meskipun penelusuran hubungan waktunya tidak sealamiah model graf.
+
+\subsection{Pengambilan Hibrid dan Pemeringkatan Memori}
+\label{subsec:hybrid-retrieval}
+
+Graf murni bergantung pada entitas dan relasi yang telah terbentuk, sedangkan pencarian vektor dapat menemukan kemiripan pada teks yang belum terhubung. Sebaliknya, pencarian vektor tidak secara langsung menyediakan jalur relasi eksplisit. Pendekatan hibrid mencoba memanfaatkan kedua sifat tersebut dengan menjalankan pencarian semantik dan penelusuran graf secara berdampingan. Algoritma seperti HNSW \parencite{malkovYashunin2018hnsw} dapat digunakan pada sisi pencarian vektor, sementara strategi traversal digunakan pada sisi graf.
+
+Pencarian hibrid memunculkan persoalan penggabungan kandidat karena skor graf dan skor vektor tidak selalu berada pada skala yang sama. \textit{Reciprocal Rank Fusion} (RRF) menggabungkan posisi kandidat tanpa menyamakan skor awal, sedangkan \textit{Maximal Marginal Relevance} menyeimbangkan relevansi dengan keragaman. Keduanya menambah tahap pemeringkatan dan parameter baru, sehingga hasilnya perlu dibandingkan dengan \textit{retrieval} tunggal agar kompleksitas tambahan dapat dibenarkan.
+
+Proyek Persona \parencite{saxenauts2025persona} dan Graphiti \parencite{rasmussen2025zep} melaporkan manfaat pendekatan graf atau hibrid pada \textit{benchmark} memori percakapan tertentu. Temuan tersebut menunjukkan bahwa representasi relasional menjanjikan untuk pertanyaan temporal dan lintas entitas, tetapi tidak menetapkan keunggulan universal terhadap vektor murni. Hasil \textit{benchmark} dipengaruhi oleh dataset, kualitas ekstraksi, definisi relevansi, dan biaya sistem yang tidak selalu dilaporkan pada skala yang sama. Oleh sebab itu, pilihan antara vektor, graf, dan hibrid perlu ditentukan berdasarkan kebutuhan kueri serta dibuktikan kembali pada domain penerapannya.
+
+Satu tantangan tersendiri muncul sebelum proses \textit{retrieval} dimulai: konstruksi kueri pencarian yang tepat dari percakapan yang sifatnya anaforis dan kontekstual. Ujaran singkat seperti ``seperti biasanya'' atau ``yang kemarin itu'' tidak membawa cukup informasi untuk langsung digunakan sebagai kueri vektor. \textcite{ma2023queryrewriting} menunjukkan bahwa menulis ulang kueri (\textit{query rewriting}) menggunakan LLM sebelum \textit{retrieval}, alih-alih menggunakan ujaran mentah pengguna secara langsung, meningkatkan akurasi \textit{retrieval} secara signifikan karena kueri yang dihasilkan bersifat mandiri dan eksplisit (\textit{self-contained}). Pendekatan \textit{rewrite-retrieve-read} ini secara langsung mengatasi masalah anafora dan rujukan eliptis yang lazim dalam percakapan multisesi.
+
+\section{Pengayaan Linguistik untuk Mahasiswa Indonesia}
+\label{sec:linguistik}
+
+Mahasiswa Indonesia tidak menggunakan satu ragam bahasa yang homogen. Percakapan informal dapat memadukan bahasa Indonesia baku, bahasa gaul, unsur bahasa daerah, dan bahasa Inggris dalam satu ujaran. Variasi tersebut menjadi objek kajian tersendiri karena model dapat menunjukkan kinerja berbeda ketika register pengguna bergeser dari data formal yang dominan pada pelatihan atau evaluasi.
+
+\textcite{muysken2000} dalam tipologi bahasa campur (\textit{code-mixing}) yang dia kembangkan mengklasifikasikan fenomena ini sebagai \textit{insertion}, \textit{alternation}, atau \textit{congruent lexicalization}, tergantung pola strukturalnya. Bagi mahasiswa Indonesia, ketiga pola hadir sekaligus. Bahasa campur bukan penyimpangan dari norma linguistik, melainkan norma itu sendiri. \textcite{wilie2020indonlu} dalam IndoNLU \textit{benchmark} mendokumentasikan bahwa tugas NLU Indonesia memerlukan perlakuan khusus untuk variasi register, dan \textcite{cahyawijaya2023nusacrowd} dengan NusaCrowd memperluas dokumentasi ini ke ratusan bahasa daerah yang muncul dalam campuran sehari-hari.
+
+Bahasa Indonesia baku yang dikodifikasi \textcite{alwi2003} berfungsi sebagai register formal dalam konteks akademik dan surat-menyurat. Di luar register tersebut, variasi ujaran dapat dianalisis melalui beberapa kelompok, seperti bahasa Indonesia standar, bahasa gaul, campuran bahasa daerah atau Inggris, dan ekspresi eufemistis untuk topik sensitif. Pengelompokan ini bersifat analitis, dan batas antarkelompok dapat tumpang tindih dan berubah mengikuti komunitas serta waktu.
+
+Ekspresi eufemistis memiliki relevansi khusus pada topik sensitif. \textcite{pendse2022} mendokumentasikan penggunaan ekspresi tidak langsung pada konteks budaya yang membawa stigma kesehatan mental. Sebagian pengguna dapat menyampaikan kondisi berat tanpa istilah klinis atau kata kunci eksplisit. Hal ini meningkatkan risiko \textit{false negative} pada deteksi berbasis leksikon, sementara perluasan leksikon yang terlalu luas dapat meningkatkan \textit{false positive} pada percakapan biasa.
+
+Variasi bahasa dapat ditangani melalui beberapa pendekatan, seperti pelatihan ulang, \textit{fine-tuning}, \textit{prompt} dengan contoh, leksikon, atau \textit{retrieval} dari sumber linguistik eksternal. \textcite{luo2023catastrophic} mengingatkan bahwa adaptasi model secara berulang dapat memicu \textit{catastrophic forgetting}, sedangkan pendekatan berbasis leksikon dan \textit{retrieval} bergantung pada cakupan serta pemutakhiran sumbernya. Tidak ada satu pendekatan yang bebas \textit{trade-off} antara kemampuan generalisasi, biaya, keterlacakan, dan pemeliharaan.
+
+Kajian tersebut menunjukkan bahwa evaluasi sistem percakapan berbahasa Indonesia perlu memasukkan variasi register dan bahasa campur, bukan hanya kalimat baku. Fokus pada mahasiswa merupakan salah satu pembatasan domain yang mungkin dilakukan karena komunitas ini memiliki konteks akademik dan kebiasaan bahasa tertentu. Bentuk kalibrasi komputasionalnya tetap merupakan keputusan rancangan yang dibahas pada BAB III.
+
+\section{Prinsip Arsitektur Perangkat Lunak untuk Sistem Pendamping}
+\label{sec:arsitektur}
+
+Chatbot pendamping umumnya melibatkan antarmuka pengguna, autentikasi, pemrosesan percakapan, penyimpanan data, dan mekanisme audit. Komponen tersebut dapat ditempatkan dalam satu layanan maupun dipisahkan ke beberapa layanan. Arsitektur monolitik menyederhanakan pengembangan dan transaksi pada skala kecil, sedangkan pemisahan layanan memberi batas tanggung jawab yang lebih tegas dengan biaya komunikasi dan observabilitas tambahan.
+
+\textcite{newman2021microservices} menjelaskan bahwa arsitektur \textit{microservices} berguna ketika layanan perlu berkembang relatif independen, tetapi juga menambah kompleksitas jaringan, deployment, dan konsistensi data, dengan \textcite{kleppmann2017ddia} menyebut kombinasi beberapa teknologi penyimpanan sesuai bentuk data dan pola aksesnya sebagai \textit{polyglot persistence}, pendekatan yang menghindari pemaksaan satu model data dengan konsekuensi kebutuhan sinkronisasi dan pemulihan ketika satu penyimpanan gagal. Pada sisi orkestrasi, aplikasi berbasis LLM dapat disusun melalui rantai prosedural, \textit{state machine}, atau agen yang memilih tindakan secara dinamis; dokumentasi LangGraph \parencite{langchainLanggraph2024} menunjukkan bagaimana \textit{state machine} membuat transisi lebih eksplisit dengan \textit{trade-off} pada keterlacakan, kemudahan pengujian, dan kemampuan menangani alur yang tidak diprediksi sebelumnya, dibanding keluwesan yang ditawarkan agen bebas.
+
+Aspek keamanan dan privasi melekat pada pilihan arsitektur tersebut. NIST AI Risk Management Framework menempatkan akuntabilitas dan audit sebagai prinsip penting pada sistem AI yang berinteraksi dengan domain berisiko \parencite{nistAirmf2023}. Audit trail membantu penelusuran keputusan, tetapi juga menghasilkan data tambahan yang perlu dilindungi dan dibatasi retensinya. Dengan demikian, keterlacakan dan minimisasi data perlu dipertimbangkan secara bersamaan.
+
+Kajian pada bab ini memperlihatkan bahwa setiap kemampuan chatbot pendamping membawa manfaat sekaligus batas. Respons empatik dapat terasa suportif tetapi tetap generik. Skrining percakapan dapat menurunkan hambatan tetapi berisiko mengaburkan batas diagnosis. Memori meningkatkan kontinuitas tetapi menambah persoalan relevansi dan privasi. Graf memperjelas hubungan tetapi membutuhkan ekstraksi serta pemeliharaan, sedangkan vektor fleksibel terhadap teks tetapi tidak menyimpan relasi sebagai struktur utama. Suara menurunkan hambatan bercerita, tetapi juga menambah latensi serta pengolahan data.
+
+Perlu ditegaskan secara eksplisit letak kebaruan tugas akhir ini di antara literatur yang dikaji, karena hampir seluruh komponen individualnya (POLE+O, RRF, MMR, \textit{state machine} percakapan, PHQ-9 \textit{conversational}) sudah pernah dipakai pada domain lain. Kebaruan yang diklaim di sini bukan pada penemuan algoritma baru, melainkan pada dua hal spesifik. Pertama, adaptasi skema POLE+O (Subbab~\ref{subsec:pole-o}) ke domain afektif dengan menambahkan simpul CBT (\textit{Experience}, \textit{Emotion}, \textit{Thought}, \textit{Behavior}, \textit{Trigger}) sekaligus relasi \textit{hot cross bun} (Subbab~\ref{subsec:hot-cross-bun-kg}) sebagai struktur graf utama, bukan sekadar sebagai metadata tambahan pada representasi vektor. Kombinasi spesifik ini belum ditemukan penulis pada sistem \textit{companionship chatbot} yang dikaji Tabel \ref{tab:perbandingan-sistem}. Kedua, operasi \textit{lifecycle} memori (\textit{supersession}, \textit{reappraisal}, penonaktifan \textit{trigger}) yang terikat langsung pada label distorsi kognitif CBT, sehingga pembaruan memori bukan sekadar menimpa fakta lama, melainkan mencatat proses berpikir pengguna berubah seiring waktu, properti yang secara konseptual berbeda dari model dwi-temporal umum (Subbab~\ref{subsec:bi-temporal}) yang menyimpan validitas fakta tanpa embel konteks terapeutik. Kombinasi kedua hal ini yang menjadi kontribusi rekayasa utama, sementara komponen \textit{retrieval} hibrid (RRF, \textit{graph reranker}, MMR) pada BAB III lebih tepat dibaca sebagai integrasi teknik matang yang sudah terbukti pada domain lain, bukan sebagai kebaruan tersendiri. BAB III menggunakan \textit{trade-off} tersebut untuk menetapkan keputusan rancangan sesuai tiga rumusan masalah.

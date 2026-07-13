@@ -1,4 +1,4 @@
-"""mgmt/modify"""
+"""mgmt"""
 
 from __future__ import annotations
 

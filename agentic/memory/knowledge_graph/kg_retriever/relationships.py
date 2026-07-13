@@ -1,4 +1,4 @@
-"""build edge sets"""
+"""init edge sets"""
 
 from __future__ import annotations
 
@@ -9,9 +9,9 @@ from agentic.memory.neo4j_client import get_client
 logger = logging.getLogger(__name__)
 
 
-# hot-cross bun chain
+# hot-cross bun
 
-# `exp`
+# exp
 
 async def link_experience_to_trigger(
     experience_id: str,
@@ -20,7 +20,7 @@ async def link_experience_to_trigger(
     confidence:    float = 0.85,
     source_message_id: str | None = None,
 ) -> None:
-    """triggered by"""
+    """skip error"""
     await get_client().execute_write(
         """
         MATCH (e:Experience {id: $exp_id})
@@ -60,7 +60,7 @@ async def link_experience_to_emotion(
     confidence:    float = 0.85,
     source_message_id: str | None = None,
 ) -> None:
-    """trigger emo"""
+    """emo"""
     await get_client().execute_write(
         """
         MATCH (e:Experience {id: $exp_id})
@@ -91,7 +91,7 @@ async def link_experience_to_emotion(
     )
 
 
-# thx 4 ur thoughts
+# thx 4 thoughts
 
 async def link_emotion_to_thought(
     emotion_id:  str,
@@ -100,7 +100,7 @@ async def link_emotion_to_thought(
     confidence:  float = 0.80,
     source_message_id: str | None = None,
 ) -> None:
-    """activated"""
+    """on"""
     await get_client().execute_write(
         """
         MATCH (em:Emotion {id: $emo_id})
@@ -131,7 +131,7 @@ async def link_emotion_to_thought(
     )
 
 
-# thoughts <-> feelings
+# feelings
 
 async def link_thought_emotion_association(
     thought_id:  str,
@@ -141,7 +141,7 @@ async def link_thought_emotion_association(
     confidence:  float = 0.80,
     source_message_id: str | None = None,
 ) -> None:
-    """Thoughts reinforce emotions, emo reinforce thoughts."""
+    """emoticon loop"""
     await get_client().execute_write(
         """
         MATCH (th:Thought {id: $th_id})
@@ -250,7 +250,7 @@ async def link_experience_to_subject(
     confidence:    float = 0.80,
     source_message_id: str | None = None,
 ) -> None:
-    """invokes subj"""
+    """skip"""
     await get_client().execute_write(
         """
         MATCH (e:Experience {id: $exp_id})
@@ -281,7 +281,7 @@ async def link_experience_to_subject(
     )
 
 
-# skip compat alias
+# skip compat
 link_experience_to_person = link_experience_to_subject
 
 
@@ -295,7 +295,7 @@ async def link_to_topic(
     confidence:    float = 0.75,
     source_message_id: str | None = None,
 ) -> None:
-    """hard-coded, skip, db, init, req"""
+    """skip, db, init, req"""
     if source_label not in ("Experience", "Emotion", "Thought"):
         raise ValueError(
             f"source_label must be 'Experience', 'Emotion', or 'Thought', got {source_label!r}"
@@ -331,7 +331,7 @@ async def link_to_topic(
     )
 
 
-# `check theme`
+# `check`
 
 async def link_user_recurring_theme(
     user_id:    str,
@@ -340,7 +340,7 @@ async def link_user_recurring_theme(
     confidence: float = 0.85,
     source_message_id: str | None = None,
 ) -> None:
-    """last_reinforced"""
+    """last reinforced"""
     await get_client().execute_write(
         """
         MATCH (u:User   {id: $user_id})
@@ -376,7 +376,7 @@ async def link_user_recurring_theme(
     )
 
 
-# memori
+# memori: memori
 
 async def link_session_to_memory(
     session_id:  str,
@@ -384,7 +384,7 @@ async def link_session_to_memory(
     confidence:  float = 1.0,
     source_message_id: str | None = None,
 ) -> None:
-    """write_memory, backfill, cross-session"""
+    """backfill, cross, mem"""
     await get_client().execute_write(
         """
         MATCH (s:Session {id: $session_id})
@@ -406,9 +406,9 @@ async def link_session_to_memory(
     )
 
 
-# maintain bi-temporal
+# maint bi-temp
 
-# edge_types = ['edge1', 'edge2'] validate_edge_types(edge_types)
+# `validate_edge_types`
 _INVALIDATABLE_EDGES: frozenset[str] = frozenset({
     # skip
     "TRIGGERED_BY",
@@ -416,7 +416,7 @@ _INVALIDATABLE_EDGES: frozenset[str] = frozenset({
     "ACTIVATED_THOUGHT",
     "ASSOCIATED_WITH",
     "LED_TO_BEHAVIOR",
-    # skip klo error
+    # skip error
     "EXPERIENCED",
     "FELT",
     "HAS_THOUGHT",
@@ -427,11 +427,11 @@ _INVALIDATABLE_EDGES: frozenset[str] = frozenset({
     "HAS_RECURRING_THEME",
     "HAS_MEMORY",
     "COMPLETED_ASSESSMENT",
-    # skip klo db
+    # skip db
     "HAD_EXPERIENCE",
     "RECORDED_EMOTION",
     "CONTAINS_MEMORY",
-    # skip klo error
+    # skip error
     "INVOLVES_SUBJECT",
     "INVOLVES_PERSON",             # kept for backward compat
     "RELATED_TO_TOPIC",
@@ -452,7 +452,7 @@ async def invalidate_edge(
             f"edge_type {edge_type!r} not in invalidation allow-list"
         )
 
-    # `limit labels to id chars`
+    # `limit to id`
     for arg_name, value in (("src_label", src_label), ("dst_label", dst_label)):
         if not value.isidentifier():
             raise ValueError(f"{arg_name} {value!r} is not a valid Neo4j label")

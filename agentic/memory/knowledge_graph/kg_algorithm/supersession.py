@@ -1,4 +1,4 @@
-"""resolusi kontradiksi: thought nodes."""
+"""solusi kontradikt: thought nodes."""
 
 from __future__ import annotations
 

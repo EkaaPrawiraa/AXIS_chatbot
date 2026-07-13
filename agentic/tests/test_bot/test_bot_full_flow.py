@@ -12,7 +12,7 @@ from dataclasses import dataclass, field
 from datetime import datetime, timedelta, timezone
 from typing import Any
 
-# disable real context_builder import
+# disable real import
 os.environ.setdefault("AGENTIC_DISABLE_CONTEXT_BUILDER", "1")
 
 from agentic.agent.audit.guardrail_events import (
@@ -69,7 +69,7 @@ class _FakeAIMessage:
 
 @dataclass
 class FakeChatLLM:
-    """generic chat LLM"""
+    """chat gpt"""
 
     calls: list[Any] = field(default_factory=list)
 
@@ -188,7 +188,7 @@ class FakeAssessmentRepo:
         self.pending = None
 
 
-# skip klo error
+# skip error
 
 
 @dataclass
@@ -215,7 +215,7 @@ class Bot:
     )
 
     async def turn(self, state: ConversationState) -> ConversationState:
-        # stt first audio_input
+        # stt audio_input
         if (state.get("voice_state") or {}).get("audio_input") is not None:
             state = await speech_to_text_node(
                 state, provider=self.stt, audit=self.audit,
@@ -246,7 +246,7 @@ class Bot:
             )
             ran_phq = True
 
-        # `stay silent`
+        # sikap diam
         if not (state.get("response_draft") or "").strip() and not state.get("final_response"):
             state = await response_generator_node(
                 state, llm=self.chat_llm, audit=self.audit,

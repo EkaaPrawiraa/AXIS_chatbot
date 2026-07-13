@@ -7,19 +7,12 @@ export const API_ROUTES = {
   
   MEMORIES: '/memories',
   MEMORY_DETAIL: '/memories/:id',
-  
-  REFLECTIONS: '/reflections',
-  REFLECTION_DETAIL: '/reflections/:id',
-  
+
   PROFILE: '/profile',
   PROFILE_UPDATE: '/profile',
-  
+
   HOTLINES: '/hotlines',
 
-  
-  INSIGHTS: '/insights',
-  INSIGHTS_GENERATE: '/insights/generate',
-  
   SETTINGS: '/settings',
 };
 
@@ -78,10 +71,6 @@ export const EMPTY_STATES = {
   NO_MEMORIES: {
     title: 'No memories yet',
     description: 'Memories will appear as you chat and reflect',
-  },
-  NO_REFLECTIONS: {
-    title: 'No reflections yet',
-    description: 'Begin a reflection to explore your feelings',
   },
   NO_HOTLINES: {
     title: 'No hotline resources',

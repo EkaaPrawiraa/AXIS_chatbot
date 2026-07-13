@@ -1,4 +1,4 @@
-"""retriever."""
+"""retrieve."""
 
 from __future__ import annotations
 

@@ -1,0 +1,190 @@
+% =====================================================================
+% preamble.tex
+% Konfigurasi global untuk Laporan Tugas Akhir IF ITB
+% Penulis: Mohammad Nugraha Eka Prawira (NIM 13522001)
+% =====================================================================
+
+% --- Encoding dan bahasa ---
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+% Catatan: babel-indonesian mungkin perlu diinstall pada beberapa distribusi TeX Live.
+% Jika tersedia, ganti opsi babel di bawah dengan [english,indonesian] dan
+% Catatan: babel-indonesian diaktifkan agar daftar gambar, tabel,
+% dan translasi sitasi (seperti dkk.) bekerja secara otomatis.
+\usepackage[english,indonesian]{babel}
+
+% --- Judul daftar dengan huruf kapital penuh (pedoman ITB: judul utama BESAR + BOLD) ---
+\addto\captionsindonesian{%
+  \renewcommand{\contentsname}{DAFTAR ISI}%
+  \renewcommand{\listfigurename}{DAFTAR GAMBAR}%
+  \renewcommand{\listtablename}{DAFTAR TABEL}%
+}
+
+% --- Font ---
+\usepackage{mathptmx}        % Times New Roman untuk teks dan matematika
+\usepackage[scaled=0.9]{helvet}
+\usepackage{courier}
+
+% --- Geometri halaman (Pedoman ITB: top 3cm, bottom 3cm, left 4cm, right 3cm) ---
+\usepackage[a4paper,top=3cm,bottom=3cm,left=4cm,right=3cm]{geometry}
+
+% --- Spasi dan paragraf ---
+\usepackage{setspace}
+% \usepackage{indentfirst} % Dihapus karena tidak ingin ada indent
+\setlength{\parindent}{0pt} % Tidak ada indent pada awal paragraf
+\setlength{\parskip}{0.8em} % Jarak antar paragraf agar batas paragraf tetap terlihat
+
+% --- Heading customization (ITB style) ---
+\usepackage{titlesec}
+\renewcommand{\thechapter}{\Roman{chapter}}
+\renewcommand{\thesection}{\thechapter.\arabic{section}}
+\renewcommand{\thesubsection}{\thesection.\arabic{subsection}}
+\renewcommand{\thesubsubsection}{\thesubsection.\arabic{subsubsection}}
+
+% Pedoman ITB: judul utama (judul bab) ukuran 14pt, BESAR + BOLD
+\titleformat{\chapter}[display]
+  {\normalfont\bfseries\centering}
+  {\fontsize{14}{17}\selectfont BAB \thechapter}
+  {6pt}
+  {\fontsize{14}{17}\selectfont}
+\titlespacing*{\chapter}{0pt}{*-2}{20pt}
+
+\titleformat{\section}
+  {\normalfont\fontsize{13}{16}\selectfont\bfseries}
+  {\thesection}{1em}{}
+\titleformat{\subsection}
+  {\normalfont\normalsize\bfseries}
+  {\thesubsection}{1em}{}
+\titleformat{\subsubsection}
+  {\normalfont\normalsize\bfseries\itshape}
+  {\thesubsubsection}{1em}{}
+
+% --- Daftar isi, gambar, tabel ---
+\usepackage[titles]{tocloft}
+\usepackage{tocbibind}
+
+\setcounter{tocdepth}{3}
+\setcounter{secnumdepth}{3}
+
+% DAFTAR ISI: prefix "BAB" untuk entri chapter (diaktifkan via \addtocontents di main.tex)
+\setlength{\cftchapnumwidth}{4em}
+% Aktifkan dot leader untuk entri chapter (DAFTAR ISI, BAB I, dst.)
+\renewcommand{\cftchapleader}{\cftdotfill{\cftchapdotsep}}
+\renewcommand{\cftchapdotsep}{\cftdotsep}
+
+% Perlebar numwidth tiap level agar "III.10" – "III.13.3" tidak overflow
+\setlength{\cftsecindent}{1.5em}
+\setlength{\cftsecnumwidth}{3.5em}
+% Subsection: "III.10.1" perlu ±4.5em; indent = sec_indent + sec_numwidth
+\setlength{\cftsubsecindent}{5em}
+\setlength{\cftsubsecnumwidth}{4.5em}
+% Subsubsection: tetap lebih masuk dari subsection, tetapi tidak terlalu menjorok.
+\setlength{\cftsubsubsecindent}{6.8em}
+\setlength{\cftsubsubsecnumwidth}{5em}
+
+% DAFTAR GAMBAR: prefix "Gambar" sebelum nomor (misal: "Gambar III.1")
+\setlength{\cftfigindent}{0em}
+\renewcommand{\cftfigpresnum}{Gambar }
+\setlength{\cftfignumwidth}{6.6em}
+
+% DAFTAR TABEL: prefix "Tabel" sebelum nomor (misal: "Tabel III.1")
+\setlength{\cfttabindent}{0em}
+\renewcommand{\cfttabpresnum}{Tabel }
+\setlength{\cfttabnumwidth}{5.6em}
+
+% DAFTAR LAMPIRAN: otomatis via \listoflampiran (baca dari file .loa)
+\newlistof{lampiran}{loa}{DAFTAR LAMPIRAN}
+\setlength{\cftlampiranindent}{0em}
+\setlength{\cftlampirannumwidth}{6.8em}
+\renewcommand{\cftlampiranpresnum}{Lampiran }
+\renewcommand{\cftlampiranaftersnum}{.}
+\renewcommand{\cftlampiranfont}{\bfseries}
+\renewcommand{\cftlampiranpagefont}{\bfseries}
+\renewcommand{\cftlampiranleader}{\cftdotfill{\cftlampirandotsep}}
+\renewcommand{\cftlampirandotsep}{\cftdotsep}
+
+% DAFTAR LAMPIRAN level-2: subbab di dalam tiap Lampiran (\section di lampiran.tex)
+\newlistentry[lampiran]{lampiransub}{loa}{1}
+\setcounter{loadepth}{2}
+\setlength{\cftlampiransubindent}{1.8em}
+\setlength{\cftlampiransubnumwidth}{3em}
+\renewcommand{\cftlampiransubfont}{\normalfont}
+\renewcommand{\cftlampiransubpagefont}{\normalfont}
+\renewcommand{\cftlampiransubleader}{\cftdotfill{\cftlampiransubdotsep}}
+\renewcommand{\cftlampiransubdotsep}{\cftdotsep}
+\renewcommand{\cftlampiransubaftersnumb}{}
+
+% --- Gambar dan tabel ---
+\usepackage{graphicx}
+\graphicspath{{figures/}}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,fit,backgrounds,patterns}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepackage{caption}
+\usepackage{pdflscape}
+\captionsetup{labelsep=period,font=small}
+
+% Penomoran eksplisit dengan format Roman (Bab)
+\renewcommand{\thefigure}{\thechapter.\arabic{figure}}
+\renewcommand{\thetable}{\thechapter.\arabic{table}}
+\renewcommand{\theequation}{\thechapter.\arabic{equation}}
+
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{tabularx}
+\usepackage{fvextra}
+
+% Kolom tabel bergaris penuh menyerap ruang lebih banyak dari garis vertikal;
+% perkecil padding sel agar kolom sempit (mis. kamus atribut node) tidak overfull.
+\setlength{\tabcolsep}{4pt}
+
+% --- Daftar terurut ---
+\usepackage{enumitem}
+\setlist[itemize]{leftmargin=*,topsep=2pt,itemsep=0pt}
+\setlist[enumerate]{leftmargin=*,topsep=2pt,itemsep=0pt}
+
+% --- Hyperlink dan referensi ---
+\usepackage[
+  colorlinks=true,
+  linkcolor=black,
+  citecolor=black,
+  urlcolor=black,
+  pdftitle={Pengembangan Arsitektur Perangkat Lunak Companionship Chatbot},
+  pdfauthor={Mohammad Nugraha Eka Prawira}
+]{hyperref}
+
+% --- Bibliografi dengan natbib + plainnat ---
+\usepackage[round,authoryear,sort&compress]{natbib}
+\bibliographystyle{bibliography/itbnat}
+\let\textcite\citet
+\let\parencite\citep
+
+% --- Utilities ---
+\usepackage[table]{xcolor}
+\usepackage{microtype}
+
+% Warna abu-abu untuk baris header tabel, mengikuti contoh pada pedoman penulisan TA
+\definecolor{tableheadgray}{gray}{0.8}
+% Toleransi akhir untuk paragraf yang memuat literal \texttt panjang (mengurangi overfull)
+\setlength{\emergencystretch}{3em}
+% Izinkan pemenggalan baris setelah underscore pada identifier kode (mis. \texttt{nama_panjang})
+\makeatletter
+\let\@origunderscore\_
+\renewcommand{\_}{\@origunderscore\allowbreak}
+\makeatother
+\usepackage{csquotes}
+\DeclareQuoteStyle{indonesian}
+  {\quotedblleft}{\quotedblright}
+  {\quoteleft}{\quoteright}
+
+% --- Header dan footer kosong (ITB standar) ---
+\usepackage{fancyhdr}
+\pagestyle{plain}
+
+% --- Header chapter tidak boleh kosong di halaman pertama bab ---
+\makeatletter
+\let\ps@plain\ps@plain
+\makeatother

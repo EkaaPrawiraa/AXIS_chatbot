@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 
 async def write_topic(inp: TopicInput) -> str:
-    """Upsert node & wire to User via (User)-[:HAS_RECURRING_THEME]->(Topic). Merge by lowercasing name, keep sentiment avg."""
+    """Upsert node & wire to User via (User)-[:HAS_RECURRING_THEME]->(Topic). Merge by l."""
     _require(inp.name,       "name")
     _require(inp.user_id,    "user_id")
     _require(inp.session_id, "session_id")
@@ -74,7 +74,7 @@ async def write_topic(inp: TopicInput) -> str:
         },
     )
 
-    # exec_write returns list of dicts.
+    # exec_write returns dicts.
     if result and result[0].get("topic_id"):
         return str(result[0]["topic_id"])
 

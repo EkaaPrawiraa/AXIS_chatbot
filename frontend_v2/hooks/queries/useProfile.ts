@@ -12,14 +12,3 @@ export function useProfile(userId: ID | null, enabled: boolean = true) {
     enabled: !!userId && enabled,
   });
 }
-
-export function usePersonalityInsights(userId: ID | null, enabled: boolean = true) {
-  return useQuery<any>({
-    queryKey: ['profile', userId, 'insights'],
-    queryFn: () => {
-      if (!userId) throw new Error('User ID is required');
-      return profileAPI.getPersonalityInsights(userId);
-    },
-    enabled: !!userId && enabled,
-  });
-}

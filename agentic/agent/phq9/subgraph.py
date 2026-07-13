@@ -144,7 +144,7 @@ async def _persist_progress(
     session_id: str,
     phq9: dict[str, Any],
 ) -> None:
-    """upsert, log fail, continue."""
+    """upsert, log fail, cont."""
     if not user_id or not session_id:
         return
     try:
@@ -163,7 +163,7 @@ async def _clear_progress(
     user_id: str,
     session_id: str,
 ) -> None:
-    """drop row run ends"""
+    """drop row"""
     if not user_id or not session_id:
         return
     try:
@@ -195,13 +195,13 @@ async def _schedule_declined_retry(
 
 # explain_req
 _EXPLANATION_CUES_ID: tuple[re.Pattern[str], ...] = (
-    # skip klo error
+    # skip error
     re.compile(r"\b(maksudnya|maksud pertanyaannya|gimana maksudnya)\b", re.IGNORECASE),
     re.compile(r"\b(apa (sih )?(yang )?dimaksud)\b", re.IGNORECASE),
     re.compile(r"\b(apa artinya|artinya apa)\b", re.IGNORECASE),
     re.compile(r"\b(jelaskan|definisi|jelasin)\b", re.IGNORECASE),
     re.compile(r"\b(bisa (di)?(per)?jelas(kan|in)?)\b", re.IGNORECASE),
-    # skip klo error
+    # skip error
     re.compile(r"\b(gimana maksudnya|gimana sih|maksudnya gimana)\b", re.IGNORECASE),
     re.compile(r"\b(ga|gak|nggak|engga|enggak)\s+(ngerti|paham|jelas)\b", re.IGNORECASE),
     re.compile(r"\bbingung\b", re.IGNORECASE),
@@ -275,6 +275,7 @@ async def _node_decision(
 
     if _is_decline(reply, language):
         phq9["phase"] = "declined"
+        state["response_draft"] = _decline_message(language)
         _commit(state, phq9)
         state["phq9_declined_note"] = True  # type: ignore[typeddict-unknown-key]
         await _clear_progress(repo, user_id, session_id)
@@ -305,7 +306,7 @@ def _accept_and_start_item1(
     phq9: dict[str, Any],
     language: str,
 ) -> ConversationState:
-    """nginput 'greeting' + 'pertama'."""
+    """nginput 'greeting' 'pertama"""
     phq9["phase"] = "in_progress"
     phq9["active_item"] = 1
     phq9["responses"] = {}
@@ -319,7 +320,7 @@ def _accept_and_start_item1(
     return state
 
 
-# item delivery 1..9
+# skip 1..9
 
 
 async def _node_item(
@@ -363,7 +364,7 @@ async def _node_item(
         llm=judge_llm,
     )
 
-    # safety override
+    # safety_override
     action = outcome.action
     if item_id == ITEM9_INDEX_ONE_BASED and action != JudgeAction.STOP:
         action = JudgeAction.ADVANCE
@@ -414,13 +415,13 @@ async def _node_item(
         phq9["back_count"] = int(phq9.get("back_count", 0)) + 1
         phq9["active_item"] = target
         phq9["awaiting_clarification"] = False
-        # re-paint target.
+        # paint target
         state["response_draft"] = build_item_prompt(target, language)
         _commit(state, phq9)
         await _persist_progress(repo, user_id, session_id, phq9)
         return state
 
-    # buat nyimpen config, skip error, init state.
+    # buat nyimpen, skip error, init.
     responses = dict(phq9.get("responses") or {})
     response_source = (
         ResponseSource.BUTTON
@@ -435,7 +436,7 @@ async def _node_item(
     }
     phq9["responses"] = responses
     phq9["awaiting_clarification"] = False
-    # `skip re-read`
+    # skip re-read, init state
     _commit(state, phq9)
 
     if item_id < NUM_ITEMS:
@@ -448,7 +449,7 @@ async def _node_item(
             + build_item_prompt(next_id, language)
         )
         _commit(state, phq9)
-        # buat nyimpan progress di server
+        # buat nyimpan di server
         await _persist_progress(repo, user_id, session_id, phq9)
         return state
 
@@ -509,7 +510,7 @@ async def _node_finalize(
     try:
         await repo.save_phq9_result(result)
         await repo.clear_retry(user_id)
-        # run in-flight row.
+        # in-flight-row
         await _clear_progress(repo, user_id, session_id)
     except Exception as exc:
         logger.exception("phq9 persist failed: %s", exc)
@@ -563,7 +564,7 @@ def build_phq9_subgraph(
     feedback_llm: Any | None = None,
     audit: GuardrailLogger | None = None,
 ) -> Any:
-    """const { compile } = require('langgraph'); const { CompiledGraph } = require('langgraph/dist/compiledGraph');  const phq9Subgraph = compile('PHQ-9 subgraph logic'); const compiledGraph = new CompiledGraph(phq9Subgraph);  const node"""
+    """const { compile } = require('langgraph'); const { CompiledGraph } = require('langgraph/dist/compiledGraph'); const phq9Subgraph = compile('PHQ-9 subgraph logic'); const compiledGraph = new CompiledGraph(phq9Subgraph); const node"""
     from langgraph.graph import END, StateGraph  # type: ignore[import-not-found]
 
     audit = audit or NullGuardrailLogger()
@@ -605,7 +606,7 @@ def build_phq9_subgraph(
     return g.compile()
 
 
-# plain-py-wrapper
+# plain-py-wr
 
 
 async def phq9_subgraph_node(
@@ -617,7 +618,7 @@ async def phq9_subgraph_node(
     feedback_llm: Any | None = None,
     audit: GuardrailLogger | None = None,
 ) -> ConversationState:
-    """run phq9 subgraph"""
+    """run subgraph"""
     audit = audit or NullGuardrailLogger()
     phase = (state.get("phq9_state") or {}).get("phase", "idle")
     if phase == "offer_pending":

@@ -45,6 +45,26 @@ async def ensure_user_exists(user_id: str) -> None:
     finally:
         conn.close()
 
+def insert_message(*, session_id: str, user_id: str, role: str, content: str, turn_index: int) -> str:
+    """Persist a real messages row so ChatGraphService.invoke() has a valid
+    current_message_id to hang the agentic_graph_audits trace off of --
+    without this, persist_graph_audit() silently no-ops on the FK check
+    (same fix applied in evaluate.py's _insert_message)."""
+    message_id = str(uuid.uuid4())
+    conn = psycopg2.connect(DATABASE_URL)
+    try:
+        with conn.cursor() as cur:
+            cur.execute(
+                "INSERT INTO messages (id, session_id, user_id, role, content, turn_index) "
+                "VALUES (%s, %s, %s, %s, %s, %s)",
+                (message_id, session_id, user_id, role, content, turn_index),
+            )
+            conn.commit()
+    finally:
+        conn.close()
+    return message_id
+
+
 async def ensure_session_exists(user_id: str, session_id: str) -> None:
     conn = psycopg2.connect(DATABASE_URL)
     try:
@@ -161,22 +181,42 @@ async def run_axis_eval(turns: int, user_id: str):
     transcript.append({"role": "user", "content": initial_msg})
     
     axis_messages = []
-    
+    cbt_state = None
+    phq9_state = None
+    # cbt_state/phq9_state must be threaded turn-to-turn: ChatGraphService.invoke()
+    # is stateless per request (agentic/gateway/service/chat_graph.py
+    # _request_to_state only applies request.cbt_state/phq9_state if given), so
+    # without this every turn starts from an empty CBT/PHQ-9 state -- confirmed
+    # via a real 2-session run on 2026-07-13 to fully block CBT technique
+    # escalation and repeatedly re-trigger PHQ-9 gating. evaluate.py already
+    # does this correctly; this brings run_axis_eval in line with it.
+    turn_index = 0
+
+    initial_msg_id = insert_message(
+        session_id=SESSION_ID, user_id=user_id, role="user",
+        content=initial_msg, turn_index=turn_index,
+    )
+    turn_index += 1
+    current_message_id = initial_msg_id
+
     for i in range(turns):
         print(f"\nTurn {i+1}/{turns}")
-        
+
         axis_messages.append(ChatMessage(role="user", content=transcript[-1]["content"]))
-        
+
         req = ChatTurnRequest(
             user_id=user_id,
             session_id=SESSION_ID,
+            current_message_id=current_message_id,
             current_message=transcript[-1]["content"],
             messages=axis_messages,
             session_turn=i+1,
             language_pref="id",
-            confession_mode=False
+            confession_mode=False,
+            cbt_state=cbt_state,
+            phq9_state=phq9_state,
         )
-        
+
         start_t = asyncio.get_event_loop().time()
         await service._get_graph()
         try:
@@ -185,23 +225,35 @@ async def run_axis_eval(turns: int, user_id: str):
             print(f"[axis] invoke failed: {e}")
             raise
         elapsed_ms = int((asyncio.get_event_loop().time() - start_t) * 1000)
-        
+        cbt_state = resp.cbt_state
+        phq9_state = resp.phq9_state
+
         print(f"AXIS: {resp.reply}")
         transcript.append({"role": "assistant", "content": resp.reply, "metadata": {"latency_ms": elapsed_ms}})
         axis_messages.append(ChatMessage(role="assistant", content=resp.reply))
-        
+        assistant_msg_id = insert_message(
+            session_id=SESSION_ID, user_id=user_id, role="assistant",
+            content=resp.reply, turn_index=turn_index,
+        )
+        turn_index += 1
+
         if i < turns - 1:
             user_reply = await generate_simulated_user_reply(transcript)
             print(f"Budi: {user_reply}")
             transcript.append({"role": "user", "content": user_reply})
-            
+            current_message_id = insert_message(
+                session_id=SESSION_ID, user_id=user_id, role="user",
+                content=user_reply, turn_index=turn_index,
+            )
+            turn_index += 1
+
     save_transcript("axis", transcript, user_id)
 
 
 async def main():
     parser = argparse.ArgumentParser(description="Automated Chatbot Evaluation Simulator")
     parser.add_argument("--mode", choices=["baseline", "axis", "all"], default="all", help="Which chatbot to evaluate")
-    parser.add_argument("--turns", type=int, default=10, help="Number of turns to simulate")
+    parser.add_argument("--turns", type=int, default=20, help="Number of turns to simulate")
     parser.add_argument("--user-id", type=str, default="00000000-0000-0000-0000-000000000003", help="UUID of the simulated user")
     args = parser.parse_args()
     

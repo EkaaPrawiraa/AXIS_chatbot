@@ -1,4 +1,4 @@
-"""async neo4j driver wrapper"""
+"""async neo4j wrapper"""
 
 from __future__ import annotations
 
@@ -25,7 +25,7 @@ class Neo4jConfig:
 
     @classmethod
     def from_env(cls) -> "Neo4jConfig":
-        """Load config from env."""
+        """load config from env."""
         return cls(
             uri=os.getenv("NEO4J_URI", "bolt://localhost:7687"),
             username=os.getenv("NEO4J_USERNAME", "neo4j"),
@@ -37,7 +37,7 @@ class Neo4jConfig:
 
 
 class Neo4jClient:
-    """client = await Neo4jClient.create()     await client.execute_write(query, params)     await client.close()"""
+    """buat nyimpen config, skip error, db conn, init state, ngambil data, req payload"""
 
     def __init__(self, driver: AsyncDriver, config: Neo4jConfig) -> None:
         self._driver = driver
@@ -54,7 +54,7 @@ class Neo4jClient:
             auth=(cfg.username, cfg.password),
             max_connection_pool_size=cfg.max_connection_pool_size,
         )
-        # check conn
+        # db conn
         await driver.verify_connectivity()
         logger.info("Neo4j connected: %s (db=%s)", cfg.uri, cfg.database)
         return cls(driver, cfg)
@@ -86,11 +86,11 @@ class Neo4jClient:
             logger.warning("Neo4j health check failed: %s", exc)
             return False
 
-    # sess helpers
+    # set sess
 
     @asynccontextmanager
     async def write_session(self) -> AsyncGenerator[AsyncSession, None]:
-        """async with"""
+        """async with db"""
         async with self._driver.session(
             database=self._config.database,
             default_access_mode="WRITE",
@@ -99,21 +99,21 @@ class Neo4jClient:
 
     @asynccontextmanager
     async def read_session(self) -> AsyncGenerator[AsyncSession, None]:
-        """initiate read"""
+        """init read"""
         async with self._driver.session(
             database=self._config.database,
             default_access_mode="READ",
         ) as session:
             yield session
 
-    # exec helpers
+    # exec hlp
 
     async def execute_write(
         self,
         query: str,
         params: dict[str, Any] | None = None,
     ) -> list[dict[str, Any]]:
-        """run_write_query() return records"""
+        """records"""
         async with self.write_session() as session:
             result = await session.run(query, params or {})
             records = await result.data()
@@ -124,7 +124,7 @@ class Neo4jClient:
         query: str,
         params: dict[str, Any] | None = None,
     ) -> list[dict[str, Any]]:
-        """run read query, return dict list."""
+        """retorn dict list."""
         async with self.read_session() as session:
             result = await session.run(query, params or {})
             records = await result.data()
@@ -135,7 +135,7 @@ class Neo4jClient:
         query: str,
         params: dict[str, Any] | None = None,
     ) -> dict[str, Any] | None:
-        """write query, return first record, or None."""
+        """query, return first, or None."""
         records = await self.execute_write(query, params)
         return records[0] if records else None
 
@@ -144,25 +144,25 @@ class Neo4jClient:
         query: str,
         params: dict[str, Any] | None = None,
     ) -> dict[str, Any] | None:
-        """`run read qry & return 1st record or None`"""
+        """`ambil 1 data`"""
         records = await self.execute_read(query, params)
         return records[0] if records else None
 
 
-# singleton agen
+# singleton agen buat
 
 _client: Neo4jClient | None = None
 
 
 async def init_client(config: Neo4jConfig | None = None) -> Neo4jClient:
-    """init client"""
+    """init cli"""
     global _client
     _client = await Neo4jClient.create(config)
     return _client
 
 
 def get_client() -> Neo4jClient:
-    """retornin client instansie. lupa coba init_client() dulu."""
+    """init_client() lupa."""
     if _client is None:
         raise RuntimeError(
             "Neo4j client not initialized. "
@@ -172,16 +172,16 @@ def get_client() -> Neo4jClient:
 
 
 async def close_client() -> None:
-    """call shutdown"""
+    """shut down"""
     global _client
     if _client is not None:
         await _client.close()
         _client = None
 
 
-# Idle-flush long-term mem worker
+# idle-flush-mem-worker
 
-# override via env vars or args
+# override via env or args
 DEFAULT_IDLE_FLUSH_INTERVAL_SECONDS: int = 60 * 60   # run every hour
 DEFAULT_USER_IDLE_THRESHOLD_MINUTES: int = 60        # consider idle after 60 min
 
@@ -193,7 +193,7 @@ async def find_idle_sessions(
     idle_minutes: int = DEFAULT_USER_IDLE_THRESHOLD_MINUTES,
     limit: int = 100,
 ) -> list[dict[str, str]]:
-    """for s in sessions:     if s.owner.is_idle() and not s.is_summarized():         s.summarize_memory()"""
+    """summarize s in s.sessions if idle and not summarized"""
     client = get_client()
     records = await client.execute_read(
         """
@@ -223,7 +223,7 @@ async def find_idle_sessions(
 
 
 async def mark_session_flushed(session_id: str) -> None:
-    """set `flushed_at`"""
+    """flushed_at"""
     await get_client().execute_write(
         """
         MATCH (s:Session {id: $session_id})
@@ -238,7 +238,7 @@ async def run_idle_memory_flush(
     idle_minutes: int = DEFAULT_USER_IDLE_THRESHOLD_MINUTES,
     batch_size: int = 100,
 ) -> dict[str, int]:
-    """find idle, flush, log failures"""
+    """log fls, idll idle"""
     sessions = await find_idle_sessions(
         idle_minutes=idle_minutes,
         limit=batch_size,
@@ -264,7 +264,7 @@ async def run_idle_memory_flush(
     return {"found": len(sessions), "flushed": flushed, "failed": failed}
 
 
-# keep track of worker task
+# init task
 _idle_worker_task: asyncio.Task[None] | None = None
 
 
@@ -274,7 +274,7 @@ async def _idle_memory_worker_loop(
     idle_minutes: int,
     batch_size: int,
 ) -> None:
-    """loop ngikut"""
+    """loop kalo ngikut"""
     logger.info(
         "Idle memory worker started: interval=%ds idle_threshold=%dmin",
         interval_seconds, idle_minutes,
@@ -302,7 +302,7 @@ def start_idle_memory_worker(
     idle_minutes: int = DEFAULT_USER_IDLE_THRESHOLD_MINUTES,
     batch_size: int = 100,
 ) -> asyncio.Task[None]:
-    """start idle-flush bg worker"""
+    """idle-flush bg"""
     global _idle_worker_task
     if _idle_worker_task is not None and not _idle_worker_task.done():
         logger.warning("Idle memory worker already running, returning existing task.")

@@ -25,7 +25,7 @@ logger = logging.getLogger(__name__)
 
 
 def _get_service(request: Request) -> ChatGraphService:
-    """set singleton svc"""
+    """set svc singleton"""
     return request.app.state.chat_service
 
 
@@ -36,7 +36,7 @@ voice_router = APIRouter(prefix="/voice", tags=["voice"])
 
 @router.get("/health", include_in_schema=False)
 async def chat_health() -> dict[str, str]:
-    """`liveness probe`"""
+    """`check alive`"""
     return {"status": "ok"}
 
 
@@ -50,7 +50,7 @@ async def invoke(
     request: Request,
     service: ChatGraphService = Depends(_get_service),
 ) -> ChatTurnResponse:
-    """execute one turn, return full resp."""
+    """exec one turn, return full resp."""
     req_id = getattr(request.state, "request_id", "-")
     logger.info(
         "invoke user=%s session=%s req_id=%s",
@@ -88,7 +88,7 @@ async def stream(
     request: Request,
     service: ChatGraphService = Depends(_get_service),
 ) -> EventSourceResponse:
-    """const { ChatTurnResponse } = require('langGraph'); const { done, error } = ChatTurnResponse;  done.then((response) => {   // Update state }).catch((err) => {   // Handle error });"""
+    """const { ChatTurnResponse } = require('langGraph'); done.then((response) => {   // Update state }).catch((err) => {   // Handle error });"""
     req_id = getattr(request.state, "request_id", "-")
     logger.info(
         "stream start user=%s session=%s req_id=%s",
@@ -167,6 +167,6 @@ async def transcribe_speech(
 
 
 def register_chat_routes(app) -> None:
-    """chat router"""
+    """chat ngir"""
     app.include_router(router)
     app.include_router(voice_router)

@@ -82,7 +82,15 @@ system: |
                           activation but reasoning is still available.
                           Prefer this over reframe when the affect is
                           high; reasoning under acute affect is poorly
-                          received (Linehan 1993).
+                          received (Linehan 1993). Even when you pick
+                          grounding, if the same message also voices a
+                          clear cognitive distortion (catastrophizing,
+                          labeling, etc.), still copy that distortion
+                          name into the "distortion" field below -- do
+                          not leave it null just because grounding is
+                          the technique for this turn. The distortion
+                          is not addressed by grounding and needs to be
+                          revisited once the acute affect has settled.
 
     psychoeducation     - the user asks a definition question or wants
                           to understand a concept (CBT, distortion,
@@ -115,6 +123,15 @@ system: |
                        hidup", "burnout"). Use these as soft hints when
                        choosing grounding or self_compassion.
     * recent_turns:    last few exchanges for short term continuity.
+    * turns_since_technique: how many consecutive turns picked validate
+                       or none since the last real technique. A code
+                       level rule (not this judge) already escalates to
+                       reframe once this is high and an unresolved
+                       distortion is on record, so you do not need to
+                       infer that yourself -- just use it as a soft hint
+                       that if the user is still visibly stuck on the
+                       same thought, validate for its own sake is
+                       probably not the right call.
 
   Routing rules in priority order:
 

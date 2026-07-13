@@ -11,7 +11,7 @@ from agentic.agent.state import OutputModality, TTSModelChoice
 
 
 class ChatMessage(BaseModel):
-    """get last msg"""
+    """ambil last msg"""
 
     role: Literal["user", "assistant", "system"]
     content: str
@@ -19,7 +19,7 @@ class ChatMessage(BaseModel):
 
 
 class VoiceTurnRequest(BaseModel):
-    """VoiceInputs: VoiceState."""
+    """init state"""
 
     output_modality: OutputModality = "text"
     audio_input_base64: str | None = None
@@ -40,19 +40,20 @@ class VoiceTurnRequest(BaseModel):
         return self
 
     def decoded_audio_input(self) -> bytes | str | None:
-        """ret bytes audio, url/path, or None."""
+        """ret bytes, url, or None."""
         if self.audio_input_base64:
             return base64.b64decode(self.audio_input_base64)
         return self.audio_input_url
 
 
 class ChatTurnRequest(BaseModel):
-    """backend-authorized user to LangGraph"""
+    """backend-authorized"""
 
     model_config = ConfigDict(extra="forbid")
 
     user_id: str
     session_id: str
+    current_message_id: str | None = None
     current_message: str | None = None
     messages: list[ChatMessage] = Field(default_factory=list)
     session_turn: int = 0
@@ -87,7 +88,7 @@ class ChatTurnRequest(BaseModel):
 
 
 class VoiceTurnResponse(BaseModel):
-    """ngambil grafik"""
+    """ambil grafik"""
 
     transcript: str | None = None
     transcript_confidence: float | None = None
@@ -97,7 +98,7 @@ class VoiceTurnResponse(BaseModel):
     voice_provider_id: str | None = None
     speech_response: str | None = None
     speech_response_tags: str | None = None
-    # `str`, not `TTSModelChoice`: restrict to `which mode`.
+    # `mode` only.
     tts_model: str | None = None
     tts_provider: str | None = None
     tts_streaming: bool | None = None
@@ -108,7 +109,7 @@ class VoiceTurnResponse(BaseModel):
 
 
 class SynthesizeSpeechRequest(BaseModel):
-    """play msg outside chat turn"""
+    """skip chat msg"""
 
     text: str
     voice_id: str | None = None
@@ -117,7 +118,7 @@ class SynthesizeSpeechRequest(BaseModel):
 
 
 class SynthesizeSpeechResponse(BaseModel):
-    """buat json respon"""
+    """buat json"""
 
     audio_output_base64: str | None = None
     audio_output_url: str | None = None
@@ -130,7 +131,7 @@ class SynthesizeSpeechResponse(BaseModel):
 
 
 class TranscribeSpeechRequest(BaseModel):
-    """skip llm reply"""
+    """skip llm"""
 
     audio_base64: str
     audio_mime: str | None = None
@@ -147,7 +148,7 @@ class TranscribeSpeechResponse(BaseModel):
 
 
 class ChatTurnResponse(BaseModel):
-    """res grafik."""
+    """grafik ngambil."""
 
     user_id: str
     session_id: str

@@ -5,15 +5,6 @@ export type ReflectionPreference = 'guided' | 'exploratory' | 'minimal';
 export type PreferredResponseModel = 'gpt-5.5' | 'gpt-5.4-nano';
 export type Gender = 'pria' | 'wanita';
 
-export interface PersonalityInsight {
-  openness: number; // 0-100
-  conscientiousness: number;
-  extraversion: number;
-  agreeableness: number;
-  neuroticism: number;
-  descriptions: string[]; // Human-readable interpretations
-}
-
 export interface UserProfile extends BaseEntity {
   userId: ID;
   name: string;
@@ -29,7 +20,6 @@ export interface UserProfile extends BaseEntity {
   safetyTermsAccepted?: boolean;
   safetyTermsVersion?: string;
   safetyTermsAcceptedAt?: number;
-  personalityInsight?: PersonalityInsight;
   bio?: string;
   goals?: string[];
 }

@@ -1,4 +1,4 @@
-"""buat regression"""
+"""buat reg"""
 
 from agentic.agent.phq9.judge import _rule_based_score
 

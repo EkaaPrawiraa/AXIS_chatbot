@@ -154,5 +154,5 @@ system: |
 
   RATE_LIMITS:
     max_turns_per_hour: 30
-    max_sessions_per_day: 8
-    max_sessions_per_week: 20
+    max_messages_per_day: 100
+    max_sessions_per_day: 10

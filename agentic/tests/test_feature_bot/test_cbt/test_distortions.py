@@ -1,4 +1,4 @@
-"""test distorsiun otak"""
+"""test otak"""
 
 from __future__ import annotations
 
@@ -57,3 +57,7 @@ class TestDetector:
 
     def test_empty_returns_none(self) -> None:
         assert detect_distortion_in_text("") is None
+
+    def test_cue_does_not_match_inside_longer_word(self) -> None:
+        """skip klo error"""
+        assert detect_distortion_in_text("itu kewajiban semua warga negara") is None

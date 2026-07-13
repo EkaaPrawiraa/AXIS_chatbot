@@ -1,9 +1,9 @@
-"""shared validate & map lbl-to-table for pgvector adapter"""
+"""validate & map lbl-to-table"""
 
 from __future__ import annotations
 
 
-# buat nyimpen mapping label table.
+# buat nyimpan mapping.
 
 LABEL_TO_TABLE: dict[str, str] = {
     "Memory":     "memory_embeddings",
@@ -17,7 +17,7 @@ EMBEDDABLE_LABELS: frozenset[str] = frozenset(LABEL_TO_TABLE.keys())
 
 
 def table_for(label: str) -> str:
-    """resolve node label to pgvector mirror table name"""
+    """resolve node to pgvector table"""
     if label not in LABEL_TO_TABLE:
         raise ValueError(
             f"label {label!r} is not embeddable. "
@@ -35,7 +35,7 @@ def require_str(value: str | None, field_name: str) -> str:
 
 
 def require_vector(vec: list[float] | None, expected_dim: int) -> list[float]:
-    """reject embeddings w/o matching dim."""
+    """reject w/o match."""
     if vec is None:
         raise ValueError("embedding vector is required (got None)")
     if not isinstance(vec, list):
@@ -50,5 +50,5 @@ def require_vector(vec: list[float] | None, expected_dim: int) -> list[float]:
 
 
 def vector_literal(vec: list[float]) -> str:
-    """serialize list[float] to pgvector format"""
+    """serialize float list to pgvector format"""
     return "[" + ",".join(f"{x:.7f}" for x in vec) + "]"

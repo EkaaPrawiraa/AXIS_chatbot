@@ -1,4 +1,4 @@
-"""skip back-compat"""
+"""skip bc it's broken"""
 
 from __future__ import annotations
 

@@ -16,17 +16,3 @@ CREATE TABLE assessments (
 
 CREATE INDEX assessments_user_time ON assessments (user_id, administered_at DESC);
 CREATE INDEX assessments_instrument ON assessments (user_id, instrument, administered_at DESC);
-
--- EMA (Ecological Momentary Assessment) — lightweight daily mood check-ins
-CREATE TABLE ema_entries (
-    id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    user_id     UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-    session_id  UUID REFERENCES chat_sessions(id),
-    mood_score  SMALLINT NOT NULL CHECK (mood_score BETWEEN 1 AND 10),
-    energy      SMALLINT CHECK (energy BETWEEN 1 AND 10),
-    anxiety     SMALLINT CHECK (anxiety BETWEEN 1 AND 10),
-    notes       TEXT,
-    recorded_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
-);
-
-CREATE INDEX ema_user_recent ON ema_entries (user_id, recorded_at DESC);

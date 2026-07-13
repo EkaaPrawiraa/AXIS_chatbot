@@ -1,4 +1,4 @@
-"""Subject supersedes old node. Renamed labels, edges, Cypher."""
+"""supersede old node. renamed labels, edges, cypher."""
 
 from __future__ import annotations
 
@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 
 async def write_subject(inp: SubjectInput) -> str:
-    """Upsert node w/ subject. On match: avg sentiment, inc mention_count, refresh last_mentioned. Returns merged/new node id."""
+    """Upsert node w/ avg sent & inc mention_count, refresh last_mentioned. Returns merged/new node id."""
     _require(inp.name,       "name")
     _require(inp.role,       "role")
     _require(inp.user_id,    "user_id")

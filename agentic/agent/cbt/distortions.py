@@ -1,8 +1,16 @@
-"""skipped"""
+"""skip"""
 
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass
+from functools import lru_cache
+
+
+@lru_cache(maxsize=256)
+def _cue_pattern(cue: str) -> re.Pattern[str]:
+    # kecualis
+    return re.compile(rf"\b{re.escape(cue)}\b")
 
 
 @dataclass(frozen=True)
@@ -16,8 +24,8 @@ class Distortion:
     socratic_en: str
 
     def cue_match(self, lower_text: str) -> bool:
-        return any(c in lower_text for c in self.cues_id) or any(
-            c in lower_text for c in self.cues_en
+        return any(_cue_pattern(c).search(lower_text) for c in self.cues_id) or any(
+            _cue_pattern(c).search(lower_text) for c in self.cues_en
         )
 
     def socratic(self, language: str) -> str:
@@ -53,7 +61,7 @@ _RAW_DISTORTIONS: tuple[Distortion, ...] = (
         name="all_or_nothing",
         label_id="hitam-putih",
         label_en="all or nothing",
-        # skip overgeneralization
+        # skip gen
         cues_id=(
             "harus sempurna",
             "atau tidak sama sekali",
@@ -168,7 +176,7 @@ _RAW_DISTORTIONS: tuple[Distortion, ...] = (
         name="overgeneralization",
         label_id="generalisasi",
         label_en="overgeneralization",
-        # patterns belong here
+        # patterns#here
         cues_id=(
             "selalu",
             "tidak pernah",
@@ -195,7 +203,7 @@ DISTORTIONS: dict[str, Distortion] = {d.name: d for d in _RAW_DISTORTIONS}
 
 
 def detect_distortion_in_text(text: str) -> Distortion | None:
-    """None"""
+    """skip klo error"""
     if not text:
         return None
     lowered = text.lower()

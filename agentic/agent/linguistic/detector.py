@@ -1,4 +1,4 @@
-"""ltk buat"""
+"""buat nyimpen config"""
 
 from __future__ import annotations
 
@@ -14,14 +14,14 @@ logger = logging.getLogger(__name__)
 
 
 
-# min gap" "single label" "id_ratio" "en_ratio" "mixed
+# gap" "label" "en_ratio" "mixed
 LANGUAGE_GAP_THRESHOLD: float = 0.15
 
-# ok" "ya" "skip" "fallback
+# skip fallback
 MIN_TOKENS_FOR_VERDICT: int = 2
 
 
-# skips errors
+# skip error
 _EN_SIGNAL_WORDS: frozenset[str] = frozenset({
     # skip them
     "the", "is", "are", "was", "were", "and", "or", "but", "if", "i",
@@ -32,13 +32,13 @@ _EN_SIGNAL_WORDS: frozenset[str] = frozenset({
     "over", "under", "than", "then", "so", "because", "while",
     "though", "although", "where", "when", "what", "who", "how",
     "why", "which", "my", "your", "our", "their", "his", "her",
-    # campus
+    # camp
     "assignment", "homework", "deadline", "exam", "midterm", "final",
     "lecture", "lecturer", "professor", "research", "thesis", "paper",
     "study", "studying", "studied", "lab", "presentation", "project",
     "group", "team", "class", "course", "syllabus", "submission",
     "submit", "submitted", "graduate", "internship", "scholarship",
-    # tanyin mood
+    # tanyin
     "stress", "stressed", "stressful", "anxious", "anxiety",
     "depression", "depressed", "burnout", "overwhelmed", "exhausted",
     "tired", "panic", "panicking", "worry", "worried",
@@ -77,7 +77,7 @@ class LinguisticSignals:
     total_tokens: int
 
     def to_dict(self) -> dict:
-        """serialize, storage, ConversationState"""
+        """st, st, st, st"""
         return {
             "language": self.language,
             "language_signal": self.language_signal,
@@ -126,7 +126,7 @@ def _classify_language(
     hits: list[CorpusEntry],
     fallback: str,
 ) -> tuple[str, int, int, str]:
-    """return lang, id_count, en_count, signal_smt."""
+    """ret lang, id, en, signal."""
     if not tokens:
         return fallback or "id", 0, 0, "no_tokens"
 
@@ -136,7 +136,7 @@ def _classify_language(
     id_count = sum(1 for h in hits if h.language in ("id", "mix"))
     id_count += sum(1 for t in token_set if t in _ID_FUNCTION_WORDS)
 
-    # en-borrowed corpus hits
+    # skip corpus
     en_count = sum(1 for h in hits if h.language == "en-borrowed")
     en_count += sum(1 for t in token_set if t in _EN_SIGNAL_WORDS)
 
@@ -153,7 +153,7 @@ def _classify_language(
         return "en", id_count, en_count, f"en_dominant({en_ratio:.2f})"
     if en_ratio == id_ratio == 0.00:
         return "en", id_count, en_count, f"en_dominant({en_ratio:.2f})"
-    # lang preference
+    # lang
     return (
         "mixed",
         id_count,
@@ -168,7 +168,7 @@ def detect_linguistic_signals(
     *,
     language_fallback: str = "id",
 ) -> LinguisticSignals:
-    """run corpus + heuristik di text user"""
+    """run corpus + heuristic"""
     if not text or not text.strip():
         return EMPTY_SIGNALS
 

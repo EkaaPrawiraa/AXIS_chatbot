@@ -1,4 +1,4 @@
-"""reverse lookup"""
+"""buat nggak"""
 
 from __future__ import annotations
 
@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 
 async def facts_for_message(message_id: str) -> list[dict[str, Any]]:
-    """rows := edges for _, edge := range rows {     if edge["source_messages"] != nil {         for _, msg := range edge["source_messages"] {             if msg["message_id"] != nil {                 // process msg             }         }     } }"""
+    """for _, edge := range rows {     for _, msg := range edge["source_messages"] {         if msg["message_id"] != nil {             // process msg         }     } }"""
     if not message_id:
         raise ValueError("message_id is required")
 

@@ -23,16 +23,4 @@ export const profileAPI = {
     });
     return response.data.data!;
   },
-
-  getPersonalityInsights: async (userId: ID) => {
-    const response = await apiClient.get('/profile/personality-insights', {
-      params: { userId },
-    });
-    return response.data.data;
-  },
-
-  generatePersonalityInsights: async (userId: ID) => {
-    const response = await apiClient.post('/profile/generate-insights', { userId });
-    return response.data.data;
-  },
 };

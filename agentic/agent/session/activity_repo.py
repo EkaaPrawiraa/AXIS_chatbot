@@ -1,4 +1,4 @@
-"""stl for sesh hbts."""
+"""stl ses."""
 
 from __future__ import annotations
 
@@ -107,7 +107,7 @@ class InMemorySessionActivityRepository:
                 existing.ai_was_last_speaker = ai_was_last_speaker
                 existing.latest_turn_index = max(existing.latest_turn_index, turn)
                 existing.updated_at = ts
-                # reset on return
+                # reset
                 if existing.finalized_at is not None:
                     existing.finalized_at = None
                     existing.finalize_attempts = 0
@@ -147,7 +147,7 @@ class InMemorySessionActivityRepository:
                 row.finalize_attempts += 1
                 row.last_error = error
                 row.updated_at = datetime.now(timezone.utc)
-                # skip finaliza.
+                # skip fin.
                 return
             row.finalized_at = datetime.now(timezone.utc)
             row.last_finalized_turn_index = max(
@@ -228,7 +228,7 @@ class InMemorySessionActivityRepository:
 
 
 class PostgresSessionActivityRepository:
-    """`buat backup`"""
+    """buat nyimpen config"""
 
     def __init__(self, *, pg_pool: Any) -> None:
         self._pool = pg_pool

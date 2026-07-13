@@ -10,7 +10,7 @@ import (
 	apperrors "github.com/EkaaPrawiraa/companionshipchatbot/shared/pkg/errors"
 )
 
-// response.FromError couldn't classify, so every failure surfaced as opaque 500.
+// skip klo error
 
 func newTestClient(t *testing.T, statusCode int, body string) *Client {
 	t.Helper()

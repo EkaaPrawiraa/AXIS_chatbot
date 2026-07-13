@@ -1,4 +1,4 @@
-"""set to Candidate"""
+"""set to C."""
 
 from __future__ import annotations
 
@@ -21,7 +21,7 @@ class Candidate:
     safety_relevance: float = 0.0
     hydrated: dict[str, Any] | None = None
 
-    # skip klo error
+    # skip error
     rank_in_signal: int = 0
     rrf_score: float = 0.0
     final_score: float = 0.0
@@ -65,7 +65,7 @@ def _recency_score(created_at_iso: str | None) -> float:
 
 
 def compute_relation_richness(hydrated: dict[str, Any] | None) -> float:
-    """return score based on kg dims"""
+    """return score kg dims"""
     if not hydrated:
         return 0.0
     score = 0.0
@@ -83,5 +83,5 @@ def compute_relation_richness(hydrated: dict[str, Any] | None) -> float:
 
 
 def candidate_recency_score(c: Candidate) -> float:
-    """compute recency score"""
+    """buat scoring"""
     return _recency_score(c.created_at_iso)

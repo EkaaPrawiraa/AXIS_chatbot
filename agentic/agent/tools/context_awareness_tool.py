@@ -19,12 +19,12 @@ logger = logging.getLogger(__name__)
 
 
 def _local_now() -> datetime:
-    # `tzlocal` ngga dipakai, jgn pakai. Gunakan `pytz` atau `datetime` langsung.
+    # skip tzlocal. Use pytz or datetime directly.
     return datetime.now().astimezone()
 
 
 def _safe_locale() -> tuple[str | None, str | None]:
-    # skip deprecation warning
+    # skip warn
     try:
         loc = locale.getlocale()
         if isinstance(loc, tuple) and len(loc) == 2:
@@ -36,7 +36,7 @@ def _safe_locale() -> tuple[str | None, str | None]:
 
 @tool("current_context")
 def current_context() -> dict[str, Any]:
-    """get metadata"""
+    """get mdata"""
     now = _local_now()
     lang, encoding = _safe_locale()
     return {
@@ -62,7 +62,7 @@ _openai_disabled: bool = False
 
 
 def _try_get_openai_client():
-    """lazy-load OpenAI client. Returns None if unavailable."""
+    """lazy-load None if unavailable."""
     global _openai_client, _openai_disabled
     if _openai_disabled:
         return None
@@ -102,7 +102,7 @@ def _as_dict(obj: Any) -> dict[str, Any] | None:
 
 
 def _normalize_openai_web_results(payload: Any) -> list[dict[str, Any]]:
-    """best-effort norm OpenAI search results"""
+    """best-effort norm OpenAI"""
     results: list[dict[str, Any]] = []
     if payload is None:
         return results
@@ -134,13 +134,13 @@ def _normalize_openai_web_results(payload: Any) -> list[dict[str, Any]]:
 
 
 def _extract_json_from_text(text: str) -> dict[str, Any] | None:
-    """extract json from model response"""
+    """extract json"""
     if not text:
         return None
 
     candidate = text.strip()
 
-    # prefer fenced json.
+    # prefer json.
     m = re.search(r"```(?:json)?\s*(\{.*?\})\s*```", candidate, re.DOTALL | re.IGNORECASE)
     if m:
         candidate = m.group(1).strip()
@@ -179,7 +179,7 @@ def _extract_markdown_links(text: str, max_results: int) -> list[dict[str, Any]]
             continue
         seen.add(url)
 
-        # find link line
+        # ngambil link
         start = text.rfind("\n", 0, match.start())
         end = text.find("\n", match.end())
         line = text[(start + 1 if start != -1 else 0) : (end if end != -1 else len(text))].strip()
@@ -202,7 +202,7 @@ _gemini_disabled: bool = False
 
 
 def _try_get_gemini_client():
-    """lazy-load google-genai client"""
+    """load client"""
     global _gemini_client, _gemini_disabled
     if _gemini_disabled:
         return None
@@ -239,7 +239,7 @@ def _normalize_gemini_grounding_chunks(grounding_metadata: Any) -> list[dict[str
 
 
 def _gemini_web_search(query: str, max_results: int) -> dict[str, Any]:
-    """search web using google_search"""
+    """search web"""
     client = _try_get_gemini_client()
     if client is None:
         return {
@@ -281,7 +281,7 @@ def _gemini_web_search(query: str, max_results: int) -> dict[str, Any]:
 
 
 def _openai_web_search(query: str, max_results: int) -> dict[str, Any]:
-    """search web openai web-search-preview"""
+    """web-search"""
     client = _try_get_openai_client()
     if client is None:
         return {
@@ -346,7 +346,7 @@ def web_search(query: str, max_results: int = 5) -> dict[str, Any]:
 
     max_results = max(1, min(int(max_results), 10))
 
-    # ordered, fallback, TTS/STT, LLM_PROVIDER, Gemini, OpenAI, quota
+    # skip klo quota
     from agentic.config.llm_models import llm_provider
 
     if llm_provider() == "openai":
@@ -359,7 +359,7 @@ def web_search(query: str, max_results: int = 5) -> dict[str, Any]:
         fb = fallback(query, max_results)
         if not fb.get("error") or fb.get("results"):
             return fb
-        # `surface error`
+        # skip
         result["fallback_error"] = fb.get("error")
     return result
 
@@ -400,7 +400,7 @@ def _parse_time_token(token: str) -> tuple[int, int] | None:
             return hour, minute
         return None
 
-    # `12h:MM am/pm`
+    # `jam`
     m = re.fullmatch(r"(?P<h>\d{1,2})(?::(?P<m>\d{2}))?\s*(?P<ap>am|pm)", t)
     if not m:
         return None
@@ -461,7 +461,7 @@ def _subtract_time(dt: datetime, value: int, unit: str) -> datetime:
 
 @tool("resolve_relative_time")
 def resolve_relative_time(text: str, timezone: str | None = None) -> dict[str, Any]:
-    """iso datetime"""
+    """iso date"""
     tz = ZoneInfo(timezone) if timezone else _local_now().tzinfo
     now = datetime.now(tz) if tz else _local_now()
     normalized = (text or "").lower().strip()
@@ -476,7 +476,7 @@ def resolve_relative_time(text: str, timezone: str | None = None) -> dict[str, A
         candidate_date = (m_time.group("date") or "").strip()
         candidate_time = (m_time.group("time") or "").strip()
         parsed = _parse_time_token(candidate_time)
-        # treat as token if clean
+        # tokenize clean
         if parsed is not None and candidate_date:
             normalized = candidate_date
             time_token = candidate_time
@@ -590,7 +590,7 @@ class _SafeMath(ast.NodeVisitor):
 
 @tool("calculate_math")
 def calculate_math(expression: str) -> dict[str, Any]:
-    """safe eval expr"""
+    """safe_eval"""
     if not expression or not expression.strip():
         return {"expression": expression, "error": "empty expression"}
 

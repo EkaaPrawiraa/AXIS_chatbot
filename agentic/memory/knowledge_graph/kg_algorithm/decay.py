@@ -1,4 +1,4 @@
-"""mem decay job"""
+"""mem decay"""
 
 from __future__ import annotations
 
@@ -10,10 +10,10 @@ logger = logging.getLogger(__name__)
 
 
 async def run_memory_decay() -> dict[str, int]:
-    """mem decay"""
+    """memd"""
     client = get_client()
 
-    # skip inactive mems
+    # skip inactive
     halved_records = await client.execute_write(
         """
         MATCH (m:Memory)
@@ -25,7 +25,7 @@ async def run_memory_decay() -> dict[str, int]:
         """
     )
 
-    # archive mem 180 hari.
+    # archive 180 hari
     archived_records = await client.execute_write(
         """
         MATCH (m:Memory)

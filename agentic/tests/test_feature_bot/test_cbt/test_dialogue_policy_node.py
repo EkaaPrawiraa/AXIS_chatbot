@@ -1,4 +1,4 @@
-"""test dialog policy"""
+"""test policy"""
 
 from __future__ import annotations
 
@@ -27,7 +27,7 @@ class TestDecisionWiring:
 
     @pytest.mark.asyncio
     async def test_casual_message_wires_to_none(self, audit) -> None:
-        """wire cbt_node_active to "none"""
+        """none"""
         state = _state_with_message("halo, hari ini gimana")
         out = await dialogue_policy_node(state, audit=audit)
         assert out["cbt_node_active"] == "none"
@@ -40,7 +40,7 @@ class TestDecisionWiring:
         assert out["cbt_node_active"] == "reframe"
         assert out["cbt_state"]["last_offered"] == "reframe"
 
-    # rm field 2026-05: emotion_pad field 2026-05: emotion_detection Acute affect 2026-05: LLM judge
+    # rm 2026-05: emotion_pad 2026-05: emotion_detection 2026-05: LLM judge
 
     @pytest.mark.asyncio
     async def test_safety_flag_blocks(self, audit) -> None:
@@ -68,7 +68,7 @@ class TestDeclineCooldown:
 
     @pytest.mark.asyncio
     async def test_after_decline_router_falls_back_to_validate(self, audit) -> None:
-        # cool down offer
+        # cooloff
         state = _state_with_message("aku selalu gagal")
         state["cbt_state"] = {  # type: ignore[typeddict-item]
             "last_offered": "reframe",
@@ -81,7 +81,7 @@ class TestDeclineCooldown:
 
     @pytest.mark.asyncio
     async def test_decline_turn_flag_stays_true(self, audit) -> None:
-        """bug-fix: set flag to True, reset in next node."""
+        """set flag to True, reset in next node."""
         state = _state_with_message("Nggak deh, ga usah dibahas lagi soal itu.")
         state["cbt_state"] = {  # type: ignore[typeddict-item]
             "last_offered": "reframe",
@@ -97,7 +97,7 @@ class TestDeclineCooldown:
     @pytest.mark.asyncio
     async def test_next_turn_after_decline_resets_flag(self, audit) -> None:
         """reset to False"""
-        # declined_last_offer=True, next msg triggers same technique, demote to opt_out_cooldown, node consumes cooldown.
+        # declined, same, demote, cooldown.
         state = _state_with_message("aku selalu gagal di mata kuliah ini")
         state["cbt_state"] = {  # type: ignore[typeddict-item]
             "last_offered": "reframe",
@@ -105,7 +105,7 @@ class TestDeclineCooldown:
             "decline_streak": 1,
         }
         out = await dialogue_policy_node(state, audit=audit, judge_llm=None)
-        # opt_out_cooldown
+        # opt out cooldown
         assert out["cbt_directive"]["reason"] == "opt_out_cooldown", (
             f"FAIL: expected opt_out_cooldown reason, got {out['cbt_directive']['reason']!r}"
         )
@@ -113,6 +113,73 @@ class TestDeclineCooldown:
         assert actual is False, (
             f"FAIL: expected declined_last_offer=False after cooldown consumed, got {actual!r}"
         )
+
+
+class TestDeclineStreakSuppression:
+    @pytest.mark.asyncio
+    async def test_streak_at_threshold_suppresses_new_technique(
+        self, audit
+    ) -> None:
+        """validate instead"""
+        state = _state_with_message("aku payah banget jadi orang")
+        state["cbt_state"] = {  # type: ignore[typeddict-item]
+            "last_offered": "reframe",
+            "declined_last_offer": False,
+            "decline_streak": 2,
+        }
+        out = await dialogue_policy_node(state, audit=audit)
+        assert out["cbt_node_active"] == "validate"
+        assert out["cbt_directive"]["reason"] == "decline_streak_suppressed"
+
+    @pytest.mark.asyncio
+    async def test_streak_below_threshold_still_offers_new_technique(
+        self, audit
+    ) -> None:
+        state = _state_with_message("aku payah banget jadi orang")
+        state["cbt_state"] = {  # type: ignore[typeddict-item]
+            "last_offered": "reframe",
+            "declined_last_offer": False,
+            "decline_streak": 1,
+        }
+        out = await dialogue_policy_node(state, audit=audit)
+        assert out["cbt_node_active"] in ("self_compassion", "reframe")
+        assert out["cbt_directive"]["reason"] != "decline_streak_suppressed"
+
+    @pytest.mark.asyncio
+    async def test_quiet_turn_resets_streak(self, audit) -> None:
+        state = _state_with_message("halo, hari ini gimana")
+        state["cbt_state"] = {  # type: ignore[typeddict-item]
+            "last_offered": "reframe",
+            "declined_last_offer": False,
+            "decline_streak": 1,
+        }
+        out = await dialogue_policy_node(state, audit=audit)
+        assert out["cbt_node_active"] == "none"
+        assert out["cbt_state"]["decline_streak"] == 0
+
+
+class TestThoughtRecordCrisisReset:
+    @pytest.mark.asyncio
+    async def test_thought_record_does_not_silently_resume_after_crisis(
+        self, audit
+    ) -> None:
+        """skip crisis-flagged"""
+        state = _state_with_message("apapun")
+        state["safety_flag"] = "crisis"  # type: ignore[typeddict-item]
+        state["cbt_state"] = {  # type: ignore[typeddict-item]
+            "thought_record_active": True,
+            "thought_record": {"step": "evidence_against"},
+        }
+        out = await dialogue_policy_node(state, audit=audit)
+        assert out["cbt_node_active"] == "none"
+        assert out["cbt_state"]["thought_record_active"] is False
+        assert out["cbt_state"]["thought_record"] is None
+
+        # skip auto-resume
+        out["safety_flag"] = None  # type: ignore[typeddict-item]
+        out["current_message"] = "iya"
+        out2 = await dialogue_policy_node(out, audit=audit)
+        assert out2["cbt_node_active"] != "thought_record"
 
 
 class TestThoughtRecordDriven:
@@ -136,7 +203,7 @@ class TestThoughtRecordDriven:
         out = await dialogue_policy_node(state, audit=audit)
         first_step = out["cbt_directive"]["payload"]["step"]
 
-        # answering prompt
+        # answer
         out["current_message"] = "aku pasti gagal final besok"
         out2 = await dialogue_policy_node(out, audit=audit)
         second_step = out2["cbt_directive"]["payload"]["step"]

@@ -1,0 +1,130 @@
+% =====================================================================
+% BAB I PENDAHULUAN
+% =====================================================================
+
+\chapter{PENDAHULUAN}
+\label{ch:pendahuluan}
+
+% Bab ini memaparkan landasan dan arah penelitian. Subbab I.1 menguraikan latar belakang permasalahan beserta celah penelitian yang memotivasi tugas akhir ini. Subbab I.2 merumuskan pertanyaan penelitian. Subbab I.3 menetapkan tujuan dan ukuran keberhasilan pencapaian. Subbab I.4 menetapkan batasan penelitian. Subbab I.5 menguraikan metodologi pelaksanaan. Subbab I.6 menyampaikan sistematika pembahasan laporan.
+
+\section{Latar Belakang}
+\label{sec:latar-belakang}
+
+Mahasiswa berada pada fase transisi menuju kehidupan dewasa, ketika penyesuaian terhadap lingkungan sosial baru, tuntutan akademik yang meningkat, dan ketidakpastian karier berlangsung hampir bersamaan. Tekanan psikologis yang menyertai fase ini sering dianggap bagian wajar dari proses pendewasaan, tetapi data menunjukkan skala persoalan yang lebih serius. \textcite{astutik2020} melaporkan bahwa sekitar seperempat mahasiswa Indonesia mengalami gejala depresi yang secara klinis relevan dan lebih dari separuh menunjukkan gejala kecemasan, sementara \textcite{putri2024} menunjukkan beban gejala afektif ini tetap tinggi setelah pandemi berakhir. \textcite{ashilah2024} bahkan menemukan tingkat kesepian pada mahasiswa Indonesia lebih tinggi dibandingkan kelompok pembanding di Malaysia, sejalan dengan temuan \textcite{hawkleyCacioppo2010} bahwa kesepian lebih ditentukan oleh kebermaknaan hubungan yang dirasakan daripada jumlah interaksi sosial. Itulah sebabnya seorang mahasiswa dapat tetap merasa sendirian meski berada di lingkungan kampus yang ramai secara sosial.
+
+Masalah semacam ini tidak selalu memerlukan intervensi klinis. Sebagian besar mahasiswa lebih membutuhkan ruang untuk mengekspresikan perasaan dan merefleksikan pengalaman sebelum kondisinya memburuk, dukungan yang selama ini biasa didapat dari keluarga, teman sebaya, konselor, atau komunitas, dan yang terbukti berkorelasi dengan kesejahteraan afektif yang lebih baik \parencite{pinho2020}. Namun akses terhadap dukungan profesional pun tidak selalu mudah dijangkau. \textcite{who2022} memperkirakan sebagian besar individu dengan gangguan mental di negara berpenghasilan menengah bawah belum memperoleh layanan kesehatan mental yang memadai, dan di Indonesia keterbatasan jumlah tenaga profesional memperparah kondisi ini. \textcite{eisenberg2021} menambahkan bahwa mahasiswa kerap menunda mencari bantuan karena menganggap masalahnya belum cukup berat atau karena stigma terhadap layanan kesehatan mental. Kombinasi keduanya menciptakan celah: banyak mahasiswa yang sebenarnya butuh bicara tetapi tidak terhubung ke layanan mana pun. Celah inilah yang paling mungkin diisi oleh dukungan non-klinis yang mudah diakses dan berfungsi melengkapi, bukan menggantikan, layanan profesional.
+
+Perkembangan kecerdasan buatan generatif dalam beberapa tahun terakhir membuka salah satu kemungkinan untuk mengisi ruang tersebut, yaitu \textit{companionship chatbot} (selanjutnya disebut chatbot pendamping): sistem percakapan yang dirancang bukan untuk menjawab pertanyaan faktual, melainkan untuk menemani, mendengarkan, dan merespons kondisi emosional pengguna dalam batas non-klinis. Interaksi berulang dengan sistem semacam ini bahkan terbukti berhubungan dengan penurunan tingkat kesepian pada sebagian penggunanya \parencite{defreitasLoneliness2024}. Kajian terhadap sistem chatbot pendamping dan sistem dukungan kesehatan mental digital menunjukkan bahwa beberapa kemampuan penting sudah muncul secara terpisah: latihan reflektif berbasis CBT, validasi emosi, dukungan proaktif, skrining suasana hati secara percakapan, dan hubungan jangka panjang dengan pendamping virtual \parencite{fitzpatrick2017,inkster2018,fulmer2018,guo2025,skjuve2021,maples2024}.
+
+Celah yang tersisa justru terletak pada penyatuannya. Sistem yang cakap menjalankan latihan reflektif tidak otomatis memiliki memori yang dapat ditelusuri lintas sesi, penyampaian skrining suasana hati yang terasa mulus tidak selalu terhubung dengan pengalaman spesifik yang pernah diceritakan pengguna, dan personalisasi yang ditawarkan belum tentu memberi pengguna kendali atas apa yang diingat sistem tentang dirinya. Dengan demikian, kebutuhan yang belum terjawab adalah chatbot pendamping yang menyatukan percakapan reflektif, skrining ringan, memori relasional, dan kendali pengguna dalam satu pengalaman yang tetap sesuai dengan konteks mahasiswa Indonesia.
+
+Tantangan integrasi ini menjadi lebih berat ketika percakapan berlangsung berulang dari waktu ke waktu. Mahasiswa jarang membawa masalah sebagai peristiwa tunggal: keluhan tentang revisi hari ini bisa jadi berkaitan dengan komentar dosen minggu lalu, ekspektasi keluarga, atau rasa tertinggal dari teman seangkatan, sehingga empati yang bermakna menuntut sistem memahami mengapa suatu emosi muncul dalam konteks cerita penggunanya \parencite{bickmorePicard2005}. Kegagalan mempertahankan kontinuitas semacam ini terbukti berdampak nyata. \textcite{defreitasReplika2024} mendokumentasikan bahwa perubahan persona Replika setelah pembaruan sistem menimbulkan \textit{identity discontinuity}, kondisi saat pengguna merasa karakter chatbot yang mereka kenal berubah drastis dibandingkan interaksi sebelumnya. \textcite{boine2023} mengaitkan besarnya dampak perubahan semacam itu dengan kuatnya keterikatan emosional yang terbentuk antara pengguna dan pendamping virtualnya. Temuan ini menegaskan bahwa kualitas model bahasa saja tidak menjamin hubungan yang konsisten. Sistem juga harus mampu mempertahankan identitas dan pemahamannya terhadap pengguna dari waktu ke waktu.
+
+Kontinuitas yang semakin kuat juga membawa konsekuensi lain: semakin banyak sistem mengingat, semakin besar pula kebutuhan pengguna untuk tetap merasa memegang kendali. Pada hubungan antarmanusia, seseorang bebas memilih cerita mana yang dibagikan, kapan ingin bicara lebih terbuka, dan kapan ingin menarik diri. Chatbot pendamping yang menyimpan memori jangka panjang perlu menyediakan rasa kendali yang setara, mulai dari mengetahui apa yang diingat, mengoreksi atau menghapus memori tertentu, memilih percakapan yang tidak perlu disimpan, hingga mengakhiri penggunaan tanpa merasa data personalnya terus melekat pada sistem. Tanpa mekanisme semacam ini, memori yang semula dimaksudkan membuat percakapan lebih personal justru berisiko terasa seperti pengawasan.
+
+Persoalan berikutnya terletak pada bentuk memori itu sendiri. Literatur psikologi membedakan \textit{episodic memory}, ingatan atas peristiwa spesifik, dari \textit{semantic memory}, pemahaman yang lebih abstrak dan bertahan lama \parencite{tulving1972}, dan chatbot pendamping idealnya menangkap keduanya. Memori personal juga tidak dapat diperlakukan sebagai arsip statis. Informasi yang dulu penting bisa kehilangan relevansi, pikiran yang dulu diyakini bisa berubah setelah refleksi, dan hubungan yang dulu terasa negatif bisa dimaknai ulang, sehingga memori idealnya memiliki siklus hidup: ditulis ketika relevan, dihubungkan dengan konteks lain, diperbarui saat pemahaman berubah, dan diturunkan kepentingannya ketika tidak lagi sesuai \parencite{zhong2024memorybank}. Pendekatan pencarian berbasis kemiripan semantik yang umum dipakai saat ini berguna untuk menemukan potongan percakapan yang serupa, tetapi memori personal sering menuntut lebih dari kemiripan kata semata. Pertanyaan tentang siapa yang terlibat dalam suatu pengalaman, bagaimana emosi berubah setelah kejadian tertentu, atau pikiran lama mana yang sudah ditafsirkan ulang, tidak selalu terjawab hanya dari potongan teks terdekat. Literatur personalisasi menunjukkan bahwa konteks pengguna yang persisten memang meningkatkan kualitas keluaran model bahasa \parencite{salemi2024lamp}, sementara arah penelitian yang menggabungkan model bahasa dengan graf pengetahuan, termasuk \textit{GraphRAG} dan memori agen berbasis graf temporal, menunjukkan bahwa representasi relasional memberi pegangan yang lebih kuat untuk penalaran lintas entitas, konteks temporal, dan perubahan fakta \parencite{pan2024, edge2024graphrag, rasmussen2025zep, saxenauts2025persona}.
+
+Cara pengguna berinteraksi dengan sistem turut memengaruhi seberapa jauh dukungan ini terasa membantu. Percakapan lisan dapat terasa lebih ringan ketika pengguna belum sanggup merapikan perasaannya menjadi teks \parencite{pradhan2020}, sehingga interaksi suara relevan sebagai fitur pendukung, menurunkan hambatan untuk mulai bercerita, meski tetap membawa konsekuensi latensi karena harus melewati transkripsi, pemrosesan bahasa, dan sintesis suara. Di sisi lain, kedekatan yang terbangun antara chatbot dan pengguna menuntut batas peran yang tetap jelas \parencite{weidinger2022}, terlebih karena pengguna dapat menyampaikan kondisi berat lewat cara yang halus dan tidak langsung \parencite{pendse2022}. Batas keselamatan karena itu perlu hadir sebagai pagar yang menjaga percakapan, bukan tujuan utama yang menggeser fungsi pendampingan.
+
+Pada konteks mahasiswa Indonesia, kebutuhan-kebutuhan tersebut mengambil bentuk yang lebih spesifik. Tekanan akademik dan relasi dengan dosen pembimbing mewarnai masa penyusunan tugas akhir \parencite{pusparini2025thesisstress}. Ekspektasi dan tekanan finansial dari keluarga menambah beban tersendiri \parencite{mardhiyah2026parentalpressure}. Keterlibatan pada organisasi kemahasiswaan berisiko menjadi sumber \textit{burnout} \parencite{octaviani2023organizationalburnout}. Pencarian identitas diri kerap disertai perasaan tidak layak dibanding teman seangkatan \parencite{pakozdy2024impostor}. Ketidakpastian transisi karier membayangi masa menjelang serta sesudah kelulusan \parencite{yang2025employmentanxiety}. Keenam area ini (tekanan akademik, relasi kampus, keluarga, organisasi, identitas diri, dan transisi karier) perlu menjadi acuan domain yang dimiliki oleh mahasiswa. Masalah-masalah tersebut juga banyak diungkapkan melalui bahasa informal dan bahasa campur, dan sistem perlu memahami bahasa itu apa adanya alih-alih memaksanya menjadi bahasa yang lebih baku.
+
+Berangkat dari kesenjangan tersebut, tugas akhir ini mengembangkan AXIS, sebuah chatbot pendamping non-klinis untuk mahasiswa Indonesia. Fokusnya bukan melatih ulang model bahasa agar terdengar lebih ramah, melainkan menyusun arsitektur yang membuat tiga kemampuan itu berjalan bersamaan: percakapan reflektif yang tetap dalam batas non-klinis, pemantauan kondisi emosional yang menyatu dengan alur cerita alih-alih memutusnya, dan memori jangka panjang yang dapat ditulis, dihubungkan, diperbarui, dan dipilih kembali ketika relevan, disertai kendali pengguna atas ketiganya seperti yang sudah diuraikan sebelumnya.
+
+Karena tugas akhir ini berada pada tahap pengembangan purwarupa, evaluasi yang dilakukan dibatasi pada validasi komponen kritis melalui skenario fungsional dan studi kasus ilustratif. Validasi dampak jangka panjang memerlukan studi longitudinal dengan protokol etik formal yang berada di luar cakupan tugas akhir ini\ifdefined\seminarhasilmode.\else. Keterbatasan ini dinyatakan eksplisit pada Keterbatasan BAB V (Subbab~\ref{sec:keterbatasan}) dan dijabarkan sebagai \textit{roadmap} pada Saran BAB V (Subbab~\ref{sec:saran}).\fi
+
+\section{Rumusan Masalah}
+\label{sec:rumusan-masalah}
+
+Berdasarkan latar belakang tersebut, tugas akhir ini diarahkan oleh tiga rumusan masalah berikut.
+
+\begin{enumerate}[label=\arabic*.,leftmargin=*,itemsep=4pt]
+  \item Bagaimana mengembangkan chatbot pendamping yang mampu membangun percakapan empatik, bermakna, dan aman, sesuai dengan cara mahasiswa Indonesia mengekspresikan diri, termasuk dalam bahasa informal dan bahasa campur?
+
+  \item Bagaimana memahami kondisi emosional pengguna secara berkala dan terstruktur di dalam alur percakapan, tanpa membuat pengguna merasa sedang menjalani proses klinis yang memutus pengalaman pendampingan?
+
+  \item Bagaimana mengembangkan memori jangka panjang yang menjaga percakapan lintas sesi tetap berkesinambungan dengan kehidupan mahasiswa yang terus berubah?
+\end{enumerate}
+
+\section{Tujuan dan Ukuran Keberhasilan Pencapaian}
+\label{sec:tujuan}
+
+Tujuan penelitian ini adalah mengembangkan AXIS sebagai chatbot pendamping non-klinis untuk mahasiswa Indonesia. Secara lebih spesifik, penelitian ini bertujuan menghasilkan sistem yang mampu membangun percakapan empatik yang reflektif dan aman, memahami kondisi emosional pengguna secara berkala di dalam alur percakapan, serta mengelola memori jangka panjang yang dapat diperbarui agar konteks pengguna tetap relevan dari waktu ke waktu. Kendali pengguna terhadap memori, ruang percakapan sementara, preferensi respons, dan data personal ditempatkan sebagai syarat pendukung agar personalisasi tidak mengambil alih kendali dari pengguna.
+
+Rumusan masalah pertama memuat empat aspek sekaligus, yaitu empatik, bermakna, aman, dan kesesuaian dengan gaya bahasa mahasiswa Indonesia, yang masing-masing menuntut bentuk bukti berbeda: aspek fungsional dapat diverifikasi lewat skenario uji, sementara aspek kualitas percakapan lebih tepat dibaca lewat studi kasus. Keempat aspek karena itu diukur dan dilaporkan terpisah pada BAB IV, bukan digabung menjadi satu vonis tuntas atau tidak tuntas. Ukuran keberhasilan pencapaian untuk tujuan diukur melalui validasi terhadap seluruh tugas LLM (\textit{LLM task}) yang digunakan dalam sistem sebagai berikut:
+
+\begin{enumerate}[label=\arabic*.,leftmargin=*,itemsep=4pt]
+  \item \textbf{Percakapan pendamping.} Pencapaian diukur dari berjalannya alur CBT, \textit{guardrail}, dan graf keputusan pada skenario uji, dari tingkat tangkap \textit{guardrail} terhadap ungkapan krisis yang disamarkan pada pengujian adversarial, serta dari studi kasus kualitas respons terhadap chatbot \textit{baseline}.
+
+  \item \textbf{Pemantauan kondisi emosional.} Pencapaian diukur dari keberhasilan transisi PHQ-9, pencatatan asesmen, eskalasi item risiko, dan pemisahan jawaban administratif PHQ-9 dari memori jangka panjang.
+
+  \item \textbf{Memori jangka panjang.} Pencapaian diukur dari penulisan memori, pengambilan kembali konteks, hasil \textit{Recall@5}, verifikasi operasi \textit{lifecycle}, serta studi ablasi \textit{retrieval} graf.
+
+  \item \textbf{Kendali pengguna.} Pencapaian diukur dari tersedianya antarmuka pengelolaan memori dan data personal. Batas persistensi \textit{Confession Space} ditetapkan sebagai batasan rancangan pada Subbab~\ref{sec:batasan-masalah}, dengan verifikasinya disatukan ke dalam pengujian fungsional umum, bukan sebagai ukuran keberhasilan tersendiri.
+\end{enumerate}
+
+\section{Batasan Masalah}
+\label{sec:batasan-masalah}
+
+Agar penelitian tetap fokus, batasan masalah ditetapkan sebagai berikut.
+
+\begin{enumerate}[label=\arabic*.,leftmargin=*,itemsep=4pt]
+  \item Sasaran utama sistem adalah mahasiswa Indonesia pada kondisi non-klinis. Sistem tidak ditujukan untuk pengguna anak di bawah usia 18 tahun dan tidak diuji pada populasi dengan diagnosis gangguan kesehatan mental berat.
+
+  \item AXIS berperan sebagai pendamping non-klinis. Sistem tidak melakukan diagnosis, tidak menggantikan psikolog, konselor, psikiater, atau tenaga profesional, dan hasil pemeriksaan kondisi emosional apa pun hanya diperlakukan sebagai skrining.
+
+  \item Domain percakapan dikalibrasi untuk kehidupan mahasiswa Indonesia, terutama tekanan akademik, relasi kampus, keluarga, organisasi, identitas diri, dan transisi karier. Kalibrasi ini tidak berarti sistem tidak dapat digunakan pengguna lain, tetapi contoh masalah, bahasa, dan sumber bantuan dipusatkan pada konteks mahasiswa.
+
+  \item Bahasa percakapan dibatasi pada bahasa Indonesia formal, bahasa Indonesia informal, dan bahasa campur dengan istilah Inggris yang umum pada lingkungan kampus. Penelitian ini tidak mengevaluasi lokalisasi antarmuka multi-bahasa, tetapi bahasa pengguna tetap dimanfaatkan sebagai konteks percakapan.
+
+  \item Antarmuka web dan tampilan mobile digunakan sebagai sarana penyajian dan pengujian pengalaman pengguna. Pembahasan antarmuka dibatasi pada peran halaman dan alur pengguna, bukan pada detail desain visual atau implementasi komponen \textit{frontend}.
+
+  \item Sistem menyediakan ruang percakapan suara yang bersifat sementara (\textit{Confession Space}). Percakapan pada ruang ini tidak ditulis ke memori jangka panjang, tetapi batas keselamatan tetap diberlakukan. Verifikasi properti ini disatukan ke dalam pengujian fungsional umum (Subbab~\ref{sec:evaluasi-fungsional}), bukan dijadikan evaluasi tersendiri.
+
+  \item Evaluasi latensi suara real-time tidak menjadi fokus utama karena sangat dipengaruhi perangkat, jaringan, dan penyedia layanan STT/TTS. Desain sistem tetap mempertimbangkan latensi sebagai batasan teknis, tetapi pengukuran latensi suara ditempatkan sebagai evaluasi lanjutan.
+
+  \item Kontrol pengguna yang dibahas meliputi kontrol pengalaman dan data personal, seperti preferensi respons, bahasa percakapan, visibilitas memori sensitif, penghapusan memori, penghapusan riwayat percakapan, unduh data, dan hapus akun. Pembahasan tidak mencakup audit legal menyeluruh terhadap kepatuhan regulasi perlindungan data pribadi.
+
+  \item Evaluasi dilakukan melalui tiga jalur dengan tingkat kematangan berbeda: evaluasi fungsional sistem sebagai skenario verifikasi, studi kasus ilustratif terhadap chatbot generik sebagai gambaran kualitatif awal, dan rancangan pengujian pengguna nyata terbatas sebagai persiapan evaluasi lanjutan. Evaluasi tidak dimaksudkan untuk menghasilkan klaim efektivitas klinis, maupun klaim kausal yang mengisolasi kontribusi satu komponen \textit{retrieval} (representasi graf dibanding representasi vektor) terhadap kualitas respons, karena AXIS dan pembanding dievaluasi sebagai sistem lengkap yang berbeda pada lebih dari satu lapisan sekaligus.
+  \item Inferensi LLM dilakukan melalui pemanggilan API eksternal (Gemini dan OpenAI API), bukan melalui pelatihan atau fine-tuning model dari awal.
+  \item Skor relevansi keselamatan pada fusi peringkat \textit{retrieval} graf disediakan sebagai bidang \textit{reserved} untuk pengembangan lanjutan. Purwarupa ini belum menghubungkan sinyal keselamatan konkret ke skor kandidat, sehingga kontribusinya pada pembobotan \textit{retrieval} belum aktif.
+\end{enumerate}
+
+\section{Metodologi}
+\label{sec:metodologi}
+
+\subsection{Metode Penelitian}
+\label{subsec:metode-penelitian}
+
+Metodologi penelitian dalam pengerjaan tugas akhir ini terdiri atas tahap-tahap sebagai berikut.
+
+\begin{enumerate}[label=\arabic*.,leftmargin=*,itemsep=4pt]
+  \item \textbf{Identifikasi Permasalahan.} Tahap ini memetakan kebutuhan dukungan emosional non-klinis mahasiswa Indonesia serta menurunkannya menjadi kebutuhan percakapan, pemantauan kondisi emosional, dan memori jangka panjang, sebagaimana diuraikan pada Subbab~\ref{sec:latar-belakang} dan Subbab~\ref{sec:rumusan-masalah}.
+
+  \item \textbf{Perancangan Solusi.} Tahap ini merancang peran AXIS sebagai chatbot pendamping, alur percakapan reflektif, pemeriksaan suasana hati, memori jangka panjang, dan batas keselamatan yang menjaga sistem tetap non-klinis.
+
+  \item \textbf{Implementasi.} Tahap ini mewujudkan rancangan ke dalam aplikasi web, layanan \textit{backend}, dan penyimpanan data yang mendukung percakapan, pemantauan kondisi emosional, dan memori jangka panjang.
+
+  \item \textbf{Pengujian dan Evaluasi.} Tahap ini menyiapkan skenario evaluasi fungsional, menjalankan studi kasus komparatif terhadap chatbot generik, merancang pengujian pengguna nyata, lalu memeriksa apakah sistem berjalan sesuai rancangan dan apakah memori jangka panjang memberi nilai dibanding chatbot generik.
+\end{enumerate}
+
+\subsection{Metode Pengembangan Perangkat Lunak}
+\label{subsec:metode-pengembangan-perangkat-lunak}
+
+Metode pengembangan perangkat lunak yang digunakan adalah iteratif-inkremental. Tugas akhir ini dikerjakan seorang diri sehingga kerangka kerja tim seperti \textit{Scrum} dengan pembagian peran dan \textit{sprint} formal tidak relevan untuk diterapkan. Sebagai gantinya, pengembangan dilakukan modul demi modul secara bertahap: alur percakapan inti dikerjakan dan diuji lebih dahulu, kemudian dilanjutkan dengan lapisan batas keselamatan, pemantauan kondisi emosional, arsitektur memori jangka panjang berbasis \textit{knowledge graph}, dan terakhir fitur pendukung seperti interaksi suara. Setiap modul diuji secara fungsional sebelum pengembangan berlanjut ke modul berikutnya, dan rancangan pada modul yang telah selesai tetap dapat direvisi apabila pengujian pada modul selanjutnya mengungkap kebutuhan integrasi baru. Pendekatan ini dipilih karena setiap modul memiliki kebutuhan pengujian yang berbeda. Pengujian batas keselamatan, misalnya, menuntut skenario yang berbeda dari pengujian konsistensi memori, sehingga validasi bertahap per modul lebih sesuai dibandingkan menunda seluruh pengujian ke akhir pengembangan.
+
+\section{Sistematika Pembahasan}
+\label{sec:sistematika}
+
+Laporan Tugas Akhir ini membahas pengembangan AXIS sebagai chatbot pendamping non-klinis untuk mahasiswa Indonesia, dengan fokus pada percakapan empatik yang reflektif, pemantauan kondisi emosional pengguna, serta arsitektur memori jangka panjang berbasis \textit{knowledge graph}. \ifdefined\seminarhasilmode Naskah pada tahap seminar hasil ini mencakup empat bab pertama beserta lampiran, sedangkan Bab V disusun menjelang sidang akhir. \else Terdapat lima bab dalam laporan Tugas Akhir ini. \fi
+
+Bab I, yaitu Pendahuluan, memperkenalkan landasan penelitian, menguraikan latar belakang dan konteks permasalahan. Bab ini mencakup rumusan masalah, tujuan dan ukuran keberhasilan pencapaian, serta batasan dari penelitian dan pengembangan, memberikan kerangka kerja yang jelas terhadap hal yang ingin dicapai oleh Tugas Akhir ini. Selain itu, bab ini menjelaskan metode penelitian dan metode pengembangan perangkat lunak yang digunakan.
+
+Bab II, yaitu Kajian Pustaka, berisi tinjauan terhadap literatur yang relevan dengan penelitian ini, disusun mengikuti urutan tiga rumusan masalah. Bab ini membahas dukungan emosional non-klinis mahasiswa Indonesia, empati dalam sistem percakapan, pendekatan percakapan reflektif, dan interaksi suara. Bab ini juga membahas batas keselamatan dan skrining kondisi emosional, memori jangka panjang berbasis \textit{knowledge graph}, dan ditutup dengan pengayaan linguistik serta prinsip arsitektur perangkat lunak yang dibutuhkan.
+
+Bab III, yaitu Deskripsi Solusi, berisi analisis kebutuhan dan rancangan solusi yang menjawab tiga rumusan masalah. Bab ini menjelaskan peran AXIS sebagai chatbot pendamping, rancangan pemantauan kondisi emosional, rancangan memori jangka panjang, batas keselamatan, dan rancangan evaluasi pada tingkat konseptual.
+
+Bab IV, yaitu Implementasi dan Evaluasi, berfokus pada realisasi teknis dari rancangan pada Bab III serta hasil validasi komponen kritis sistem. Bab ini menyajikan implementasi arsitektur inti, hasil implementasi antarmuka web, kerangka evaluasi fungsional, studi kasus ilustratif komparatif, dan rancangan pengujian pengguna nyata terbatas.
+
+\ifdefined\seminarhasilmode\else
+Bab V, Kesimpulan dan Saran, merupakan bab penutup yang merangkum penemuan dan hasil dari penelitian ini. Bab ini memberikan kesimpulan atas pencapaian tujuan Tugas Akhir, kontribusi yang dapat dipertahankan, keterbatasan sistem yang teridentifikasi pada proses pengembangan dan evaluasi, serta saran untuk pengembangan lanjutan, termasuk arah evaluasi lanjutan dengan persetujuan etik formal dan perluasan cakupan sistem.
+\fi

@@ -1,4 +1,4 @@
-"""telemetry"""
+"""telem."""
 
 from agentic.agent.audit.guardrail_events import (
     GuardrailEvent,

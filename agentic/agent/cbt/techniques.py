@@ -1,4 +1,4 @@
-"""pilih CBT teknik"""
+"""pilih CBT"""
 
 from __future__ import annotations
 
@@ -8,7 +8,7 @@ from typing import Mapping
 
 
 class CBTTechnique(str, Enum):
-    """`NONE` is def. empathic."""
+    """none"""
 
     NONE = "none"
     VALIDATE = "validate"
@@ -20,7 +20,7 @@ class CBTTechnique(str, Enum):
     SELF_COMPASSION = "self_compassion"
 
 
-# ``agentic/prompts/cbt/``
+# agentic/prompts/cbt/
 PROMPT_REFS: Mapping[CBTTechnique, str] = {
     CBTTechnique.VALIDATE: "cbt/validate",
     CBTTechnique.REFRAME: "cbt/reframe",
@@ -34,7 +34,7 @@ PROMPT_REFS: Mapping[CBTTechnique, str] = {
 
 @dataclass(frozen=True)
 class CBTDecision:
-    """router's move"""
+    """skip"""
 
     technique: CBTTechnique
     reason: str

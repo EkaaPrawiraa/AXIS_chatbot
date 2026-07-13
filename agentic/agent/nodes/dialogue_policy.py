@@ -1,4 +1,4 @@
-"""set policy"""
+"""set pol"""
 
 from __future__ import annotations
 
@@ -32,6 +32,9 @@ from agentic.agent.state import ConversationState, empty_cbt_state
 
 logger = logging.getLogger(__name__)
 
+
+
+DECLINE_STREAK_SUPPRESS_THRESHOLD: int = 2
 
 
 _DECLINE_CUES_ID: tuple[str, ...] = (
@@ -68,7 +71,7 @@ async def dialogue_policy_node(
 
     cbt_state = dict(state.get("cbt_state") or empty_cbt_state())
 
-    # detect new offer decline, cooldown preserved, route honors flag, cooldown consumed.
+    # detect, cooldown, route, flag.
     new_decline = False
     if cbt_state.get("last_offered") and _detected_decline(
         state.get("current_message") or ""
@@ -79,7 +82,7 @@ async def dialogue_policy_node(
             cbt_state.get("decline_streak", 0)
         ) + 1
 
-    # buat nyimpen decline tracking
+    # buat nyimpan decline tracking
     state["cbt_state"] = cbt_state  # type: ignore[typeddict-item]
 
     if judge_llm is not None:
@@ -87,16 +90,34 @@ async def dialogue_policy_node(
     else:
         decision = route(state)
 
-    # consuming cooldown, resetting on next turn.
+    # stop cycling, fall back to plain validation, cooldown.
+    if (
+        int(cbt_state.get("decline_streak", 0)) >= DECLINE_STREAK_SUPPRESS_THRESHOLD
+        and decision.technique not in (CBTTechnique.NONE, CBTTechnique.VALIDATE)
+    ):
+        decision = CBTDecision(
+            technique=CBTTechnique.VALIDATE,
+            reason="decline_streak_suppressed",
+            signals=("decline_streak",),
+            payload={"suppressed_technique": decision.technique.value},
+        )
+
+    # reset on next turn
     if decision.reason == "opt_out_cooldown":
         if not new_decline:
             cbt_state["declined_last_offer"] = False
-        # keep flag True, persis to next turn, cooldown applies.
-    elif not new_decline:
-        # streak nggak bakal jadi gak.
+        # keep flag True, keep looping, cooldown.
+    elif decision.reason == "decline_streak_suppressed":
+        # leave streak, suppress keep holding.
+        pass
+    elif not new_decline and decision.technique in (
+        CBTTechnique.NONE,
+        CBTTechnique.VALIDATE,
+    ):
+        # clears streak, reset on diff tech.
         cbt_state["decline_streak"] = 0
 
-    # driving, advance.
+    # driving, a.
     if decision.technique is CBTTechnique.THOUGHT_RECORD:
         decision = await _advance_thought_record(
             state=state,
@@ -106,7 +127,7 @@ async def dialogue_policy_node(
             llm=llm,
         )
 
-    # mirror into state
+    # init state
     cbt_state["last_directive"] = {
         "technique": decision.technique.value,
         "reason": decision.reason,
@@ -116,8 +137,20 @@ async def dialogue_policy_node(
     if not decision.is_none and decision.technique is not CBTTechnique.VALIDATE:
         cbt_state["last_offered"] = decision.technique.value
     elif decision.is_none:
-        # keep prior last_offered
+        # keep last_offered
         pass
+
+    # Track how long the conversation has stayed in pure validate/none mode
+    # without a real technique, so the judge (route_with_llm) can lean
+    # toward a more Socratic/directive pick instead of validating forever
+    # (mirrors a therapist becoming more assertive when passive listening
+    # alone is not surfacing the automatic thought).
+    if decision.technique in (CBTTechnique.NONE, CBTTechnique.VALIDATE):
+        cbt_state["turns_since_technique"] = int(
+            cbt_state.get("turns_since_technique", 0)
+        ) + 1
+    else:
+        cbt_state["turns_since_technique"] = 0
 
     state["cbt_state"] = cbt_state  # type: ignore[typeddict-item]
     state["cbt_node_active"] = decision.technique.value
@@ -137,7 +170,7 @@ async def _advance_thought_record(
     base_decision: CBTDecision,
     llm: Any | None,
 ) -> CBTDecision:
-    """driving thought record sub-state machine by 1st."""
+    """driving 1st."""
     sub_state_dict = cbt_state.get("thought_record")
     sub_state = ThoughtRecordSubState.from_dict(sub_state_dict)
 

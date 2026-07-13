@@ -9,6 +9,12 @@ from agentic.agent.audit.guardrail_events import (
     GuardrailLogger,
     NullGuardrailLogger,
 )
+from agentic.agent.audit.graph_trace import (
+    trace_node_end,
+    trace_node_error,
+    trace_node_start,
+    trace_route,
+)
 from agentic.agent.nodes.crisis_guardrail import (
     crisis_empathy_node,
     crisis_escalation_node,
@@ -50,8 +56,8 @@ logger = logging.getLogger(__name__)
 NodeFn = Callable[[ConversationState], Awaitable[ConversationState]]
 
 
-async def _load_profile_context(user_id: str) -> dict[str, str | None] | None:
-    """load fields"""
+async def _load_profile_context(user_id: str) -> dict[str, Any] | None:
+    """load"""
     try:
         from agentic.memory.pg_vector.client import get_pool  # noqa: PLC0415
 
@@ -60,7 +66,7 @@ async def _load_profile_context(user_id: str) -> dict[str, str | None] | None:
             return None
         row = await pool.fetchrow(
             """
-            SELECT display_name, preferred_language, gender
+            SELECT display_name, preferred_language, gender, onboarding_complete
             FROM users
             WHERE id = $1::uuid
             """,
@@ -68,10 +74,11 @@ async def _load_profile_context(user_id: str) -> dict[str, str | None] | None:
         )
         if not row:
             return None
-        context: dict[str, str | None] = {
+        context: dict[str, Any] = {
             "display_name": row["display_name"],
             "preferred_language": row["preferred_language"],
             "gender": row["gender"],
+            "onboarding_complete": row["onboarding_complete"],
         }
         mood_context = await _load_mood_context(pool, user_id)
         if mood_context:
@@ -83,7 +90,7 @@ async def _load_profile_context(user_id: str) -> dict[str, str | None] | None:
 
 
 async def _load_mood_context(pool: Any, user_id: str) -> dict[str, str | None] | None:
-    """load mood & trend"""
+    """load, mood, trend"""
     try:
         rows = await pool.fetch(
             """
@@ -115,7 +122,7 @@ def _today_jakarta_date() -> str:
 
 
 async def _turn_init_node(state: ConversationState) -> ConversationState:
-    """clear transients"""
+    """clean transients"""
     state["response_draft"] = None
     state["final_response"] = None
 
@@ -133,7 +140,7 @@ async def _turn_init_node(state: ConversationState) -> ConversationState:
         if profile_context:
             state["profile_context"] = profile_context
 
-    # sync fields into db on first turn
+    # sync into db
     if (state.get("session_turn") or 0) == 0:
         if user_id:
             try:
@@ -152,69 +159,180 @@ async def _turn_init_node(state: ConversationState) -> ConversationState:
 
 
 def route_entry(state: ConversationState) -> str:
-    """voice or text turn"""
+    """skip klo text"""
     voice = state.get("voice_state") or {}
     if voice.get("audio_input") is not None:
-        return "speech_to_text"
-    return "input_guardrail_node"
+        return trace_route(
+            state,
+            source="entry",
+            target="speech_to_text",
+            reason="audio_input_present",
+            condition={"has_audio_input": True},
+        )
+    return trace_route(
+        state,
+        source="entry",
+        target="input_guardrail_node",
+        reason="text_turn",
+        condition={"has_audio_input": False},
+    )
 
 
 def route_after_input_guardrail(state: ConversationState) -> str:
-    """route guardrail"""
+    """guardrail"""
     verdict = state.get("input_guardrail") or {}
     decision = verdict.get("decision")
     reason = verdict.get("reason", "")
     if decision == "escalate_crisis":
-        return "crisis_triage"
+        return trace_route(
+            state,
+            source="input_guardrail_node",
+            target="crisis_triage",
+            reason="input_guardrail_escalate_crisis",
+            condition={"decision": decision, "reason": reason},
+        )
     if decision == "block":
         if reason == "off_scope":
-            # skip llm, pass to voice/sesend
-            return "output_guardrail"
-        return "response_generator"  # jailbreak: let LLM compose a safe refusal
-    return "linguistic_enrichment"
+            # skip llm, pass to voice, send
+            return trace_route(
+                state,
+                source="input_guardrail_node",
+                target="output_guardrail",
+                reason="input_guardrail_off_scope_block",
+                condition={"decision": decision, "reason": reason},
+            )
+        return trace_route(
+            state,
+            source="input_guardrail_node",
+            target="response_generator",
+            reason="input_guardrail_block_refusal_generation",
+            condition={"decision": decision, "reason": reason},
+        )
+    return trace_route(
+        state,
+        source="input_guardrail_node",
+        target="linguistic_enrichment",
+        reason="input_guardrail_allow",
+        condition={"decision": decision, "reason": reason},
+    )
 
 
 def route_after_output_finalized(state: ConversationState) -> str:
-    """voice out when req'd."""
+    """req payload"""
     voice = state.get("voice_state") or {}
     if voice.get("output_modality") in ("voice", "both"):
-        return "speech_adapter"
-    return "session_end"
+        return trace_route(
+            state,
+            source="post_guardrail_router",
+            target="speech_adapter",
+            reason="voice_output_requested",
+            condition={"output_modality": voice.get("output_modality")},
+        )
+    return trace_route(
+        state,
+        source="post_guardrail_router",
+        target="session_end",
+        reason="text_output_only",
+        condition={"output_modality": voice.get("output_modality")},
+    )
 
 
 def route_after_crisis_check(state: ConversationState) -> str:
-    """route l3 pre-gen"""
+    """gen pre"""
     if state.get("safety_flag") == "crisis":
-        return "crisis_triage"
-    return "memory_retrieval"
+        return trace_route(
+            state,
+            source="crisis_guardrail",
+            target="crisis_triage",
+            reason="crisis_guardrail_detected_crisis",
+            condition={"safety_flag": state.get("safety_flag")},
+        )
+    return trace_route(
+        state,
+        source="crisis_guardrail",
+        target="memory_retrieval",
+        reason="crisis_guardrail_allow",
+        condition={"safety_flag": state.get("safety_flag")},
+    )
 
 
 def route_after_dialogue(state: ConversationState) -> str:
-    """route to node"""
+    """route"""
     phq9 = state.get("phq9_state") or {}
     phase = phq9.get("phase", "idle")
     if phase == "offer_pending":
-        return "response_generator"
+        return trace_route(
+            state,
+            source="dialogue_policy",
+            target="response_generator",
+            reason="phq9_offer_pending_generation",
+            condition={"phase": phase, "offer_armed": phq9.get("offer_armed")},
+        )
     if phase in ("offered", "in_progress", "awaiting_clar"):
-        return "phq9_delivery"
-    return "response_generator"
+        return trace_route(
+            state,
+            source="dialogue_policy",
+            target="phq9_delivery",
+            reason="phq9_active_or_offer_pending",
+            condition={"phase": phase, "active_item": phq9.get("active_item")},
+        )
+    return trace_route(
+        state,
+        source="dialogue_policy",
+        target="response_generator",
+        reason="normal_response_generation",
+        condition={"phase": phase, "cbt_node_active": state.get("cbt_node_active")},
+    )
 
 
 def route_after_phq9_delivery(state: ConversationState) -> str:
-    """`skip offer decl`"""
+    """skip offer dismiss"""
     if state.get("phq9_declined_note") and not state.get("response_draft"):
-        return "response_generator"
-    return "output_guardrail"
+        return trace_route(
+            state,
+            source="phq9_delivery",
+            target="response_generator",
+            reason="phq9_declined_needs_soft_response",
+            condition={"phq9_declined_note": True},
+        )
+    return trace_route(
+        state,
+        source="phq9_delivery",
+        target="output_guardrail",
+        reason="phq9_delivery_completed_this_step",
+        condition={
+            "phq9_declined_note": bool(state.get("phq9_declined_note")),
+            "has_response_draft": bool(state.get("response_draft")),
+        },
+    )
 
 
 def route_after_output_guardrail(state: ConversationState) -> str:
-    """safety outcomes."""
+    """safety."""
     phq9 = state.get("phq9_state") or {}
     if state.get("safety_flag") in ("crisis", "escalate"):
-        return "crisis_triage"
+        return trace_route(
+            state,
+            source="output_guardrail",
+            target="crisis_triage",
+            reason="output_guardrail_or_state_safety_escalation",
+            condition={"safety_flag": state.get("safety_flag")},
+        )
     if phq9.get("route_to_crisis_after"):
-        return "crisis_triage"
-    return "session_end"
+        return trace_route(
+            state,
+            source="output_guardrail",
+            target="crisis_escalation",
+            reason="phq9_item9_deferred_crisis_route",
+            condition={"route_to_crisis_after": True},
+        )
+    return trace_route(
+        state,
+        source="output_guardrail",
+        target="session_end",
+        reason="output_guardrail_allow",
+        condition={"safety_flag": state.get("safety_flag")},
+    )
 
 
 def build_graph(
@@ -244,10 +362,23 @@ def build_graph(
     response_generator_node_fn: NodeFn | None = None,
     session_end_node_fn: NodeFn | None = None,
 ) -> Any:
-    """build & compile LangGraph DAG"""
+    """build&compile"""
     from langgraph.graph import END, StateGraph
 
     audit = audit_logger or NullGuardrailLogger()
+
+    def audited_node(name: str, fn: NodeFn) -> NodeFn:
+        async def wrapped(state: ConversationState) -> ConversationState:
+            trace_node_start(state, name)
+            try:
+                out = await fn(state)
+            except Exception as exc:
+                trace_node_error(state, name, exc)
+                raise
+            trace_node_end(out, name)
+            return out
+
+        return wrapped
 
     async def stt_wrapped(state: ConversationState) -> ConversationState:
         return await speech_to_text_node(
@@ -349,24 +480,24 @@ def build_graph(
 
     g: Any = StateGraph(ConversationState)
 
-    g.add_node("entry", _turn_init_node)
-    g.add_node("speech_to_text", stt_wrapped)
-    g.add_node("input_guardrail_node", input_guard_wrapped)
-    g.add_node("linguistic_enrichment", linguistic_wrapped)
-    g.add_node("phq9_check", phq9_check_wrapped)
-    g.add_node("crisis_guardrail", crisis_guard_wrapped)
-    g.add_node("memory_retrieval", memory_wrapped)
-    g.add_node("dialogue_policy", dialogue_policy_wrapped)
-    g.add_node("phq9_delivery", phq9_delivery_wrapped)
-    g.add_node("response_generator", response_wrapped)
-    g.add_node("output_guardrail", output_guard_wrapped)
-    # converge end
-    g.add_node("crisis_triage", crisis_triage_wrapped)
-    g.add_node("crisis_escalation", crisis_escalation_wrapped)
-    g.add_node("crisis_empathy", crisis_empathy_wrapped)
-    g.add_node("speech_adapter", speech_adapter_wrapped)
-    g.add_node("text_to_speech", tts_wrapped)
-    g.add_node("session_end", session_end_wrapped)
+    g.add_node("entry", audited_node("entry", _turn_init_node))
+    g.add_node("speech_to_text", audited_node("speech_to_text", stt_wrapped))
+    g.add_node("input_guardrail_node", audited_node("input_guardrail_node", input_guard_wrapped))
+    g.add_node("linguistic_enrichment", audited_node("linguistic_enrichment", linguistic_wrapped))
+    g.add_node("phq9_check", audited_node("phq9_check", phq9_check_wrapped))
+    g.add_node("crisis_guardrail", audited_node("crisis_guardrail", crisis_guard_wrapped))
+    g.add_node("memory_retrieval", audited_node("memory_retrieval", memory_wrapped))
+    g.add_node("dialogue_policy", audited_node("dialogue_policy", dialogue_policy_wrapped))
+    g.add_node("phq9_delivery", audited_node("phq9_delivery", phq9_delivery_wrapped))
+    g.add_node("response_generator", audited_node("response_generator", response_wrapped))
+    g.add_node("output_guardrail", audited_node("output_guardrail", output_guard_wrapped))
+    # converge
+    g.add_node("crisis_triage", audited_node("crisis_triage", crisis_triage_wrapped))
+    g.add_node("crisis_escalation", audited_node("crisis_escalation", crisis_escalation_wrapped))
+    g.add_node("crisis_empathy", audited_node("crisis_empathy", crisis_empathy_wrapped))
+    g.add_node("speech_adapter", audited_node("speech_adapter", speech_adapter_wrapped))
+    g.add_node("text_to_speech", audited_node("text_to_speech", tts_wrapped))
+    g.add_node("session_end", audited_node("session_end", session_end_wrapped))
 
     g.set_entry_point("entry")
     g.add_conditional_edges(
@@ -431,12 +562,13 @@ def build_graph(
     )
     g.add_edge("response_generator", "output_guardrail")
 
-    g.add_node("post_guardrail_router", _noop_node)
+    g.add_node("post_guardrail_router", audited_node("post_guardrail_router", _noop_node))
     g.add_conditional_edges(
         "output_guardrail",
         route_after_output_guardrail,
         {
             "crisis_triage": "crisis_triage",
+            "crisis_escalation": "crisis_escalation",
             "session_end": "post_guardrail_router",
         },
     )
@@ -461,7 +593,7 @@ def build_graph(
 
 
 async def _noop_node(state: ConversationState) -> ConversationState:
-    """`pass`"""
+    """pass"""
     return state
 
 

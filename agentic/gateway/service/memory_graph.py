@@ -146,7 +146,7 @@ def _json_safe(value: Any) -> Any:
 
 
 def _unwrap_json_text(value: str) -> str:
-    """parseJSON"""
+    """parse"""
     stripped = value.strip()
     if not stripped.startswith("{"):
         return stripped
@@ -408,7 +408,7 @@ async def get_memory_node(*, user_id: str, node_type: str, node_id: str) -> Memo
 
 
 def _reject_injection_content(cfg: dict[str, Any], updates: dict[str, Any]) -> None:
-    """block jailbreak"""
+    """block it"""
     enum_fields = set((cfg.get("enums") or {}).keys())
     rules = load_input_rules()
     for key, value in updates.items():
@@ -529,7 +529,7 @@ async def reset_user_memory(*, user_id: str) -> dict[str, Any]:
 
 
 async def purge_user_account(*, user_id: str) -> dict[str, Any]:
-    """`del kg node/pgvector`"""
+    """`del node/pgvector`"""
     if not user_id:
         raise ValueError("user_id is required")
     return await purge_user_full(user_id)

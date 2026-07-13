@@ -34,6 +34,7 @@ class Scenario:
 
 ARYA_ID = "00000000-0000-0000-0000-000000000002"
 BUDI_ID = "00000000-0000-0000-0000-000000000003"
+DINDA_ID = "00000000-0000-0000-0000-000000000005"
 
 
 SCENARIOS: tuple[Scenario, ...] = (
@@ -163,6 +164,29 @@ SCENARIOS: tuple[Scenario, ...] = (
         expected_memory_terms=("bab 3", "dosen pembimbing", "bimbingan"),
         topic_shift_turn=8,
         notes="Persona dengan memori lama; fokus pada pemanfaatan konteks relasional dan kemampuan berhenti mengulang memori saat topik berubah.",
+    ),
+    Scenario(
+        id="persona_dinda_rich_memory_10turn",
+        research_question="RM3",
+        title="Persona Dinda rich-memory: tekanan finansial keluarga, replikasi independen dari skenario Budi",
+        scope="comparison",
+        memory_condition="rich_memory",
+        user_id=DINDA_ID,
+        turns=(
+            "AXIS, gue Dinda. Gue kepikiran lagi soal ibu yang lagi sakit itu.",
+            "Sekarang bukan cuma soal biaya rawat inap, tapi gue takut nggak bisa bantu apa-apa buat keluarga.",
+            "Gue sempet mikir gue anak yang gagal karena kerja part-time gue nggak cukup, tapi kayaknya itu terlalu keras buat diri sendiri.",
+            "Sekarang gue butuh bantu misahin mana fakta, mana asumsi gue soal ini.",
+            "Kalau lihat konteks lama gue, apa pola yang kelihatan dari cara gue bereaksi soal keuangan keluarga?",
+            "Tadi gue coba telepon ayah nanya update, tapi begitu denger 'butuh tambahan biaya' gue langsung pengen matiin telepon.",
+            "Gue mau rencana kecil buat cari kerja sampingan tambahan tanpa langsung mikir separah kemarin.",
+            "Btw abis ini gue juga mulai mikir soal kelanjutan kuliah, apa gue harus cuti dulu buat kerja penuh waktu.",
+            "Kalau ngobrol soal kuliah, jangan langsung ditarik lagi ke masalah biaya ibu ya kecuali relevan.",
+            "Tolong rangkum apa yang bisa gue lakukan malam ini dan apa yang perlu gue bawa ke obrolan berikutnya.",
+        ),
+        expected_memory_terms=("biaya", "rawat inap", "ibu"),
+        topic_shift_turn=8,
+        notes="Domain berbeda dari Budi (tekanan finansial keluarga, bukan bimbingan skripsi); dipakai untuk menguji apakah pola skor EPITOME pada ablasi retrieval mode replikasi lintas persona atau spesifik pada satu skenario.",
     ),
 )
 

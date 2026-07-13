@@ -1,9 +1,9 @@
-"""read-side helpers"""
+"""read-sides-helpers"""
 
 from __future__ import annotations
 
 
-# retriever, kg_writer.
+# retrieve, write.
 DERIVED_LABELS: frozenset[str] = frozenset({
     "Experience",
     "Emotion",

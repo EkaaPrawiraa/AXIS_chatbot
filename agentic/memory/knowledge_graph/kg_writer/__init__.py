@@ -2,13 +2,13 @@
 
 from __future__ import annotations
 
-# dedup thrs.
+# dedup.
 from agentic.memory.knowledge_graph.kg_writer._common import (
     MERGE_THRESHOLD,
     REVIEW_THRESHOLD,
 )
 
-# kg_retriever_input_schemas
+# get schemas
 from agentic.memory.knowledge_graph.kg_retriever.schemas import (
     BehaviorInput,
     EmotionInput,
@@ -21,7 +21,7 @@ from agentic.memory.knowledge_graph.kg_retriever.schemas import (
     TriggerInput,
 )
 
-# write to node
+# write node
 from agentic.memory.knowledge_graph.kg_writer.behavior_kg          import write_behavior
 from agentic.memory.knowledge_graph.kg_writer.emotion_kg            import write_emotion
 from agentic.memory.knowledge_graph.kg_writer.experience_kg         import write_experience
@@ -34,7 +34,7 @@ from agentic.memory.knowledge_graph.kg_writer.trigger_kg            import write
 from agentic.memory.knowledge_graph.kg_writer.topic_kg              import write_topic
 from agentic.memory.knowledge_graph.kg_writer.user_kg               import ensure_user_node
 
-# buat ngbuild relas.
+# buat ngbuild
 from agentic.memory.knowledge_graph.kg_retriever.relationships import (
     # skip
     link_emotion_to_thought,
@@ -42,13 +42,13 @@ from agentic.memory.knowledge_graph.kg_retriever.relationships import (
     link_experience_to_trigger,
     link_thought_emotion_association,
     link_to_behavior,
-    # skip klo error
+    # skip error
     link_experience_to_subject,
     link_experience_to_person,   # backward compat alias for link_experience_to_subject
     link_session_to_memory,
     link_to_topic,
     link_user_recurring_theme,
-    # maintain bi-temporal
+    # maint bi-temp
     invalidate_edge,
 )
 
@@ -61,7 +61,7 @@ from agentic.memory.knowledge_graph.kg_algorithm.lifecycle import (
     replace_behavior,
 )
 
-# kg_deleter / kg_modifier
+# del_mod
 from agentic.memory.knowledge_graph.kg_deleter.soft_delete  import invalidate_message
 from agentic.memory.knowledge_graph.kg_deleter.hard_delete  import purge_message, purge_user
 from agentic.memory.knowledge_graph.kg_modifier.update_node import update_node_property
@@ -99,15 +99,15 @@ __all__ = [
     "link_experience_to_trigger",
     "link_thought_emotion_association",
     "link_to_behavior",
-    # build relationships
+    # init rels
     "link_experience_to_subject",
     "link_experience_to_person",   # backward compat alias for link_experience_to_subject
     "link_session_to_memory",
     "link_to_topic",
     "link_user_recurring_theme",
-    # maintain bi-temporal
+    # maint bi-temp
     "invalidate_edge",
-    # sudah diubah & diexport ke kg_algorithm
+    # exported
     "supersede_thought",
     "run_memory_decay",
     "deactivate_trigger",

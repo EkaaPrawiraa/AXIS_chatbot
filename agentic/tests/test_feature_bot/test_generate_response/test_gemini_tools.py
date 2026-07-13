@@ -19,7 +19,7 @@ class _FakeAIMessage:
 
 
 class _FakeClient:
-    """`minimal client`"""
+    """`min cli`"""
 
     def __init__(self):
         self.bound_tools = None
@@ -34,7 +34,7 @@ class _FakeClient:
 
 @pytest.mark.asyncio
 async def test_response_generator_never_binds_google_search_when_gemini(monkeypatch):
-    """skip gemini"""
+    """skip gini"""
     monkeypatch.setenv("LLM_PROVIDER", "gemini")
     fake_client = _FakeClient()
     state = {"messages": [], "current_message": "halo, apa kabar?"}
@@ -46,7 +46,7 @@ async def test_response_generator_never_binds_google_search_when_gemini(monkeypa
 
 @pytest.mark.asyncio
 async def test_response_generator_never_binds_google_search_with_default_toolset(monkeypatch):
-    """`skip`"""
+    """skip"""
     monkeypatch.setenv("LLM_PROVIDER", "gemini")
     fake_client = _FakeClient()
     state = {"messages": [], "current_message": "halo, apa kabar?"}

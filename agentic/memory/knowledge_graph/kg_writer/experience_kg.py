@@ -1,4 +1,4 @@
-"""write edges"""
+"""edges"""
 
 from __future__ import annotations
 
@@ -29,7 +29,7 @@ async def write_experience(inp: ExperienceInput) -> str:
 
     client = get_client()
 
-    # dedup lookup
+    # dup lookup
     existing = await find_similar_node(
         label="Experience",
         embedding=inp.embedding,
@@ -37,7 +37,7 @@ async def write_experience(inp: ExperienceInput) -> str:
     )
 
     if existing and existing["similarity"] >= MERGE_THRESHOLD:
-        # reinforce sig, cap at 1.0, append msg id, add to edge provenance
+        # reinforce sig, cap 1.0, append msg id, add to edge provenance
         await client.execute_write(
             """
             MATCH (e:Experience {id: $id})
@@ -61,7 +61,7 @@ async def write_experience(inp: ExperienceInput) -> str:
         logger.debug("Experience merged: %s", existing["id"])
         return existing["id"]
 
-    # buat nyimpen config
+    # buat nyimpan config
     node_id = _new_id()
     rows = await client.execute_write(
         """

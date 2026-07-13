@@ -1,4 +1,4 @@
-"""concrete impls"""
+"""buat nyimpen"""
 
 from __future__ import annotations
 
@@ -24,7 +24,7 @@ logger = logging.getLogger(__name__)
 
 
 def _strip_thinking(text: str) -> str:
-    """rm <think>...</think> before ans"""
+    """rm <think>...</think>"""
     text = re.sub(r"<think>.*?</think>", "", text, flags=re.DOTALL)
     return text.strip()
 
@@ -148,6 +148,19 @@ def _count_fact_items(fact: Mapping[str, Any]) -> dict[str, int]:
     return counts
 
 
+def _safe_iso_datetime(value: Any, *, fallback: str) -> str:
+    """extractor sometimes returns a non-ISO placeholder (e.g. 'UNKNOWN') instead
+    of an approximate date; Neo4j's datetime() rejects that outright, so validate
+    before it ever reaches Cypher rather than losing the whole node to a write error"""
+    if isinstance(value, str) and value.strip():
+        try:
+            datetime.fromisoformat(value.strip().replace("Z", "+00:00"))
+            return value.strip()
+        except ValueError:
+            logger.warning("Discarding non-ISO occurred_at from extractor: %r", value)
+    return fallback
+
+
 def _clean_optional_str(value: Any) -> str | None:
     if value is None:
         return None
@@ -253,7 +266,7 @@ def _should_write_thought(item: Mapping[str, Any]) -> bool:
     # skip long-term
     if len(content) < 16 and not re.search(r"\b(?:aku|saya|teman|orang|keluarga)\b", content):
         return False
-    # mungkin nggak" "stray hedges" "LTM" "durable cognitions
+    # skip ltm
     believability = _fact_float(item.get("believability"), 0.5)
     return believability >= 0.3
 
@@ -311,7 +324,7 @@ def _summary_importance(summary: str, extracted: Sequence[Mapping[str, Any]]) ->
 
 
 def make_history_loader() -> HistoryLoader:
-    """load from postgres"""
+    """load_from_postgres"""
 
     async def _loader(
         *,
@@ -354,7 +367,7 @@ def make_history_loader() -> HistoryLoader:
 
 
 def make_session_metadata_loader() -> SessionMetadataLoaderFn:
-    """load safe session."""
+    """load sess. safely."""
 
     async def _meta_loader(
         *, session_id: str, user_id: str,
@@ -396,7 +409,7 @@ def make_session_metadata_loader() -> SessionMetadataLoaderFn:
 
 
 def make_user_context_loader() -> UserContextLoaderFn:
-    """load safe cross-session KG context"""
+    """load safe cross-session KG"""
 
     async def _ctx_loader(*, user_id: str) -> dict:
         try:
@@ -449,7 +462,7 @@ def make_user_context_loader() -> UserContextLoaderFn:
 
 
 def make_summarizer() -> SummarizerFn:
-    """build summary callable"""
+    """build summary fn"""
 
     async def _summarizer(
         *,
@@ -637,10 +650,10 @@ def make_kg_extractor() -> KGExtractorFn:
 
 
 def make_kg_writer() -> KGWriterFn:
-    """write mem, extract kg nodes, safe rel edges"""
+    """write mem, extract kg, safe rel"""
 
     async def _ensure_kg_anchors(user_id: str, session_id: str) -> None:
-        """ensure anchors before writes"""
+        """ensure anchors" before "writes"""
         from agentic.memory.knowledge_graph.kg_writer import ensure_user_node
         from agentic.memory.neo4j_client import get_client
         from agentic.memory.pg_vector.client import get_pool
@@ -699,7 +712,7 @@ def make_kg_writer() -> KGWriterFn:
             return None
 
     async def _safe_link(coro: Any, label: str, user_id: str, session_id: str) -> bool:
-        """exec one rel write no fail batch"""
+        """exec batch"""
         try:
             await coro
             return True
@@ -788,7 +801,7 @@ def make_kg_writer() -> KGWriterFn:
                     user_id, session_id, exc,
                 )
 
-            # Mirror summary onto session node.
+            # sum onto node.
             try:
                 from agentic.memory.neo4j_client import get_client as _gc
                 await _gc().execute_write(
@@ -841,7 +854,7 @@ def make_kg_writer() -> KGWriterFn:
                     old_thought_id = _clean_optional_str(
                         item.get("supersedes_thought_id")
                     )
-                    # auto-supersede it if LLM didn't flag a supersession.
+                    # supersede if not flagged.
                     if not old_thought_id and emb is not None:
                         try:
                             from agentic.memory.pg_vector import search_thought
@@ -903,7 +916,7 @@ def make_kg_writer() -> KGWriterFn:
                     emb = await _embed_safe(description, user_id, "Experience")
                     experience_input = ExperienceInput(
                         description=description,
-                        occurred_at=item.get("occurred_at") or now_iso,
+                        occurred_at=_safe_iso_datetime(item.get("occurred_at"), fallback=now_iso),
                         extracted_at=now_iso,
                         valence=float(item.get("valence") or 0.0),
                         significance=float(item.get("significance") or 0.5),
@@ -1289,7 +1302,7 @@ def make_kg_writer() -> KGWriterFn:
 
 
 def build_session_finalizer() -> SessionFinalizer:
-    """finalize production"""
+    """finalize"""
     return SessionFinalizer(
         history_loader=make_history_loader(),
         summarizer=make_summarizer(),

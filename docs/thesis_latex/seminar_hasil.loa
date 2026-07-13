@@ -1,0 +1,37 @@
+\contentsline {lampiran}{\numberline {A}Kebutuhan Fungsional dan Non-Fungsional Sistem}{98}{appendix.A}%
+\contentsline {lampiran}{\numberline {B}Spesifikasi Teknis Sistem}{100}{appendix.B}%
+\contentsline {lampiransub}{\numberline {B.1}Skema Basis Data}{100}{section.B.1}%
+\contentsline {lampiransub}{\numberline {B.2}Kamus Atribut Node dan Properti Temporal Graf}{102}{section.B.2}%
+\contentsline {lampiransub}{\numberline {B.3}Topologi Pipeline dan State Machine}{102}{section.B.3}%
+\contentsline {lampiransub}{\numberline {B.4}Skema Audit Trail Guardrail}{110}{section.B.4}%
+\contentsline {lampiran}{\numberline {C}Antarmuka dan Visualisasi Sistem}{111}{appendix.C}%
+\contentsline {lampiransub}{\numberline {C.1}Tampilan Antarmuka Pendukung}{111}{section.C.1}%
+\contentsline {lampiransub}{\numberline {C.2}Visualisasi Knowledge Graph Pengguna}{111}{section.C.2}%
+\contentsline {lampiran}{\numberline {D}Instrumen dan Korpus Pengujian}{119}{appendix.D}%
+\contentsline {lampiransub}{\numberline {D.1}Instrumen PHQ-9}{119}{section.D.1}%
+\contentsline {lampiransub}{\numberline {D.2}Instrumen Pengujian Pengguna}{120}{section.D.2}%
+\contentsline {lampiransub}{\numberline {D.3}Skema dan Distribusi Korpus Linguistik}{123}{section.D.3}%
+\contentsline {lampiran}{\numberline {E}Transkrip Lengkap Studi Kasus Evaluation Pipeline}{124}{appendix.E}%
+\contentsline {lampiransub}{\numberline {E.1}Persona Arya, Chatbot Baseline}{124}{section.E.1}%
+\contentsline {lampiransub}{\numberline {E.2}Persona Arya, AXIS}{127}{section.E.2}%
+\contentsline {lampiransub}{\numberline {E.3}Persona Budi, Chatbot Baseline}{128}{section.E.3}%
+\contentsline {lampiransub}{\numberline {E.4}Persona Budi, AXIS}{130}{section.E.4}%
+\contentsline {lampiransub}{\numberline {E.5}Skenario Tambahan: Ilustrasi Transisi PHQ-9 (AXIS)}{131}{section.E.5}%
+\contentsline {lampiransub}{\numberline {E.6}Skenario Tambahan: Mode Percakapan Kasual (AXIS)}{132}{section.E.6}%
+\contentsline {lampiransub}{\numberline {E.7}Ringkasan Run Terkontrol \textit {Scripted Persona}}{134}{section.E.7}%
+\contentsline {lampiransub}{\numberline {E.8}Konfigurasi Evaluasi Komparatif}{134}{section.E.8}%
+\contentsline {lampiransub}{\numberline {E.9}Detail Probe \textit {Retrieval} Recall@5}{134}{section.E.9}%
+\contentsline {lampiransub}{\numberline {E.10}Skenario Cakupan Graf Keputusan}{136}{section.E.10}%
+\contentsline {lampiransub}{\numberline {E.11}Detail Studi Ablasi \textit {Retrieval} Graf}{136}{section.E.11}%
+\contentsline {lampiran}{\numberline {F}Contoh Prompt Sistem pada Pipeline Agentik}{139}{appendix.F}%
+\contentsline {lampiransub}{\numberline {F.1}Identitas Sistem (Guardrail Lapis 1)}{139}{section.F.1}%
+\contentsline {lampiransub}{\numberline {F.2}Prompt Dasar Respons Companion}{142}{section.F.2}%
+\contentsline {lampiransub}{\numberline {F.3}Guardrail Lapis 2--4}{146}{section.F.3}%
+\contentsline {lampiransub}{\numberline {F.4}Benchmark Adversarial Eufemisme Krisis}{150}{section.F.4}%
+\contentsline {lampiransub}{\numberline {F.5}Teknik CBT: \textit {Grounding}}{152}{section.F.5}%
+\contentsline {lampiransub}{\numberline {F.6}Penawaran PHQ-9}{152}{section.F.6}%
+\contentsline {lampiransub}{\numberline {F.7}Ekstraksi \textit {Knowledge Graph}}{153}{section.F.7}%
+\contentsline {lampiransub}{\numberline {F.8}Prompt \textit {Chain-of-Thought} untuk Penilaian EPITOME}{155}{section.F.8}%
+\contentsline {lampiran}{\numberline {G}Evaluasi Kritis terhadap Studi Kasus Ilustratif}{158}{appendix.G}%
+\contentsline {lampiransub}{\numberline {G.1}Kelemahan yang Ditemukan}{158}{section.G.1}%
+\contentsline {lampiransub}{\numberline {G.2}Evaluasi Independen Tambahan: Sudut Pandang Buta}{159}{section.G.2}%

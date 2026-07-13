@@ -17,7 +17,5 @@ func Register(mux *http.ServeMux, handler *authHandler.AuthHandler) {
 	mux.HandleFunc("GET /auth/session", handler.CurrentSession)
 	mux.HandleFunc("GET /profile", handler.GetProfile)
 	mux.HandleFunc("PUT /profile", handler.UpdateProfile)
-	mux.HandleFunc("GET /profile/personality-insights", handler.PersonalityInsights)
-	mux.HandleFunc("POST /profile/generate-insights", handler.PersonalityInsights)
 	mux.HandleFunc("POST /account/delete", handler.DeleteAccount)
 }

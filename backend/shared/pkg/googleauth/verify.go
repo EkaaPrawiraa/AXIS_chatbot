@@ -1,4 +1,4 @@
-// `skip klo error`
+// skip error
 package googleauth
 
 import (
@@ -13,12 +13,12 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 )
 
-// `read env`
+// `env buat`
 func ClientIDFromEnv() string {
 	return strings.TrimSpace(os.Getenv("GOOGLE_CLIENT_ID"))
 }
 
-// googleJWKSURL refetch/caching.
+// refetch/caching.
 const googleJWKSURL = "https://www.googleapis.com/oauth2/v3/certs"
 
 var googleIssuers = map[string]bool{
@@ -26,7 +26,7 @@ var googleIssuers = map[string]bool{
 	"https://accounts.google.com": true,
 }
 
-// subset id token payload
+// subset id payload getToken
 type Claims struct {
 	Subject       string // "sub", Google's stable per-account id
 	Email         string
@@ -55,7 +55,7 @@ func loadJWKS() (keyfunc.Keyfunc, error) {
 	return jwks, jwksErr
 }
 
-// verify signature, validate claims, match clientID
+// verify, validate, match
 func Verify(ctx context.Context, idToken string, clientID string) (*Claims, error) {
 	keys, err := loadJWKS()
 	if err != nil {
@@ -64,7 +64,7 @@ func Verify(ctx context.Context, idToken string, clientID string) (*Claims, erro
 	return verifyWithKeyfunc(idToken, clientID, keys.KeyfuncCtx(ctx))
 }
 
-// verifyWithKeyfunc is pure verification logic, decoupled from JWKS loading.
+// verifyWithKeyfunc is pure logic, decoupled from JWKS.
 func verifyWithKeyfunc(idToken string, clientID string, keyfn jwt.Keyfunc) (*Claims, error) {
 	idToken = strings.TrimSpace(idToken)
 	if idToken == "" {

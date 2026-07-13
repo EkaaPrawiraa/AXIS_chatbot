@@ -1,4 +1,4 @@
-"""test sess fin recovery"""
+"""recovery"""
 
 from __future__ import annotations
 

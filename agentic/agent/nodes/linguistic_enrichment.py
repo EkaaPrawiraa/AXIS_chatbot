@@ -1,4 +1,4 @@
-"""enrich node"""
+"""enrich nod"""
 
 from __future__ import annotations
 
@@ -32,7 +32,7 @@ async def linguistic_enrichment_node(
     audit: GuardrailLogger | None = None,
     corpus: LinguisticCorpus | None = None,
 ) -> ConversationState:
-    """detect lang, surface slang, corpus"""
+    """detect, surface, slang"""
     audit = audit or NullGuardrailLogger()
     started = time.perf_counter()
 
@@ -53,9 +53,9 @@ async def linguistic_enrichment_node(
     )
     state["linguistic_signals"] = signals.to_dict()  # type: ignore[typeddict-item]
 
-    # refresh resolved_language, keep single-code, preserve code-switching.
+    # refresh, keep, single, preserve.
     if signals.language == "mixed":
-        # prefer indonesian base response lan downstream prompts must preserve natural mix.
+        # prefer indonesian base response lan downstream
         state["resolved_language"] = (
             state.get("language_pref")
             or state.get("resolved_language")

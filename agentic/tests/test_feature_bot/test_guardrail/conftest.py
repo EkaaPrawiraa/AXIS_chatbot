@@ -17,7 +17,7 @@ from agentic.agent.audit.guardrail_events import (
 
 
 class RecordingAuditLogger(NullGuardrailLogger):
-    """store events"""
+    """buat nyimpen events"""
 
     def __init__(self) -> None:
         super().__init__()
@@ -37,7 +37,7 @@ class _FakeAIMessage:
 
 @dataclass
 class FakeRewriteLLM:
-    """replies[0]  # fallback"""
+    """`set fallback`"""
 
     replies: list[str] = field(default_factory=list)
     default: str = "Aku dengar kamu. Mari kita lanjut bicara pelan-pelan."
@@ -52,7 +52,7 @@ class FakeRewriteLLM:
 
 @dataclass
 class FakeBrokenLLM:
-    """always raise' 'test fallback"""
+    """skip fallback"""
 
     async def ainvoke(self, _messages: list[Any]) -> _FakeAIMessage:
         raise RuntimeError("simulated llm failure")
@@ -76,7 +76,7 @@ def clean_rewrite_llm() -> FakeRewriteLLM:
 
 @pytest.fixture
 def stubborn_rewrite_llm() -> FakeRewriteLLM:
-    """exhaust loop"""
+    """loop exhaust"""
     return FakeRewriteLLM(
         replies=[
             "Kamu mengalami depresi sedang.",

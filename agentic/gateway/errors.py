@@ -1,4 +1,4 @@
-"""register expts on app"""
+"""buat register"""
 
 from __future__ import annotations
 
@@ -15,14 +15,14 @@ logger = logging.getLogger(__name__)
 async def validation_error_handler(
     request: Request, exc: RequestValidationError
 ) -> JSONResponse:
-    """validasi body error"""
+    """validasi body, error"""
     logger.warning(
         "validation error req_id=%s path=%s errors=%s",
         getattr(request.state, "request_id", "-"),
         request.url.path,
         exc.errors(),
     )
-    # surface errors" "log field location" "Go backend
+    # log errors "go backend
     return JSONResponse(
         status_code=422,
         content={"detail": exc.errors()},
@@ -32,7 +32,7 @@ async def validation_error_handler(
 async def value_error_handler(
     request: Request, exc: ValueError
 ) -> JSONResponse:
-    """invalid data"""
+    """parse data"""
     logger.warning(
         "bad request req_id=%s path=%s: %s",
         getattr(request.state, "request_id", "-"),
@@ -64,7 +64,7 @@ async def runtime_error_handler(
 async def unhandled_error_handler(
     request: Request, exc: Exception
 ) -> JSONResponse:
-    """log error, return safe msg"""
+    """log err, return safe msg"""
     logger.exception(
         "unhandled error req_id=%s path=%s",
         getattr(request.state, "request_id", "-"),

@@ -9,7 +9,7 @@ import (
 	"github.com/redis/go-redis/v9"
 )
 
-// skip if unreachable
+// skip if not reachable
 
 func testRedisClient(t *testing.T) *redis.Client {
 	t.Helper()
@@ -34,7 +34,7 @@ func TestCheckLimit_TTLNotResetOnSubsequentCalls(t *testing.T) {
 
 	rl := &RateLimiter{rdb: rdb, prefix: "rl-test"}
 
-	// `PTTL` instalasi, `millisecond` keunghuan `window`.
+	// `instal`, `millis`, `window`.
 	allowed, _ := rl.checkLimit(ctx, key, 100, 2*time.Second)
 	if !allowed {
 		t.Fatalf("expected first call to be allowed")
@@ -47,7 +47,7 @@ func TestCheckLimit_TTLNotResetOnSubsequentCalls(t *testing.T) {
 		t.Fatalf("expected a positive TTL after key creation, got %v", ttl1)
 	}
 
-	// elapse, then call, keep ttl count, orig window, not reset
+	// elapse, call, ttl, orig, not reset
 	time.Sleep(1200 * time.Millisecond)
 	allowed, _ = rl.checkLimit(ctx, key, 100, 2*time.Second)
 	if !allowed {

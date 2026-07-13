@@ -1,8 +1,8 @@
-"""retrieve"""
+"""ngambil"""
 
 from __future__ import annotations
 
-# smp data
+# smp ngambil
 from agentic.memory.knowledge_graph.kg_retriever.schemas import (
     BehaviorInput,
     EmotionInput,
@@ -14,7 +14,7 @@ from agentic.memory.knowledge_graph.kg_retriever.schemas import (
     TriggerInput,
 )
 
-# buat ngbuild relas.
+# buat ngbuild
 from agentic.memory.knowledge_graph.kg_retriever.relationships import (
     link_emotion_to_thought,
     link_experience_to_emotion,
@@ -29,7 +29,7 @@ from agentic.memory.knowledge_graph.kg_retriever.relationships import (
     invalidate_edge,
 )
 
-# read node
+# baca node
 from agentic.memory.knowledge_graph.kg_retriever.node_readers import (
     read_emotion,
     read_thought,
@@ -43,7 +43,7 @@ from agentic.memory.knowledge_graph.kg_retriever.node_readers import (
     list_active_triggers,
 )
 
-# ngambil signal
+# ambil signal
 from agentic.memory.knowledge_graph.kg_retriever.signals import (
     fetch_recency,
     fetch_semantic_memories,
@@ -73,7 +73,7 @@ __all__ = [
     "PersonInput",   # backward compat alias for SubjectInput
     "ThoughtInput",
     "TriggerInput",
-    # skip klo rel
+    # skip klo error
     "link_emotion_to_thought",
     "link_experience_to_emotion",
     "link_experience_to_trigger",
@@ -85,7 +85,7 @@ __all__ = [
     "link_to_topic",
     "link_user_recurring_theme",
     "invalidate_edge",
-    # ngbaca data
+    # baca data
     "read_emotion",
     "read_thought",
     "read_trigger",

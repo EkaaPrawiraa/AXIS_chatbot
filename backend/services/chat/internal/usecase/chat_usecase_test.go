@@ -8,7 +8,7 @@ import (
 	"github.com/EkaaPrawiraa/companionshipchatbot/services/chat/internal/domain/entity"
 )
 
-// `skip`
+// skip
 
 type fakeSessionRepo struct {
 	session          entity.Session
@@ -142,7 +142,7 @@ func TestSendMessage_ConfessionChannel_NeverTouchesMessageRepository(t *testing.
 		t.Fatalf("expected ListBySession to never be called for confession channel, got %d calls", messageRepo.listBySessionCalls)
 	}
 
-	// skip klo error
+	// skip error
 	if out.UserMessage.ID == "" {
 		t.Fatal("expected a generated (non-empty) user message id even without persistence")
 	}
@@ -156,7 +156,7 @@ func TestSendMessage_ConfessionChannel_NeverTouchesMessageRepository(t *testing.
 		t.Fatalf("unexpected assistant content: %q", out.Assistant.Content)
 	}
 
-	// buat nyimpen state
+	// buat nyimpan state
 	if sessionRepo.incrementCalls != 1 {
 		t.Fatalf("expected session turn counter to still increment, got %d calls", sessionRepo.incrementCalls)
 	}

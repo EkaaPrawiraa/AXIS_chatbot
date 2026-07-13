@@ -39,6 +39,7 @@ RETRY_DAYS_FOR_WORSENING: int = 7
 EVENT_TIER_MIN_DISTRESS_SESSIONS: int = 2
 # init state
 WARMUP_CONVERSATIONS_BEFORE_FIRST_OFFER: int = 5
+ONBOARDING_TURNS_BEFORE_FIRST_OFFER: int = 10
 
 
 # init PHQ-9
@@ -95,10 +96,10 @@ async def phq9_check_node(
     repo: AssessmentRepository,
     audit: GuardrailLogger | None = None,
 ) -> ConversationState:
-    """evaluate, update, idempotent, idle, short-circuit, state"""
+    """eval, upd, idemp, idle, sc, state"""
     audit = audit or NullGuardrailLogger()
 
-    # skip PHQ-9
+    # skip phq-9
     if state.get("confession_mode"):
         state["phq9_state"] = empty_phq9_state()
         return state
@@ -107,7 +108,7 @@ async def phq9_check_node(
     user_id = state["user_id"]
     session_id = state.get("session_id") or ""
 
-    # reload from db
+    # db reload
     try:
         persisted = await repo.load_phq9_progress(
             user_id=user_id,
@@ -160,7 +161,7 @@ async def phq9_check_node(
             if persisted_phase != "offer_pending":
                 return state
 
-    # arm response gen dir" "warm-up turns" "phase engaged" "trigger node" "subgraph
+    # arm gen" "warm-up" "phase" "trigger" "subgraph
     if phq9.get("phase") == "offer_pending":
         from agentic.agent.phq9.subgraph import WARMUP_TURNS_BEFORE_OFFER
 
@@ -170,17 +171,17 @@ async def phq9_check_node(
         state["phq9_state"] = phq9
         return state
 
-    # skip assessment
+    # skip ass.
     if phq9.get("phase") not in (None, "idle"):
         state["phq9_state"] = phq9
         return state
 
-    # resolve lang
+    # buat nyimpen config
     language = state.get("resolved_language") or _resolve_language_for_state(state)
     state["resolved_language"] = language
     phq9["language"] = language
 
-    # skip 14-day gate skip warm-up move to offered default accept
+    # skip 14-day gate skip warm-up skip default accept
     user_msg = (state.get("current_message") or "").strip()
     if _is_user_request(user_msg):
         logger.info(
@@ -217,12 +218,17 @@ async def phq9_check_node(
         state["phq9_state"] = phq9
         return state
 
-    # `run tier 1`
-    tier1 = await _evaluate_tier1(state, repo, phq9)
-    if tier1 is not None:
-        phq9 = tier1
+    onboarding = await _evaluate_onboarding(state, repo, phq9)
+    if onboarding is not None:
+        phq9 = onboarding
 
-    # menghitung tier 2 hanya jika tier 1 gagal.
+    # `t1`
+    if phq9.get("phase") == "idle":
+        tier1 = await _evaluate_tier1(state, repo, phq9)
+        if tier1 is not None:
+            phq9 = tier1
+
+    # hitung tier 2 jika tier 1 gagal.
     if phq9.get("phase") == "idle":
         tier2 = await _evaluate_tier2(state, repo, phq9)
         if tier2 is not None:
@@ -237,7 +243,7 @@ async def phq9_check_node(
             phq9=phq9,
         )
 
-    # audit: log non-trivial decisions.
+    # audit: log dec.
     phase = phq9.get("phase") or "idle"
     reason = phq9.get("reason") or ""
     if phase == "offer_pending":
@@ -267,12 +273,45 @@ async def phq9_check_node(
 # check every 14 days
 
 
+async def _evaluate_onboarding(
+    state: ConversationState,
+    repo: AssessmentRepository,
+    phq9: PHQ9SessionState,
+) -> PHQ9SessionState | None:
+    """Offer PHQ-9 once a new user has enough turns in the same session."""
+    profile = state.get("profile_context") or {}
+    if bool(profile.get("onboarding_complete")):
+        return None
+
+    turn = int(state.get("session_turn") or 0)
+    if turn < ONBOARDING_TURNS_BEFORE_FIRST_OFFER:
+        return None
+
+    user_id = state["user_id"]
+    last = await repo.get_last_phq9(user_id)
+    if last is not None:
+        return None
+
+    phq9["phase"] = "offer_pending"
+    phq9["tier"] = "onboarding"
+    phq9["reason"] = "onboarding_turn_10"
+    phq9["offer_made_at_turn"] = None
+    phq9["user_initiated"] = False
+    phq9["offer_armed"] = True
+    logger.info(
+        "phq9 onboarding offer pending for %s at session_turn=%s",
+        user_id,
+        turn,
+    )
+    return phq9
+
+
 async def _evaluate_tier1(
     state: ConversationState,
     repo: AssessmentRepository,
     phq9: PHQ9SessionState,
 ) -> PHQ9SessionState | None:
-    """ret sub-state if tier 1 cond. satisfied"""
+    """ret sub-state if tier 1 cond satisfied"""
     user_id = state["user_id"]
 
     pending = await repo.get_pending_retry(user_id)
@@ -284,7 +323,7 @@ async def _evaluate_tier1(
     if last is not None and days_since(last.administered_at) < SCHEDULED_INTERVAL_DAYS:
         return None
 
-    # rapport, PHQ-9
+    # rapport
     if last is None:
         convo_count = await repo.get_conversation_count(user_id)
         if convo_count < WARMUP_CONVERSATIONS_BEFORE_FIRST_OFFER:
@@ -327,7 +366,7 @@ async def _evaluate_tier1(
         )
         return phq9
 
-    # pending; wait for delivery.
+    # wait.
     phq9["phase"] = "offer_pending"
     phq9["tier"] = "scheduled"
     phq9["reason"] = "scheduled_14d"
@@ -344,7 +383,7 @@ async def _evaluate_tier2(
     repo: AssessmentRepository,
     phq9: PHQ9SessionState,
 ) -> PHQ9SessionState | None:
-    """find distress signals, flag end-session."""
+    """find distress, flag end."""
     user_id = state["user_id"]
     last = await repo.get_last_phq9(user_id)
     if last is not None and days_since(last.administered_at) < RETRY_DAYS_FOR_DISTRESS:
@@ -360,7 +399,7 @@ async def _evaluate_tier2(
     if not cluster_triggered:
         return None
 
-    # skip mid-convo, defer to next.
+    # skip mid-convo, defer.
     if _acute_distress(state, snapshot):
         sched = await repo.schedule_retry(
             user_id=user_id,
@@ -397,14 +436,14 @@ def _acute_distress(
 
 
 def _recently_worsened(last: Any) -> bool:
-    """``WORSENING_DELTA_THRESHOLD``"""
+    """``worse``"""
     if last is None:
         return False
     delta = getattr(last, "delta_from_prev", None)
     if delta is not None:
         # positive delta means score went up (worsened).
         return delta >= WORSENING_DELTA_THRESHOLD
-    # fallback, severity 14, run 14-day gate
+    # `run 14-day gate`
     return False
 
 
@@ -420,7 +459,7 @@ def _describe_event_cluster(snapshot: Any) -> str:
 
 
 def _resolve_language_for_state(state: ConversationState) -> str:
-    """lang seluruh evaluasi."""
+    """lang seluruh evaluasi"""
     msgs = [
         m.get("content", "")
         for m in (state.get("messages") or [])
@@ -443,4 +482,5 @@ __all__ = [
     "RETRY_DAYS_FOR_WORSENING",
     "EVENT_TIER_MIN_DISTRESS_SESSIONS",
     "WARMUP_CONVERSATIONS_BEFORE_FIRST_OFFER",
+    "ONBOARDING_TURNS_BEFORE_FIRST_OFFER",
 ]

@@ -13,7 +13,7 @@ from config import CONFIG, DATABASE_URL
 
 SESSION_ID = str(uuid.uuid4())
 CASUAL_USER_PROMPT = """\
-Anda adalah Salsa, mahasiswa semester 5 di Indonesia yang santai dan gaul. \
+Anda adalah Clarissa, mahasiswa semester 5 di Indonesia yang santai dan gaul. \
 Hari ini mood kamu biasa aja, cenderung happy, nggak ada masalah berat. \
 Kamu lagi pengen ngobrol santai kayak sama temen deket: nge-gosip ringan, \
 bahas drama Korea yang lagi ditonton, cerita dosen yang lucu, atau minta \
@@ -35,7 +35,7 @@ async def ensure_user_exists(user_id: str) -> None:
                     INSERT INTO users (id, email, display_name, password_hash, preferred_language, onboarding_complete, account_status)
                     VALUES (%s, %s, %s, %s, 'id', true, 'active')
                     """,
-                    (user_id, f"casual_{user_id}@test.com", "Salsa Casual", "nopassword"),
+                    (user_id, f"casual_{user_id}@test.com", "Clarissa Casual", "nopassword"),
                 )
                 conn.commit()
     finally:
@@ -68,9 +68,9 @@ async def generate_simulated_user_reply(messages):
     )
     prompt_text = "Riwayat percakapan:\n"
     for msg in messages:
-        sender = "Salsa (Anda)" if msg["role"] == "user" else "Chatbot"
+        sender = "Clarissa (Anda)" if msg["role"] == "user" else "Chatbot"
         prompt_text += f"{sender}: {msg['content']}\n"
-    prompt_text += "Salsa (Anda): "
+    prompt_text += "Clarissa (Anda): "
     completion = await client.chat.completions.create(
         model=CONFIG.simulator_model,
         messages=[
@@ -90,7 +90,7 @@ def save_transcript(transcript, user_id, path):
         f.write(f"**User ID:** {user_id}\n")
         f.write(f"**Session ID:** {SESSION_ID}\n\n---\n\n")
         for msg in transcript:
-            role = "🧑 **Salsa (Simulated User):**" if msg["role"] == "user" else "🤖 **AXIS:**"
+            role = "🧑 **Clarissa (Simulated User):**" if msg["role"] == "user" else "🤖 **AXIS:**"
             f.write(f"{role}\n{msg['content']}\n\n")
             if "metadata" in msg:
                 f.write(f"*(Latency: {msg['metadata'].get('latency_ms', 0)}ms)*\n\n")
@@ -113,7 +113,7 @@ async def run_axis_casual(turns: int, user_id: str, out_path: str):
     transcript = []
 
     initial_msg = "Woy AXIS, lagi santai nih. Btw kamu udah nonton drakor yang lagi hits ga?"
-    print(f"Salsa: {initial_msg}")
+    print(f"Clarissa: {initial_msg}")
     transcript.append({"role": "user", "content": initial_msg})
 
     axis_messages = []
@@ -138,7 +138,7 @@ async def run_axis_casual(turns: int, user_id: str, out_path: str):
         axis_messages.append(ChatMessage(role="assistant", content=resp.reply))
         if i < turns - 1:
             user_reply = await generate_simulated_user_reply(transcript)
-            print(f"Salsa: {user_reply}")
+            print(f"Clarissa: {user_reply}")
             transcript.append({"role": "user", "content": user_reply})
 
     save_transcript(transcript, user_id, out_path)
@@ -147,8 +147,8 @@ async def run_axis_casual(turns: int, user_id: str, out_path: str):
 async def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--turns", type=int, default=10)
-    parser.add_argument("--user-id", type=str, default="00000000-0000-0000-0000-000000000004")
-    parser.add_argument("--out", type=str, default="results/axis_casual_salsa.md")
+    parser.add_argument("--user-id", type=str, default="7ea05202-130d-49e1-8401-0623f567055c")
+    parser.add_argument("--out", type=str, default="results/axis_casual_clarissa.md")
     args = parser.parse_args()
     await ensure_user_exists(args.user_id)
     await ensure_session_exists(args.user_id, SESSION_ID)

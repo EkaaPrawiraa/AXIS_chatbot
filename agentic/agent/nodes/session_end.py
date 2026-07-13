@@ -1,4 +1,4 @@
-"""last node"""
+"""last"""
 
 from __future__ import annotations
 
@@ -22,7 +22,7 @@ logger = logging.getLogger(__name__)
 
 
 def _build_phq9_metadata(state: ConversationState) -> dict[str, Any] | None:
-    """ngbuild payload"""
+    """buat ngbuild"""
     phq9 = state.get("phq9_state") or {}
     phase = phq9.get("phase", "idle")
     language: str = phq9.get("language") or state.get("resolved_language") or "id"
@@ -61,7 +61,7 @@ def _build_phq9_metadata(state: ConversationState) -> dict[str, Any] | None:
         payload["progress"] = {"current": item_id, "total": NUM_ITEMS}
         return payload
 
-    # plain chat, no chips
+    # chat ngga chip
     payload["active"] = False
     payload["progress"] = {"current": NUM_ITEMS, "total": NUM_ITEMS}
     return payload
@@ -76,7 +76,7 @@ def _now() -> datetime:
 
 
 def _append_messages(state: ConversationState) -> bool:
-    """append to history"""
+    """append to hist"""
     history: list[dict[str, Any]] = list(state.get("messages") or [])
     appended_user = False
     user_msg = (state.get("current_message") or "").strip()
@@ -109,7 +109,7 @@ def _append_messages(state: ConversationState) -> bool:
 
 
 async def _persist_thought_record(state: ConversationState) -> None:
-    """# Write CBT # No ops w/o cbt_state or thought_record # No ops w/ missing user_id or session_id # No ops w/ write failure (log warning)"""
+    """# ops w/o cbt # ops w/o user_id # ops w/o session_id # ops w/ write failure"""
     cbt_state = state.get("cbt_state") or {}
     thought_record = cbt_state.get("thought_record")
     if not thought_record:
@@ -145,16 +145,16 @@ async def session_end_node(
     activity_repo: SessionActivityRepository | None = None,
     audit: GuardrailLogger | None = None,
 ) -> ConversationState:
-    """update msg hist, persist record, record session activity."""
+    """update, persist, record."""
     audit = audit or NullGuardrailLogger()
 
     ai_replied = _append_messages(state)
     state["session_turn"] = int(state.get("session_turn") or 0) + 1
 
-    # buat nyimpen CBT record Neo4j (non-blocking failure)
+    # buat nyimpen CBT record
     await _persist_thought_record(state)
 
-    # skip klo error
+    # skip error
     if (
         not state.get("confession_mode")
         and activity_repo is not None

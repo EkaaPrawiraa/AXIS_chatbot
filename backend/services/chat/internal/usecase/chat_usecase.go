@@ -29,6 +29,7 @@ type VoiceCatalogClient interface {
 type AgenticChatRequest struct {
 	UserID                 string         `json:"user_id"`
 	SessionID              string         `json:"session_id"`
+	CurrentMessageID       string         `json:"current_message_id,omitempty"`
 	CurrentMessage         string         `json:"current_message,omitempty"`
 	Messages               []ChatMessage  `json:"messages,omitempty"`
 	SessionTurn            int            `json:"session_turn"`
@@ -238,7 +239,7 @@ func (u *ChatUsecase) SubmitMood(ctx context.Context, userID string, score int) 
 	return MoodDTO{Date: mood.MoodDate.Format("2006-01-02"), Score: mood.Score}, nil
 }
 
-// `moodTrend days`
+// `trend mood`
 func (u *ChatUsecase) MoodTrend(ctx context.Context, userID string, days int) ([]MoodDTO, error) {
 	if err := validateUUID("userId", userID); err != nil {
 		return nil, err
@@ -406,7 +407,7 @@ func (u *ChatUsecase) SendMessage(ctx context.Context, input SendMessageInput) (
 		}
 	}
 
-	// skip klo error
+	// skip error
 	isConfession := session.Channel == entity.ChannelConfession
 
 	var (
@@ -465,6 +466,7 @@ func (u *ChatUsecase) SendMessage(ctx context.Context, input SendMessageInput) (
 	resp, err := u.agentic.Invoke(ctx, AgenticChatRequest{
 		UserID:                 input.UserID,
 		SessionID:              input.SessionID,
+		CurrentMessageID:       persistedMessageID(userMessage, isConfession),
 		CurrentMessage:         input.Message,
 		Messages:               agenticMessages,
 		SessionTurn:            session.TurnCount + 1,
@@ -553,7 +555,7 @@ type RegenerateMessageInput struct {
 	CBTState               map[string]any
 }
 
-// RegenerateMessage" "Buat ulang" "aply to most recent" "never older" "history
+// Regen" "aply" "history
 func (u *ChatUsecase) RegenerateMessage(ctx context.Context, input RegenerateMessageInput) (SendMessageOutput, error) {
 	if err := validateUUID("conversationId", input.SessionID); err != nil {
 		return SendMessageOutput{}, err
@@ -585,7 +587,7 @@ func (u *ChatUsecase) RegenerateMessage(ctx context.Context, input RegenerateMes
 		return SendMessageOutput{}, apperrors.Invalid("no preceding user message to regenerate a reply for")
 	}
 
-	// build history, skip stale reply, fresh answer.
+	// build hist, skip stale, fresh.
 	contextHistory := history[:len(history)-1]
 	agenticMessages := make([]ChatMessage, 0, len(contextHistory))
 	for _, msg := range contextHistory {
@@ -599,6 +601,7 @@ func (u *ChatUsecase) RegenerateMessage(ctx context.Context, input RegenerateMes
 	resp, err := u.agentic.Invoke(ctx, AgenticChatRequest{
 		UserID:                 input.UserID,
 		SessionID:              input.SessionID,
+		CurrentMessageID:       precedingUser.ID,
 		CurrentMessage:         precedingUser.Content,
 		Messages:               agenticMessages,
 		SessionTurn:            session.TurnCount,
@@ -705,7 +708,7 @@ func (u *ChatUsecase) StreamMessage(ctx context.Context, input StreamMessageInpu
 		})
 	}
 
-	// streaming
+	// stream
 	assistantMessage, err := u.messages.Append(ctx, entity.Message{
 		SessionID: input.SessionID,
 		UserID:    input.UserID,
@@ -720,12 +723,13 @@ func (u *ChatUsecase) StreamMessage(ctx context.Context, input StreamMessageInpu
 
 	var accumulated strings.Builder
 	tokenCount := 0
-	// bgCtx survives client disso.
+	// survive disso.
 	bgCtx := context.Background()
 
 	resp, err := u.agentic.Stream(ctx, AgenticChatRequest{
 		UserID:                 input.UserID,
 		SessionID:              input.SessionID,
+		CurrentMessageID:       userMessage.ID,
 		CurrentMessage:         input.Message,
 		Messages:               agenticMessages,
 		SessionTurn:            session.TurnCount + 1,
@@ -746,14 +750,14 @@ func (u *ChatUsecase) StreamMessage(ctx context.Context, input StreamMessageInpu
 				return err
 			}
 		}
-		// flush to db 30 tokens 30 tokens 30 tokens 30 tokens 30 tokens 30 tokens 30 tokens 30 tokens 30 tokens 30 tokens 30 tokens 30 tokens 30 tokens 30 tokens
+		// flush to db 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30
 		if tokenCount%30 == 0 {
 			_ = u.messages.UpdateStatusAndContent(bgCtx, assistantMessage.ID, "streaming", accumulated.String())
 		}
 		return nil
 	})
 	if err != nil {
-		// persist partial content
+		// buat nyimpen partial content
 		_ = u.messages.UpdateStatusAndContent(bgCtx, assistantMessage.ID, "streaming", accumulated.String())
 		return SendMessageOutput{}, err
 	}
@@ -772,7 +776,7 @@ func (u *ChatUsecase) StreamMessage(ctx context.Context, input StreamMessageInpu
 	safetyFlag := optionalString(resp.SafetyFlag)
 	crisisTier := optionalString(resp.CrisisTier)
 
-	// finalize: update, add safety, mark complete.
+	// finalize, add safety, mark complete.
 	assistantMessage.Content = reply
 	assistantMessage.SafetyFlag = safetyFlag
 	assistantMessage.CrisisTier = crisisTier
@@ -921,7 +925,7 @@ func messageDTO(msg entity.Message) MessageDTO {
 	}
 }
 
-// map db to frontend, 'streaming' msg treated as 'sent' if old, stream interrupted.
+// map db to frontend, 'sent' msg if old, stream int.
 func messageFrontendStatus(msg entity.Message) string {
 	switch msg.Status {
 	case "streaming":
@@ -970,7 +974,7 @@ func responseMetadata(phq9State map[string]any) map[string]any {
 	return metadata
 }
 
-// builds payload, returns nil.
+// ngambil data, return nil.
 func phq9MetadataFromState(phq9State map[string]any) map[string]any {
 	if len(phq9State) == 0 {
 		return nil
@@ -1058,6 +1062,13 @@ func defaultString(value string, fallback string) string {
 		return fallback
 	}
 	return value
+}
+
+func persistedMessageID(message entity.Message, ephemeral bool) string {
+	if ephemeral {
+		return ""
+	}
+	return message.ID
 }
 
 func titleFromMessage(message string) string {

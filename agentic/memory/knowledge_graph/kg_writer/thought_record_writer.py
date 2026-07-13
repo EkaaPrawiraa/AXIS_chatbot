@@ -1,4 +1,4 @@
-"""persists records"""
+"""persists"""
 
 from __future__ import annotations
 
@@ -22,7 +22,7 @@ async def write_thought_record(
     session_id: str,
     thought_record: dict[str, Any],
 ) -> str | None:
-    """persist completed ``ThoughtRecordSubState`` to Neo4j"""
+    """persist to db"""
     if not thought_record:
         return None
 
@@ -53,7 +53,7 @@ async def write_thought_record(
 
     client = get_client()
 
-    # merge dupes, idempotent, payload fields
+    # merge dupes, idempotent, fields
     result = await client.execute_write(
         """
         MATCH (u:User {id: $user_id})

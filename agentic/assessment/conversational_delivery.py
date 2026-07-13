@@ -28,7 +28,7 @@ from agentic.config.llm_models import (
 logger = logging.getLogger(__name__)
 
 
-# `msg classes`
+# msg "classes
 
 try:  # pragma: no cover - import behavior depends on environment
     from langchain_core.messages import (  # type: ignore[import-not-found]
@@ -47,7 +47,7 @@ except Exception:  # pragma: no cover - fallback path for tests/sandbox
         type: str = "human"
 
 
-# skor gratis
+# skor 0
 
 
 CONFIDENCE_FLOOR_FOR_AUTO_ACCEPT: float = 0.7
@@ -55,7 +55,7 @@ CONFIDENCE_FLOOR_FOR_AUTO_ACCEPT: float = 0.7
 
 @dataclass(frozen=True)
 class TextScoreOutcome:
-    """output: score_text_response()"""
+    """output: score_text()"""
 
     score: int
     confidence: float
@@ -69,7 +69,7 @@ class TextScoreOutcome:
 
 
 def build_greeting(language: str) -> str:
-    """open turn 1"""
+    """open 1"""
     if language == "id":
         return (
             "Aku mau ngajak kita ngecek kondisi mood-mu lewat 9 pertanyaan "
@@ -86,7 +86,7 @@ def build_greeting(language: str) -> str:
 
 
 def build_offer(language: str) -> str:
-    """start-up phrasing"""
+    """start"""
     if language == "id":
         return (
             "Sudah beberapa minggu sejak terakhir kali kita ngecek gimana "
@@ -101,7 +101,7 @@ def build_offer(language: str) -> str:
 
 
 def build_item_prompt(item_id: int, language: str) -> str:
-    """build msg PHQ-9 item"""
+    """buat msg PHQ-9"""
     question = item_text(item_id, language)
     options = options_with_scores(language)
     if language == "id":
@@ -120,7 +120,7 @@ def build_item_prompt(item_id: int, language: str) -> str:
 
 
 def build_clarification(item_id: int, language: str, prior_text: str) -> str:
-    """cek score"""
+    """cek score?"""
     if language == "id":
         return (
             f"Aku ingin pastiin paham jawabanmu untuk pertanyaan {item_id}. "
@@ -144,7 +144,7 @@ async def build_clarification_explanation(
     recent_context: str = "",
     llm: Any | None = None,
 ) -> str:
-    """explain meaning"""
+    """explain"""
     client = llm if llm is not None else build_llm(PHQ9_CLARIFICATION_EXPLAINER)
 
     options_block = "\n".join(
@@ -175,7 +175,7 @@ async def build_clarification_explanation(
 
 
 def build_acknowledgement(item_id: int, language: str) -> str:
-    """nto the next"""
+    """nto next"""
     if language == "id":
         return f"Oke, aku catat. Lanjut ke pertanyaan {item_id + 1}."
     return f"Got it, noted. Moving on to question {item_id + 1}."
@@ -201,7 +201,7 @@ async def score_text_response(
     language: str,
     llm: Any | None = None,
 ) -> TextScoreOutcome:
-    """map free-text to score 0..3 LLM used at temp 0 to keep results reproducible LLM returns malformed output -> fallback to confidence 0.0 fall back to confidence 0.0 and force clarification"""
+    """map free-text to score 0..3 LLM temp 0, fallback to 0.0, force clar."""
     client = llm if llm is not None else build_llm(PHQ9_SCORER)
 
     options_block = "\n".join(
@@ -247,7 +247,7 @@ _JSON_RE = re.compile(r"\{.*\}", re.DOTALL)
 
 
 def _parse_score_json(raw: str) -> tuple[int, float]:
-    """const [score, confidence] = llmOutput;"""
+    """get score & confidence"""
     if not raw:
         return 0, 0.0
     match = _JSON_RE.search(raw)
@@ -287,7 +287,7 @@ async def build_feedback_message(
     item9_flagged: bool,
     llm: Any | None = None,
 ) -> str:
-    """buat ngelipkan feedback."""
+    """ekip feedback."""
     use_llm_feedback = os.getenv("PHQ9_FEEDBACK_USE_LLM", "").strip().lower() in {
         "1",
         "true",
@@ -329,7 +329,7 @@ async def build_feedback_message(
 def _fallback_feedback(
     total: int, severity: PHQ9Severity, language: str
 ) -> str:
-    """`use static feedback`"""
+    """`ngelihis`"""
     if language == "id":
         severity_label = {
             "minimal": "minimal",

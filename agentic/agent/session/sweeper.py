@@ -1,4 +1,4 @@
-"""bg task finalize expired sessions"""
+"""finalize exp sessions"""
 
 from __future__ import annotations
 
@@ -53,14 +53,14 @@ class SessionSweeper:
     _last_decay_at: datetime | None = None
 
     def start(self) -> None:
-        """bg poll loop di mulai"""
+        """poll loop di mulai"""
         if self._task is not None:
             return
         self._stop_event.clear()
         self._task = asyncio.create_task(self._loop(), name="session_sweeper")
 
     async def stop(self) -> None:
-        """wait for loop to exit"""
+        """wait for loop exit"""
         if self._task is None:
             return
         self._stop_event.set()
@@ -92,7 +92,7 @@ class SessionSweeper:
                 return
         self._last_decay_at = now
         try:
-            # lazy import: kg_algorithm -> kg_writer
+            # import kg_writer
             from agentic.memory.knowledge_graph.kg_algorithm.decay import (
                 run_memory_decay,
             )

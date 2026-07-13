@@ -1,4 +1,4 @@
-"""buat cli komunitas"""
+"""buat cli"""
 
 from __future__ import annotations
 
@@ -22,7 +22,7 @@ try:  # pragma: no cover
 except Exception:
     pass
 
-# disable logging
+# log off
 
 logging.basicConfig(
     level=os.getenv("LOG_LEVEL", "WARNING"),
@@ -106,7 +106,7 @@ async def _build_deps() -> dict[str, Any]:
         pg_pool=pg_pool, neo4j_driver=neo4j_driver,
     )
 
-    # init client
+    # init cli
     if neo4j_driver is not None:
         try:
             from agentic.memory.neo4j_client import init_client
@@ -160,13 +160,13 @@ async def _ensure_user_exists(
     preferred_language: str,
     display_name: str = "CLI User",
 ) -> None:
-    """# create placeholder user"""
+    """buat user placeholder"""
     if not user_id:
         return
 
     # avoid collisions, unique, deterministic
     email = f"cli+{user_id}@local.test"
-    # `trim` `null` `60` `char`
+    # `trim` `null` `char`
     password_hash = "x" * 60
 
     try:
@@ -191,12 +191,12 @@ async def _ensure_user_exists(
                 (preferred_language or "id")[:2],
             )
     except Exception as exc:
-        # skip klo error
+        # skip error
         log.warning("could not ensure user exists in postgres: %s", exc)
 
 
 def _wrap_context_builder():
-    """bridge to node."""
+    """bridge node"""
     async def _bridge(*, user_id, session_id, query, language):
         try:
             from agentic.memory.context_builder import build_context
@@ -336,7 +336,7 @@ def _short_state(state: dict[str, Any]) -> str:
 
 
 def _wrap_audio_bytes(path: Path) -> tuple[Any, str]:
-    """file mime"""
+    """mime type"""
     suffix = path.suffix.lower().lstrip(".")
     mime = {
         "mp3": "audio/mpeg",
@@ -351,7 +351,7 @@ def _wrap_audio_bytes(path: Path) -> tuple[Any, str]:
 
 
 async def _consume_audio_blob(blob: Any) -> bytes:
-    """drain generator"""
+    """drain gen"""
     if isinstance(blob, (bytes, bytearray)):
         return bytes(blob)
     chunks: list[bytes] = []
@@ -378,7 +378,7 @@ def _save_audio(audio_bytes: bytes, *, suffix: str = ".mp3") -> Path:
 
 
 def _open_with_player(path: Path) -> bool:
-    """open system best-effort."""
+    """open system."""
     if sys.platform == "darwin":
         cmd = ["afplay", str(path)]
     elif sys.platform.startswith("linux"):
@@ -400,7 +400,7 @@ def _open_with_player(path: Path) -> bool:
 
 
 async def _main() -> int:
-    # set CLI_USER_ID
+    # set cli_user_id
     user_id = os.getenv("CLI_USER_ID", "11111111-1111-1111-1111-111111111111")
     session_id = str(uuid.uuid4())
 
@@ -426,7 +426,7 @@ async def _main() -> int:
             build_llm,
         )
 
-        # prov creds req
+        # prov creds
         response_llm = build_llm(RESPONSE_GENERATOR)
         phq9_judge_llm = build_llm(PHQ9_JUDGE)
         feedback_llm = build_llm(PHQ9_FEEDBACK)
@@ -605,7 +605,7 @@ async def _main() -> int:
 
         state.update(new_state)
 
-        # clear audio_input
+        # buat nyimpen audio_input
         if state.get("voice_state"):
             voice = dict(state["voice_state"])
             voice["audio_input"] = None

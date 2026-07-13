@@ -30,7 +30,7 @@ _NEXT_STEP: dict[ThoughtRecordStep, ThoughtRecordStep] = {
 
 @dataclass
 class ThoughtRecordSubState:
-    """persist sub-state"""
+    """buat nyimpen sub-state"""
 
     step: ThoughtRecordStep = ThoughtRecordStep.CATCH_THOUGHT
     thought: str | None = None
@@ -153,7 +153,7 @@ def _prompt_done(sub: ThoughtRecordSubState, language: str) -> str:
 
 @dataclass
 class ThoughtRecordTurn:
-    """step out"""
+    """out"""
 
     bot_prompt: str
     next_state: ThoughtRecordSubState
@@ -161,7 +161,7 @@ class ThoughtRecordTurn:
 
 
 class ThoughtRecordMachine:
-    """machine = ThoughtRecordMachine() turn = await machine.step(     sub_state=ThoughtRecordSubState(),     user_reply="",     language="id",     hinted_distortion=DISTORTIONS["catastrophizing"], )"""
+    """machine = ThoughtRecordMachine() turn = machine.step(     sub_state=ThoughtRecordSubState(),     user_reply="",     language="id",     hinted_distortion=DISTORTIONS["catastrophizing"], )"""
 
     async def step(
         self,
@@ -172,7 +172,7 @@ class ThoughtRecordMachine:
         hinted_distortion: Distortion | None = None,
         llm: Any | None = None,
     ) -> ThoughtRecordTurn:
-        # buat nyimpen reply
+        # buat nyimpan reply
         if user_reply.strip():
             self._record_reply(sub_state, user_reply.strip(), hinted_distortion)
             sub_state.step = _NEXT_STEP[sub_state.step]
@@ -196,7 +196,7 @@ class ThoughtRecordMachine:
             ):
                 sub.distortion = hinted_distortion.name
             else:
-                # search names
+                # search
                 match = next(
                     (n for n in DISTORTIONS if n in normalized),
                     None,
@@ -249,7 +249,7 @@ class ThoughtRecordMachine:
                 next_state=sub,
                 completed=False,
             )
-        # skip to next
+        # skip
         return ThoughtRecordTurn(
             bot_prompt=_prompt_done(sub, language),
             next_state=sub,

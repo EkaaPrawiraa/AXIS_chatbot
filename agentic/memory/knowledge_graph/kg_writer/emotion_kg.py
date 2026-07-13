@@ -1,4 +1,4 @@
-"""write node & edges"""
+"""write edges"""
 
 from __future__ import annotations
 
@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 
 async def write_emotion(inp: EmotionInput) -> str:
-    """write emotion node link to user return node id use bi-temporal props"""
+    """write node link, id, bi-temporal, user, props"""
     _require(inp.label,       "label")
     _require(inp.source_text, "source_text")
     _require(inp.user_id,     "user_id")

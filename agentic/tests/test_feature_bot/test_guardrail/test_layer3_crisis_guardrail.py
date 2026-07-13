@@ -1,4 +1,4 @@
-"""test layer 3 pre-gen crisis"""
+"""test l3 pre-gen crisis"""
 
 from __future__ import annotations
 
@@ -20,7 +20,7 @@ from agentic.agent.state import empty_conversation_state, empty_phq9_state
 class TestPreGenCheck:
     def test_phrase_overlap_triggers(self) -> None:
         rules = load_pregen_rules(force_reload=True)
-        # skip to next
+        # skip
         msg = "ingin mengakhiri hidupnya sekarang"
         verdict = evaluate_pregen(msg, rules=rules)
         assert verdict.crisis is True
@@ -50,7 +50,7 @@ class TestPreGenNode:
 
     @pytest.mark.asyncio
     async def test_phq9_in_progress_defers_crisis(self, audit) -> None:
-        """`while phq9_in_flight`"""
+        """`skip phq9_in_flight`"""
         state = empty_conversation_state(user_id="u1", session_id="s1")
         state["current_message"] = "ingin mengakhiri hidupnya"
         phq = empty_phq9_state()
@@ -121,7 +121,7 @@ class TestCrisisEscalation:
         assert "LISA Suicide Prevention Helpline" in text
         assert "119" in text
         assert "+62 811 3855 472" in text
-        # skip template leak
+        # skip leak
         assert "{primary_contact}" not in text
         assert "{campus_name}" not in text
         assert "{resource_lines}" not in text

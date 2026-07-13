@@ -1,8 +1,9 @@
-"""run tests"""
+"""test all"""
 
 from __future__ import annotations
 
 from agentic.agent.session.finalizer_factory import (
+    _safe_iso_datetime,
     _should_write_behavior,
     _should_write_emotion,
     _should_write_experience,
@@ -12,7 +13,7 @@ from agentic.agent.session.finalizer_factory import (
 
 
 class TestExperienceGate:
-    """ngubah behvior"""
+    """ubah behvior"""
 
     def test_low_significance_rejected(self) -> None:
         assert not _should_write_experience(
@@ -31,7 +32,7 @@ class TestExperienceGate:
 
 
 class TestEmotionGate:
-    """write unconditionally."""
+    """write 24/7."""
 
     def test_low_intensity_rejected(self) -> None:
         assert not _should_write_emotion(
@@ -44,7 +45,7 @@ class TestEmotionGate:
         )
 
     def test_missing_intensity_defaults_to_passing(self) -> None:
-        """`set to 0`"""
+        """`0`"""
         assert _should_write_emotion({"label": "sedih", "source_text": "sedih hari ini"})
 
     def test_empty_label_rejected(self) -> None:
@@ -52,7 +53,7 @@ class TestEmotionGate:
 
 
 class TestBehaviorGate:
-    """write unconditionally."""
+    """write 24/7."""
 
     def test_low_significance_rejected(self) -> None:
         assert not _should_write_behavior(
@@ -75,7 +76,7 @@ class TestThoughtGate:
         )
 
     def test_near_zero_believability_rejected_even_if_structurally_ok(self) -> None:
-        """buat nyimpen config"""
+        """buat nyimpan config"""
         assert not _should_write_thought(
             {
                 "content": "aku kayaknya cuma bercanda doang sih tadi",
@@ -97,3 +98,27 @@ class TestTriggerGate:
         assert _should_write_trigger(
             {"description": "sidang TA bulan depan", "significance": 0.7}
         )
+
+
+class TestSafeIsoDatetime:
+    """regression: extractor returning a non-ISO placeholder (e.g. 'UNKNOWN')
+    used to reach Neo4j's datetime() raw and crash the whole Experience write"""
+
+    def test_valid_iso_string_passes_through(self) -> None:
+        assert _safe_iso_datetime("2026-07-10T12:00:00+00:00", fallback="FALLBACK") == "2026-07-10T12:00:00+00:00"
+
+    def test_unknown_placeholder_falls_back(self) -> None:
+        assert _safe_iso_datetime("UNKNOWN", fallback="FALLBACK") == "FALLBACK"
+
+    def test_freeform_text_falls_back(self) -> None:
+        assert _safe_iso_datetime("beberapa minggu yang lalu", fallback="FALLBACK") == "FALLBACK"
+
+    def test_none_falls_back(self) -> None:
+        assert _safe_iso_datetime(None, fallback="FALLBACK") == "FALLBACK"
+
+    def test_empty_string_falls_back(self) -> None:
+        assert _safe_iso_datetime("", fallback="FALLBACK") == "FALLBACK"
+
+    def test_z_suffix_iso_string_passes_through(self) -> None:
+        # extractor sometimes emits the Z form rather than +00:00
+        assert _safe_iso_datetime("2026-07-10T12:00:00Z", fallback="FALLBACK") == "2026-07-10T12:00:00Z"

@@ -1,4 +1,4 @@
-"""kg_writer helpers"""
+"""kgw hlp"""
 
 from __future__ import annotations
 
@@ -18,7 +18,7 @@ REVIEW_THRESHOLD: float = 0.65   # >= this: flag for LLM merge review
 
 
 def _now_iso() -> str:
-    """`get now`"""
+    """get_now"""
     return datetime.now(timezone.utc).isoformat()
 
 
@@ -28,7 +28,7 @@ def _new_id() -> str:
 
 
 def _require(value: Any, field_name: str) -> Any:
-    """`null check`"""
+    """`check null`"""
     if value is None or (isinstance(value, str) and not value.strip()):
         raise ValueError(f"Required field '{field_name}' is None or empty")
     return value

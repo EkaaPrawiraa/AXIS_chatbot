@@ -1,4 +1,4 @@
-"""`fallback to OpenAI`"""
+"""fallback to OpenAI"""
 
 from __future__ import annotations
 
@@ -30,7 +30,7 @@ from agentic.config.voices import VoiceCatalog, VoiceEntry, load_voice_catalog
 from agentic.gateway.monitoring import increment
 
 
-# `langchain` & `fallback`  `speech_adapter.py`  `inject_gemini_audio_tags`  `LLM`  `call`
+# langchain fallback speech_adapter.py inject_gemini_audio_tags LLM call
 
 
 try:  # pragma: no cover
@@ -56,7 +56,7 @@ logger = logging.getLogger(__name__)
 
 @dataclass
 class TTSResult:
-    """synth call outcome"""
+    """outcome"""
 
     provider: str             # "elevenlabs" | "openai_tts1"
     model: str                # provider-specific model id
@@ -103,7 +103,7 @@ class GeminiTTSProvider(Protocol):
     ) -> TTSResult: ...
 
 
-# prod prov (laz)
+# prod prov (l)
 
 
 class ElevenLabsClient:
@@ -298,7 +298,7 @@ class OpenAITTSClient:
 
 
 class GeminiTTSClient:
-    """fallback: TTS using Gemini"""
+    """fallback: TTS Gemini"""
 
     def __init__(self, *, client: Any | None = None, retry_delay_s: float = 0.6) -> None:
         self._client = client
@@ -320,7 +320,7 @@ class GeminiTTSClient:
                 provider="gemini_tts", model=model, error=f"client_init:{exc}",
             )
 
-        # finish_reason=OTHER, no candidate content, retry works.
+        # finish  OTHER  retry  work
         last_result = await self._attempt(client, text=text, voice=voice, model=model, instructions=instructions)
         if last_result.error is None and last_result.audio_blob is not None:
             return last_result
@@ -342,7 +342,7 @@ class GeminiTTSClient:
         try:
             from google.genai import types  # type: ignore[import-not-found]
 
-            # `voice.id` sets prebuilt voice.
+            # set_voice_prebuilt
             voice_name = voice.id or os.getenv("GEMINI_TTS_VOICE", "Kore")
             spoken_text = f"{instructions.strip()}\n\n{text}" if instructions else text
             response = await client.aio.models.generate_content(
@@ -400,7 +400,7 @@ def _pcm_to_wav(
     channels: int = 1,
     sample_width: int = 2,
 ) -> bytes:
-    """wrap raw pcm"""
+    """wrap pcm"""
     import struct
 
     byte_rate = sample_rate * channels * sample_width
@@ -429,7 +429,7 @@ def _pcm_to_wav(
 
 
 def _select_tts_style(state: ConversationState) -> bool:
-    """True if extra pacing/tone."""
+    """pacing, tone."""
     if state.get("safety_flag") in ("crisis", "escalate"):
         return True
     cbt_directive = state.get("cbt_directive") or {}
@@ -463,7 +463,7 @@ async def _inject_gemini_audio_tags(text: str, *, llm: Any | None = None) -> str
 
 
 def _resolve_gemini_voice_entry(voice_entry: VoiceEntry, tts_model_request: str | None) -> VoiceEntry:
-    """check voice_id"""
+    """check_voice_id"""
     if (
         voice_entry.persona == "user-selected"
         and is_gemini_prebuilt_voice_name(voice_entry.id)
@@ -485,21 +485,21 @@ def _resolve_gemini_voice_entry(voice_entry: VoiceEntry, tts_model_request: str 
 
 
 def _materialize_audio_blob(blob: Any) -> Any:
-    """drain stream into blob"""
+    """drain into blob"""
     if blob is None or isinstance(blob, (bytes, bytearray)):
         return blob
     return b"".join(blob)
 
 
 def _elevenlabs_model_for(mode: str) -> str:
-    """resolusi ElevenLabs model"""
+    """solusi ElevenLabs"""
     if mode == "v3":
         return os.getenv("ELEVENLABS_MODEL_PRERENDERED", "eleven_v3")
     return os.getenv("ELEVENLABS_MODEL_REALTIME", "eleven_turbo_v2_5")
 
 
 def _audio_format_from(output_format: str) -> str:
-    """pick mime hint"""
+    """pick mime"""
     if output_format.startswith("mp3"):
         return "mp3"
     if output_format.startswith("pcm"):
@@ -536,7 +536,7 @@ def _select_text(state: ConversationState) -> str:
 
 @dataclass
 class TTSChainOutcome:
-    """sep tier-0 error"""
+    """skip tier-0 error"""
 
     result: TTSResult
     primary_error: str | None
@@ -555,7 +555,7 @@ async def run_tts_fallback_chain(
     streaming: bool | None = None,
     gemini_tag_llm: Any | None = None,
 ) -> TTSChainOutcome:
-    """Run -> Gemini -> OpenAI."""
+    """run -> gmxai"""
     cat = catalog or load_voice_catalog()
     el_model = _elevenlabs_model_for(mode)
     use_streaming = (mode == "v2_5_turbo") if streaming is None else streaming
@@ -636,7 +636,7 @@ async def text_to_speech_node(
     audit: GuardrailLogger | None = None,
     gemini_tag_llm: Any | None = None,
 ) -> ConversationState:
-    """synthesize speech"""
+    """synth speak"""
     audit = audit or NullGuardrailLogger()
     voice = dict(state.get("voice_state") or empty_voice_state())
 

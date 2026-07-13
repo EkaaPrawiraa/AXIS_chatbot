@@ -1,4 +1,4 @@
-"""enrich lang with corpus"""
+"""langs ngisi dengan data"""
 
 from agentic.agent.linguistic.corpus import (
     CorpusEntry,

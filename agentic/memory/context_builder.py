@@ -1,4 +1,4 @@
-"""skip klo error"""
+"""skip error"""
 
 from __future__ import annotations
 
@@ -31,13 +31,18 @@ EXPERIENCE_FLOOR:      float = 0.5
 SUBJECTS_TOP_K:          int   = 3    # signal 5: how many subjects to surface per turn
 SUBJECTS_EXPERIENCE_CAP: int   = 3   # signal 5: experiences attached per subject
 
-# skip compat alias
+# skip compat
 PEOPLE_TOP_K          = SUBJECTS_TOP_K
 PEOPLE_EXPERIENCE_CAP = SUBJECTS_EXPERIENCE_CAP
 
 # expands graph
 FOCUSED_TOP_K:         int   = 5
 FOCUSED_FLOOR:         float = 0.4
+# Above this similarity, a candidate is trusted on embedding match alone and
+# skips the anchor-term keyword filter below -- otherwise a vague referential
+# follow-up ("coba jelasin dong maksudnya") shares no literal keyword with the
+# stored memory and gets discarded despite a strong semantic match.
+FOCUSED_HIGH_CONFIDENCE: float = 0.75
 FOCUSED_CHAR_BUDGET:   int   = 1600
 FOCUSED_PEOPLE_CAP:    int   = 5
 FOCUSED_TRIGGER_CAP:   int   = 5
@@ -48,7 +53,7 @@ FOCUSED_BEHAVIOR_CAP:  int   = 5
 # skip no signals, run pgvector, full pipeline
 RETRIEVAL_MODE: str = os.getenv("RETRIEVAL_MODE", "full")
 
-# sensitivity tier, policy, III.5.5
+# tier, policy, III.5.5
 SENSITIVITY_IMPORTANCE_PERSONAL  = 0.5
 SENSITIVITY_IMPORTANCE_SENSITIVE = 0.7
 SENSITIVITY_IMPORTANCE_TRAUMA    = 0.8
@@ -89,7 +94,7 @@ _GENERIC_MEMORY_RE = re.compile(
     re.IGNORECASE,
 )
 
-# `skp tier 1`
+# skip tier 1
 _BACK_REFERENCE_RE = re.compile(
     r"\b("
     r"yang\s+(?:waktu|tadi|kemarin|dulu|sebelumnya|pernah)\s+(?:itu|kamu|lu|lo|aku|gue|gua|cerita)|"
@@ -124,18 +129,18 @@ _CLARIFICATION_RE = re.compile(
 
 
 def _is_back_reference(query_text: str | None) -> bool:
-    """true when ref'd prior."""
+    """true prior"""
     return bool(_BACK_REFERENCE_RE.search(query_text or ""))
 
 
 def _is_clarification_request(query_text: str | None) -> bool:
-    """true when user asks for more."""
+    """true when user asks."""
     text = (query_text or "").strip()
     if not text or _is_generic_memory_query(text):
         return False
     if not _CLARIFICATION_RE.search(text):
         return False
-    # skip klo error
+    # skip error
     terms = _query_terms(text)
     return len(terms) >= 1
 
@@ -216,7 +221,7 @@ def _query_terms(query_text: str | None) -> list[str]:
 
 
 def _is_generic_memory_query(query_text: str | None) -> bool:
-    """remember everything"""
+    """memori aja"""
     text = (query_text or "").strip().lower()
     if not text:
         return False
@@ -284,7 +289,7 @@ def _filter_dicts_by_terms(
 
 
 def _specific_anchor_terms(query_text: str | None) -> list[str]:
-    """skip affect words"""
+    """skip affect"""
     return [
         term for term in _query_terms(query_text)
         if term not in _LOW_SPECIFICITY_RECALL_TERMS
@@ -296,7 +301,7 @@ def _apply_sensitivity_redaction(
     sensitivity_level: str,
     importance: float,
 ) -> dict[str, Any] | None:
-    """`sensitivity tier` to `rehydrated node`."""
+    """sens tier to node."""
     tier = (sensitivity_level or "normal").lower()
     if tier in ("normal", "public"):
         return rec
@@ -307,7 +312,7 @@ def _apply_sensitivity_redaction(
     if tier == "sensitive":
         if importance < SENSITIVITY_IMPORTANCE_SENSITIVE:
             return None
-        # redact text, keep rel. context
+        # redact, keep context
         redacted = dict(rec)
         for text_key in ("description", "summary", "content"):
             if text_key in redacted:
@@ -319,7 +324,7 @@ def _apply_sensitivity_redaction(
     if tier == "trauma":
         if importance < SENSITIVITY_IMPORTANCE_TRAUMA:
             return None
-        # keep trigger only
+        # keep trigger
         redacted = dict(rec)
         for text_key in ("description", "summary", "content"):
             if text_key in redacted:
@@ -334,7 +339,7 @@ def _apply_sensitivity_redaction(
 
 
 async def _rehydrate_experience(user_id: str, exp_id: str) -> dict[str, Any] | None:
-    """retreive exp view with sensitivity tier policy applied"""
+    """get exp view w/ sensitivity tier policy"""
     records = await get_client().execute_read(
         """
         MATCH (u:User {id: $user_id})-[:EXPERIENCED]->(e:Experience {id: $exp_id})
@@ -398,7 +403,7 @@ async def _rehydrate_experience(user_id: str, exp_id: str) -> dict[str, Any] | N
 
 
 async def _rehydrate_memory(user_id: str, mem_id: str) -> dict[str, Any] | None:
-    """return bounded view mem summary w/sensitivity tier policy"""
+    """summarize bounded view w/sensitivity tier policy"""
     records = await get_client().execute_read(
         """
         MATCH (u:User {id: $user_id})-[:HAS_MEMORY]->(m:Memory {id: $mem_id})
@@ -474,7 +479,7 @@ async def _fetch_keyword_experiences(
     *,
     limit: int = FOCUSED_TOP_K,
 ) -> list[dict[str, Any]]:
-    """skip klo error"""
+    """skip error"""
     terms = _specific_anchor_terms(query_text) or _query_terms(query_text)
     if not terms:
         return []
@@ -524,6 +529,72 @@ async def _fetch_keyword_experiences(
     return hydrated
 
 
+def _render_thoughts(thoughts: list[Any]) -> list[str]:
+    rendered: list[str] = []
+    for th in thoughts:
+        if not isinstance(th, dict):
+            continue
+        content = (th.get("content") or "").strip()
+        if not content:
+            continue
+        distortion = (th.get("distortion") or "").strip()
+        rendered.append(f"{content} ({distortion})" if distortion else content)
+    return rendered
+
+
+def _render_behaviors(behaviors: list[Any]) -> list[str]:
+    rendered: list[str] = []
+    seen: set[str] = set()
+    for b in behaviors:
+        if not isinstance(b, dict):
+            continue
+        descb = (b.get("description") or "").strip()
+        if not descb:
+            continue
+        cat = (b.get("category") or "").strip()
+        adaptive = b.get("adaptive")
+        key = f"{cat}|{descb}|{adaptive}"
+        if key in seen:
+            continue
+        seen.add(key)
+        parts: list[str] = []
+        if cat:
+            parts.append(cat)
+        parts.append(descb)
+        if adaptive is True:
+            parts.append("adaptive")
+        elif adaptive is False:
+            parts.append("maladaptive")
+        rendered.append(" / ".join(parts))
+    return rendered
+
+
+def _render_causal_chain(
+    *,
+    triggers: list[str],
+    emotions: list[str],
+    thoughts: list[str],
+    behaviors: list[str],
+) -> str:
+    """Render Trigger/Emotion/Thought/Behavior as one directional chain,
+    reflecting the KG relation names (TRIGGERED_BY, TRIGGERED_EMOTION,
+    ACTIVATED_THOUGHT, LED_TO_BEHAVIOR) instead of disjoint category
+    bullets, so the causal link the graph already models is legible to
+    the LLM reading the prompt, not just to the Cypher traversal that
+    fetched it.
+    """
+    segments: list[str] = []
+    if triggers:
+        segments.append("Triggers: " + ", ".join(t for t in triggers if t))
+    if emotions:
+        segments.append("Emotions: " + ", ".join(e for e in emotions if e))
+    if thoughts:
+        segments.append("Thoughts: " + "; ".join(thoughts))
+    if behaviors:
+        segments.append("Behaviors: " + "; ".join(behaviors))
+    return " → ".join(segments)
+
+
 def _format_focused_recall(items: list[dict[str, Any]], *, char_budget: int = FOCUSED_CHAR_BUDGET) -> str:
     if not items:
         return ""
@@ -559,52 +630,17 @@ def _format_focused_recall(items: list[dict[str, Any]], *, char_budget: int = FO
             behaviors = it.get("behaviors") or []
             if subjects:
                 lines.append("      * Subjects: " + ", ".join([p for p in subjects if p]))
-            if triggers:
-                lines.append("      * Triggers: " + ", ".join([t for t in triggers if t]))
-            if emotions:
-                lines.append("      * Emotions: " + ", ".join([e for e in emotions if e]))
-            if thoughts:
-                rendered_thoughts: list[str] = []
-                for th in thoughts:
-                    if not isinstance(th, dict):
-                        continue
-                    content = (th.get("content") or "").strip()
-                    if not content:
-                        continue
-                    distortion = (th.get("distortion") or "").strip()
-                    if distortion:
-                        rendered_thoughts.append(f"{content} ({distortion})")
-                    else:
-                        rendered_thoughts.append(content)
-                if rendered_thoughts:
-                    lines.append("      * Thoughts: " + "; ".join(rendered_thoughts))
 
-            if behaviors:
-                rendered_behaviors: list[str] = []
-                seen_behaviors: set[str] = set()
-                for b in behaviors:
-                    if not isinstance(b, dict):
-                        continue
-                    descb = (b.get("description") or "").strip()
-                    if not descb:
-                        continue
-                    key = descb.lower()
-                    if key in seen_behaviors:
-                        continue
-                    seen_behaviors.add(key)
-                    cat = (b.get("category") or "").strip()
-                    adaptive = b.get("adaptive")
-                    parts: list[str] = []
-                    if cat:
-                        parts.append(cat)
-                    parts.append(descb)
-                    if adaptive is True:
-                        parts.append("adaptive")
-                    elif adaptive is False:
-                        parts.append("maladaptive")
-                    rendered_behaviors.append(" / ".join(parts))
-                if rendered_behaviors:
-                    lines.append("      * Behaviors: " + "; ".join(rendered_behaviors))
+            rendered_thoughts = _render_thoughts(thoughts)
+            rendered_behaviors = _render_behaviors(behaviors)
+            causal_chain = _render_causal_chain(
+                triggers=triggers,
+                emotions=emotions,
+                thoughts=rendered_thoughts,
+                behaviors=rendered_behaviors,
+            )
+            if causal_chain:
+                lines.append("      * " + causal_chain)
 
         elif kind == "Memory":
             summary = (it.get("summary") or "").strip()
@@ -612,7 +648,7 @@ def _format_focused_recall(items: list[dict[str, Any]], *, char_budget: int = FO
                 lines.append(f"  - {header}: {summary}")
             else:
                 lines.append(f"  - {header}")
-            # show only content bullets
+            # show only content
             experiences = [e for e in (it.get("experiences") or []) if e]
             if experiences:
                 lines.append("      * Experiences: " + "; ".join(experiences))
@@ -620,43 +656,17 @@ def _format_focused_recall(items: list[dict[str, Any]], *, char_budget: int = FO
             if subjects:
                 lines.append("      * Subjects: " + ", ".join(subjects))
             triggers = [t for t in (it.get("triggers") or []) if t]
-            if triggers:
-                lines.append("      * Triggers: " + ", ".join(triggers))
             emotions = [e for e in (it.get("emotions") or []) if e]
-            if emotions:
-                lines.append("      * Emotions: " + ", ".join(emotions))
-            thoughts = it.get("thoughts") or []
-            rendered_thoughts: list[str] = []
-            for th in thoughts:
-                if not isinstance(th, dict):
-                    continue
-                content = (th.get("content") or "").strip()
-                if not content:
-                    continue
-                distortion = (th.get("distortion") or "").strip()
-                rendered_thoughts.append(
-                    f"{content} ({distortion})" if distortion else content
-                )
-            if rendered_thoughts:
-                lines.append("      * Thoughts: " + "; ".join(rendered_thoughts))
-            behaviors = it.get("behaviors") or []
-            rendered_behaviors: list[str] = []
-            seen_behaviors: set[str] = set()
-            for b in behaviors:
-                if not isinstance(b, dict):
-                    continue
-                descb = (b.get("description") or "").strip()
-                if not descb:
-                    continue
-                category = (b.get("category") or "").strip()
-                adaptive = b.get("adaptive")
-                key = f"{category}|{descb}|{adaptive}"
-                if key in seen_behaviors:
-                    continue
-                seen_behaviors.add(key)
-                rendered_behaviors.append(descb)
-            if rendered_behaviors:
-                lines.append("      * Behaviors: " + "; ".join(rendered_behaviors))
+            rendered_thoughts = _render_thoughts(it.get("thoughts") or [])
+            rendered_behaviors = _render_behaviors(it.get("behaviors") or [])
+            causal_chain = _render_causal_chain(
+                triggers=triggers,
+                emotions=emotions,
+                thoughts=rendered_thoughts,
+                behaviors=rendered_behaviors,
+            )
+            if causal_chain:
+                lines.append("      * " + causal_chain)
 
         else:
             content = (it.get("content") or "").strip()
@@ -681,11 +691,11 @@ class RetrievedContext:
     active_distortions:   list[dict[str, Any]] = field(default_factory=list)
     recurring_triggers:   list[dict[str, Any]] = field(default_factory=list)
     recurring_themes:     list[dict[str, Any]] = field(default_factory=list)
-    # audit / Phase-3 / access
+    # audit3 / access
     retrieval_context_dict: dict[str, Any] = field(default_factory=dict)
 
     def as_prompt_block(self) -> str:
-        """`inject context`"""
+        """`inject`"""
         lines: list[str] = ["=== Long-term memory context ==="]
 
         if self.recency_summaries:
@@ -780,7 +790,7 @@ class RetrievedContext:
 
     @property
     def important_people(self) -> list[dict[str, Any]]:
-        """`alias "important_subjects"`"""
+        """`set "important_subjects"`"""
         return self.important_subjects
 
     @important_people.setter
@@ -788,7 +798,7 @@ class RetrievedContext:
         self.important_subjects = value
 
 
-# skip klo error
+# skip error
 
 async def _fetch_recency(user_id: str) -> list[str]:
     """get last 2 summaries"""
@@ -809,7 +819,7 @@ async def _fetch_recency(user_id: str) -> list[str]:
     return _without_phq_noise_strings([r["summary"] for r in records])
 
 
-# smtg 2: sembangan semantik (pgvector)
+# 2: pgvector
 
 async def _touch_neo4j_access(node_ids: list[str]) -> None:
     """bump stats, fail ok"""
@@ -836,7 +846,7 @@ async def _fetch_semantic(
     *,
     prefetched_hits: list[SearchHit] | None = None,
 ) -> list[str]:
-    """prefetch hits, refresh stats, pgvector, Neo4j"""
+    """prefetch, refresh, pgvector, Neo4j"""
     if prefetched_hits is None:
         hits: list[SearchHit] = await search_memory(
             user_id,
@@ -845,7 +855,7 @@ async def _fetch_semantic(
             min_similarity=SEMANTIC_FLOOR,
         )
     else:
-        # reapply SEMANTIC_FLOOR/TOP_K, keep sig identical. sorting done by search_memory.
+        # reapply SEMANTIC_FLOOR/TOP_K, sig identical, sort by search_memory.
         hits = [h for h in prefetched_hits if h.similarity >= SEMANTIC_FLOOR][:SEMANTIC_TOP_K]
     if not hits:
         return []
@@ -855,10 +865,10 @@ async def _fetch_semantic(
     return [h.content for h in filtered_hits]
 
 
-# cosine on Experience nodes
+# cosine_exp
 
 async def _touch_neo4j_experience_access(node_ids: list[str]) -> None:
-    """bump last_accessed, access_count same shape as memory touch against experience label decay job drops stale ones failures never propagate"""
+    """bump last_accessed, access_count, decay, job, stale, failures"""
     if not node_ids:
         return
     try:
@@ -882,7 +892,7 @@ async def _fetch_semantic_experiences(
     *,
     prefetched_hits: list[SearchHit] | None = None,
 ) -> list[str]:
-    """cosine_sim top-K exp descriptions. prefetched_hits. reuse pgvector probe."""
+    """cosine_sim top-K exp descriptions prefetched_hits reuse pgvector probe"""
     if prefetched_hits is None:
         hits: list[SearchHit] = await search_experience(
             user_id,
@@ -905,7 +915,7 @@ async def _fetch_semantic_experiences(
 # traverse neo4j
 
 async def _fetch_subjects(user_id: str) -> list[dict[str, Any]]:
-    """``rank nodes``"""
+    """``rank``"""
     rows = await get_client().execute_read(
         """
         MATCH (u:User {id: $user_id})-[r:HAS_SUBJECT|HAS_RELATIONSHIP_WITH]->(p)
@@ -944,11 +954,11 @@ async def _fetch_subjects(user_id: str) -> list[dict[str, Any]]:
     return out
 
 
-# alias for backward compat
+# alias for bc
 _fetch_people = _fetch_subjects
 
 
-# cek sali
+# cek sali?
 
 async def _fetch_salient(user_id: str, emotion_label: str | None) -> list[str]:
     """top_nodes = [node for node in nodes if node['importance'] > 0.5]"""
@@ -973,10 +983,10 @@ async def _fetch_salient(user_id: str, emotion_label: str | None) -> list[str]:
     return _without_phq_noise_strings([r["summary"] for r in records])
 
 
-# sup KG reads (emotions, distortions, triggers)
+# reads (emotions)
 
 async def _fetch_active_emotions(user_id: str) -> list[dict[str, Any]]:
-    """ngambil data"""
+    """ambil data"""
     return await get_client().execute_read(
         """
         MATCH (u:User {id: $user_id})-[:FELT]->(em:Emotion)
@@ -994,7 +1004,7 @@ async def _fetch_active_emotions(user_id: str) -> list[dict[str, Any]]:
 
 
 async def _fetch_active_distortions(user_id: str) -> list[dict[str, Any]]:
-    """core beliefs"""
+    """core:beliefs"""
     return await get_client().execute_read(
         """
         MATCH (u:User {id: $user_id})-[:HAS_THOUGHT]->(th:Thought)
@@ -1032,7 +1042,7 @@ async def _fetch_recurring_triggers(user_id: str) -> list[dict[str, Any]]:
 
 
 async def _fetch_themes(user_id: str) -> list[dict[str, Any]]:
-    """Top-5 themes ranked."""
+    """top5 themes ranked"""
     return await get_client().execute_read(
         """
         MATCH (u:User {id: $user_id})-[r:HAS_RECURRING_THEME]->(top:Topic)
@@ -1056,20 +1066,20 @@ def _build_retrieval_context_dict(
     query_text: str | None,
     generic_memory_query: bool,
 ) -> dict[str, Any]:
-    """# convert to dict"""
+    """buat nyimpen dict"""
     focused: list[dict[str, Any]] = [c.to_dict() for c in ranked_candidates]
 
-    # `skip dup ids`
+    # skip dup ids
     focused_ids: set[str] = {c.id for c in ranked_candidates}
 
-    # skip klo dup
+    # skip dup
     recent: list[dict[str, Any]] = [
         {"text": s, "source": "recency"}
         for s in ctx.recency_summaries
         if s
     ]
 
-    # memori & pengalaman
+    # memori, pengal.
     semantic_texts: set[str] = {c.get("text", "") for c in focused}
     semantic: list[dict[str, Any]] = []
     for s in ctx.semantic_memories:
@@ -1128,8 +1138,8 @@ async def build_context(
     current_emotion_label: str | None = None,
     query_text: str | None = None,
 ) -> RetrievedContext:
-    """run retrieval in par"""
-    # expand subgraph, gate: non-trivial content, generic queries.
+    """run ret"""
+    # expand subgraph, gate: non-trivial, generic.
     deepening_back_ref    = _is_back_reference(query_text)
     deepening_clarif      = _is_clarification_request(query_text)
     dynamic_deepening     = deepening_back_ref or deepening_clarif
@@ -1142,7 +1152,7 @@ async def build_context(
             user_id, deepening_back_ref, deepening_clarif,
         )
 
-    # buat nyimpen config
+    # buat nyimpan config
     _mode = RETRIEVAL_MODE.lower()
     if _mode == "none":
         logger.debug("RETRIEVAL_MODE=none: returning empty context for user=%s", user_id)
@@ -1164,8 +1174,8 @@ async def build_context(
                         top_k=EXPERIENCE_TOP_K, min_similarity=EXPERIENCE_FLOOR,
                     ),
                 )
-                _sem_mem = [{"summary": h.text, "source": "semantic_memory"} for h in _mem_hits]
-                _sem_exp = [{"description": h.text, "source": "semantic_experience"} for h in _exp_hits]
+                _sem_mem = [h.content for h in _mem_hits]
+                _sem_exp = [h.content for h in _exp_hits]
             except Exception as exc:
                 logger.warning("vector_only pgvector fetch failed: %s", exc)
         return RetrievedContext(
@@ -1173,7 +1183,7 @@ async def build_context(
             semantic_experiences=_sem_exp,
         )
 
-    # `pgvector probe`
+    # `skip probe`
     pooled_top_k = max(SEMANTIC_TOP_K, effective_focused_top_k) + 2
     pooled_floor = min(SEMANTIC_FLOOR, FOCUSED_FLOOR)
     pooled_mem_hits: list[SearchHit] = []
@@ -1239,7 +1249,7 @@ async def build_context(
     query_terms = _query_terms(query_text)
     generic_memory_query = _is_generic_memory_query(query_text)
 
-    # focus on RRF, graph reranker, MMR
+    # rfm, graph, MMR
     focused_memory_summaries: set[str] = set()
     focused_experience_descriptions: set[str] = set()
     _ranked_candidates: list[Candidate] = []   # for retrieval_context_dict
@@ -1249,12 +1259,12 @@ async def build_context(
             mem_hits = [h for h in pooled_mem_hits if h.similarity >= FOCUSED_FLOOR]
             exp_hits = [h for h in pooled_exp_hits if h.similarity >= FOCUSED_FLOOR]
 
-            # `stage 1: rrf fusion`
+            # `rf`
             mem_ranked = [h.neo4j_node_id for h in mem_hits]
             exp_ranked = [h.neo4j_node_id for h in exp_hits]
             rrf_scores = rrf_fuse([mem_ranked, exp_ranked])
 
-            # build lookup for node id
+            # build_lookup_node_id
             hit_lookup: dict[str, tuple[str, SearchHit]] = {}
             for h in mem_hits:
                 hit_lookup.setdefault(h.neo4j_node_id, ("Memory", h))
@@ -1262,7 +1272,7 @@ async def build_context(
                 if h.neo4j_node_id not in hit_lookup:
                     hit_lookup[h.neo4j_node_id] = ("Experience", h)
 
-            # rrf, dup, cap
+            # dup, cap
             picked_ids: list[str] = []
             seen_ids: set[str] = set()
             for nid in sorted(rrf_scores, key=rrf_scores.__getitem__, reverse=True):
@@ -1320,13 +1330,13 @@ async def build_context(
             if ranking_candidates:
                 ranking_candidates = graph_rerank(ranking_candidates, rrf_scores)
 
-                # dedup 4
+                # dedup4
                 final_selected = mmr_select(
                     ranking_candidates, top_n=effective_focused_top_k
                 )
                 _ranked_candidates = final_selected
 
-                # re-order 2nd 1st
+                # ord 2 1
                 selected_id_set = {c.id for c in final_selected}
                 id_to_hydrated: dict[str, dict[str, Any]] = {
                     h.get("neo4j_node_id", ""): h for h in hydrated
@@ -1341,7 +1351,8 @@ async def build_context(
             if anchor_terms and not generic_memory_query:
                 hydrated = [
                     item for item in hydrated
-                    if _contains_any_term(item, anchor_terms)
+                    if (item.get("similarity") or 0.0) >= FOCUSED_HIGH_CONFIDENCE
+                    or _contains_any_term(item, anchor_terms)
                 ]
 
             if hydrated:
@@ -1366,7 +1377,7 @@ async def build_context(
                 hydrated = await _fetch_keyword_experiences(user_id, query_text)
                 if hydrated:
                     ctx.focused_recall = _format_focused_recall(hydrated, char_budget=effective_focused_budget)
-                    # Keyword fallbacks go through graph reranker.
+                    # fallbacks go through graph reranker
                     kb_candidates: list[Candidate] = []
                     for h in hydrated:
                         d = (h.get("description") or "").strip()
@@ -1442,7 +1453,7 @@ async def build_context(
             ctx.recurring_themes, query_terms, ("topic", "category")
         )
 
-    # skip Memory, Experience, Identity-layer signals
+    # skip signals
     if focused_memory_summaries:
         ctx.recency_summaries = [
             s for s in ctx.recency_summaries
@@ -1462,7 +1473,7 @@ async def build_context(
             if (s or "").strip() not in focused_experience_descriptions
         ]
 
-    # `skip dup`
+    # skip dup
     seen: set[str] = set(ctx.recency_summaries)
     ctx.semantic_memories = [
         s for s in ctx.semantic_memories if s not in seen and not seen.add(s)  # type: ignore[func-returns-value]
@@ -1472,7 +1483,7 @@ async def build_context(
     ]
 
 
-    # build_structured_context
+    # build ctx
     ctx.retrieval_context_dict = _build_retrieval_context_dict(
         ctx=ctx,
         ranked_candidates=_ranked_candidates,

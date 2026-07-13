@@ -8,5 +8,5 @@ from agentic.gateway.service.chat_graph import ChatGraphService
 
 
 def get_chat_service(request: Request) -> ChatGraphService:
-    """return singleton_chat_graph_service"""
+    """satu_chat_graph_service"""
     return request.app.state.chat_service

@@ -1,4 +1,4 @@
-"""test real sess fin"""
+"""test sess fin"""
 
 from __future__ import annotations
 

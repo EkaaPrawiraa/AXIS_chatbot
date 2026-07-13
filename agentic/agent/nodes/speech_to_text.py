@@ -1,4 +1,4 @@
-"""init speech-to-text"""
+"""init stt"""
 
 from __future__ import annotations
 
@@ -66,7 +66,7 @@ def _extension_for_mime(mime: str | None) -> str:
 
 
 def _openai_audio_file(audio: Any, mime: str | None) -> Any:
-    """wrap audio w/ filename"""
+    """wrap w/ filename"""
     if isinstance(audio, bytes):
         file = BytesIO(audio)
         file.name = f"voice-input.{_extension_for_mime(mime)}"
@@ -87,7 +87,7 @@ class TranscriptResult:
 
 
 class STTProvider(Protocol):
-    """stt small prod test"""
+    """stt"""
 
     async def transcribe(
         self,
@@ -99,7 +99,7 @@ class STTProvider(Protocol):
 
 
 class OpenAITranscriptionProvider:
-    """using openai audio"""
+    """skip klo audio"""
 
     def __init__(
         self,
@@ -137,7 +137,7 @@ class OpenAITranscriptionProvider:
         language = getattr(response, "language", None)
         segments = getattr(response, "segments", None)
 
-        # best-effort conf from logprobs
+        # best-effort conf
         confidence: float | None = None
         if segments:
             try:
@@ -165,7 +165,7 @@ class OpenAITranscriptionProvider:
 
 
 class GeminiTranscriptionProvider:
-    """fallback using Gemini's audio model"""
+    """fallback using gmx's audio model"""
 
     def __init__(
         self,
@@ -215,7 +215,7 @@ class GeminiTranscriptionProvider:
 
 
 def _default_stt_providers() -> tuple[STTProvider, STTProvider]:
-    """Primary/fallback pair, ordered by LLM_PROVIDER."""
+    """primary/fallback pair, ordered by LLM_PROVIDER."""
     if llm_provider() == "openai":
         return OpenAITranscriptionProvider(), GeminiTranscriptionProvider()
     return GeminiTranscriptionProvider(), OpenAITranscriptionProvider()
@@ -228,7 +228,7 @@ async def speech_to_text_node(
     fallback_provider: STTProvider | None = None,
     audit: GuardrailLogger | None = None,
 ) -> ConversationState:
-    """run stt, fallback to other provider on fail."""
+    """run stt, fail fallback."""
     audit = audit or NullGuardrailLogger()
     voice = dict(state.get("voice_state") or empty_voice_state())
 
@@ -256,7 +256,7 @@ async def speech_to_text_node(
         logger.exception(
             "audio transcription failed (%s), trying fallback: %s", primary_label, exc,
         )
-        # fallback tier: fail first, then primary.
+        # fail first, then primary.
         try:
             fallback = fallback_provider
             result = await fallback.transcribe(
@@ -285,7 +285,7 @@ async def speech_to_text_node(
 
     elapsed_ms = int((time.perf_counter() - started) * 1000)
 
-    # Drop common hallucinations.
+    # drop common hallucinations
     cleaned_text = _drop_hallucinated_transcript(
         result.text,
         language_hint=state.get("language_pref"),

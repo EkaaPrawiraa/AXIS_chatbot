@@ -1,4 +1,4 @@
-"""test regex rewrite"""
+"""rewrited comment: "skip regex"""
 
 from __future__ import annotations
 
@@ -101,7 +101,7 @@ class TestNode:
         await output_guardrail_node(
             state, audit=audit, rewrite_llm=stubborn_rewrite_llm
         )
-        # fallback msg uses standard phrasing.
+        # fallback msg uses std phrasing.
         assert state["final_response"]
         assert "konselor" in state["final_response"].lower() or \
                "profesional" in state["final_response"].lower()
@@ -120,7 +120,7 @@ class TestNode:
 
     @pytest.mark.asyncio
     async def test_crisis_response_skipped(self, audit, clean_rewrite_llm) -> None:
-        """exempt from rewriting"""
+        """skip"""
         state = _state_with_draft("Kamu mengalami depresi sedang.")
         state["crisis_escalated"] = True  # type: ignore[typeddict-unknown-key]
         state["final_response"] = "deterministic crisis text"

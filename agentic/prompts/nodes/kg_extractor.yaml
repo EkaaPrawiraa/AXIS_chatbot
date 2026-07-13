@@ -64,6 +64,14 @@ system: |
        → Extract Subject: "ibu" (role: parent, subject_type: person), Behavior: social withdrawal (adaptive: false)
          The avoidance of burdening others is a behavioral pattern worth capturing.
 
+     - Assistant: "Kenapa revisinya belum kelar-kelar?"
+       User: "dospem gue susah banget dihubungin, udah dua minggu ga dibales"
+       → Extract Subject: "dospem" (role: thesis_advisor, subject_type: person),
+         Topic: "thesis_stress", Trigger: "dosen sulit dihubungi untuk bimbingan"
+         Use "thesis_advisor" (not generic "person") when the user names their
+         dosen pembimbing, so the same relation type is reused consistently
+         across sessions for campus-specific roles like this.
+
   3. SHORT REPLIES depend heavily on the preceding turns window.
      If the user answers "ya", "tidak", "sangat", or gives a one-word reply, look at
      the prior messages to determine what Experience, Emotion, or Behavior this maps to.
@@ -92,6 +100,26 @@ system: |
       they feel afraid they will be abandoned, extract Subject, Experience, Emotion,
       Thought, Trigger, and Topic when the fields are supported by the user's own words.
 
+  4c. EXPERIENCE, THOUGHT, and EMOTION content must stay close to the user's own
+      words (per Rule 4b's design intent — never substitute a canned phrase below
+      verbatim), but recognize these as common patterns in Indonesian student life
+      so you extract confidently rather than under-extracting when they appear:
+      - Experience event-types: sidang atau revisi skripsi ditolak/tertunda, nilai
+        ujian atau IPK turun, konflik dengan teman satu kelompok tugas, dimarahi
+        atau dikritik dosen di depan kelas, tidak lolos organisasi/beasiswa/magang
+        yang diincar, bertengkar dengan pacar atau keluarga soal kuliah, masalah
+        dengan pengelola atau teman kos.
+      - Thought (automatic thought) patterns: "aku pasti gagal sidang", "aku
+        ketinggalan dari teman seangkatan", "aku ngerepotin orang tua", "aku
+        nggak pantas ada di jurusan ini", "kalau nilai ini jelek, masa depanku
+        hancur" — these often carry catastrophizing, overgeneralization, or
+        personalization (Rule 6), but only tag a distortion when the user's own
+        phrasing clearly shows it, not just because the topic is academic.
+      - Emotion labels common in this population: cemas (anxious), minder
+        (insecure/inferior next to peers), capek (exhausted), kecewa
+        (disappointed), bersalah (guilty, often tied to family financial
+        pressure), lega (relieved, often after bimbingan or sidang).
+
   5. SENTIMENT and VALENCE must be floats in [-1.0, 1.0].
      Positive sentiment = positive feeling toward that subject/topic.
      Negative sentiment = distress, conflict, or aversion.
@@ -109,9 +137,49 @@ system: |
      - "Saya rasa..." → 0.6
 
   8. TOPIC names must be concise snake_case labels that represent recurring themes,
-     not one-off events. Prefer: "academic_pressure", "family_conflict",
-     "self_worth", "social_isolation". Avoid event-specific names like
+     not one-off events. Avoid event-specific names like
      "nilai_ujian_kimia_organik_hari_selasa".
+
+     The primary users of this system are Indonesian university students, so prefer
+     these domain-calibrated labels when the theme fits (grouped by the six areas
+     this system is calibrated for: academic pressure, campus relationships, family,
+     organizational life, self-identity, career transition):
+     - Academic: "academic_pressure", "thesis_stress", "exam_anxiety"
+     - Campus relationships: "campus_relationship_conflict", "lecturer_relationship_stress", "peer_pressure"
+     - Family: "family_conflict", "family_financial_pressure", "family_expectation_pressure"
+     - Organizational: "organizational_burnout", "organizational_involvement_stress"
+     - Self-identity: "self_worth", "identity_exploration", "impostor_syndrome"
+     - Career transition: "career_uncertainty", "internship_stress", "post_graduation_anxiety"
+
+     These are illustrative, not exhaustive or mandatory — the app also serves
+     non-student users and general life topics (e.g. "social_isolation",
+     "relationship_conflict", "health_anxiety"), so freely coin an equally concise
+     snake_case label when none of the above fit the user's actual words. Never
+     force-fit a campus label onto a non-campus theme just because the user is
+     a student.
+
+  8b. SUBJECT ROLES, TRIGGER CATEGORIES, and BEHAVIOR patterns should also draw on
+      domain-calibrated vocabulary when it genuinely fits, alongside the general
+      roles already in use (parent, friend, partner, professor):
+      - Subject roles: "thesis_advisor" (dosen pembimbing skripsi) vs.
+        "academic_advisor" (dosen wali/dosen PA — a distinct, earlier-stage
+        relationship, not to be merged with thesis_advisor), "boarding_house_manager"
+        (ibu/bapak kos), "roommate" (teman satu kos), "org_senior" (senior
+        organisasi), "groupmate" (teman satu kelompok tugas).
+      - Trigger categories: "academic", "family", "organizational", "career",
+        "financial", "housing" (kos/rantau-related triggers such as living far
+        from family, loneliness in a boarding house, or friction with a
+        boarding-house manager or roommate).
+      - Behavior examples (coping patterns documented among Indonesian students):
+        academic procrastination ("nunda ngerjain skripsi"), avoiding the thesis
+        advisor, all-nighters ("begadang ngerjain tugas"), venting to friends or
+        organization seniors, religious/spiritual coping (e.g. "berdoa", "sholat",
+        "ngaji" when the user frames it as how they cope), withdrawing to their
+        boarding room.
+      As with Topic labels, treat these as illustrative anchors grounded in
+      literature on Indonesian student life, not a closed set — always extract
+      the user's actual words first, and only reach for these labels when they
+      genuinely fit.
 
   9. If Known user context lists active unchallenged thoughts and the user
      explicitly reframes, corrects, or rejects one of them, set

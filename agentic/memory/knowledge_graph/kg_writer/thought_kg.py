@@ -22,14 +22,14 @@ logger = logging.getLogger(__name__)
 
 
 async def write_thought(inp: ThoughtInput) -> str:
-    """cosine dedup pgvector node id"""
+    """cosine dup pgvector node"""
     _require(inp.content,    "content")
     _require(inp.user_id,    "user_id")
     _require(inp.session_id, "session_id")
 
     client = get_client()
 
-    # `skip dup`
+    # skip dup
     existing = await find_similar_node(
         label="Thought",
         embedding=inp.embedding,
@@ -38,7 +38,7 @@ async def write_thought(inp: ThoughtInput) -> str:
 
     # merge path
     if existing and existing["similarity"] >= MERGE_THRESHOLD:
-        # append msg id to source_msgs
+        # append msg id
         await client.execute_write(
             """
             MATCH (th:Thought {id: $id})
@@ -61,7 +61,7 @@ async def write_thought(inp: ThoughtInput) -> str:
         logger.debug("Thought merged into existing: %s", existing["id"])
         return existing["id"]
 
-    # flag overlap
+    # overlap flag
     if existing and existing["similarity"] >= REVIEW_THRESHOLD:
         logger.info(
             "Thought similarity %.2f in review zone -- writing new node "
@@ -71,7 +71,7 @@ async def write_thought(inp: ThoughtInput) -> str:
             existing["description"][:60],
         )
 
-    # buat nyimpen config
+    # buat nyimpan config
     node_id = _new_id()
     await client.execute_write(
         """

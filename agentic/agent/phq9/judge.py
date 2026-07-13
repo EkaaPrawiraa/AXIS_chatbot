@@ -17,7 +17,7 @@ from agentic.gateway.monitoring import observe_langchain_usage
 logger = logging.getLogger(__name__)
 
 
-# langchain, fallback
+# skip
 
 
 try:  # pragma: no cover
@@ -48,7 +48,7 @@ class JudgeAction(str, Enum):
 
 @dataclass(frozen=True)
 class JudgeOutcome:
-    """ngambil data"""
+    """ambil data"""
 
     score: int
     confidence: float
@@ -59,19 +59,19 @@ class JudgeOutcome:
 
     @property
     def is_actionable(self) -> bool:
-        """aplikasikan tanpa klarifikasi."""
+        """aplikasikan."""
         return self.action in (JudgeAction.ADVANCE, JudgeAction.BACK)
 
 
-# scorer
+# scoring
 
 
-# accept score
+# accept_score
 RULE_CONFIDENCE_THRESHOLD: float = 0.90
 
-# can map
+# map ini
 _OPTION_MAP_ID: dict[str, int] = {
-    # score 0
+    # skip 0
     "tidak sama sekali": 0,
     "tidak": 0,
     "ga sama sekali": 0,
@@ -83,7 +83,7 @@ _OPTION_MAP_ID: dict[str, int] = {
     "ga pernah": 0,
     "tidak pernah": 0,
     "belum pernah": 0,
-    # score 1-2 hari
+    # buat nyimpen score
     "beberapa hari": 1,
     "beberapa": 1,
     "kadang": 1,
@@ -92,7 +92,7 @@ _OPTION_MAP_ID: dict[str, int] = {
     "jarang": 1,
     "terkadang": 1,
     "kadang-kadang": 1,
-    # score 2 lama
+    # ngambil score 2 lama
     "lebih dari setengah hari": 2,
     "lebih dari setengah": 2,
     "sering": 2,
@@ -110,9 +110,9 @@ _OPTION_MAP_ID: dict[str, int] = {
     "tiap hari": 3,
 }
 
-# can map
+# map ini
 _OPTION_MAP_EN: dict[str, int] = {
-    # score 0
+    # skip 0
     "not at all": 0,
     "not really": 0,
     "no": 0,
@@ -121,7 +121,7 @@ _OPTION_MAP_EN: dict[str, int] = {
     "nah": 0,
     "none": 0,
     "zero": 0,
-    # score 1-2
+    # score
     "several days": 1,
     "some days": 1,
     "sometimes": 1,
@@ -130,7 +130,7 @@ _OPTION_MAP_EN: dict[str, int] = {
     "a couple of days": 1,
     "here and there": 1,
     "once in a while": 1,
-    # score 2.
+    # buat nyimpen score 2
     "more than half the days": 2,
     "more than half": 2,
     "often": 2,
@@ -138,7 +138,7 @@ _OPTION_MAP_EN: dict[str, int] = {
     "frequently": 2,
     "a lot": 2,
     "pretty often": 2,
-    # score 3 nearly every day
+    # score 3 every day
     "nearly every day": 3,
     "almost every day": 3,
     "every day": 3,
@@ -170,7 +170,7 @@ def _rule_based_score(reply: str, language: str) -> tuple[int | None, float]:
     if m:
         return int(m.group(1)), 1.0
 
-    # `lowercase strip_punctuation collapse_whitespace`
+    # `ubah ke huruf kecil, hapus tanda baca, rapikan`
     normalized = _PUNCT_TAIL_RE.sub("", stripped.lower()).strip()
     normalized = _MULTI_SPACE_RE.sub(" ", normalized)
 
@@ -180,7 +180,7 @@ def _rule_based_score(reply: str, language: str) -> tuple[int | None, float]:
     if normalized in option_map:
         return option_map[normalized], 1.0
 
-    # match both dirs
+    # match dirs both
     for label, score in option_map.items():
         if len(normalized) >= 4 and label.startswith(normalized):
             return score, 0.95
@@ -194,7 +194,7 @@ def _rule_based_score(reply: str, language: str) -> tuple[int | None, float]:
 
 
 def _is_direct_option_reply(reply: str, language: str) -> bool:
-    """True when user selects PHQ-9 option."""
+    """true_phq9_opt"""
     if not reply:
         return False
     stripped = reply.strip()
@@ -207,7 +207,7 @@ def _is_direct_option_reply(reply: str, language: str) -> bool:
 
 
 
-# scoring+routing
+# scoring&routing
 _USER_TEMPLATE = (
     "Item {item_id} of 9 (language={language}):\n"
     "\"\"\"\n{question}\n\"\"\"\n\n"
@@ -248,7 +248,7 @@ async def judge_item_response(
     recent_context: str = "",
     llm: Any | None = None,
 ) -> JudgeOutcome:
-    """rule-based score" + "LLM for routing"""
+    """score" + "LLM" + "routing"""
     client = llm if llm is not None else build_llm(PHQ9_JUDGE)
 
     rule_score, rule_confidence = _rule_based_score(user_reply, language)
@@ -264,7 +264,7 @@ async def judge_item_response(
                 raw="",
             )
 
-        # ask only for routing
+        # routing
         routing_prompt = _ROUTING_USER_TEMPLATE.format(
             item_id=item_id,
             language=language,
@@ -312,7 +312,7 @@ async def judge_item_response(
         )
         return outcome
 
-    # full LLM scoring
+    # score LLM
     options_block = "\n".join(
         f"  {score}. {label}" for score, label in options_with_scores(language)
     )
@@ -403,7 +403,7 @@ def _parse_routing_output(
 
 
 def _parse_judge_output(raw: str) -> JudgeOutcome:
-    """parse response"""
+    """parse rsp"""
     if not raw:
         return JudgeOutcome(0, 0.0, JudgeAction.CLARIFY, None, "empty_output", "")
 

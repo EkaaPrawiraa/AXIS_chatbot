@@ -1,4 +1,4 @@
-// `purge mem`
+// purge
 package memory
 
 import (
@@ -22,7 +22,7 @@ func New(baseURL string) *Client {
 	}
 }
 
-// purge account, resolve user from query, no ctx for user.
+// purge, resolve, skip.
 func (c *Client) PurgeAccount(ctx context.Context, userID string) error {
 	target := c.baseURL + "/memories/kg/purge-account?userId=" + url.QueryEscape(userID)
 	req, err := http.NewRequestWithContext(ctx, http.MethodDelete, target, nil)

@@ -52,11 +52,32 @@ def _ensure_user_and_session(config: EvaluationConfig, user_id: str, session_id:
             )
 
 
+def _insert_message(
+    config: EvaluationConfig, *, session_id: str, user_id: str, role: str, content: str, turn_index: int
+) -> str:
+    """Persist a real messages row so ChatGraphService.invoke() has a valid
+    current_message_id to hang the agentic_graph_audits trace off of --
+    without this, persist_graph_audit() silently no-ops on the FK check."""
+    message_id = str(uuid.uuid4())
+    with psycopg2.connect(config.database_url) as connection:
+        with connection.cursor() as cursor:
+            cursor.execute(
+                "INSERT INTO messages (id, session_id, user_id, role, content, turn_index) "
+                "VALUES (%s, %s, %s, %s, %s, %s)",
+                (message_id, session_id, user_id, role, content, turn_index),
+            )
+    return message_id
+
+
 def _cleanup_session(config: EvaluationConfig, session_id: str) -> None:
     with psycopg2.connect(config.database_url) as connection:
         with connection.cursor() as cursor:
             cursor.execute("DELETE FROM assessments WHERE session_id = %s", (session_id,))
             cursor.execute("DELETE FROM session_activity WHERE session_id = %s", (session_id,))
+            try:
+                cursor.execute("DELETE FROM agentic_graph_audits WHERE session_id = %s", (session_id,))
+            except psycopg2.errors.UndefinedTable:
+                connection.rollback()
             cursor.execute("DELETE FROM messages WHERE session_id = %s", (session_id,))
             cursor.execute("DELETE FROM guardrail_events WHERE session_id = %s", (session_id,))
             cursor.execute("DELETE FROM chat_sessions WHERE id = %s", (session_id,))
@@ -156,9 +177,18 @@ async def _run_axis(
     try:
         for index, user_message in enumerate(scenario.turns, start=1):
             history.append(ChatMessage(role="user", content=user_message))
+            message_id = _insert_message(
+                config,
+                session_id=session_id,
+                user_id=scenario.user_id,
+                role="user",
+                content=user_message,
+                turn_index=index,
+            )
             request = ChatTurnRequest(
                 user_id=scenario.user_id,
                 session_id=session_id,
+                current_message_id=message_id,
                 current_message=user_message,
                 messages=history,
                 session_turn=index,

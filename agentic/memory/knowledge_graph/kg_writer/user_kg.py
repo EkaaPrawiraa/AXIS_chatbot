@@ -1,4 +1,4 @@
-"""User node"""
+"""skip klo user"""
 
 from __future__ import annotations
 
@@ -15,12 +15,12 @@ async def ensure_user_node(
     user_id: str,
     pg_pool: Any,
 ) -> bool:
-    """read_from_pg_and_merge_neo4j()"""
+    """r/fetch/pg&merge/neo4j"""
     if not user_id:
         logger.warning("ensure_user_node: user_id is empty — skipping")
         return False
 
-    # `db read`
+    # `dbr`
     display_name: str = ""
     preferred_language: str = "id"
 
@@ -47,7 +47,7 @@ async def ensure_user_node(
             exc,
         )
 
-    # merge node with data
+    # merge&with
     try:
         await get_client().execute_write(
             """

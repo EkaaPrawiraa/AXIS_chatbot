@@ -1,4 +1,4 @@
-"""load voicelist"""
+"""load vlist"""
 
 from __future__ import annotations
 
@@ -11,7 +11,7 @@ import yaml
 
 
 def _env_default_language() -> str | None:
-    """`env read lang`"""
+    """`lang diambil`"""
     val = os.getenv("DEFAULT_USER_LANGUAGE")
     return val.strip().lower() if val else None
 
@@ -33,7 +33,7 @@ class VoiceEntry:
 
     @property
     def is_configured(self) -> bool:
-        """true when id filled"""
+        """filled"""
         return not self.elevenlabs_voice_id.startswith("REPLACE_WITH")
 
 
@@ -49,7 +49,7 @@ class VoiceCatalog:
     openai_tts_instructions: str
 
     def for_language(self, language: str) -> tuple[VoiceEntry, ...]:
-        """ngambil semua suara"""
+        """ambil suara semua"""
         return tuple(v for v in self.voices.values() if v.language == language)
 
     def default_for(self, language: str | None) -> VoiceEntry:
@@ -69,7 +69,7 @@ class VoiceCatalog:
         *,
         language: str | None = None,
     ) -> VoiceEntry:
-        """resolve voice, priority 1-4"""
+        """prioritaskan 1-4"""
         if voice_id and voice_id in self.voices:
             return self.voices[voice_id]
         if voice_id:

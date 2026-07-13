@@ -16,7 +16,7 @@ from agentic.assessment.phq9 import (
     OPTION_LABELS_ID,
 )
 
-# sliding window" 6 = 3 full turns
+# 6 = 3 turns
 _CONTEXT_WINDOW_MSGS = 6
 
 _LOW_SIGNAL_EXACT = {
@@ -80,7 +80,7 @@ def _normalize_message_text(text: str) -> str:
 import json as _json
 
 def _sanitize_summary(raw: str) -> str:
-    """strip json wrapper"""
+    """strip"""
     stripped = raw.strip()
     if not stripped or stripped in ("{}", "SKIP", "skip"):
         return ""
@@ -168,7 +168,7 @@ def _looks_like_phq9_answer(text: str) -> bool:
         return False
     if normalized in _PHQ9_OPTION_LABELS:
         return True
-    # nto PHQ
+    # nto.
     return any(
         normalized.startswith(f"{label} ")
         for label in _PHQ9_OPTION_LABELS
@@ -219,7 +219,7 @@ class HistoryLoader:
 
 
 class SessionMetadataLoaderFn:
-    """load sess data"""
+    """load sess"""
     async def __call__(
         self, *, session_id: str, user_id: str,
     ) -> Mapping[str, Any]:
@@ -419,7 +419,7 @@ class SessionFinalizer:
             )
 
         extracted: list[Mapping[str, Any]] = []
-        # `keep last _CONTEXT_WINDOW_MSGS`
+        # `keep last msg`
         context_window: deque[dict[str, str]] = deque(maxlen=_CONTEXT_WINDOW_MSGS)
 
         for msg in memory_history:
@@ -559,7 +559,7 @@ def _filter_phq9_messages(
         if role == "assistant":
             previous_assistant_was_phq9 = is_phq9
         elif role == "user":
-            # aply klo ngelang ngbaris
+            # skip lgi
             previous_assistant_was_phq9 = False
 
         if is_phq9:

@@ -1,4 +1,4 @@
-"""gen audio gpt-4o-mini-tts"""
+"""gen audio"""
 
 from __future__ import annotations
 
@@ -136,7 +136,7 @@ async def main() -> None:
     use warm conversational English. If the input mixes both, keep the same
     language mix without translating. Use natural pacing (like human conversation), clear articulation,
     and an empathetic tone. You MUST NOT sounding robotic, formal, and theatrical."""
-    # nyebutin bahasa
+    # buat nyebutin bahasa
     for voice in OPENAI_TTS_VOICES:
         path = await _generate_voice(
             client=client,

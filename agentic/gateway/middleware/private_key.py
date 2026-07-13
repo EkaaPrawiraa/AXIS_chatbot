@@ -1,4 +1,4 @@
-"""priv-key mgmt"""
+"""mgmt"""
 
 from __future__ import annotations
 
@@ -12,7 +12,7 @@ from starlette.responses import Response
 
 
 class PrivateKeyMiddleware(BaseHTTPMiddleware):
-    """send key req"""
+    """send req"""
 
     def __init__(
         self,

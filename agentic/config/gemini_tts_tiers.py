@@ -1,4 +1,4 @@
-"""Gemini TTS tier -> (model id, per-gender prebuilt voice name) mapping. Voice pairing per tier is user choice, not derived from docs."""
+"""tierMapping = {   tier1: { model: 'modelA', voices: ['voiceA', 'voiceB'] },   tier2: { model: 'modelB', voices: ['voiceC', 'voiceD'] } }"""
 
 from __future__ import annotations
 
@@ -36,7 +36,7 @@ GEMINI_TTS_TIERS: dict[str, GeminiTTSTier] = {
 
 DEFAULT_GEMINI_TTS_TIER = "gemini-2.5-flash-preview-tts"
 
-# # case-insensitive voice names # compare to "alloy" or "OpenAI" # filter out non-catalog voices
+# # case-insensitive # compare to "alloy" or "OpenAI" # filter out non-catalog
 GEMINI_PREBUILT_VOICE_NAMES: frozenset[str] = frozenset({
     "achernar", "achird", "algenib", "algieba", "alnilam", "aoede",
     "autonoe", "callirrhoe", "charon", "despina", "enceladus", "erinome",
@@ -59,17 +59,17 @@ _TIER_ALIASES: dict[str, str] = {
 
 
 def resolve_gemini_tier(tts_model: str | None) -> GeminiTTSTier:
-    """resolusi tier id dan default jika tidak ditemukan"""
+    """resolusi tier dan default"""
     key = _TIER_ALIASES.get(tts_model or "", tts_model or "")
     return GEMINI_TTS_TIERS.get(key, GEMINI_TTS_TIERS[DEFAULT_GEMINI_TTS_TIER])
 
 
 def resolve_gemini_voice_name(tier: GeminiTTSTier, gender: str | None) -> str:
-    """default jika gender kosong/terdebat."""
+    """default jika gender kosong."""
     return tier.male_voice if gender == "pria" else tier.female_voice
 
 
-# kepkep mirroring VOICE_CHARACTER_MAP
+# membuat mirroring VOICE_CHARACTER_MAP
 VOICE_CHARACTER_MAP: dict[str, dict[str, str]] = {
     "hangat": {"female": "Sulafat", "male": "Achird"},
     "tenang": {"female": "Aoede", "male": "Enceladus"},
@@ -85,13 +85,13 @@ _VOICE_NAME_TO_CHARACTER: dict[str, str] = {
 
 
 def resolve_voice_character(voice_id: str | None) -> str | None:
-    """None"""
+    """skip klo error"""
     if not voice_id:
         return None
     return _VOICE_NAME_TO_CHARACTER.get(voice_id.strip().lower())
 
 
-# skip klo error
+# skip error
 _CHARACTER_STYLE_NOTES: dict[str, dict[str, str]] = {
     "hangat": {
         "style": (

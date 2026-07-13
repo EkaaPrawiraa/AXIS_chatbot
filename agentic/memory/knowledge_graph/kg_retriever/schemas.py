@@ -5,11 +5,11 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 
-# feelings
+# feels
 
 @dataclass
 class EmotionInput:
-    """discrete emotions"""
+    """emotions discrete"""
     label:        str              # e.g. "anxious", "sad", "grateful"
     intensity:    float            # [0, 1] strength of the felt emotion
     valence:      float            # [-1, 1] pleasure-displeasure axis
@@ -21,11 +21,11 @@ class EmotionInput:
     source_message_id: str | None = None
 
 
-# thoughts
+# skip
 
 @dataclass
 class ThoughtInput:
-    """avg believability, reset challenged"""
+    """reset belis"""
     content:         str
     thought_type:    str              # "automatic" | "core_belief" | "intermediate"
     distortion:      str | None       # "catastrophizing" | "mind_reading" | "all_or_nothing" | "fortune_telling" | "emotional_reasoning" | "should_statements" | "labeling" | "magnification" | "personalization" | "overgeneralization" | None
@@ -38,7 +38,7 @@ class ThoughtInput:
     source_message_id: str | None = None
 
 
-# `CBT hot-cross-bun`
+# buat ngambil data
 
 @dataclass
 class TriggerInput:
@@ -55,7 +55,7 @@ class TriggerInput:
     source_message_id: str | None = None
 
 
-# CBT hot-cross-bun: beh
+# hot-cross-bun
 
 @dataclass
 class BehaviorInput:
@@ -72,11 +72,11 @@ class BehaviorInput:
     source_message_id: str | None = None
 
 
-# `situasi`
+# situasi
 
 @dataclass
 class ExperienceInput:
-    """cosine_sim embedding"""
+    """cos_sim embedding"""
     description:   str
     occurred_at:   str                 # ISO datetime string
     extracted_at:  str                 # ISO datetime string
@@ -90,11 +90,11 @@ class ExperienceInput:
     source_message_id: str | None = None
 
 
-# replaces node
+# skip klo error
 
 @dataclass
 class SubjectInput:
-    """merge-upsert, sentiment, match, count, update, user, edge, HAS_SUBJECT, relationship_quality, supportive, complicated, negative, neutral"""
+    """merge, upsert, sentiment, match, count, update, user, edge, HAS_SUBJECT, relationship_quality, supportive, complicated, negative, neutral"""
     name:                str
     role:                str   # "parent" | "friend" | "partner" | "professor" | ...
     sentiment:           float                # [-1, 1]
@@ -109,11 +109,11 @@ class SubjectInput:
 PersonInput = SubjectInput  # backward compat alias
 
 
-# mem  (smp post-session)
+# post-session
 
 @dataclass
 class MemoryInput:
-    """write summary, decay, importance, access, time"""
+    """sum, decay, imp, acc, time"""
     summary:     str
     importance:  float                  # [0, 1]
     user_id:     str
@@ -123,11 +123,11 @@ class MemoryInput:
     source_message_id: str | None = None
 
 
-# skip to next step
+# skip
 
 @dataclass
 class TopicInput:
-    """merge topic nodes"""
+    """merge"""
     name:       str           # e.g. "academic-stress", "relationship-conflict"
     category:   str           # "academic"|"social"|"family"|"career"|"health"|
                               # financial"|"identity"|"mental_health"|"other

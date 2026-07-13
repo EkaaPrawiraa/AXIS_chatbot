@@ -4,12 +4,15 @@ import importlib
 def _reload_llm_models(monkeypatch, provider: str, **env):
     for key in (
         "LLM_PROVIDER",
+        "GOOGLE_API_KEY",
         "LOCAL_LLM_MODEL",
         "LOCAL_MODEL_CHEAP",
         "LOCAL_MODEL_STRONG",
         "LOCAL_MODEL_STRONG_GENERATION",
         "LOCAL_MODEL_KG_EXTRACTOR",
         "LOCAL_RETRIEVAL_QUERY_REWRITER_MODEL",
+        "GEMINI_RESPONSE_GENERATOR_THINKING_BUDGET",
+        "GEMINI_RESPONSE_GENERATOR_INCLUDE_THOUGHTS",
     ):
         monkeypatch.delenv(key, raising=False)
     monkeypatch.setenv("LLM_PROVIDER", provider)
@@ -135,3 +138,67 @@ def test_gemini_provider_forwards_extra_kwargs_like_streaming(monkeypatch):
     llm_models.build_llm(llm_models.RESPONSE_GENERATOR)
 
     assert captured.get("streaming") is True
+
+
+def test_gemini_response_generator_enables_thinking_without_exposing_thoughts(monkeypatch):
+    llm_models = _reload_llm_models(
+        monkeypatch,
+        "gemini",
+        GOOGLE_API_KEY="test-key",
+        GEMINI_RESPONSE_GENERATOR_THINKING_BUDGET="2048",
+    )
+
+    import langchain_google_genai
+
+    captured = {}
+
+    class FakeChatGoogleGenerativeAI:
+        def __init__(self, **kwargs):
+            captured.update(kwargs)
+
+    monkeypatch.setattr(
+        langchain_google_genai, "ChatGoogleGenerativeAI", FakeChatGoogleGenerativeAI
+    )
+
+    llm_models.build_llm(llm_models.RESPONSE_GENERATOR)
+
+    assert captured["thinking_budget"] == 2048
+    assert captured["include_thoughts"] is False
+
+
+def test_gemini_response_generator_can_disable_thinking(monkeypatch):
+    llm_models = _reload_llm_models(
+        monkeypatch,
+        "gemini",
+        GOOGLE_API_KEY="test-key",
+        GEMINI_RESPONSE_GENERATOR_THINKING_BUDGET="0",
+    )
+
+    import langchain_google_genai
+
+    captured = {}
+
+    class FakeChatGoogleGenerativeAI:
+        def __init__(self, **kwargs):
+            captured.update(kwargs)
+
+    monkeypatch.setattr(
+        langchain_google_genai, "ChatGoogleGenerativeAI", FakeChatGoogleGenerativeAI
+    )
+
+    llm_models.build_llm(llm_models.RESPONSE_GENERATOR)
+
+    assert "thinking_budget" not in captured
+    assert captured["include_thoughts"] is False
+
+
+def test_response_generator_visible_text_skips_gemini_thinking_blocks():
+    from agentic.agent.nodes.response_generator import _visible_ai_text
+
+    class FakeResponse:
+        content = [
+            {"type": "thinking", "thinking": "hidden reasoning must not leak"},
+            {"type": "text", "text": "Jawaban final untuk user."},
+        ]
+
+    assert _visible_ai_text(FakeResponse()) == "Jawaban final untuk user."

@@ -1,4 +1,4 @@
-"""init state" "build pipeline" "handle data"""
+"""init state" "build" "handle"""
 
 from agentic.memory.ranking.candidate import Candidate, compute_relation_richness
 from agentic.memory.ranking.rrf import rrf_fuse

@@ -1,4 +1,4 @@
-"""`reg tests`"""
+"""`tes reg`"""
 from __future__ import annotations
 
 import uuid
@@ -20,7 +20,7 @@ pytestmark = [pytest.mark.asyncio, neo4j_required]
 
 @pytest_asyncio.fixture
 async def user_with_no_sessions(neo4j_client: nc.Neo4jClient) -> AsyncIterator[dict]:
-    """buat nyimpen config"""
+    """buat nyimpan config"""
     ns = f"pytest-nosession-{uuid.uuid4()}"
     user_id = f"{ns}-user"
     exp_id = f"{ns}-exp"

@@ -1,4 +1,4 @@
-"""buat context block"""
+"""buat block context"""
 
 from __future__ import annotations
 
@@ -25,7 +25,7 @@ logger = logging.getLogger(__name__)
 SHORT_TERM_TURN_PAIRS: int = 4    # 4 user + 4 assistant = 8 messages
 KG_CONTEXT_CHAR_BUDGET: int = 6000
 
-# buat nyimpen config
+# buat nyimpan config
 _RETRIEVAL_QUERY_USER_TURNS: int = 3
 _RETRIEVAL_QUERY_MAX_CHARS: int = 1200
 
@@ -58,7 +58,7 @@ def _build_retrieval_window(state: ConversationState) -> str:
 
 
 async def _rewrite_retrieval_query(window: str, language: str | None) -> str:
-    """rewriter()"""
+    """rew()"""
     if not window:
         return ""
     try:
@@ -93,7 +93,7 @@ async def _rewrite_retrieval_query(window: str, language: str | None) -> str:
             ]
         )
         rewritten = str(getattr(ai, "content", "") or "").strip()
-        # strip quotes, remove prefix.
+        # strip quotes, rm prefix.
         if rewritten.lower().startswith("query:"):
             rewritten = rewritten.split(":", 1)[1].strip()
         rewritten = rewritten.strip("\"' \t")
@@ -108,7 +108,7 @@ async def _rewrite_retrieval_query(window: str, language: str | None) -> str:
 
 
 class ContextBuilderFn:
-    """build_context"""
+    """build"""
 
     async def __call__(
         self,
@@ -183,7 +183,7 @@ async def memory_retrieval_node(
         context_builder = _default_context_builder()
 
     if context_builder is not None:
-        # build query
+        # build qry
         raw_current = state.get("current_message") or ""
         retrieval_query = raw_current
         window = _build_retrieval_window(state)
@@ -218,7 +218,7 @@ async def memory_retrieval_node(
     rendered, truncated = _truncate(combined, KG_CONTEXT_CHAR_BUDGET)
 
     state["kg_context"] = rendered or None
-    # `init state`
+    # init state
     state["retrieval_context"] = getattr(
         context_builder, "last_retrieval_context_dict", None
     )
@@ -249,7 +249,7 @@ async def memory_retrieval_node(
 
 
 def _default_context_builder() -> ContextBuilderFn | None:
-    """lazy_import_production_ctx()"""
+    """import ctx"""
     if os.getenv("AGENTIC_DISABLE_CONTEXT_BUILDER"):
         return None
     try:

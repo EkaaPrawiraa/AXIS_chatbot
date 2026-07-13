@@ -1,4 +1,4 @@
-"""run prod pipeline"""
+"""skip prod"""
 
 from __future__ import annotations
 
@@ -30,7 +30,7 @@ _load_env(ROOT / "agentic" / ".env")
 
 USER_ID = "6aca3b8b-ddcf-4428-824e-997f921d28d3"
 
-# test queries
+# skip queries
 TEST_QUERIES = [
     "aku lagi sedih, temen-temenku ngebully lagi",
     "lu inget apa aja tentang gua?",
@@ -46,12 +46,12 @@ def _json_default(v: Any) -> str:
 
 
 async def fetch_kg_signals_raw(user_id: str) -> dict[str, Any]:
-    """query kg"""
+    """ngambil data"""
     from agentic.memory.neo4j_client import get_client
 
     result: dict[str, Any] = {}
 
-    # buat nyimpen last 2 ses
+    # buat nyimpan last 2 sesi
     try:
         records = await get_client().execute_read(
             """
@@ -66,7 +66,7 @@ async def fetch_kg_signals_raw(user_id: str) -> dict[str, Any]:
     except Exception as e:
         result["recency_summaries"] = f"ERROR: {e}"
 
-    # filter mem nodes
+    # skip mem nodes
     try:
         records = await get_client().execute_read(
             """
@@ -81,7 +81,7 @@ async def fetch_kg_signals_raw(user_id: str) -> dict[str, Any]:
     except Exception as e:
         result["salient_memories"] = f"ERROR: {e}"
 
-    # sig 5: subjek-nya
+    # buat nyimpen config
     try:
         records = await get_client().execute_read(
             """
@@ -169,7 +169,7 @@ async def fetch_kg_signals_raw(user_id: str) -> dict[str, Any]:
     except Exception as e:
         result["recurring_themes"] = f"ERROR: {e}"
 
-    # bonus: exp for this user
+    # bonus_exp
     try:
         records = await get_client().execute_read(
             """
@@ -185,7 +185,7 @@ async def fetch_kg_signals_raw(user_id: str) -> dict[str, Any]:
     except Exception as e:
         result["all_experiences"] = f"ERROR: {e}"
 
-    # all beh
+    # skip beh
     try:
         records = await get_client().execute_read(
             """
@@ -228,7 +228,7 @@ async def fetch_pgvector_data(user_id: str) -> dict[str, Any]:
                     f"SELECT count(*)::int FROM {table} WHERE user_id = $1::uuid AND active = TRUE",
                     user_id,
                 )
-                # get sample content
+                # get content
                 samples = await conn.fetch(
                     f"SELECT content, neo4j_node_id FROM {table} WHERE user_id = $1::uuid AND active = TRUE LIMIT 3",
                     user_id,
@@ -244,10 +244,10 @@ async def fetch_pgvector_data(user_id: str) -> dict[str, Any]:
 
 
 async def run_build_context(user_id: str, query_text: str) -> tuple[str, Any]:
-    """build_context()"""
+    """build_ctx()"""
     from agentic.memory.context_builder import build_context
 
-    # skip klo error
+    # skip error
     query_embedding = None
     try:
         from agentic.memory.pg_vector import embed_text
@@ -271,7 +271,7 @@ async def main() -> None:
     await init_client()
 
     try:
-        # `fetch raw kg`
+        # `ambil kg`
         print(f"\n{'='*80}")
         print(f"  PHASE 1: RAW KG SIGNALS FROM NEO4J (user={USER_ID[:12]}…)")
         print(f"{'='*80}\n")
@@ -279,7 +279,7 @@ async def main() -> None:
         kg_raw = await fetch_kg_signals_raw(USER_ID)
         print(json.dumps(kg_raw, ensure_ascii=False, indent=2, default=_json_default))
 
-        # data vector
+        # `ngubah ke array`
         print(f"\n{'='*80}")
         print(f"  PHASE 2: PGVECTOR EMBEDDING TABLES")
         print(f"{'='*80}\n")
@@ -303,7 +303,7 @@ async def main() -> None:
                 context_blocks[query] = block
                 print(f"\n{block}\n")
 
-                # nghitung signal
+                # ngitung
                 stats = {
                     "recency_summaries": len(ctx.recency_summaries),
                     "semantic_memories": len(ctx.semantic_memories),
@@ -323,7 +323,7 @@ async def main() -> None:
                 import traceback
                 traceback.print_exc()
 
-        # assembling prompt
+        # asmprompt
         print(f"\n{'='*80}")
         print(f"  PHASE 4: ASSEMBLED SYSTEM PROMPT (same as response_generator_node)")
         print(f"{'='*80}\n")

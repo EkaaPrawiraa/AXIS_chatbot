@@ -1,4 +1,4 @@
-"""metrics minimal"""
+"""minimalkan metrik"""
 
 from __future__ import annotations
 

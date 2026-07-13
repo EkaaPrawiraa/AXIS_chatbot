@@ -15,7 +15,7 @@ from agentic.memory import neo4j_client as nc
 
 
 def _neo4j_reachable() -> bool:
-    """`lazy driver import`"""
+    """import lazy"""
     try:
         from neo4j import AsyncGraphDatabase  # noqa: F401
     except Exception:
@@ -47,7 +47,7 @@ neo4j_required = pytest.mark.skipif(
 )
 
 
-# `skip klo error`
+# skip error
 
 @pytest_asyncio.fixture
 async def neo4j_client() -> AsyncIterator[nc.Neo4jClient]:
@@ -61,11 +61,11 @@ async def neo4j_client() -> AsyncIterator[nc.Neo4jClient]:
         await nc.close_client()
 
 
-# buat ns
+# buat ns ngambil data
 
 @pytest_asyncio.fixture
 async def test_namespace(neo4j_client: nc.Neo4jClient) -> AsyncIterator[dict]:
-    """make tripple ephemeral"""
+    """set to ephemeral"""
     ns         = f"pytest-{uuid.uuid4()}"
     user_id    = f"{ns}-user"
     session_id = f"{ns}-sess-01"
@@ -130,7 +130,7 @@ async def test_namespace(neo4j_client: nc.Neo4jClient) -> AsyncIterator[dict]:
             "session_id_2": session_id_2,
         }
     finally:
-        # tag blow away, non-tag nodes
+        # tag nodes
         await neo4j_client.execute_write(
             """
             MATCH (n)
@@ -143,7 +143,7 @@ async def test_namespace(neo4j_client: nc.Neo4jClient) -> AsyncIterator[dict]:
 
 @pytest_asyncio.fixture
 async def seed_topic(neo4j_client: nc.Neo4jClient, test_namespace: dict) -> str:
-    """Topic needed."""
+    """needed."""
     ns = test_namespace["namespace"]
     topic_id = f"{ns}-topic-academic"
     await neo4j_client.execute_write(

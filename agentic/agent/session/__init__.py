@@ -1,4 +1,4 @@
-"""ngelolat sementara"""
+"""skip ini"""
 
 from agentic.agent.session.activity_repo import (
     SessionActivity,

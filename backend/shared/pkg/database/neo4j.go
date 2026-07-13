@@ -15,7 +15,7 @@ type Neo4jConfig struct {
 	Username string
 	Password string
 
-	// pool settings
+	// skip klo settings
 	MaxConnectionPoolSize        int           // default: 50
 	ConnectionAcquisitionTimeout time.Duration // default: 60s
 	MaxTransactionRetryTime      time.Duration // default: 30s
@@ -33,7 +33,7 @@ func DefaultNeo4jConfig() Neo4jConfig {
 	}
 }
 
-// creates shared driver, verifys conn.
+// crea driver, verif. conn.
 func NewNeo4jDriver(cfg Neo4jConfig) (neo4j.DriverWithContext, error) {
 	driver, err := neo4j.NewDriverWithContext(
 		cfg.URI,
@@ -60,7 +60,7 @@ func NewNeo4jDriver(cfg Neo4jConfig) (neo4j.DriverWithContext, error) {
 	return driver, nil
 }
 
-// opens session
+// skip klo error
 func NewNeo4jSession(
 	ctx context.Context,
 	driver neo4j.DriverWithContext,

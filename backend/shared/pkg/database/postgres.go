@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-// PostgresConfig sets db conn & pool.
+// db conn & pool
 type PostgresConfig struct {
 	DSN             string
 	MaxOpenConns    int
@@ -14,7 +14,7 @@ type PostgresConfig struct {
 	ConnMaxLifetime time.Duration
 }
 
-// skip klo error
+// skip error
 func OpenPostgres(cfg PostgresConfig) (*sql.DB, error) {
 	db, err := sql.Open("postgres", cfg.DSN)
 	if err != nil {

@@ -1,4 +1,4 @@
-"""Tests for LLM_PROVIDER-driven TTS/STT and auto-Gemini TTS."""
+"""test tts/stt llm-provider auto-gemini"""
 from __future__ import annotations
 
 import pytest
@@ -101,7 +101,7 @@ class TestTTSProviderOrdering:
 
 
 class TestSelectTTSStyle:
-    """select_tts_style bool"""
+    """select_tts_style"""
 
     def test_crisis_safety_flag_is_empathetic(self) -> None:
         state = empty_conversation_state(user_id="u", session_id="s")
@@ -183,12 +183,12 @@ class TestGeminiTierResolution:
         tier = resolve_gemini_tier("gemini-2.5-flash-preview-tts")
         assert resolve_gemini_voice_name(tier, "wanita") == "Leda"
         assert resolve_gemini_voice_name(tier, "pria") == "Charon"
-        # default gender to female
+        # set to 'female
         assert resolve_gemini_voice_name(tier, None) == "Leda"
 
 
 class TestResolveGeminiVoiceEntry:
-    """check voice_id"""
+    """check_voice_id"""
 
     def test_raw_voice_id_from_picker_is_used_as_is(self) -> None:
         catalog = load_voice_catalog(force_reload=True)
@@ -214,7 +214,7 @@ class TestResolveGeminiVoiceEntry:
         assert resolved.id == "Puck"  # gemini-3.1-flash-tts's default (female) voice
 
     def test_foreign_provider_voice_id_falls_back_to_tier_default(self) -> None:
-        """alloy" falls in "user-selected" fallback."""
+        """falls in fallback"""
         catalog = load_voice_catalog(force_reload=True)
         voice_entry = catalog.get("alloy", language="id")
         assert voice_entry.persona == "user-selected"
@@ -224,7 +224,7 @@ class TestResolveGeminiVoiceEntry:
 
 
 class TestGeminiTierGetsDirectorNotesAndTags:
-    """end-to-end check" "wires director notes" "runs audio" "hands to client"""
+    """check runs hands to client"""
 
     @pytest.mark.asyncio
     async def test_director_notes_reflect_the_resolved_character(
@@ -301,7 +301,7 @@ class TestGeminiTierGetsDirectorNotesAndTags:
         self, audit, fake_elevenlabs, fake_openai_tts, fake_gemini_tts, voice_catalog,
         monkeypatch,
     ) -> None:
-        """skip block"""
+        """skip"""
         monkeypatch.setenv("LLM_PROVIDER", "gemini")
         fake_elevenlabs.error = "503 Service Unavailable"
         fake_gemini_tts.error = None

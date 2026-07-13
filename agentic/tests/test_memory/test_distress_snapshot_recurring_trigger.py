@@ -19,7 +19,7 @@ pytestmark = [pytest.mark.asyncio, neo4j_required]
 
 @pytest_asyncio.fixture
 async def raw_neo4j_driver(neo4j_client: nc.Neo4jClient):
-    """raw neo4j driver     chat_graph.py uses pg_vector.client.get_neo4j()     plain AsyncGraphDatabase     distinct from KG code"""
+    """raw neo4j driver  chat_graph.py  uses pg_vector.client.get_neo4j()  plain AsyncGraphDatabase  distinct from KG  code"""
     del neo4j_client  # ensures the shared client/env is already verified reachable
     from neo4j import AsyncGraphDatabase
 

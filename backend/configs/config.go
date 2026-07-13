@@ -13,7 +13,7 @@ import (
 
 var loadEnvOnce sync.Once
 
-// buat nyimpen config
+// buat nyimpan config
 type Config struct {
 	HTTPPortMain   string
 	HTTPPortAuth   string
@@ -35,7 +35,7 @@ type Config struct {
 	PublicAgenticProxy bool
 }
 
-// load config from env vars with local-dev defaults
+// load config from env with local-dev defaults
 func Load() Config {
 	loadEnvOnce.Do(loadDotEnv)
 	return Config{
@@ -78,7 +78,7 @@ func Load() Config {
 }
 
 func loadDotEnv() {
-	// loads first, values take precedence
+	// loads first, vals take prec.
 	loadDotEnvFile(".env.local")
 	loadDotEnvFile("backend/.env.local")
 	for _, path := range []string{".env", "backend/.env"} {

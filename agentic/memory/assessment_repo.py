@@ -1,4 +1,4 @@
-"""rw seam"""
+"""skip rw"""
 
 from __future__ import annotations
 
@@ -21,7 +21,7 @@ logger = logging.getLogger(__name__)
 
 @dataclass(frozen=True)
 class LastPHQ9Snapshot:
-    """view used by trigger node"""
+    """view"""
 
     administered_at: datetime
     total_score: int
@@ -32,7 +32,7 @@ class LastPHQ9Snapshot:
 
 @dataclass(frozen=True)
 class DistressSnapshot:
-    """high_distress_session_count_7d     avg_emotion_valence_7d     recurring_trigger_active"""
+    """high distress, avg valence, recurring trigger"""
 
     high_distress_session_count_7d: int
     avg_emotion_valence_7d: float | None
@@ -41,17 +41,17 @@ class DistressSnapshot:
 
 @dataclass(frozen=True)
 class AssessmentRetrySchedule:
-    """retry offer"""
+    """retry"""
 
     user_id: str
     next_attempt_at: datetime
     reason: str
 
 
-# buat nyimpen config
+# buat nyimpan config
 
 
-# set read-only thres
+# set ro thres
 HIGH_DISTRESS_VALENCE_THRESHOLD: float = -0.5
 ACUTE_DISTRESS_VALENCE_THRESHOLD: float = -0.6
 ACUTE_DISTRESS_INTENSITY_THRESHOLD: float = 0.7
@@ -61,7 +61,7 @@ LOOKBACK_DAYS_FOR_KG: int = 7
 
 
 class AssessmentRepository:
-    """pg_pool:         ``asyncpg.Pool`` or compatible context-managed pool.     neo4j_driver:         Optional Neo4j driver for KG-side reads."""
+    """asyncpg.Pool, Neo4j driver."""
 
     def __init__(
         self,
@@ -72,10 +72,10 @@ class AssessmentRepository:
         self._pg = pg_pool
         self._neo4j = neo4j_driver
 
-    # r.
+    # r
 
     async def get_last_phq9(self, user_id: str) -> LastPHQ9Snapshot | None:
-        """fetch most recent phq-9"""
+        """most recent phq-9"""
         sql = (
             "SELECT administered_at, score, severity_label, "
             "       item_responses, delta_from_prev "
@@ -98,7 +98,7 @@ class AssessmentRepository:
         )
 
     async def get_conversation_count(self, user_id: str) -> int:
-        """return count_completed_convs(user_id)"""
+        """ngk kalo user_id ngga ada"""
         sql = (
             "SELECT COUNT(*) FROM chat_sessions "
             "WHERE user_id = $1::uuid AND turn_count > 0"
@@ -110,7 +110,7 @@ class AssessmentRepository:
     async def get_pending_retry(
         self, user_id: str
     ) -> AssessmentRetrySchedule | None:
-        """retourkan retry schedule aktif, jikalau ada"""
+        """aktifize"""
         sql = (
             "SELECT user_id, next_attempt_at, reason FROM assessment_retries "
             "WHERE user_id = $1 ORDER BY next_attempt_at DESC LIMIT 1"
@@ -128,7 +128,7 @@ class AssessmentRepository:
     async def get_distress_snapshot(
         self, user_id: str
     ) -> DistressSnapshot:
-        """for node in nodes:     process_node(node)"""
+        """`for node in nodes: process_node(node)`"""
         if self._neo4j is None:
             return DistressSnapshot(
                 high_distress_session_count_7d=0,
@@ -199,7 +199,7 @@ class AssessmentRepository:
     # write.
 
     async def save_phq9_result(self, result: PHQ9Result) -> None:
-        """persist completed PHQ-9 to Postgres and Neo4j"""
+        """buat nyimpen to Postgres dan Neo4j"""
         import asyncio, json, os, uuid
         from agentic.memory.neo4j_client import get_client as _neo4j_client
 
@@ -225,6 +225,14 @@ class AssessmentRepository:
                 payload["delta_from_prev"],
                 result.administered_at,
                 payload["administered_by"],
+            )
+            await conn.execute(
+                """
+                UPDATE users
+                SET onboarding_complete = TRUE, updated_at = NOW()
+                WHERE id = $1::uuid
+                """,
+                payload["user_id"],
             )
 
         # write neo4j
@@ -293,7 +301,7 @@ class AssessmentRepository:
                 payload["user_id"], payload["session_id"], payload["score"],
             )
         except Exception as exc:
-            # write failure, persist, later.
+            # fail later
             logger.error(
                 "Assessment Neo4j write failed (user=%s session=%s): %s "
                 "— Postgres write succeeded, Neo4j node missing",
@@ -307,7 +315,7 @@ class AssessmentRepository:
         days: int,
         reason: str,
     ) -> AssessmentRetrySchedule:
-        """retry_upsert"""
+        """retry"""
         next_attempt = datetime.now(timezone.utc) + timedelta(days=days)
         sql = (
             "INSERT INTO assessment_retries (user_id, next_attempt_at, reason) "
@@ -325,12 +333,12 @@ class AssessmentRepository:
         )
 
     async def clear_retry(self, user_id: str) -> None:
-        """drop pending retry"""
+        """drop p pending"""
         sql = "DELETE FROM assessment_retries WHERE user_id = $1"
         async with self._pg.acquire() as conn:
             await conn.execute(sql, user_id)
 
-    # store score
+    # buat nyimpen score
 
     async def save_phq9_progress(
         self,
@@ -339,7 +347,7 @@ class AssessmentRepository:
         session_id: str,
         state: Mapping[str, Any],
     ) -> None:
-        """user_id, session_id, state"""
+        """get user info"""
         import json
 
         responses = state.get("responses") or {}
@@ -382,7 +390,7 @@ class AssessmentRepository:
         user_id: str,
         session_id: str,
     ) -> dict[str, Any] | None:
-        """read_in_flight_phq9(session)"""
+        """r fin phq9"""
         import json
 
         sql = """
@@ -438,7 +446,7 @@ class AssessmentRepository:
 
 
 def days_since(then: datetime) -> int:
-    """UTC diff"""
+    """`skip diff`"""
     delta = datetime.now(timezone.utc) - _ensure_utc(then)
     return int(delta.total_seconds() // 86_400)
 
@@ -452,7 +460,7 @@ def _ensure_utc(value: datetime) -> datetime:
 def _unpack_item_scores(
     raw: Mapping[str, Any] | str | None,
 ) -> tuple[int, ...]:
-    """decode json into tuple"""
+    """decode into tuple"""
     import json
 
     if raw is None:

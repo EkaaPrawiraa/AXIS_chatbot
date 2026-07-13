@@ -1,4 +1,4 @@
-"""tts script"""
+"""tts.script"""
 
 from __future__ import annotations
 
@@ -33,7 +33,7 @@ from agentic.gateway.monitoring import observe_langchain_usage
 logger = logging.getLogger(__name__)
 
 
-# v3 pre-render, audio tags, scripts, grounding, breathing, meditation, prosodic cues, conversational
+# v3 pre-render, audio, scripts, grounding, breathing, meditation, prosodic cues, conversational
 V3_TECHNIQUES: frozenset[str] = frozenset(
     {
         CBTTechnique.GROUNDING.value,
@@ -41,7 +41,7 @@ V3_TECHNIQUES: frozenset[str] = frozenset(
 )
 
 
-# langchain, fallback
+# skip
 
 
 try:  # pragma: no cover
@@ -91,12 +91,12 @@ async def speech_adapter_node(
     llm_v25: Any | None = None,
     llm_v3: Any | None = None,
 ) -> ConversationState:
-    """store speech_response set tts_model"""
+    """buat nyimpen speech_response set tts_model"""
     audit = audit or NullGuardrailLogger()
     voice = dict(state.get("voice_state") or empty_voice_state())
 
     if voice.get("output_modality") not in ("voice", "both"):
-        # `skip`
+        # skip
         state["voice_state"] = voice  # type: ignore[typeddict-item]
         return state
 
@@ -146,7 +146,7 @@ async def speech_adapter_node(
 
     if mode == "v3":
         voice["speech_response_tags"] = adapted
-        # keep plain version as safety net
+        # skip encryption
         voice["speech_response"] = _strip_v3_tags(adapted)
     else:
         voice["speech_response"] = adapted
@@ -173,7 +173,7 @@ async def speech_adapter_node(
     return state
 
 
-# tag scrubber
+# tag_scrub
 
 
 import re

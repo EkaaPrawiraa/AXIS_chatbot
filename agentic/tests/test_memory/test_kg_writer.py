@@ -1,4 +1,4 @@
-"""test writer layer"""
+"""write layer"""
 
 from __future__ import annotations
 
@@ -44,13 +44,13 @@ pytestmark = [pytest.mark.asyncio, neo4j_required]
 
 
 def _iso(hours_ago: int = 0) -> str:
-    """buat tsb helper"""
+    """buat helper"""
     from datetime import datetime, timedelta, timezone
     return (datetime.now(timezone.utc) - timedelta(hours=hours_ago)).isoformat()
 
 
 def _emb(dim: int = 1536, base: float = 0.01) -> list[float]:
-    """cos sim behav predictably. 1536-dim embd for real prod."""
+    """cos, 1536-dim, embd, prod."""
     return [base + (i % 7) * 1e-4 for i in range(dim)]
 
 
@@ -286,7 +286,7 @@ class TestThoughtWriter:
             session_id=test_namespace["session_id"],
             embedding=emb,
         ))
-        # flip, verify, reset.
+        # flip ver reset
         await neo4j_client.execute_write(
             "MATCH (th:Thought {id: $id}) SET th.challenged = true",
             {"id": first_id},
@@ -410,13 +410,13 @@ class TestMemoryWriter:
         assert row["active"] is True
 
 
-# buat ngbuild relasi
+# buat ngbuild
 
 class TestRelationshipBuilders:
     async def _scaffold(
         self, neo4j_client, test_namespace, seed_topic=None
     ) -> dict[str, str]:
-        """make CBT chain, wire edges."""
+        """init CBT"""
         exp_id = await write_experience(ExperienceInput(
             description="Presentation went badly",
             occurred_at=_iso(hours_ago=1),
@@ -548,7 +548,7 @@ class TestRelationshipBuilders:
             user_id=test_namespace["user_id"],
             session_id=test_namespace["session_id"],
         ))
-        # re-link 2x; merge to 1 edge.
+        # re-link 2x, merge 1 edge.
         await link_session_to_memory(test_namespace["session_id_2"], mem_id)
         await link_session_to_memory(test_namespace["session_id_2"], mem_id)
 
@@ -573,7 +573,7 @@ class TestRelationshipBuilders:
             )
 
 
-# supers, invalid
+# sup, invalid
 
 class TestSupersessionAndInvalidation:
     async def test_supersede_thought_preserves_old_and_creates_new(
@@ -638,7 +638,7 @@ class TestSupersessionAndInvalidation:
         ))
         await link_experience_to_trigger(exp_id, trig_id, test_namespace["session_id"])
 
-        # `init edge`
+        # init edge
         count = await invalidate_edge(
             "Experience", exp_id,
             "TRIGGERED_BY",
@@ -671,7 +671,7 @@ class TestSupersessionAndInvalidation:
             )
 
 
-# decay+flush
+# flush
 
 class TestDecayAndIdleFlush:
     async def test_memory_decay_halves_and_archives(
@@ -683,7 +683,7 @@ class TestDecayAndIdleFlush:
             user_id=test_namespace["user_id"],
             session_id=test_namespace["session_id"],
         ))
-        # age mem 60/180
+        # skip klo error
         await neo4j_client.execute_write(
             """
             MATCH (m:Memory {id: $id})
@@ -706,7 +706,7 @@ class TestDecayAndIdleFlush:
     async def test_find_idle_sessions_sees_our_session(
         self, neo4j_client: nc.Neo4jClient, test_namespace: dict
     ) -> None:
-        # skip cause past idle threshold
+        # skip cause idle
         rows = await nc.find_idle_sessions(idle_minutes=60)
         assert any(r["session_id"] == test_namespace["session_id_2"] for r in rows), (
             "session_id_2 (last_activity 2.5h ago) must appear in the idle sweep"
@@ -737,7 +737,7 @@ class TestDecayAndIdleFlush:
             s == test_namespace["session_id_2"] for _, s in called
         ), "our idle session must have been passed to the callback"
 
-        # skip flush session
+        # skip flush
         second = await nc.run_idle_memory_flush(flush=flush, idle_minutes=60)
         assert all(
             s != test_namespace["session_id_2"] for _, s in called[len(result):] or []

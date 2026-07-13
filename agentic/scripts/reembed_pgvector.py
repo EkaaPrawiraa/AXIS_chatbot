@@ -1,4 +1,4 @@
-"""reembed pgvector rows"""
+"""skip klo pgvector"""
 
 from __future__ import annotations
 

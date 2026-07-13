@@ -1,4 +1,4 @@
-"""chat graph exec"""
+"""exec"""
 
 from __future__ import annotations
 
@@ -13,6 +13,7 @@ from typing import Any
 
 from agentic.agent.audit.guardrail_events import PostgresGuardrailLogger
 from agentic.agent.graph import build_graph
+from agentic.agent.audit.graph_trace import persist_graph_audit
 from agentic.agent.session.activity_repo import (
     PostgresSessionActivityRepository,
 )
@@ -50,7 +51,7 @@ logger = logging.getLogger(__name__)
 state_logger = logging.getLogger("uvicorn.error")
 
 
-# `whitelist` nodes, `sse` events, `else` nodes, `suppress` nodes.
+# `whitelist`, `sse`, `else`, `suppress`.
 _STREAM_TOKEN_NODES = frozenset({
     "response_generator",
     "crisis_empathy",
@@ -78,7 +79,7 @@ def _timing_logging_enabled() -> bool:
 
 
 class _GraphTimingTracker:
-    """ekstrak dan emit durasi langkah-langkah setiap run."""
+    """ekstrak durasi, emit."""
 
     _START_EVENTS = {
         "on_chain_start",
@@ -191,7 +192,7 @@ class ChatGraphService:
     async def invoke(
         self, request: ChatTurnRequest | Mapping[str, Any]
     ) -> ChatTurnResponse:
-        """run chat turn through langgraph, return full resp"""
+        """run chat, return full resp"""
         normalized = self._coerce_request(request)
         graph = await self._get_graph()
         state = self._request_to_state(normalized)
@@ -226,6 +227,7 @@ class ChatGraphService:
             result = final_output
 
         self._log_conversation_state(result)
+        await persist_graph_audit(result)
         return self._state_to_response(
             result, include_state=normalized.include_state
         )
@@ -233,7 +235,7 @@ class ChatGraphService:
     async def synthesize_speech(
         self, request: SynthesizeSpeechRequest | Mapping[str, Any]
     ) -> SynthesizeSpeechResponse:
-        """synthesize text"""
+        """synthetize text"""
         normalized = self._coerce_synthesize_request(request)
         text = normalized.text.strip()
         if not text:
@@ -255,13 +257,13 @@ class ChatGraphService:
             language=normalized.language_pref,
         )
 
-        # build state, run adapter, take text.
+        # build, run, take.
         adapter_state: ConversationState = empty_conversation_state(
             user_id="00000000-0000-0000-0000-000000000000",
             session_id="00000000-0000-0000-0000-000000000000",
         )
         adapter_state["final_response"] = text
-        # mode carries real tts_model choice directly.
+        # mode carries tts_model_choice.
         mode = normalized.tts_model or "v2_5_turbo"
         adapter_voice = dict(empty_voice_state())
         adapter_voice["output_modality"] = "voice"
@@ -282,7 +284,7 @@ class ChatGraphService:
         plain_text = (
             str(adapted_voice.get("speech_response") or "").strip() or text
         )
-        # v3 model ngisap tag, lain2 ngga.
+        # buat ngisap tag.
         spoken_text = plain_text
         if adapted_voice.get("tts_model") == "v3":
             tagged = str(adapted_voice.get("speech_response_tags") or "").strip()
@@ -290,7 +292,7 @@ class ChatGraphService:
                 spoken_text = tagged
 
         if mode == "openai_tts1":
-            # skip ElevenLabs/Gemini entirely
+            # skip Gemini entirely
             openai_model = os.getenv("OPENAI_TTS_MODEL") or catalog.openai_tts_model
             result = await OpenAITTSClient().synthesize(
                 text=plain_text,
@@ -361,7 +363,7 @@ class ChatGraphService:
     async def stream(
         self, request: ChatTurnRequest | Mapping[str, Any]
     ) -> AsyncIterator[dict[str, str]]:
-        """ntokens' & 'res' from 'prod' graph."""
+        """ntokens', 'res', 'prod"""
         normalized = self._coerce_request(request)
         graph = await self._get_graph()
         state = self._request_to_state(normalized)
@@ -404,6 +406,7 @@ class ChatGraphService:
                 elif kind == "on_chain_end" and event.get("name") == "LangGraph":
                     output = event.get("data", {}).get("output") or {}
                     self._log_conversation_state(output)
+                    await persist_graph_audit(output)
                     response = self._state_to_response(
                         output, include_state=normalized.include_state
                     )
@@ -431,7 +434,7 @@ class ChatGraphService:
             return self._graph
 
     def draw_graph_image(self) -> None:
-        """save nice mermaid png langgraph"""
+        """buat nyimpen langgraph"""
         if self._graph is None:
             return
 
@@ -478,7 +481,7 @@ class ChatGraphService:
             logger.warning("Could not generate graph visualization: %s", exc)
 
     async def _build_graph_once(self) -> Any:
-        """resolve deps & compile graph. runs once."""
+        """resolve deps & compile."""
         pool = await get_pool()
         if pool is None:
             raise RuntimeError(
@@ -586,7 +589,7 @@ class ChatGraphService:
 
     @staticmethod
     def _build_stt() -> Any | None:
-        """None"""
+        """skip klo error"""
         from agentic.agent.nodes.speech_to_text import (
             GeminiTranscriptionProvider,
             OpenAITranscriptionProvider,
@@ -606,7 +609,7 @@ class ChatGraphService:
             return GeminiTranscriptionProvider()
         if not prefer_gemini and has_openai:
             return OpenAITranscriptionProvider()
-        # missing but configured.
+        # buat nyimpen config
         return GeminiTranscriptionProvider() if has_gemini else OpenAITranscriptionProvider()
 
     @staticmethod
@@ -632,7 +635,7 @@ class ChatGraphService:
 
     @staticmethod
     def _wrap_context_builder():
-        """bridge to node"""
+        """bridge node"""
         async def _bridge(*, user_id, session_id, query, language):
             try:
                 from agentic.memory.context_builder import build_context
@@ -671,7 +674,7 @@ class ChatGraphService:
     def _coerce_request(
         request: ChatTurnRequest | Mapping[str, Any]
     ) -> ChatTurnRequest:
-        """`normalize input`"""
+        """`ng-normalize`"""
         if isinstance(request, ChatTurnRequest):
             return request
         return ChatTurnRequest.model_validate(request)
@@ -688,7 +691,7 @@ class ChatGraphService:
     def _request_to_state(
         cls, request: ChatTurnRequest | Mapping[str, Any]
     ) -> ConversationState:
-        """mf a fresh cs from req."""
+        """ngambil data"""
         request = cls._coerce_request(request)
         state = empty_conversation_state(
             user_id=request.user_id,
@@ -696,6 +699,7 @@ class ChatGraphService:
             language_pref=request.language_pref,
         )
         state["messages"] = [m.model_dump() for m in request.messages]
+        state["current_message_id"] = request.current_message_id
         state["current_message"] = request.current_message or ""
         state["session_turn"] = request.session_turn
         state["preferred_response_model"] = request.preferred_response_model
@@ -729,7 +733,7 @@ class ChatGraphService:
     def _state_to_response(
         state: ConversationState, *, include_state: bool,
     ) -> ChatTurnResponse:
-        """serialize state into response"""
+        """serialize into resp"""
         voice = dict(state.get("voice_state") or {})
         audio_blob = voice.get("audio_output_blob")
         audio_output_base64 = None

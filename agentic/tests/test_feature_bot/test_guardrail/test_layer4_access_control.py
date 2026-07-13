@@ -1,4 +1,4 @@
-"""test access control"""
+"""ac tkn"""
 
 from __future__ import annotations
 
@@ -58,7 +58,7 @@ class TestPolicyApplication:
         assert len(out) == 1
         assert out[0].mode == "full_text"
         assert out[0].text == "kerja kelompok lancar"
-        # redact seluruh teks
+        # skip text
         assert not any(e.event_type == "redacted_memory" for e in audit.events)
 
     @pytest.mark.asyncio
