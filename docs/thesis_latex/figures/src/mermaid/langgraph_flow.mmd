@@ -1,0 +1,47 @@
+flowchart TD
+    A([Mulai])
+    B[_turn_init]
+    U{Ada audio masukan?}
+    V[speech_to_text]
+    C[input_guardrail]
+    D[linguistic_enrichment]
+    E[phq9_check]
+    F[crisis_guardrail]
+    G[memory_retrieval]
+    H[dialogue_policy]
+    I{Mode respons}
+    J[phq9_delivery]
+    K[response_generator]
+    L[output_guardrail]
+    M{Perlu eskalasi krisis?}
+    N[crisis_triage]
+    O[crisis_escalation]
+    P[crisis_empathy]
+    W{Output suara diminta?}
+    Q[speech_adapter]
+    R[text_to_speech]
+    S[session_end]
+    T([Selesai])
+
+    A --> B --> U
+    U -->|Ya| V --> C
+    U -->|Tidak| C
+    C --> D --> E --> F --> G --> H --> I
+    I -->|PHQ-9 aktif| J
+    I -->|Percakapan normal| K
+    J --> L
+    K --> L
+    L --> M
+    M -->|Tidak| W
+    M -->|Ya| N
+    N -->|Risiko tinggi| O --> W
+    N -->|Dukungan empatik| P --> W
+    W -->|Ya| Q --> R --> S --> T
+    W -->|Tidak| S --> T
+
+    classDef terminator fill:#ffffff,stroke:#111111,stroke-width:1.4px,color:#111111;
+    classDef node fill:#ffffff,stroke:#111111,stroke-width:1.2px,color:#111111;
+    classDef decision fill:#f2f2f2,stroke:#111111,stroke-width:1.2px,color:#111111;
+    class A,T terminator;
+    class B,V,C,D,E,F,G,H,J,K,L,N,O,P,Q,R,S node;
+    class U,I,M,W decision;

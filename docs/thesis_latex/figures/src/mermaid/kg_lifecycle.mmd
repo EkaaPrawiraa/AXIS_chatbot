@@ -1,0 +1,32 @@
+flowchart TD
+    A([Mulai])
+    B[Finalisasi sesi idle]
+    C{Pesan layak menjadi memori?}
+    D[Ekstraksi entitas dan relasi]
+    E[Memori aktif tersimpan]
+    F{Ada koreksi, reframe, atau resolusi?}
+    G[Supersede / reappraise / replace]
+    H[Memori lama ditutup]
+    I{Tidak diakses lama?}
+    J[Turunkan importance setelah 60 hari]
+    K{Melewati 180 hari?}
+    L[Arsipkan memori]
+    M[Sinkronkan status ke pgvector]
+    N([Selesai])
+
+    A --> B --> C
+    C -->|Tidak| N
+    C -->|Ya| D --> E --> F
+    F -->|Ya| G --> H --> M --> N
+    F -->|Tidak| I
+    I -->|Tidak| E
+    I -->|Ya| J --> K
+    K -->|Tidak| E
+    K -->|Ya| L --> M --> N
+
+    classDef terminator fill:#ffffff,stroke:#111111,stroke-width:1.4px,color:#111111;
+    classDef process fill:#ffffff,stroke:#111111,stroke-width:1.2px,color:#111111;
+    classDef decision fill:#f2f2f2,stroke:#111111,stroke-width:1.2px,color:#111111;
+    class A,N terminator;
+    class B,D,E,G,H,J,L,M process;
+    class C,F,I,K decision;

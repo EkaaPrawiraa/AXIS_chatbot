@@ -1,0 +1,18 @@
+flowchart TD
+    A[/Pesan pengguna terbaru/] --> B[Bangun kueri pencarian]
+    B --> C[Ambil kandidat<br/>semantik dan relasional]
+    C --> D[Gabungkan kandidat]
+    D --> E[Ranking konteks<br/>relevansi, kepentingan, kebaruan,<br/>kekayaan relasi, keselamatan]
+    E --> F{Konteks berulang<br/>atau terlalu mirip?}
+    F -- Ya --> G[Kurangi duplikasi]
+    F -- Tidak --> H[Pertahankan kandidat]
+    G --> I[/Konteks akhir untuk respons/]
+    H --> I
+
+    classDef io fill:#ffffff,stroke:#111111,stroke-width:1.5px,color:#111111;
+    classDef process fill:#f2f2f2,stroke:#111111,stroke-width:1.5px,color:#111111;
+    classDef decision fill:#ffffff,stroke:#111111,stroke-width:1.5px,color:#111111;
+
+    class A,K io;
+    class B,C,D,E,F,H,I,J process;
+    class G decision;

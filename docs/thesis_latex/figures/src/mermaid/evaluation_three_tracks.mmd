@@ -1,0 +1,25 @@
+flowchart TB
+    A([Mulai])
+    B[Evaluasi AXIS]
+    C[Evaluasi fungsional sistem]
+    D[Evaluasi komparatif]
+    E[Evaluasi pengguna nyata]
+    F[Komponen berjalan sesuai rancangan]
+    G[Perbandingan dengan chatbot generik]
+    H[Persepsi kegunaan dan rasa didampingi]
+    I[Kesimpulan kelayakan sistem]
+    J([Selesai])
+
+    A --> B
+    B --> C --> F
+    B --> D --> G
+    B --> E --> H
+    F --> I
+    G --> I
+    H --> I
+    I --> J
+
+    classDef terminator fill:#ffffff,stroke:#111111,stroke-width:1.4px,color:#111111;
+    classDef process fill:#ffffff,stroke:#111111,stroke-width:1.2px,color:#111111;
+    class A,J terminator;
+    class B,C,D,E,F,G,H,I process;

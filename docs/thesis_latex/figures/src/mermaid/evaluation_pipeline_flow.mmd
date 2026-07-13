@@ -1,0 +1,37 @@
+flowchart TD
+    A([Mulai])
+    B[Pesan pembuka tetap ke kedua sistem]
+    C[Simulator pengguna membangkitkan giliran]
+    D[Kirim pesan ke AXIS]
+    E[Kirim pesan ke chatbot baseline]
+    F[AXIS: context builder mengambil kandidat dari Neo4j dan pgvector]
+    G[AXIS: fusi RRF, graph reranker, MMR membentuk konteks memori]
+    H[AXIS: kebijakan dialog CBT dan guardrail berlapis]
+    I[AXIS: konteks memori dan hasil kebijakan disisipkan ke system prompt]
+    J[Baseline: pencarian semantik pgvector atas pesan saat ini]
+    K[Baseline: potongan teks memori disisipkan ke system prompt]
+    L[Model bahasa membangkitkan respons]
+    M[Model bahasa membangkitkan respons]
+    N[Catat giliran ke transkrip AXIS]
+    O[Catat giliran ke transkrip baseline]
+    P{Giliran terakhir?}
+    Q[Simulator membaca kedua respons, membalas]
+    R[Transkrip lengkap per sistem per persona]
+    S[Judge EPITOME menilai tiap giliran asisten: ER, IP, EX]
+    T[Rata-ratakan skor lintas pengulangan per sistem per persona]
+    U([Selesai])
+
+    A --> B --> C
+    C --> D --> F --> G --> H --> I --> L --> N
+    C --> E --> J --> K --> M --> O
+    N --> P
+    O --> P
+    P -->|Belum| Q --> C
+    P -->|Ya| R --> S --> T --> U
+
+    classDef terminator fill:#ffffff,stroke:#111111,stroke-width:1.4px,color:#111111;
+    classDef process fill:#ffffff,stroke:#111111,stroke-width:1.2px,color:#111111;
+    classDef decision fill:#f2f2f2,stroke:#111111,stroke-width:1.2px,color:#111111;
+    class A,U terminator;
+    class B,C,D,E,F,G,H,I,J,K,L,M,N,O,Q,R,S,T process;
+    class P decision;

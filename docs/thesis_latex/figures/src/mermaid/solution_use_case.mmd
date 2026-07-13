@@ -1,0 +1,29 @@
+%% Formal use case diagram approximation.
+%% Conventions: actor outside system boundary; use cases inside boundary.
+flowchart LR
+    A["○<br/>/|\\<br/>/ \\<br/>Mahasiswa<br/>Indonesia"]
+
+    subgraph S["Batas Sistem: AXIS"]
+        UC1([Bercerita dan<br/>berefleksi])
+        UC2([Bercerita di<br/>Confession Space])
+        UC3([Mencatat suasana<br/>hati harian])
+        UC4([Menerima latihan<br/>reflektif])
+        UC5([Mengisi skrining<br/>PHQ-9])
+        UC6([Melihat dan<br/>mengelola memori])
+        UC7([Mengakses bantuan<br/>dan hotline])
+        UC8([Mengatur akun<br/>dan data pribadi])
+    end
+
+    A --- UC1
+    A --- UC2
+    A --- UC3
+    A --- UC4
+    A --- UC5
+    A --- UC6
+    A --- UC7
+    A --- UC8
+
+    classDef actor fill:#ffffff,stroke:#ffffff,stroke-width:0px,color:#111111;
+    classDef usecase fill:#ffffff,stroke:#111111,stroke-width:1.2px,color:#111111;
+    class A actor;
+    class UC1,UC2,UC3,UC4,UC5,UC6,UC7,UC8 usecase;

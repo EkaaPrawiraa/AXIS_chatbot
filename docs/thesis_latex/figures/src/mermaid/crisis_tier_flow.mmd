@@ -1,0 +1,26 @@
+flowchart TD
+    A([Mulai])
+    B[Pesan pengguna]
+    C[Deteksi risiko langsung]
+    D{Ada niat atau rencana eksplisit?}
+    E[Respons krisis tingkat tinggi]
+    F[Deteksi distres dan eufemisme]
+    G{Ada sinyal distres berat?}
+    H[Dukungan empatik dan ajakan mencari bantuan]
+    I[Percakapan reflektif normal]
+    J[Catat audit guardrail]
+    K([Selesai])
+
+    A --> B --> C --> D
+    D -->|Ya| E --> J
+    D -->|Tidak| F --> G
+    G -->|Ya| H --> J
+    G -->|Tidak| I --> J
+    J --> K
+
+    classDef terminator fill:#ffffff,stroke:#111111,stroke-width:1.4px,color:#111111;
+    classDef process fill:#ffffff,stroke:#111111,stroke-width:1.2px,color:#111111;
+    classDef decision fill:#f2f2f2,stroke:#111111,stroke-width:1.2px,color:#111111;
+    class A,K terminator;
+    class B,C,E,F,H,I,J process;
+    class D,G decision;

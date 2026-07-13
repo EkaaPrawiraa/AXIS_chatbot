@@ -1,0 +1,22 @@
+flowchart TB
+    U((User)) -->|HAD_SESSION| S((Session))
+    U -->|HAS_MEMORY| M((Memory))
+    U -->|COMPLETED_ASSESSMENT| A((Assessment))
+    M -->|SUMMARIZES| S
+
+    TRG((Trigger)) -->|TRIGGERED_BY| EXP((Experience))
+    SUB((Subject)) -->|INVOLVES_SUBJECT| EXP
+    TOP((Topic)) -->|HAS_TOPIC| EXP
+    U -. catatan relasional .-> EXP
+    EXP -->|TRIGGERED_EMOTION| EMO((Emotion))
+    EMO -->|ACTIVATED_THOUGHT| TH((Thought))
+    TH -->|LED_TO_BEHAVIOR| BEH((Behavior))
+    TH -->|PART_OF_RECORD| REC((ThoughtRecord))
+    TH -. pemaknaan ulang .-> OLD((Thought lama))
+    OLD -->|REAPPRAISED_AS| NEW((Thought baru))
+    NEW -->|SUPERSEDES| OLD
+
+    classDef core fill:#ffffff,stroke:#111111,stroke-width:1.3px,color:#111111;
+    classDef lifecycle fill:#f2f2f2,stroke:#111111,stroke-width:1.3px,color:#111111;
+    class U,S,M,A,TRG,SUB,TOP,EXP,EMO,TH,BEH,REC core;
+    class OLD,NEW lifecycle;

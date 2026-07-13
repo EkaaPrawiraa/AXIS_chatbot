@@ -1,0 +1,23 @@
+sequenceDiagram
+    autonumber
+    actor U as Pengguna
+    participant FE as Frontend
+    participant GW as API Gateway
+    participant AG as Agentic Pipeline
+    participant PG as PostgreSQL
+    participant KG as Neo4j
+
+    U->>FE: Menulis pesan
+    FE->>GW: Kirim pesan percakapan
+    GW->>PG: Simpan pesan pengguna
+    GW->>AG: Minta respons agentic
+    activate AG
+    AG->>AG: Guardrail dan pemahaman konteks
+    AG->>PG: Ambil konteks semantik
+    AG->>KG: Ambil konteks relasional
+    AG->>AG: Pilih strategi respons
+    AG-->>GW: Respons dan state percakapan
+    deactivate AG
+    GW->>PG: Simpan respons asisten
+    GW-->>FE: Kembalikan respons
+    FE-->>U: Tampilkan balasan

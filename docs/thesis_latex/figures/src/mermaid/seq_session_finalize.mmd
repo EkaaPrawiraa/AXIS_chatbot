@@ -1,0 +1,18 @@
+sequenceDiagram
+    autonumber
+    participant SW as Session Sweeper
+    participant PG as PostgreSQL
+    participant FIN as Session Finalizer
+    participant LLM as Model ekstraksi
+    participant KG as Neo4j
+    participant VEC as pgvector
+
+    SW->>PG: Cari sesi idle
+    PG-->>SW: Daftar sesi layak finalisasi
+    SW->>FIN: Finalisasi sesi
+    FIN->>PG: Ambil riwayat pesan
+    FIN->>LLM: Ekstraksi memori penting
+    LLM-->>FIN: Entitas dan relasi
+    FIN->>KG: Tulis node dan relasi
+    FIN->>VEC: Simpan embedding memori
+    FIN->>PG: Tandai sesi selesai diproses
