@@ -39,7 +39,10 @@ services:
       - ./infra/neo4j/migrations:/migrations:ro
     healthcheck:
       test:
-        ["CMD-SHELL", "cypher-shell -u neo4j -p $$HEALTHCHECK_NEO4J_PASSWORD 'RETURN 1'"]
+        [
+          "CMD-SHELL",
+          "cypher-shell -u neo4j -p $$HEALTHCHECK_NEO4J_PASSWORD 'RETURN 1'",
+        ]
       interval: 30s
       timeout: 10s
       retries: 10
@@ -158,11 +161,11 @@ services:
       OPENAI_TEMPERATURE: ${OPENAI_TEMPERATURE:-0.2}
       GOOGLE_API_KEY: ${GOOGLE_API_KEY:-}
       GEMINI_API_KEY: ${GEMINI_API_KEY:-}
-      GEMINI_MODEL_CHEAP: ${GEMINI_MODEL_CHEAP:-gemini-2.5-flash-lite}
-      GEMINI_MODEL_STRONG: ${GEMINI_MODEL_STRONG:-gemini-2.5-flash}
-      GEMINI_MODEL_STRONG_GENERATION: ${GEMINI_MODEL_STRONG_GENERATION:-gemini-2.5-flash}
-      GEMINI_MODEL_KG_EXTRACTOR: ${GEMINI_MODEL_KG_EXTRACTOR:-gemini-2.5-flash}
-      GEMINI_RETRIEVAL_QUERY_REWRITER_MODEL: ${GEMINI_RETRIEVAL_QUERY_REWRITER_MODEL:-gemini-2.5-flash-lite}
+      GEMINI_MODEL_CHEAP: ${GEMINI_MODEL_CHEAP:-gemini-3.1-flash-lite}
+      GEMINI_MODEL_STRONG: ${GEMINI_MODEL_STRONG:-gemini-3.5-flash}
+      GEMINI_MODEL_STRONG_GENERATION: ${GEMINI_MODEL_STRONG_GENERATION:-gemini-3.5-flash}
+      GEMINI_MODEL_KG_EXTRACTOR: ${GEMINI_MODEL_KG_EXTRACTOR:-gemini-3.5-flash}
+      GEMINI_RETRIEVAL_QUERY_REWRITER_MODEL: ${GEMINI_RETRIEVAL_QUERY_REWRITER_MODEL:-gemini-3.1-flash-lite}
       ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
       ANTHROPIC_MODEL: ${ANTHROPIC_MODEL:-}
       GROQ_API_KEY: ${GROQ_API_KEY:-}
@@ -195,9 +198,9 @@ services:
       OPENAI_TTS_MODEL: ${OPENAI_TTS_MODEL:-gpt-4o-mini-tts}
       OPENAI_TTS_FORMAT: ${OPENAI_TTS_FORMAT:-mp3}
       OPENAI_TTS_INSTRUCTIONS: ${OPENAI_TTS_INSTRUCTIONS:-}
-      GEMINI_TTS_MODEL: ${GEMINI_TTS_MODEL:-gemini-2.5-flash-preview-tts}
+      GEMINI_TTS_MODEL: ${GEMINI_TTS_MODEL:-gemini-3.5-flash-preview-tts}
       GEMINI_TTS_VOICE: ${GEMINI_TTS_VOICE:-Kore}
-      GEMINI_TRANSCRIBE_MODEL: ${GEMINI_TRANSCRIBE_MODEL:-gemini-2.5-flash}
+      GEMINI_TRANSCRIBE_MODEL: ${GEMINI_TRANSCRIBE_MODEL:-gemini-3.5-flash}
       # Tools
       TAVILY_API_KEY: ${TAVILY_API_KEY:-}
       OPENAI_WEBSEARCH_MODEL: ${OPENAI_WEBSEARCH_MODEL:-gpt-4o-mini-search-preview}

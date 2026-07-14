@@ -251,7 +251,7 @@ def _gemini_web_search(query: str, max_results: int) -> dict[str, Any]:
 
     from google.genai import types  # type: ignore[import-not-found]
 
-    model = (os.getenv("GEMINI_WEBSEARCH_MODEL") or os.getenv("GEMINI_MODEL_STRONG") or "gemini-2.5-flash").strip()
+    model = (os.getenv("GEMINI_WEBSEARCH_MODEL") or os.getenv("GEMINI_MODEL_STRONG") or "gemini-3.5-flash").strip()
 
     try:
         response = client.models.generate_content(

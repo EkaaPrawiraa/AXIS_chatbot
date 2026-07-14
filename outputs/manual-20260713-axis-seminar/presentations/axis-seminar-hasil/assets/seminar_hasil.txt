@@ -6250,13 +6250,13 @@ Bab IV.
                                Snapshot konfigurasi evaluasi komparatif
 
 Peran                  Model/konfigurasi           Sampling          Batas dan konteks
-Simulated user         gemini-2.5-flash-lite       Temperatur 0,8;   Maksimum 100 token; persona
+Simulated user         gemini-3.1-flash-lite       Temperatur 0,8;   Maksimum 100 token; persona
                                                    tanpa seed        Budi; pesan pembuka tetap; 10
                                                                      giliran.
-Respons utama          gemini-2.5-flash            Temperatur 1,0;   Maksimum 6.000 token;
+Respons utama          gemini-3.5-flash            Temperatur 1,0;   Maksimum 6.000 token;
 AXIS                   melalui penyedia            tanpa seed        komponen router/judge ringan
-                       Gemini                                        memakai gemini-2.5-flash-lite.
-Chatbot baseline       gemini-2.5-flash            Temperatur 0,7;   Top-k memori semantik 5;
+                       Gemini                                        memakai gemini-3.1-flash-lite.
+Chatbot baseline       gemini-3.5-flash            Temperatur 0,7;   Top-k memori semantik 5;
                                                    tanpa seed        tanpa reranking graf dan tanpa
                                                                      batas token eksplisit pada
                                                                      pemanggilan baseline.

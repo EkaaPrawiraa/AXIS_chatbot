@@ -11,8 +11,8 @@ def test_arbitrary_provider_model_string_does_not_raise() -> None:
 
 
 def test_real_gemini_tier_model_id_does_not_raise() -> None:
-    resp = VoiceTurnResponse(tts_model="gemini-2.5-flash-preview-tts")
-    assert resp.tts_model == "gemini-2.5-flash-preview-tts"
+    resp = VoiceTurnResponse(tts_model="gemini-3.5-flash-preview-tts")
+    assert resp.tts_model == "gemini-3.5-flash-preview-tts"
 
 
 def test_legacy_literal_values_still_accepted() -> None:

@@ -10,11 +10,11 @@ from typing import Any
 
 
 ROOT = Path(__file__).resolve().parents[4]
-JUDGE_MODELS = ("gemini-2.5-flash", "gemini-2.5-flash-lite")
+JUDGE_MODELS = ("gemini-3.5-flash", "gemini-3.1-flash-lite")
 # The adjudication pass has a separate instruction and request. It currently
 # reuses the stronger judge model, so reports must not call it a third
 # independent base model.
-ADJUDICATOR_MODEL = "gemini-2.5-flash"
+ADJUDICATOR_MODEL = "gemini-3.5-flash"
 
 
 def load_project_env() -> None:

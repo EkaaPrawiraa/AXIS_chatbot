@@ -14,7 +14,7 @@ export const TTS_MODELS: Array<{ id: string; name: string; helper: string }> = [
 		helper: "Suara lebih alami dan nyaman didengar",
 	},
 	{
-		id: "gemini-2.5-flash-tts",
+		id: "gemini-3.5-flash-tts",
 		name: "AXIS Klasik",
 		helper: "Mesin suara alternatif",
 	},

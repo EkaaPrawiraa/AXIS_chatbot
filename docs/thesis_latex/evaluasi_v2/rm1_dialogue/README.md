@@ -1,12 +1,13 @@
 # RM1a - Penilaian Buta Respons Suportif
 
 6 skenario satu-giliran (satu konteks pengguna, satu pesan uji), dijalankan nyata:
+
 - 3 skenario cold-start (akun Arya, tanpa memori) dibandingkan AXIS vs B0 (generic companion, `chatbot.chat_generic`).
 - 3 skenario rich-memory (akun Budi, memori seeded soal skripsi bab 3/dosen pembimbing via `seeder.py`) dibandingkan AXIS vs B1 (vector-RAG baseline, `chatbot.baseline_turn`).
 
 AXIS dipanggil lewat `ChatGraphService` asli (pipeline penuh: guardrail, dialogue_policy, response_generator, dst). Baseline dipaksa memakai provider Gemini yang sama dengan AXIS (`EVAL_BASELINE_PROVIDER=gemini`), bukan OpenAI, sesuai instruksi eksplisit untuk tidak menyentuh key OpenAI.
 
-Dinilai buta (identitas sistem disembunyikan, urutan A/B diacak per skenario) oleh dua konfigurasi model penilai independen: `gemini-3.5-flash` dan `gemini-2.5-flash-lite`.
+Dinilai buta (identitas sistem disembunyikan, urutan A/B diacak per skenario) oleh dua konfigurasi model penilai independen: `gemini-3.5-flash` dan `gemini-3.1-flash-lite`.
 
 ## Catatan metodologi penting (ditemukan dan diperbaiki saat run pertama)
 
@@ -15,6 +16,7 @@ Run pertama memberi label "baseline lebih baik" pada beberapa skenario dengan al
 ## Hasil (setelah perbaikan prompt)
 
 Preferensi keseluruhan (pooled kedua penilai, 12 penilaian): AXIS dipilih 11, baseline dipilih 1, setara 0.
+
 - vs B0 (cold-start): AXIS 5, baseline 1.
 - vs B1 (rich-memory): AXIS 6, baseline 0.
 

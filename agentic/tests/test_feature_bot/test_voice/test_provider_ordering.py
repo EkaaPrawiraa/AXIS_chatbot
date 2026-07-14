@@ -173,14 +173,14 @@ class TestGeminiTierResolution:
 
     def test_unknown_id_falls_back_to_default_tier(self) -> None:
         tier = resolve_gemini_tier("not-a-real-tier")
-        assert tier.model == "gemini-2.5-flash-preview-tts"
+        assert tier.model == "gemini-3.5-flash-preview-tts"
 
     def test_none_falls_back_to_default_tier(self) -> None:
         tier = resolve_gemini_tier(None)
-        assert tier.model == "gemini-2.5-flash-preview-tts"
+        assert tier.model == "gemini-3.5-flash-preview-tts"
 
     def test_gender_selects_correct_voice(self) -> None:
-        tier = resolve_gemini_tier("gemini-2.5-flash-preview-tts")
+        tier = resolve_gemini_tier("gemini-3.5-flash-preview-tts")
         assert resolve_gemini_voice_name(tier, "wanita") == "Leda"
         assert resolve_gemini_voice_name(tier, "pria") == "Charon"
         # set to 'female

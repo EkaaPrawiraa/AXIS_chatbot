@@ -210,7 +210,7 @@ class TestNode:
         assert voice["voice_error"] is None
         assert voice["tts_provider"] == "gemini_tts"
         # resolve_gemini_tier = tier_default
-        assert voice["tts_model"] == "gemini-2.5-flash-preview-tts"
+        assert voice["tts_model"] == "gemini-3.5-flash-preview-tts"
         assert voice["audio_output_blob"] == fake_gemini_tts.blob
         assert voice["audio_output_format"] == "wav"
         assert audit.has_type("tts_gemini_tts")

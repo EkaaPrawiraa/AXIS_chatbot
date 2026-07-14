@@ -50,8 +50,8 @@ _DEFAULT_KG_REASONING_EFFORT: ReasoningEffort = os.getenv(  # type: ignore[assig
     "LLM_KG_REASONING_EFFORT", "high"
 )
 
-_GEMINI_MODEL_CHEAP = os.getenv("GEMINI_MODEL_CHEAP", "gemini-2.5-flash-lite")
-_GEMINI_MODEL_STRONG = os.getenv("GEMINI_MODEL_STRONG", "gemini-2.5-flash")
+_GEMINI_MODEL_CHEAP = os.getenv("GEMINI_MODEL_CHEAP", "gemini-3.1-flash-lite")
+_GEMINI_MODEL_STRONG = os.getenv("GEMINI_MODEL_STRONG", "gemini-3.5-flash")
 _GEMINI_MODEL_STRONG_GENERATION = os.getenv(
     "GEMINI_MODEL_STRONG_GENERATION",
     _GEMINI_MODEL_STRONG,

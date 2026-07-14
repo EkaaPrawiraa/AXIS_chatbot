@@ -174,7 +174,7 @@ class GeminiTranscriptionProvider:
         model: str | None = None,
     ) -> None:
         self._client = client
-        self._model = model or os.getenv("GEMINI_TRANSCRIBE_MODEL", "gemini-2.5-flash")
+        self._model = model or os.getenv("GEMINI_TRANSCRIBE_MODEL", "gemini-3.5-flash")
 
     async def transcribe(
         self,

@@ -11,8 +11,8 @@ Sumber LaTeX laporan Tugas Akhir.
 
 ```
 thesis_latex/
-├── main.tex                       # Root laporan lengkap; memakai naskah V2 dan menambahkan Bab V
-├── seminar_hasil_v2.tex           # Naskah seminar hasil utama
+├── main.tex                       # Root laporan lengkap
+├── seminar_hasil_v2.tex           # Naskah seminar hasil utama dan lengkap
 ├── preamble.tex                   # Package dan konfigurasi
 ├── chapters/
 │   ├── bab1.tex                   # Pendahuluan
@@ -22,7 +22,7 @@ thesis_latex/
 │   ├── bab4_evaluasi_v2.tex       # Protokol dan pelaporan evaluasi v2
 │   ├── lampiran.tex               # Lampiran teknis dan visual aktif
 │   ├── lampiran_evaluasi_v2.tex   # Instrumen evaluasi aktif
-│   └── bab5.tex                   # Kesimpulan dan Saran (placeholder)
+│   └── bab5.tex                   # Kesimpulan, Keterbatasan, dan Saran
 ├── frontmatter/
 │   ├── cover.tex                  # Halaman sampul
 │   ├── approval.tex               # Halaman pengesahan
@@ -38,7 +38,7 @@ thesis_latex/
 
 ## Traceability Naskah
 
-`seminar_hasil_v2.tex` adalah naskah utama untuk seminar hasil. `main.tex` memakai Bab IV dan lampiran V2 yang sama, lalu menambahkan Bab V untuk laporan lengkap. Berkas pembungkus dan naskah seminar lama sudah dibersihkan agar hanya ada satu jalur sumber aktif.
+`seminar_hasil_v2.tex` adalah naskah utama untuk seminar hasil dan memuat seluruh bagian laporan: halaman judul, pengesahan, pernyataan, abstrak Indonesia dan Inggris, kata pengantar, Bab I--V, daftar pustaka, dan lampiran. Satu-satunya evaluasi yang masih direncanakan adalah pengujian pengguna nyata; status tersebut dinyatakan secara eksplisit pada Bab IV dan Bab V, tanpa menyajikan data partisipan yang belum dikumpulkan. `main.tex` memakai bab dan lampiran yang sama untuk laporan lengkap.
 
 Judul resmi diturunkan ke tiga rumusan masalah sebagai berikut.
 

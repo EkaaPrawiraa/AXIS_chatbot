@@ -55,7 +55,7 @@ _load_env(ROOT / "evaluation_pipeline" / ".env", override=True)
 
 # Force Gemini-only for baseline generation, matching AXIS's own active provider.
 os.environ["EVAL_BASELINE_PROVIDER"] = "gemini"
-os.environ["EVAL_BASELINE_MODEL"] = "gemini-2.5-flash"
+os.environ["EVAL_BASELINE_MODEL"] = "gemini-3.5-flash"
 os.environ["EVAL_BASELINE_TEMPERATURE"] = "1.0"
 os.environ["EVAL_BASELINE_MAX_TOKENS"] = "6000"
 os.environ["EVAL_EMBEDDING_PROVIDER"] = "gemini"
@@ -208,6 +208,127 @@ SCENARIOS: tuple[DialogueScenario, ...] = (
             "sama kerjaanku? Padahal temen-temen bilang emang wajar dapat revisi."
         ),
     ),
+    DialogueScenario(
+        id="rm1_academic_formal",
+        domain="academic",
+        user_id=ARYA_ID,
+        memory_condition="cold_start",
+        user_message=(
+            "Saya telah beberapa kali menunda membuka hasil ujian karena takut "
+            "nilainya tidak sesuai harapan. Akibatnya saya semakin cemas menjelang "
+            "pertemuan dengan dosen wali."
+        ),
+    ),
+    DialogueScenario(
+        id="rm1_academic_informal",
+        domain="academic",
+        user_id=ARYA_ID,
+        memory_condition="cold_start",
+        user_message=(
+            "Nilai kuis ancur banget, jujur malu parah buat ngomong ke rumah. "
+            "Rasanya udah telat buat ngejar semuanya."
+        ),
+    ),
+    DialogueScenario(
+        id="rm1_academic_code_mixing",
+        domain="academic",
+        user_id=ARYA_ID,
+        memory_condition="cold_start",
+        user_message=(
+            "I keep overthinking tiap mau submit tugas. Takut hasilnya jelek, "
+            "terus akhirnya malah stuck dan nggak ngirim-ngirim."
+        ),
+    ),
+    DialogueScenario(
+        id="rm1_social_euphemistic",
+        domain="social_isolation",
+        user_id=ARYA_ID,
+        memory_condition="cold_start",
+        user_message=(
+            "Belakangan rasanya pengin menghilang dulu dari semua grup kampus. "
+            "Bukan mau kenapa-kenapa, cuma capek harus kelihatan baik-baik aja."
+        ),
+    ),
+    DialogueScenario(
+        id="rm1_family_code_mixing",
+        domain="family",
+        user_id=ARYA_ID,
+        memory_condition="cold_start",
+        user_message=(
+            "Di rumah lagi banyak drama dan I don't know how to handle it. "
+            "Mau fokus kuliah tapi kepikiran kondisi orang tua terus."
+        ),
+    ),
+    DialogueScenario(
+        id="rm1_campus_relationship",
+        domain="campus_relationship",
+        user_id=ARYA_ID,
+        memory_condition="cold_start",
+        user_message=(
+            "Teman satu tim kayaknya mulai menjauh setelah aku beberapa kali "
+            "telat balas chat. Aku takut mereka sebenarnya kesel sama aku."
+        ),
+    ),
+    DialogueScenario(
+        id="rm1_budi_avoidance_memory",
+        domain="academic",
+        user_id=BUDI_ID,
+        memory_condition="rich_memory",
+        user_message=(
+            "Aku tadi niat revisi Bab 3, tapi malah beresin hal-hal kecil lain. "
+            "Begitu kepikiran komentar dospem itu, badan langsung tegang lagi."
+        ),
+    ),
+    DialogueScenario(
+        id="rm1_budi_reframe_memory",
+        domain="academic",
+        user_id=BUDI_ID,
+        memory_condition="rich_memory",
+        user_message=(
+            "Temenku bilang revisi dosen itu belum tentu berarti draftku jelek. "
+            "Tapi susah banget percaya karena aku keburu ngerasa gagal."
+        ),
+    ),
+    DialogueScenario(
+        id="rm1_budi_formal_memory",
+        domain="academic",
+        user_id=BUDI_ID,
+        memory_condition="rich_memory",
+        user_message=(
+            "Saya merasa sulit membedakan antara masukan akademik yang wajar dan "
+            "penilaian pribadi terhadap kemampuan saya ketika membahas Bab 3."
+        ),
+    ),
+    DialogueScenario(
+        id="rm1_budi_code_mixing_memory",
+        domain="academic",
+        user_id=BUDI_ID,
+        memory_condition="rich_memory",
+        user_message=(
+            "Pas lihat revisi dari dospem, I immediately assume beliau kecewa sama "
+            "aku. Padahal mungkin cuma banyak yang perlu dibenerin aja."
+        ),
+    ),
+    DialogueScenario(
+        id="rm1_budi_self_worth_memory",
+        domain="self_worth",
+        user_id=BUDI_ID,
+        memory_condition="rich_memory",
+        user_message=(
+            "Kok orang lain kelihatan bisa maju terus ya? Aku baru Bab 3 aja "
+            "masih muter-muter, jadi ngerasa nggak pantas lulus bareng mereka."
+        ),
+    ),
+    DialogueScenario(
+        id="rm1_budi_casual_memory",
+        domain="academic",
+        user_id=BUDI_ID,
+        memory_condition="rich_memory",
+        user_message=(
+            "Dospem belum balas lagi. Pengen santai bentar tapi kepala tetep "
+            "muter mikirin skripsi, capek banget sih."
+        ),
+    ),
 )
 
 
@@ -319,7 +440,7 @@ def _judge_call(model: str, prompt: str) -> dict[str, Any]:
     return json.loads(payload)
 
 
-JUDGE_MODELS = ["gemini-3.5-flash", "gemini-2.5-flash-lite"]
+JUDGE_MODELS = ["gemini-3.5-flash", "gemini-3.1-flash-lite"]
 
 
 async def main() -> None:

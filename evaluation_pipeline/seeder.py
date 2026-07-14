@@ -1,6 +1,7 @@
 import asyncio
 import argparse
 from datetime import datetime, timezone, timedelta
+from urllib.error import HTTPError
 import psycopg2
 from neo4j import GraphDatabase
 
@@ -77,15 +78,25 @@ def clean_neo4j():
 async def seed_data():
     print("Generating embeddings using Gemini...")
     texts = [BUDI_MEMORY_CONTENT, BUDI_EXPERIENCE_CONTENT, BUDI_TRIGGER_CONTENT, BUDI_THOUGHT_CONTENT]
-    vectors = [
-        await asyncio.to_thread(
-            embed_text,
-            text,
-            CONFIG,
-            task_type="RETRIEVAL_DOCUMENT",
-        )
-        for text in texts
-    ]
+    vectors = []
+    for text in texts:
+        for attempt in range(5):
+            try:
+                vectors.append(
+                    await asyncio.to_thread(
+                        embed_text,
+                        text,
+                        CONFIG,
+                        task_type="RETRIEVAL_DOCUMENT",
+                    )
+                )
+                break
+            except HTTPError as exc:
+                if exc.code != 429 or attempt == 4:
+                    raise
+                delay_seconds = 2 ** attempt
+                print(f"Embedding rate-limited; retrying in {delay_seconds}s...")
+                await asyncio.sleep(delay_seconds)
     
     mem_vec, exp_vec, trig_vec, thought_vec = vectors
 

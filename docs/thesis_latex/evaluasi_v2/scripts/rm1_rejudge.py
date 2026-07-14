@@ -81,7 +81,7 @@ persis format berikut:
 {{"scores_a": {{"reaksi_emosional": 0, "interpretasi_konteks": 0, "eksplorasi": 0, "ketepatan_cbt": 0, "batas_non_klinis": 0, "kesesuaian_bahasa": 0, "groundedness": 0}}, "scores_b": {{"reaksi_emosional": 0, "interpretasi_konteks": 0, "eksplorasi": 0, "ketepatan_cbt": 0, "batas_non_klinis": 0, "kesesuaian_bahasa": 0, "groundedness": 0}}, "preference": "A", "reason": "max 12 words, no quotes or newlines"}}
 """
 
-JUDGE_MODELS = ["gemini-3.5-flash", "gemini-2.5-flash-lite"]
+JUDGE_MODELS = ["gemini-3.5-flash", "gemini-3.1-flash-lite"]
 
 
 def _judge_call(model: str, prompt: str) -> dict[str, Any]:

@@ -624,8 +624,8 @@ SUPPORTED_RESPONSE_MODELS = {
     "gpt-5.4-mini",
     "gpt-5.4-nano",
     "gemini-2.5-pro",
-    "gemini-2.5-flash",
-    "gemini-2.5-flash-lite",
+    "gemini-3.5-flash",
+    "gemini-3.1-flash-lite",
     "gemini-3.1-pro",
     "gemini-3-flash",
     "gemini-3.1-flash-lite",
@@ -659,7 +659,7 @@ async def _maybe_fetch_gemini_url_context(message: str) -> str | None:
         if not api_key:
             return None
         client = genai.Client(api_key=api_key)
-        model = os.getenv("GEMINI_URL_CONTEXT_MODEL", "gemini-2.5-flash")
+        model = os.getenv("GEMINI_URL_CONTEXT_MODEL", "gemini-3.5-flash")
         response = await client.aio.models.generate_content(
             model=model,
             contents=message,

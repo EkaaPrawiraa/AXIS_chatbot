@@ -14,10 +14,10 @@ TTSModelChoice = Literal[
     "openai_tts1",
     "gemini-3.1-flash-tts-preview",
     "gemini-2.5-pro-preview-tts",
-    "gemini-2.5-flash-preview-tts",
+    "gemini-3.5-flash-preview-tts",
     "gemini-3.1-flash-tts",
     "gemini-2.5-pro-tts",
-    "gemini-2.5-flash-tts",
+    "gemini-3.5-flash-tts",
 ]
 
 

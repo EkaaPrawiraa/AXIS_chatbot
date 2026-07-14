@@ -41,22 +41,22 @@ def test_gemini_provider_maps_roles_to_gemini_tiers(monkeypatch):
 
     assert (
         llm_models.resolve_llm_model("gpt-5.4-nano", spec_name="response_generator")
-        == "gemini-2.5-flash"
+        == "gemini-3.5-flash"
     )
     assert (
         llm_models.resolve_llm_model("gpt-4o-mini", spec_name="phq9_judge")
-        == "gemini-2.5-flash-lite"
+        == "gemini-3.1-flash-lite"
     )
     assert (
         llm_models.resolve_llm_model("o4-mini", spec_name="kg_extractor")
-        == "gemini-2.5-flash"
+        == "gemini-3.5-flash"
     )
     assert (
         llm_models.resolve_llm_model(
             "gpt-4.1-nano",
             spec_name="retrieval_query_rewriter",
         )
-        == "gemini-2.5-flash-lite"
+        == "gemini-3.1-flash-lite"
     )
 
 
@@ -65,10 +65,10 @@ def test_gemini_provider_strips_google_model_prefix(monkeypatch):
 
     assert (
         llm_models.resolve_llm_model(
-            "models/gemini-2.5-flash",
+            "models/gemini-3.5-flash",
             spec_name="response_generator",
         )
-        == "gemini-2.5-flash"
+        == "gemini-3.5-flash"
     )
 
 
@@ -77,10 +77,10 @@ def test_gemini_provider_preserves_explicit_gemini_model(monkeypatch):
 
     assert (
         llm_models.resolve_llm_model(
-            "gemini-2.5-flash",
+            "gemini-3.5-flash",
             spec_name="response_generator",
         )
-        == "gemini-2.5-flash"
+        == "gemini-3.5-flash"
     )
 
 

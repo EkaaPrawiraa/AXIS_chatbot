@@ -53,7 +53,7 @@ class TestGeminiTTSClientRetry:
         fake_client = _FakeGenAIClient([_empty_response(), _audio_response()])
         client = GeminiTTSClient(client=fake_client, retry_delay_s=0)
 
-        result = await client.synthesize(text="halo", voice=_voice(), model="gemini-2.5-flash-preview-tts")
+        result = await client.synthesize(text="halo", voice=_voice(), model="gemini-3.5-flash-preview-tts")
 
         assert result.error is None
         assert result.audio_blob is not None
@@ -64,7 +64,7 @@ class TestGeminiTTSClientRetry:
         fake_client = _FakeGenAIClient([_empty_response(), _empty_response()])
         client = GeminiTTSClient(client=fake_client, retry_delay_s=0)
 
-        result = await client.synthesize(text="halo", voice=_voice(), model="gemini-2.5-flash-preview-tts")
+        result = await client.synthesize(text="halo", voice=_voice(), model="gemini-3.5-flash-preview-tts")
 
         assert result.error == "empty_response:OTHER"
         assert fake_client.calls == 2
@@ -74,7 +74,7 @@ class TestGeminiTTSClientRetry:
         fake_client = _FakeGenAIClient([_audio_response()])
         client = GeminiTTSClient(client=fake_client, retry_delay_s=0)
 
-        result = await client.synthesize(text="halo", voice=_voice(), model="gemini-2.5-flash-preview-tts")
+        result = await client.synthesize(text="halo", voice=_voice(), model="gemini-3.5-flash-preview-tts")
 
         assert result.error is None
         assert fake_client.calls == 1

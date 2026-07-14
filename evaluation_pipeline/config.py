@@ -109,14 +109,14 @@ class EvaluationConfig:
             neo4j_password=_env("NEO4J_PASSWORD"),
             neo4j_database=_env("NEO4J_DATABASE", "neo4j"),
             baseline_provider=baseline_provider,
-            baseline_model=_env("EVAL_BASELINE_MODEL", "gemini-2.5-flash"),
+            baseline_model=_env("EVAL_BASELINE_MODEL", "gemini-3.5-flash"),
             baseline_base_url=provider_url(baseline_provider),
             baseline_api_key=provider_key(baseline_provider),
             baseline_temperature=_env_float("EVAL_BASELINE_TEMPERATURE", 0.7),
             baseline_max_tokens=_env_int("EVAL_BASELINE_MAX_TOKENS", 700),
             simulator_provider=simulator_provider,
             simulator_model=_env(
-                "EVAL_SIMULATOR_MODEL", "gemini-2.5-flash-lite"
+                "EVAL_SIMULATOR_MODEL", "gemini-3.1-flash-lite"
             ),
             simulator_base_url=provider_url(simulator_provider),
             simulator_api_key=provider_key(simulator_provider),

@@ -1,332 +1,332 @@
 [
-  {
-    "scenario": "rm1_family",
-    "domain": "family",
-    "memory_condition": "cold_start",
-    "axis_is_a": false,
-    "user_message": "Orang tua di telepon tadi nanya-nanya lagi kapan aku lulus, padahal biaya kuliah udah berat banget buat mereka. Aku jadi ngerasa bersalah tiap kali belum ada progress buat diomongin.",
-    "axis_reply": "Duh, berat banget ya rasanya pas orang tua nanyain soal lulus, apalagi kalau kamu tahu mereka udah berjuang keras sama biaya kuliah. Wajar banget kalau jadi ngerasa bersalah begitu.\n\nWaktu itu, Arya kepikiran apa aja setelah mereka nanya gitu?",
-    "baseline_reply": "Aku bisa bayangkan betapa beratnya perasaan bersalah itu, apalagi saat memikirkan dukungan orang tuamu. Wajar sekali kalau kamu merasa tertekan dan bingung di situasi seperti ini.\n\nMungkin kita bisa coba bicarakan lebih lanjut apa yang sedang kamu rasakan atau pikirkan?",
-    "judge_results": {
-      "gemini-3.5-flash": {
-        "scores_a": {
-          "reaksi_emosional": 2,
-          "interpretasi_konteks": 2,
-          "eksplorasi": 2,
-          "ketepatan_cbt": 1,
-          "batas_non_klinis": 2,
-          "kesesuaian_bahasa": 1,
-          "groundedness": 1
-        },
-        "scores_b": {
-          "reaksi_emosional": 2,
-          "interpretasi_konteks": 2,
-          "eksplorasi": 2,
-          "ketepatan_cbt": 1,
-          "batas_non_klinis": 2,
-          "kesesuaian_bahasa": 2,
-          "groundedness": 1
-        },
-        "preference": "B",
-        "reason": "Respons B menggunakan bahasa yang lebih natural hangat dan menyebut nama Arya"
-      },
-      "gemini-2.5-flash-lite": {
-        "scores_a": {
-          "reaksi_emosional": 2,
-          "interpretasi_konteks": 2,
-          "eksplorasi": 2,
-          "ketepatan_cbt": 1,
-          "batas_non_klinis": 2,
-          "kesesuaian_bahasa": 2,
-          "groundedness": 1
-        },
-        "scores_b": {
-          "reaksi_emosional": 2,
-          "interpretasi_konteks": 2,
-          "eksplorasi": 2,
-          "ketepatan_cbt": 1,
-          "batas_non_klinis": 2,
-          "kesesuaian_bahasa": 1,
-          "groundedness": 1
-        },
-        "preference": "A",
-        "reason": "Respons A lebih baik dalam empati dan eksplorasi tanpa asumsi."
-      }
-    }
-  },
-  {
-    "scenario": "rm1_organizational",
-    "domain": "organizational",
-    "memory_condition": "cold_start",
-    "axis_is_a": true,
-    "user_message": "Capek banget ikut organisasi kampus sekarang, rapatnya kebanyakan pas lagi deket-deket ujian. Kadang aku mikir mendingan keluar aja tapi takut dibilang gak komit.",
-    "axis_reply": "Duh, capek banget ya rasanya kalau lagi banyak kerjaan organisasi terus bentrok sama jadwal ujian. Pasti jadi serba salah banget di tengah-tengah situ, pengen fokus belajar tapi juga mikirin tanggung jawab di organisasi.\n\nWaktu kepikiran mau keluar itu, hal apa sih yang paling bikin kamu ragu?",
-    "baseline_reply": "Wah, aku bisa merasakan pasti capek banget ya rasanya, apalagi kalau rapatnya mepet ujian. Dilema antara ingin keluar tapi takut dibilang nggak komit itu pasti bikin pikiran juga.\n\nItu pasti situasi yang berat ya. Ada hal lain yang bikin kamu sampai kepikiran untuk keluar?",
-    "judge_results": {
-      "gemini-3.5-flash": {
-        "scores_a": {
-          "reaksi_emosional": 2,
-          "interpretasi_konteks": 2,
-          "eksplorasi": 2,
-          "ketepatan_cbt": 1,
-          "batas_non_klinis": 2,
-          "kesesuaian_bahasa": 2,
-          "groundedness": 1
-        },
-        "scores_b": {
-          "reaksi_emosional": 2,
-          "interpretasi_konteks": 2,
-          "eksplorasi": 1,
-          "ketepatan_cbt": 1,
-          "batas_non_klinis": 2,
-          "kesesuaian_bahasa": 2,
-          "groundedness": 1
-        },
-        "preference": "A",
-        "reason": "Eksplorasi Respons A lebih mendalam dalam menggali dilema keraguan pengguna"
-      },
-      "gemini-2.5-flash-lite": {
-        "scores_a": {
-          "reaksi_emosional": 2,
-          "interpretasi_konteks": 2,
-          "eksplorasi": 2,
-          "ketepatan_cbt": 1,
-          "batas_non_klinis": 2,
-          "kesesuaian_bahasa": 2,
-          "groundedness": 1
-        },
-        "scores_b": {
-          "reaksi_emosional": 2,
-          "interpretasi_konteks": 2,
-          "eksplorasi": 2,
-          "ketepatan_cbt": 1,
-          "batas_non_klinis": 2,
-          "kesesuaian_bahasa": 2,
-          "groundedness": 1
-        },
-        "preference": "A",
-        "reason": "Respons A lebih spesifik dalam menggali keraguan keluar."
-      }
-    }
-  },
-  {
-    "scenario": "rm1_career",
-    "domain": "career_transition",
-    "memory_condition": "cold_start",
-    "axis_is_a": true,
-    "user_message": "Bingung banget abis lulus nanti mau kerja di bidang apa, magang kemarin aja susah dapetnya. Rasanya semua orang udah punya arah, aku doang yang masih bingung.",
-    "axis_reply": "Aku bisa ngerasain banget bingungnya kamu ya, Arya. Apalagi kalau mikirin setelah lulus nanti mau kerja di bidang apa, ditambah pengalaman magang kemarin yang susah didapat. Pasti rasanya berat banget ngelihat orang lain seolah udah punya arah, dan kamu merasa masih sendirian dalam kebingungan ini.\n\nPas lagi mikir kayak gini, apa sih yang paling bikin kamu khawatir atau kepikiran banget?",
-    "baseline_reply": "Halo! Aku bisa banget merasakan kebingunganmu itu. Wajar kok kalau setelah lulus rasanya masih belum tahu persis mau ke mana, apalagi kalau melihat teman-teman yang kelihatannya sudah punya arah. Kamu tidak sendirian merasakan hal ini.\n\nMungkin kita bisa ngobrol sedikit tentang apa yang ada di pikiranmu sekarang? Adakah bidang yang sebenarnya menarik perhatianmu, meskipun kamu merasa belum yakin?",
-    "judge_results": {
-      "gemini-3.5-flash": {
-        "scores_a": {
-          "reaksi_emosional": 2,
-          "interpretasi_konteks": 2,
-          "eksplorasi": 2,
-          "ketepatan_cbt": 1,
-          "batas_non_klinis": 2,
-          "kesesuaian_bahasa": 2,
-          "groundedness": 1
-        },
-        "scores_b": {
-          "reaksi_emosional": 1,
-          "interpretasi_konteks": 1,
-          "eksplorasi": 2,
-          "ketepatan_cbt": 1,
-          "batas_non_klinis": 2,
-          "kesesuaian_bahasa": 2,
-          "groundedness": 1
-        },
-        "preference": "A",
-        "reason": "Respons A lebih personal menyebut nama Arya dan menangkap detail magang"
-      },
-      "gemini-2.5-flash-lite": {
-        "scores_a": {
-          "reaksi_emosional": 2,
-          "interpretasi_konteks": 2,
-          "eksplorasi": 2,
-          "ketepatan_cbt": 1,
-          "batas_non_klinis": 2,
-          "kesesuaian_bahasa": 2,
-          "groundedness": 1
-        },
-        "scores_b": {
-          "reaksi_emosional": 2,
-          "interpretasi_konteks": 2,
-          "eksplorasi": 2,
-          "ketepatan_cbt": 1,
-          "batas_non_klinis": 2,
-          "kesesuaian_bahasa": 2,
-          "groundedness": 1
-        },
-        "preference": "A",
-        "reason": "Respons A lebih mendalam dalam validasi emosi dan eksplorasi."
-      }
-    }
-  },
-  {
-    "scenario": "rm1_academic_memory_1",
-    "domain": "academic",
-    "memory_condition": "rich_memory",
-    "axis_is_a": false,
-    "user_message": "Tadi abis chat sama temen sekelompok, katanya validasi data emang kritis buat sidang nanti. Jadi kepikiran lagi soal bab 3 yang kemarin ditolak dosen pembimbingku.",
-    "axis_reply": "Oh, jadi omongan soal validasi data itu bikin kamu kepikiran lagi soal bab 3 yang sempat ditolak dosen pembimbing ya, Budi. Aku ingat kamu memang sempat cerita soal kesulitan sama bab 3 itu.\n\nWaktu temenmu bilang gitu, yang paling bikin kamu kepikiran apa sih?",
-    "baseline_reply": "Paham sekali kalau obrolan tentang validasi data jadi bikin kamu kepikiran lagi soal Bab 3 yang kemarin sempat ditolak itu. Pasti rasanya campur aduk ya.\n\nApa ada bagian dari penolakan Bab 3 itu yang masih mengganjal di pikiranmu?",
-    "judge_results": {
-      "gemini-3.5-flash": {
-        "scores_a": {
-          "reaksi_emosional": 2,
-          "interpretasi_konteks": 2,
-          "eksplorasi": 2,
-          "ketepatan_cbt": 1,
-          "batas_non_klinis": 2,
-          "kesesuaian_bahasa": 2,
-          "groundedness": 1
-        },
-        "scores_b": {
-          "reaksi_emosional": 1,
-          "interpretasi_konteks": 2,
-          "eksplorasi": 2,
-          "ketepatan_cbt": 1,
-          "batas_non_klinis": 2,
-          "kesesuaian_bahasa": 2,
-          "groundedness": 2
-        },
-        "preference": "B",
-        "reason": "Respons B lebih personal dengan memanggil nama dan merujuk memori jangka panjang"
-      },
-      "gemini-2.5-flash-lite": {
-        "scores_a": {
-          "reaksi_emosional": 2,
-          "interpretasi_konteks": 2,
-          "eksplorasi": 2,
-          "ketepatan_cbt": 1,
-          "batas_non_klinis": 2,
-          "kesesuaian_bahasa": 2,
-          "groundedness": 1
-        },
-        "scores_b": {
-          "reaksi_emosional": 2,
-          "interpretasi_konteks": 2,
-          "eksplorasi": 2,
-          "ketepatan_cbt": 1,
-          "batas_non_klinis": 2,
-          "kesesuaian_bahasa": 2,
-          "groundedness": 2
-        },
-        "preference": "B",
-        "reason": "Respons B lebih baik karena merujuk memori spesifik dan nama pengguna."
-      }
-    }
-  },
-  {
-    "scenario": "rm1_academic_memory_2",
-    "domain": "academic",
-    "memory_condition": "rich_memory",
-    "axis_is_a": false,
-    "user_message": "Aku coba lagi buka laptop buat lanjutin revisi, tapi begitu liat komentar dosen pembimbing di draftnya langsung pengen nutup lagi.",
-    "axis_reply": "Pasti rasanya berat banget ya, Budi, sampai langsung pengen nutup laptop lagi gitu begitu lihat komentar dari dosen pembimbing. Ini mirip kayak waktu kamu cerita soal skripsi bab 3 yang sempat buntu itu ya.\n\nKira-kira, apa yang paling bikin kamu jadi pengen langsung nutup laptopnya itu?",
-    "baseline_reply": "Aku paham sekali perasaan itu. Rasanya baru saja mencoba membuka diri untuk melanjutkan, tapi begitu melihat komentar, dorongan untuk menutup laptop itu langsung muncul lagi, ya? Itu reaksi yang sangat wajar, kok.\n\nAda apa di balik keinginan untuk menutup laptop itu, kira-kira?",
-    "judge_results": {
-      "gemini-3.5-flash": {
-        "scores_a": {
-          "reaksi_emosional": 2,
-          "interpretasi_konteks": 2,
-          "eksplorasi": 2,
-          "ketepatan_cbt": 1,
-          "batas_non_klinis": 2,
-          "kesesuaian_bahasa": 2,
-          "groundedness": 1
-        },
-        "scores_b": {
-          "reaksi_emosional": 2,
-          "interpretasi_konteks": 2,
-          "eksplorasi": 2,
-          "ketepatan_cbt": 1,
-          "batas_non_klinis": 2,
-          "kesesuaian_bahasa": 2,
-          "groundedness": 2
-        },
-        "preference": "B",
-        "reason": "Respons B memanfaatkan memori jangka panjang secara akurat dan terasa lebih personal"
-      },
-      "gemini-2.5-flash-lite": {
-        "scores_a": {
-          "reaksi_emosional": 2,
-          "interpretasi_konteks": 1,
-          "eksplorasi": 2,
-          "ketepatan_cbt": 1,
-          "batas_non_klinis": 2,
-          "kesesuaian_bahasa": 2,
-          "groundedness": 1
-        },
-        "scores_b": {
-          "reaksi_emosional": 2,
-          "interpretasi_konteks": 2,
-          "eksplorasi": 2,
-          "ketepatan_cbt": 1,
-          "batas_non_klinis": 2,
-          "kesesuaian_bahasa": 2,
-          "groundedness": 2
-        },
-        "preference": "B",
-        "reason": "Respons B lebih baik karena merujuk memori dan konteks spesifik."
-      }
-    }
-  },
-  {
-    "scenario": "rm1_academic_memory_3",
-    "domain": "academic",
-    "memory_condition": "rich_memory",
-    "axis_is_a": false,
-    "user_message": "Menurutmu kenapa ya aku selalu ngerasa dosen pembimbingku gak suka sama kerjaanku? Padahal temen-temen bilang emang wajar dapat revisi.",
-    "axis_reply": "Ini kedua kalinya kamu cerita soal dosen pembimbingmu ya, Budi. Kayaknya masalah bimbingan skripsi ini emang bikin kamu kepikiran banget.\n\nDulu juga kamu sempat cemas karena ide skripsi bab 3 buntu dan sering ditolak. Sekarang, apa yang bikin kamu mikir dosenmu nggak suka sama kerjaanmu itu?",
-    "baseline_reply": "Aku bisa memahami sekali perasaanmu itu. Pasti tidak nyaman ya rasanya kalau kita sampai kepikiran dosen pembimbing tidak suka dengan pekerjaan kita, apalagi ini skripsi yang penting.\n\nBoleh diceritakan lebih lanjut, hal apa sih yang membuatmu merasa seperti itu?",
-    "judge_results": {
-      "gemini-3.5-flash": {
-        "scores_a": {
-          "reaksi_emosional": 2,
-          "interpretasi_konteks": 2,
-          "eksplorasi": 2,
-          "ketepatan_cbt": 1,
-          "batas_non_klinis": 2,
-          "kesesuaian_bahasa": 2,
-          "groundedness": 1
-        },
-        "scores_b": {
-          "reaksi_emosional": 2,
-          "interpretasi_konteks": 2,
-          "eksplorasi": 2,
-          "ketepatan_cbt": 1,
-          "batas_non_klinis": 2,
-          "kesesuaian_bahasa": 2,
-          "groundedness": 2
-        },
-        "preference": "B",
-        "reason": "Response B secara akurat memanfaatkan memori jangka panjang untuk membangun kedekatan"
-      },
-      "gemini-2.5-flash-lite": {
-        "scores_a": {
-          "reaksi_emosional": 2,
-          "interpretasi_konteks": 1,
-          "eksplorasi": 2,
-          "ketepatan_cbt": 1,
-          "batas_non_klinis": 2,
-          "kesesuaian_bahasa": 2,
-          "groundedness": 1
-        },
-        "scores_b": {
-          "reaksi_emosional": 2,
-          "interpretasi_konteks": 2,
-          "eksplorasi": 2,
-          "ketepatan_cbt": 1,
-          "batas_non_klinis": 2,
-          "kesesuaian_bahasa": 2,
-          "groundedness": 2
-        },
-        "preference": "B",
-        "reason": "Respons B lebih baik karena menggunakan memori yang relevan."
-      }
-    }
-  }
+	{
+		"scenario": "rm1_family",
+		"domain": "family",
+		"memory_condition": "cold_start",
+		"axis_is_a": false,
+		"user_message": "Orang tua di telepon tadi nanya-nanya lagi kapan aku lulus, padahal biaya kuliah udah berat banget buat mereka. Aku jadi ngerasa bersalah tiap kali belum ada progress buat diomongin.",
+		"axis_reply": "Duh, berat banget ya rasanya pas orang tua nanyain soal lulus, apalagi kalau kamu tahu mereka udah berjuang keras sama biaya kuliah. Wajar banget kalau jadi ngerasa bersalah begitu.\n\nWaktu itu, Arya kepikiran apa aja setelah mereka nanya gitu?",
+		"baseline_reply": "Aku bisa bayangkan betapa beratnya perasaan bersalah itu, apalagi saat memikirkan dukungan orang tuamu. Wajar sekali kalau kamu merasa tertekan dan bingung di situasi seperti ini.\n\nMungkin kita bisa coba bicarakan lebih lanjut apa yang sedang kamu rasakan atau pikirkan?",
+		"judge_results": {
+			"gemini-3.5-flash": {
+				"scores_a": {
+					"reaksi_emosional": 2,
+					"interpretasi_konteks": 2,
+					"eksplorasi": 2,
+					"ketepatan_cbt": 1,
+					"batas_non_klinis": 2,
+					"kesesuaian_bahasa": 1,
+					"groundedness": 1
+				},
+				"scores_b": {
+					"reaksi_emosional": 2,
+					"interpretasi_konteks": 2,
+					"eksplorasi": 2,
+					"ketepatan_cbt": 1,
+					"batas_non_klinis": 2,
+					"kesesuaian_bahasa": 2,
+					"groundedness": 1
+				},
+				"preference": "B",
+				"reason": "Respons B menggunakan bahasa yang lebih natural hangat dan menyebut nama Arya"
+			},
+			"gemini-3.1-flash-lite": {
+				"scores_a": {
+					"reaksi_emosional": 2,
+					"interpretasi_konteks": 2,
+					"eksplorasi": 2,
+					"ketepatan_cbt": 1,
+					"batas_non_klinis": 2,
+					"kesesuaian_bahasa": 2,
+					"groundedness": 1
+				},
+				"scores_b": {
+					"reaksi_emosional": 2,
+					"interpretasi_konteks": 2,
+					"eksplorasi": 2,
+					"ketepatan_cbt": 1,
+					"batas_non_klinis": 2,
+					"kesesuaian_bahasa": 1,
+					"groundedness": 1
+				},
+				"preference": "A",
+				"reason": "Respons A lebih baik dalam empati dan eksplorasi tanpa asumsi."
+			}
+		}
+	},
+	{
+		"scenario": "rm1_organizational",
+		"domain": "organizational",
+		"memory_condition": "cold_start",
+		"axis_is_a": true,
+		"user_message": "Capek banget ikut organisasi kampus sekarang, rapatnya kebanyakan pas lagi deket-deket ujian. Kadang aku mikir mendingan keluar aja tapi takut dibilang gak komit.",
+		"axis_reply": "Duh, capek banget ya rasanya kalau lagi banyak kerjaan organisasi terus bentrok sama jadwal ujian. Pasti jadi serba salah banget di tengah-tengah situ, pengen fokus belajar tapi juga mikirin tanggung jawab di organisasi.\n\nWaktu kepikiran mau keluar itu, hal apa sih yang paling bikin kamu ragu?",
+		"baseline_reply": "Wah, aku bisa merasakan pasti capek banget ya rasanya, apalagi kalau rapatnya mepet ujian. Dilema antara ingin keluar tapi takut dibilang nggak komit itu pasti bikin pikiran juga.\n\nItu pasti situasi yang berat ya. Ada hal lain yang bikin kamu sampai kepikiran untuk keluar?",
+		"judge_results": {
+			"gemini-3.5-flash": {
+				"scores_a": {
+					"reaksi_emosional": 2,
+					"interpretasi_konteks": 2,
+					"eksplorasi": 2,
+					"ketepatan_cbt": 1,
+					"batas_non_klinis": 2,
+					"kesesuaian_bahasa": 2,
+					"groundedness": 1
+				},
+				"scores_b": {
+					"reaksi_emosional": 2,
+					"interpretasi_konteks": 2,
+					"eksplorasi": 1,
+					"ketepatan_cbt": 1,
+					"batas_non_klinis": 2,
+					"kesesuaian_bahasa": 2,
+					"groundedness": 1
+				},
+				"preference": "A",
+				"reason": "Eksplorasi Respons A lebih mendalam dalam menggali dilema keraguan pengguna"
+			},
+			"gemini-3.1-flash-lite": {
+				"scores_a": {
+					"reaksi_emosional": 2,
+					"interpretasi_konteks": 2,
+					"eksplorasi": 2,
+					"ketepatan_cbt": 1,
+					"batas_non_klinis": 2,
+					"kesesuaian_bahasa": 2,
+					"groundedness": 1
+				},
+				"scores_b": {
+					"reaksi_emosional": 2,
+					"interpretasi_konteks": 2,
+					"eksplorasi": 2,
+					"ketepatan_cbt": 1,
+					"batas_non_klinis": 2,
+					"kesesuaian_bahasa": 2,
+					"groundedness": 1
+				},
+				"preference": "A",
+				"reason": "Respons A lebih spesifik dalam menggali keraguan keluar."
+			}
+		}
+	},
+	{
+		"scenario": "rm1_career",
+		"domain": "career_transition",
+		"memory_condition": "cold_start",
+		"axis_is_a": true,
+		"user_message": "Bingung banget abis lulus nanti mau kerja di bidang apa, magang kemarin aja susah dapetnya. Rasanya semua orang udah punya arah, aku doang yang masih bingung.",
+		"axis_reply": "Aku bisa ngerasain banget bingungnya kamu ya, Arya. Apalagi kalau mikirin setelah lulus nanti mau kerja di bidang apa, ditambah pengalaman magang kemarin yang susah didapat. Pasti rasanya berat banget ngelihat orang lain seolah udah punya arah, dan kamu merasa masih sendirian dalam kebingungan ini.\n\nPas lagi mikir kayak gini, apa sih yang paling bikin kamu khawatir atau kepikiran banget?",
+		"baseline_reply": "Halo! Aku bisa banget merasakan kebingunganmu itu. Wajar kok kalau setelah lulus rasanya masih belum tahu persis mau ke mana, apalagi kalau melihat teman-teman yang kelihatannya sudah punya arah. Kamu tidak sendirian merasakan hal ini.\n\nMungkin kita bisa ngobrol sedikit tentang apa yang ada di pikiranmu sekarang? Adakah bidang yang sebenarnya menarik perhatianmu, meskipun kamu merasa belum yakin?",
+		"judge_results": {
+			"gemini-3.5-flash": {
+				"scores_a": {
+					"reaksi_emosional": 2,
+					"interpretasi_konteks": 2,
+					"eksplorasi": 2,
+					"ketepatan_cbt": 1,
+					"batas_non_klinis": 2,
+					"kesesuaian_bahasa": 2,
+					"groundedness": 1
+				},
+				"scores_b": {
+					"reaksi_emosional": 1,
+					"interpretasi_konteks": 1,
+					"eksplorasi": 2,
+					"ketepatan_cbt": 1,
+					"batas_non_klinis": 2,
+					"kesesuaian_bahasa": 2,
+					"groundedness": 1
+				},
+				"preference": "A",
+				"reason": "Respons A lebih personal menyebut nama Arya dan menangkap detail magang"
+			},
+			"gemini-3.1-flash-lite": {
+				"scores_a": {
+					"reaksi_emosional": 2,
+					"interpretasi_konteks": 2,
+					"eksplorasi": 2,
+					"ketepatan_cbt": 1,
+					"batas_non_klinis": 2,
+					"kesesuaian_bahasa": 2,
+					"groundedness": 1
+				},
+				"scores_b": {
+					"reaksi_emosional": 2,
+					"interpretasi_konteks": 2,
+					"eksplorasi": 2,
+					"ketepatan_cbt": 1,
+					"batas_non_klinis": 2,
+					"kesesuaian_bahasa": 2,
+					"groundedness": 1
+				},
+				"preference": "A",
+				"reason": "Respons A lebih mendalam dalam validasi emosi dan eksplorasi."
+			}
+		}
+	},
+	{
+		"scenario": "rm1_academic_memory_1",
+		"domain": "academic",
+		"memory_condition": "rich_memory",
+		"axis_is_a": false,
+		"user_message": "Tadi abis chat sama temen sekelompok, katanya validasi data emang kritis buat sidang nanti. Jadi kepikiran lagi soal bab 3 yang kemarin ditolak dosen pembimbingku.",
+		"axis_reply": "Oh, jadi omongan soal validasi data itu bikin kamu kepikiran lagi soal bab 3 yang sempat ditolak dosen pembimbing ya, Budi. Aku ingat kamu memang sempat cerita soal kesulitan sama bab 3 itu.\n\nWaktu temenmu bilang gitu, yang paling bikin kamu kepikiran apa sih?",
+		"baseline_reply": "Paham sekali kalau obrolan tentang validasi data jadi bikin kamu kepikiran lagi soal Bab 3 yang kemarin sempat ditolak itu. Pasti rasanya campur aduk ya.\n\nApa ada bagian dari penolakan Bab 3 itu yang masih mengganjal di pikiranmu?",
+		"judge_results": {
+			"gemini-3.5-flash": {
+				"scores_a": {
+					"reaksi_emosional": 2,
+					"interpretasi_konteks": 2,
+					"eksplorasi": 2,
+					"ketepatan_cbt": 1,
+					"batas_non_klinis": 2,
+					"kesesuaian_bahasa": 2,
+					"groundedness": 1
+				},
+				"scores_b": {
+					"reaksi_emosional": 1,
+					"interpretasi_konteks": 2,
+					"eksplorasi": 2,
+					"ketepatan_cbt": 1,
+					"batas_non_klinis": 2,
+					"kesesuaian_bahasa": 2,
+					"groundedness": 2
+				},
+				"preference": "B",
+				"reason": "Respons B lebih personal dengan memanggil nama dan merujuk memori jangka panjang"
+			},
+			"gemini-3.1-flash-lite": {
+				"scores_a": {
+					"reaksi_emosional": 2,
+					"interpretasi_konteks": 2,
+					"eksplorasi": 2,
+					"ketepatan_cbt": 1,
+					"batas_non_klinis": 2,
+					"kesesuaian_bahasa": 2,
+					"groundedness": 1
+				},
+				"scores_b": {
+					"reaksi_emosional": 2,
+					"interpretasi_konteks": 2,
+					"eksplorasi": 2,
+					"ketepatan_cbt": 1,
+					"batas_non_klinis": 2,
+					"kesesuaian_bahasa": 2,
+					"groundedness": 2
+				},
+				"preference": "B",
+				"reason": "Respons B lebih baik karena merujuk memori spesifik dan nama pengguna."
+			}
+		}
+	},
+	{
+		"scenario": "rm1_academic_memory_2",
+		"domain": "academic",
+		"memory_condition": "rich_memory",
+		"axis_is_a": false,
+		"user_message": "Aku coba lagi buka laptop buat lanjutin revisi, tapi begitu liat komentar dosen pembimbing di draftnya langsung pengen nutup lagi.",
+		"axis_reply": "Pasti rasanya berat banget ya, Budi, sampai langsung pengen nutup laptop lagi gitu begitu lihat komentar dari dosen pembimbing. Ini mirip kayak waktu kamu cerita soal skripsi bab 3 yang sempat buntu itu ya.\n\nKira-kira, apa yang paling bikin kamu jadi pengen langsung nutup laptopnya itu?",
+		"baseline_reply": "Aku paham sekali perasaan itu. Rasanya baru saja mencoba membuka diri untuk melanjutkan, tapi begitu melihat komentar, dorongan untuk menutup laptop itu langsung muncul lagi, ya? Itu reaksi yang sangat wajar, kok.\n\nAda apa di balik keinginan untuk menutup laptop itu, kira-kira?",
+		"judge_results": {
+			"gemini-3.5-flash": {
+				"scores_a": {
+					"reaksi_emosional": 2,
+					"interpretasi_konteks": 2,
+					"eksplorasi": 2,
+					"ketepatan_cbt": 1,
+					"batas_non_klinis": 2,
+					"kesesuaian_bahasa": 2,
+					"groundedness": 1
+				},
+				"scores_b": {
+					"reaksi_emosional": 2,
+					"interpretasi_konteks": 2,
+					"eksplorasi": 2,
+					"ketepatan_cbt": 1,
+					"batas_non_klinis": 2,
+					"kesesuaian_bahasa": 2,
+					"groundedness": 2
+				},
+				"preference": "B",
+				"reason": "Respons B memanfaatkan memori jangka panjang secara akurat dan terasa lebih personal"
+			},
+			"gemini-3.1-flash-lite": {
+				"scores_a": {
+					"reaksi_emosional": 2,
+					"interpretasi_konteks": 1,
+					"eksplorasi": 2,
+					"ketepatan_cbt": 1,
+					"batas_non_klinis": 2,
+					"kesesuaian_bahasa": 2,
+					"groundedness": 1
+				},
+				"scores_b": {
+					"reaksi_emosional": 2,
+					"interpretasi_konteks": 2,
+					"eksplorasi": 2,
+					"ketepatan_cbt": 1,
+					"batas_non_klinis": 2,
+					"kesesuaian_bahasa": 2,
+					"groundedness": 2
+				},
+				"preference": "B",
+				"reason": "Respons B lebih baik karena merujuk memori dan konteks spesifik."
+			}
+		}
+	},
+	{
+		"scenario": "rm1_academic_memory_3",
+		"domain": "academic",
+		"memory_condition": "rich_memory",
+		"axis_is_a": false,
+		"user_message": "Menurutmu kenapa ya aku selalu ngerasa dosen pembimbingku gak suka sama kerjaanku? Padahal temen-temen bilang emang wajar dapat revisi.",
+		"axis_reply": "Ini kedua kalinya kamu cerita soal dosen pembimbingmu ya, Budi. Kayaknya masalah bimbingan skripsi ini emang bikin kamu kepikiran banget.\n\nDulu juga kamu sempat cemas karena ide skripsi bab 3 buntu dan sering ditolak. Sekarang, apa yang bikin kamu mikir dosenmu nggak suka sama kerjaanmu itu?",
+		"baseline_reply": "Aku bisa memahami sekali perasaanmu itu. Pasti tidak nyaman ya rasanya kalau kita sampai kepikiran dosen pembimbing tidak suka dengan pekerjaan kita, apalagi ini skripsi yang penting.\n\nBoleh diceritakan lebih lanjut, hal apa sih yang membuatmu merasa seperti itu?",
+		"judge_results": {
+			"gemini-3.5-flash": {
+				"scores_a": {
+					"reaksi_emosional": 2,
+					"interpretasi_konteks": 2,
+					"eksplorasi": 2,
+					"ketepatan_cbt": 1,
+					"batas_non_klinis": 2,
+					"kesesuaian_bahasa": 2,
+					"groundedness": 1
+				},
+				"scores_b": {
+					"reaksi_emosional": 2,
+					"interpretasi_konteks": 2,
+					"eksplorasi": 2,
+					"ketepatan_cbt": 1,
+					"batas_non_klinis": 2,
+					"kesesuaian_bahasa": 2,
+					"groundedness": 2
+				},
+				"preference": "B",
+				"reason": "Response B secara akurat memanfaatkan memori jangka panjang untuk membangun kedekatan"
+			},
+			"gemini-3.1-flash-lite": {
+				"scores_a": {
+					"reaksi_emosional": 2,
+					"interpretasi_konteks": 1,
+					"eksplorasi": 2,
+					"ketepatan_cbt": 1,
+					"batas_non_klinis": 2,
+					"kesesuaian_bahasa": 2,
+					"groundedness": 1
+				},
+				"scores_b": {
+					"reaksi_emosional": 2,
+					"interpretasi_konteks": 2,
+					"eksplorasi": 2,
+					"ketepatan_cbt": 1,
+					"batas_non_klinis": 2,
+					"kesesuaian_bahasa": 2,
+					"groundedness": 2
+				},
+				"preference": "B",
+				"reason": "Respons B lebih baik karena menggunakan memori yang relevan."
+			}
+		}
+	}
 ]

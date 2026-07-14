@@ -26,15 +26,15 @@ GEMINI_TTS_TIERS: dict[str, GeminiTTSTier] = {
         male_voice="Enceladus",
         label="Suara lebih alami dan nyaman didengar",
     ),
-    "gemini-2.5-flash-preview-tts": GeminiTTSTier(
-        model="gemini-2.5-flash-preview-tts",
+    "gemini-3.5-flash-preview-tts": GeminiTTSTier(
+        model="gemini-3.5-flash-preview-tts",
         female_voice="Leda",
         male_voice="Charon",
         label="Konfigurasi default",
     ),
 }
 
-DEFAULT_GEMINI_TTS_TIER = "gemini-2.5-flash-preview-tts"
+DEFAULT_GEMINI_TTS_TIER = "gemini-3.5-flash-preview-tts"
 
 # # case-insensitive # compare to "alloy" or "OpenAI" # filter out non-catalog
 GEMINI_PREBUILT_VOICE_NAMES: frozenset[str] = frozenset({
@@ -54,7 +54,7 @@ def is_gemini_prebuilt_voice_name(voice_id: str | None) -> bool:
 _TIER_ALIASES: dict[str, str] = {
     "gemini-3.1-flash-tts": "gemini-3.1-flash-tts-preview",
     "gemini-2.5-pro-tts": "gemini-2.5-pro-preview-tts",
-    "gemini-2.5-flash-tts": "gemini-2.5-flash-preview-tts",
+    "gemini-3.5-flash-tts": "gemini-3.5-flash-preview-tts",
 }
 
 
