@@ -2,7 +2,7 @@
 replies saved by rm1_dialogue_judge.py -- avoids re-spending real API calls on
 response generation when only the judge call needs fixing.
 
-Run from repo root: cd evaluation_pipeline && ../.venv/bin/python rm1_rejudge.py
+Run from repo root: .venv/bin/python3 docs/thesis_latex/evaluasi_v2/scripts/rm1_rejudge.py
 """
 
 from __future__ import annotations
@@ -14,7 +14,7 @@ import time
 from pathlib import Path
 from typing import Any
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[4]
 
 
 def _load_env(path: Path, *, override: bool = False) -> None:

@@ -11,7 +11,7 @@ dosen pembimbing context via seeder.py) compare AXIS against B1 (vector-RAG
 baseline with memory retrieval), so the groundedness dimension has real
 grounding to check.
 
-Run from repo root: cd agentic && ../.venv/bin/python -m evaluation_pipeline.rm1_dialogue_judge
+Run from repo root: .venv/bin/python3 docs/thesis_latex/evaluasi_v2/scripts/rm1_dialogue_judge.py
 (requires seeder.py --confirm-reset to have been run first)
 """
 
@@ -31,7 +31,7 @@ from typing import Any
 
 import psycopg2
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[4]
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "evaluation_pipeline"))
 

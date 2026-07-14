@@ -67,9 +67,9 @@ async def neo4j_client() -> AsyncIterator[nc.Neo4jClient]:
 async def test_namespace(neo4j_client: nc.Neo4jClient) -> AsyncIterator[dict]:
     """set to ephemeral"""
     ns         = f"pytest-{uuid.uuid4()}"
-    user_id    = f"{ns}-user"
-    session_id = f"{ns}-sess-01"
-    session_id_2 = f"{ns}-sess-02"
+    user_id    = str(uuid.uuid4())
+    session_id = str(uuid.uuid4())
+    session_id_2 = str(uuid.uuid4())
 
     await neo4j_client.execute_write(
         """

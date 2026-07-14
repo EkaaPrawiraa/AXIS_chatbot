@@ -2,7 +2,7 @@
 agentic.assessment.conversational_delivery.score_text_response (LLM scorer
 produksi, bukan mock), termasuk kasus khusus item kesembilan.
 
-Run from repo root: cd agentic && ../.venv/bin/python -m evaluation_pipeline.rm2_phq9_mapping
+Run from repo root: .venv/bin/python3 docs/thesis_latex/evaluasi_v2/scripts/rm2_phq9_mapping.py
 """
 
 from __future__ import annotations
@@ -13,7 +13,7 @@ import os
 import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[4]
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "evaluation_pipeline"))
 

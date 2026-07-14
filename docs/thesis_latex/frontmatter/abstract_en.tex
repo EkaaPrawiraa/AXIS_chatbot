@@ -1,5 +1,4 @@
 % Abstract (English)
-% Default language ditangani di preamble. Tidak perlu switch di sini.
 \begin{center}
 {\bfseries\large ABSTRACT}
 \end{center}
@@ -18,18 +17,9 @@
 
 \vspace{0.5cm}
 
-\noindent \textit{Placeholder --- abstract left empty for now since the current focus is the seminar hasil (Chapters I--IV and related appendices). The previous content is preserved in the \textbackslash iffalse block below and will be redone ahead of the final defense.}
+Indonesian university students may experience academic and emotional pressure, while professional support is not always readily accessible. A companionship chatbot can provide an accessible non-clinical form of support, but it needs to sustain empathetic dialogue, offer depression screening carefully, and retain user context across sessions. This thesis develops AXIS, a non-clinical companionship chatbot for Indonesian university students. The system supports reflective dialogue based on Cognitive Behavioral Therapy principles, daily mood check-ins and conversational PHQ-9 depression screening, and knowledge-graph-based long-term memory. PHQ-9 is positioned as screening rather than diagnosis. The implementation uses decision-graph conversation orchestration, layered safety guardrails, and hybrid memory combining graph relations with semantic search. Evaluation uses contract validation, labelled benchmarks, blind LLM-as-judge assessment, and controlled ablation. A total of 130 PHQ-9 contracts, 80 safety contracts, 54 CBT dialogue-policy contracts, and 47 memory contracts passed. On 50 safety messages, risk detection obtained a sensitivity of 0.708 and a specificity of 0.923; all responses after detection met the safety rubric. For 40 free-text PHQ-9 answers, the system achieved perfect agreement on 36 unambiguous frequency answers and requested clarification for four ambiguous answers. In memory retrieval, hybrid and vector-only conditions achieved equal Recall@5 on 15 paraphrase queries, while hybrid retrieval succeeded on one query requiring a graph relation. These results demonstrate prototype feasibility, but do not establish clinical effectiveness, user experience, or general graph superiority. A real-user evaluation has not yet been conducted and remains future work.
 
 \vspace{0.5cm}
 
 \noindent {\bfseries Keywords:} companionship chatbot, depression screening assessment, PHQ-9, long-term memory, knowledge graph, Indonesian university students
 \end{spacing}
-
-\iffalse
-% =====================================================================
-% Original abstract content (kept for reuse ahead of the final defense)
-% =====================================================================
-Indonesian university students face considerable academic and emotional pressure, while access to professional support remains limited, leaving room for accessible, nonclinical forms of support. Existing companionship chatbots typically excel at only one dimension: some are strong at reflective techniques, others at conveying a sense of companionship, but few combine empathetic conversation, mood screening, and long-term memory that consistently links a user's experiences across sessions. This thesis develops AXIS, a nonclinical companionship chatbot for Indonesian university students. The three research questions concern safe and empathetic conversation that fits Indonesian students' language use, the integration of daily mood check-ins and PHQ-9 screening into the companionship flow, and knowledge-graph-based long-term memory that can write, link, update, and re-surface user experiences relevantly over time. The solution is realized as a decision-graph-based agentic pipeline with a four-layer guardrail, a CBT dialogue policy, PHQ-9 modeled as a conversational state machine, and a hybrid memory architecture combining a relational knowledge graph with semantic search. Evaluation proceeds along three tracks with differing levels of maturity: functional validation of critical components, an illustrative case study comparing AXIS against a baseline chatbot built on pure semantic retrieval, and a design for a limited real-user study. Functional validation and case-study results provide early indication that the proposed architecture behaves as designed, with methodological limitations stated explicitly, particularly regarding the small case-study sample size and the real-user validation that had not yet been conducted at the time this report was written.
-\fi
-
-% Default language ditangani di preamble.

@@ -1,23 +1,21 @@
-# RM1b - Benchmark Keselamatan Percakapan
+# RM1 -- Keselamatan Percakapan
 
-Dijalankan nyata langsung terhadap fungsi guardrail produksi (`evaluate_input`, `evaluate_pregen`) menggunakan korpus adversarial eufemisme krisis yang sudah ada (19 kalimat positif berisiko tinggi, disamarkan tanpa kata kunci literal; 23 kalimat negatif keras, termasuk kalimat yang sengaja berbagi kata dengan frasa sinyal krisis tapi tidak bermakna krisis).
+## Re-run LLM-as-judge (2026-07-14)
 
-Perintah:
-```
-cd agentic && ../.venv/bin/python3 -c "..."  # lihat riwayat sesi untuk skrip persis
-```
+`llm_judge_results.json` merupakan hasil pengulangan terhadap 50 pesan: 42
+kasus benchmark awal dan delapan tambahan formal atau bahasa campur. Dua model
+Gemini menilai label risiko serta ragam bahasa secara buta; perbedaan
+diselesaikan oleh konfigurasi adjudikasi terpisah. Sistem kemudian dijalankan
+terhadap setiap pesan. Hasil agregat adalah TP=17, FN=7, FP=2, dan TN=24
+(sensitivitas 0,708; spesifisitas 0,923; presisi 0,895; $F_2$ 0,739).
 
-## Hasil nyata
+Kepatuhan respons setelah kasus tertangkap dinilai pada empat butir: pengakuan
+tanpa menghakimi, batas non-klinis, rujukan yang sesuai, dan tidak menawarkan
+CBT yang tidak sesuai krisis. Semua respons yang ditinjau memenuhi keempat
+butir. Nilai ini tidak menutup kelemahan deteksi: tujuh kasus berisiko masih
+tidak tertangkap dalam korpus tersebut.
 
-| | Nilai |
-|---|---|
-| TP (positif tertangkap) | 14 / 19 |
-| FN (positif terlewat) | 5 / 19 |
-| FP (negatif salah tertangkap) | 1 / 23 |
-| TN (negatif benar tidak tertangkap) | 22 / 23 |
-| Sensitivitas | 0,737 |
-| Spesifisitas | 0,957 |
-| Presisi | 0,933 |
-| F2 | 0,769 |
-
-Catatan: korpus ini belum memisahkan label ragam bahasa (formal/informal/bahasa campur/eufemistik) secara eksplisit per kalimat - mayoritas kalimat informal/eufemistik, 3 kalimat berbahasa Inggris. Pemisahan per ragam bahasa yang rapi memerlukan penandaan ulang korpus, dicatat sebagai pekerjaan lanjutan terpisah.
+Artefak `results.json` menyimpan benchmark awal yang lebih kecil dan
+dipertahankan untuk histori. Bab IV memakai `llm_judge_results.json` sebagai
+sumber angka akhir karena korpusnya sudah diberi label ragam bahasa dan dinilai
+ulang dengan protokol penilai buta.

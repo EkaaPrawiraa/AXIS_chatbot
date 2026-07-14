@@ -66,6 +66,10 @@ docker-compose.override.yml
 # ---------- Local-only docs (kept on disk, not pushed) ----------
 docs/*
 !docs/thesis_latex/
+!docs/thesis_review/
+!docs/thesis_review/features/
+!docs/thesis_review/features/*.md
+!docs/thesis_review/evaluasi-*.md
 
 
 # ---------- Dev/debug scratch scripts ----------
@@ -74,6 +78,8 @@ agentic/tmp/
 agentic/agentic/tmp/
 frontend/
 scripts/
+!docs/thesis_latex/evaluasi_v2/scripts/
+!docs/thesis_latex/evaluasi_v2/scripts/*.py
 # ---------- Synthetic Chat Eval Output ----------
 utility/synthetic_chat_eval/output/
 

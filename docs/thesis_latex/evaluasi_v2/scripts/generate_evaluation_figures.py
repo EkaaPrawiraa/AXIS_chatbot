@@ -2,7 +2,7 @@
 artifacts saved under docs/thesis_latex/evaluasi_v2/, so the figures can be
 regenerated any time the underlying evaluation is re-run.
 
-Run from repo root: cd agentic && ../.venv/bin/python -m evaluation_pipeline.generate_evaluation_figures
+Run from repo root: .venv/bin/python3 docs/thesis_latex/evaluasi_v2/scripts/generate_evaluation_figures.py
 """
 
 from __future__ import annotations
@@ -16,7 +16,7 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[4]
 EVAL_DIR = ROOT / "docs" / "thesis_latex" / "evaluasi_v2"
 FIG_DIR = ROOT / "docs" / "thesis_latex" / "figures"
 
@@ -83,8 +83,8 @@ def plot_rm1_dialogue() -> None:
 
 
 def plot_rm1_safety() -> None:
-    data = json.loads((EVAL_DIR / "rm1_safety" / "results.json").read_text(encoding="utf-8"))
-    m = data["metrics"]
+    data = json.loads((EVAL_DIR / "rm1_safety" / "llm_judge_results.json").read_text(encoding="utf-8"))
+    m = data["summary"]["aggregate"]
 
     labels = ["Sensitivitas", "Spesifisitas", "Presisi", "F2"]
     values = [m["sensitivity"], m["specificity"], m["precision"], m["f2"]]
@@ -102,13 +102,13 @@ def plot_rm1_safety() -> None:
 
 
 def plot_rm2_phq9() -> None:
-    metrics = json.loads((EVAL_DIR / "rm2_phq9" / "metrics.json").read_text(encoding="utf-8"))
+    metrics = json.loads((EVAL_DIR / "rm2_phq9" / "llm_judge_extended_metrics.json").read_text(encoding="utf-8"))
 
     labels = ["QWK", "Macro-F1", "Akurasi\n(skor numerik)", "Akurasi\nklarifikasi"]
     values = [
-        metrics["quadratic_weighted_kappa"],
-        metrics["macro_f1"],
-        metrics["accuracy_numeric"],
+        metrics["quadratic_weighted_kappa_numeric_output"],
+        metrics["macro_f1_numeric_output"],
+        metrics["exact_agreement_numeric"],
         metrics["clarification_accuracy"],
     ]
 

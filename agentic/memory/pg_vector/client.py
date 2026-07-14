@@ -36,12 +36,24 @@ _pool = None
 _unavailable: bool = False
 
 
+def _pool_is_usable(pool: object) -> bool:
+    """Return whether an asyncpg pool belongs to a live event loop."""
+    if getattr(pool, "_closed", False):
+        return False
+    loop = getattr(pool, "_loop", None)
+    return loop is None or not loop.is_closed()
+
+
 async def get_pool():
     """None"""
     global _pool, _unavailable
 
     if _pool is not None:
-        return _pool
+        if _pool_is_usable(_pool):
+            return _pool
+        # pytest may create a fresh event loop for a later async test. A pool
+        # tied to the previous closed loop cannot be reused safely.
+        _pool = None
     if _unavailable:
         return None
 

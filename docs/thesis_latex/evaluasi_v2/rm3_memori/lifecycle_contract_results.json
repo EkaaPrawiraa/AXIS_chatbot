@@ -1,0 +1,71 @@
+{
+  "evaluation": "RM3 deterministic lifecycle and control contracts",
+  "executed_at_utc": "2026-07-14T01:36:24.518135+00:00",
+  "scope": "Deterministic production-contract checks. This artifact is not an LLM-as-judge substitute for semantic retrieval or response quality.",
+  "groups": [
+    {
+      "group": "memori_inti",
+      "command": [
+        "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/.venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "agentic/tests/test_memory",
+        "--ignore=agentic/tests/test_memory/test_user_control_contracts.py"
+      ],
+      "passed": 47,
+      "failed": 0,
+      "exit_code": 0,
+      "output": "...............................................                          [100%]\n47 passed in 0.86s\n\n/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/.venv/lib/python3.12/site-packages/pytest_asyncio/plugin.py:208: PytestDeprecationWarning: The configuration option \"asyncio_default_fixture_loop_scope\" is unset.\nThe event loop scope for asynchronous fixtures will default to the fixture caching scope. Future versions of pytest-asyncio will default the loop scope for asynchronous fixtures to function scope. Set the default fixture loop scope explicitly in order to avoid unexpected behavior in the future. Valid fixture loop scopes are: \"function\", \"class\", \"module\", \"package\", \"session\"\n\n  warnings.warn(PytestDeprecationWarning(_DEFAULT_FIXTURE_LOOP_SCOPE_UNSET))"
+    },
+    {
+      "group": "lifecycle_dan_konteks",
+      "command": [
+        "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/.venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "agentic/tests/test_memory/test_belief_evolution.py",
+        "agentic/tests/test_memory/test_graph_expansion.py",
+        "agentic/tests/test_memory/test_kg_writer.py"
+      ],
+      "passed": 27,
+      "failed": 0,
+      "exit_code": 0,
+      "output": "...........................                                              [100%]\n27 passed in 0.47s\n\n/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/.venv/lib/python3.12/site-packages/pytest_asyncio/plugin.py:208: PytestDeprecationWarning: The configuration option \"asyncio_default_fixture_loop_scope\" is unset.\nThe event loop scope for asynchronous fixtures will default to the fixture caching scope. Future versions of pytest-asyncio will default the loop scope for asynchronous fixtures to function scope. Set the default fixture loop scope explicitly in order to avoid unexpected behavior in the future. Valid fixture loop scopes are: \"function\", \"class\", \"module\", \"package\", \"session\"\n\n  warnings.warn(PytestDeprecationWarning(_DEFAULT_FIXTURE_LOOP_SCOPE_UNSET))"
+    },
+    {
+      "group": "kendali_pengguna",
+      "command": [
+        "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/.venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "agentic/tests/test_memory/test_user_control_contracts.py"
+      ],
+      "passed": 4,
+      "failed": 0,
+      "exit_code": 0,
+      "output": "....                                                                     [100%]\n4 passed in 0.16s\n\n/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/.venv/lib/python3.12/site-packages/pytest_asyncio/plugin.py:208: PytestDeprecationWarning: The configuration option \"asyncio_default_fixture_loop_scope\" is unset.\nThe event loop scope for asynchronous fixtures will default to the fixture caching scope. Future versions of pytest-asyncio will default the loop scope for asynchronous fixtures to function scope. Set the default fixture loop scope explicitly in order to avoid unexpected behavior in the future. Valid fixture loop scopes are: \"function\", \"class\", \"module\", \"package\", \"session\"\n\n  warnings.warn(PytestDeprecationWarning(_DEFAULT_FIXTURE_LOOP_SCOPE_UNSET))\n/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/.venv/lib/python3.12/site-packages/asyncpg/connection.py:135: ResourceWarning: unclosed connection <asyncpg.connection.Connection object at 0x10e539c70>; run in asyncio debug mode to show the traceback of connection origin\n/opt/homebrew/Cellar/python@3.12/3.12.11/Frameworks/Python.framework/Versions/3.12/lib/python3.12/asyncio/selector_events.py:879: ResourceWarning: unclosed transport <_SelectorSocketTransport fd=14>"
+    },
+    {
+      "group": "confession_space",
+      "command": [
+        "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/.venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "agentic/tests/test_feature_bot/test_session/test_confession_mode_persistence.py"
+      ],
+      "passed": 2,
+      "failed": 0,
+      "exit_code": 0,
+      "output": "..                                                                       [100%]\n2 passed in 0.01s\n\n/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/.venv/lib/python3.12/site-packages/pytest_asyncio/plugin.py:208: PytestDeprecationWarning: The configuration option \"asyncio_default_fixture_loop_scope\" is unset.\nThe event loop scope for asynchronous fixtures will default to the fixture caching scope. Future versions of pytest-asyncio will default the loop scope for asynchronous fixtures to function scope. Set the default fixture loop scope explicitly in order to avoid unexpected behavior in the future. Valid fixture loop scopes are: \"function\", \"class\", \"module\", \"package\", \"session\"\n\n  warnings.warn(PytestDeprecationWarning(_DEFAULT_FIXTURE_LOOP_SCOPE_UNSET))"
+    }
+  ],
+  "summary": {
+    "passed": 80,
+    "failed": 0,
+    "all_groups_passed": true
+  }
+}

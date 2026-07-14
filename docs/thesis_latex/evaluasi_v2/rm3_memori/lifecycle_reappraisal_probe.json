@@ -1,0 +1,149 @@
+{
+  "user_id": "74cec80c-e61b-4b29-a09c-22fad7dd4b4a",
+  "session1_result": {
+    "extracted": 2,
+    "processed": 2,
+    "error": null
+  },
+  "session2_result": {
+    "extracted": 2,
+    "processed": 2,
+    "error": null
+  },
+  "thoughts_after_session1": [
+    {
+      "id": "00dae8b8-de37-4e8c-9a33-4786946d99e4",
+      "content": "dospem gue kecewa berat sama kerjaan gue (my thesis advisor is very disappointed with my work)",
+      "distortion": "mind_reading"
+    },
+    {
+      "id": "5517b389-e7d2-4569-aa76-001d1eabf961",
+      "content": "kayaknya emang bakal berantakan semua (it seems everything will fall apart)",
+      "distortion": "catastrophizing"
+    },
+    {
+      "id": "205d37df-3ac1-48f2-8467-e27e5fd43099",
+      "content": "sidang TA bakal gagal total (thesis defense will fail totally)",
+      "distortion": "catastrophizing"
+    },
+    {
+      "id": "963a495e-24d5-4023-b372-8bfbd13b7346",
+      "content": "kayaknya emang bakal berantakan semua (everything will fall apart)",
+      "distortion": "fortune_telling"
+    },
+    {
+      "id": "ecab219b-9a97-41d2-a8e5-824e36aaecb9",
+      "content": "sidang TA bakal gagal total (thesis defense will fail totally)",
+      "distortion": "catastrophizing"
+    }
+  ],
+  "supersedes_relations": [
+    {
+      "old_id": "8cb53463-812b-433c-ac6c-588ee2b51b19",
+      "old_content": "sidang tidak akan seburuk yang saya bayangkan dulu (thesis defense will not be as bad as I imagined)",
+      "old_active": false,
+      "new_id": "16c67ee0-097b-49b7-bb6e-b12ff289d61b",
+      "new_content": "sidang tugas akhir tidak akan seburuk yang dibayangkan (thesis defense won't be as bad as imagined)",
+      "reason": "user_reframe"
+    },
+    {
+      "old_id": "963a495e-24d5-4023-b372-8bfbd13b7346",
+      "old_content": "kayaknya emang bakal berantakan semua (everything will fall apart)",
+      "old_active": false,
+      "new_id": "5517b389-e7d2-4569-aa76-001d1eabf961",
+      "new_content": "kayaknya emang bakal berantakan semua (it seems everything will fall apart)",
+      "reason": "user_reframe"
+    },
+    {
+      "old_id": "ecab219b-9a97-41d2-a8e5-824e36aaecb9",
+      "old_content": "sidang TA bakal gagal total (thesis defense will fail totally)",
+      "old_active": false,
+      "new_id": "205d37df-3ac1-48f2-8467-e27e5fd43099",
+      "new_content": "sidang TA bakal gagal total (thesis defense will fail totally)",
+      "reason": "user_reframe"
+    }
+  ],
+  "reappraised_as_relations": [
+    {
+      "old_id": "a19ef931-c920-4c95-b9ea-e60340b7ba1e",
+      "old_description": "mendapat komentar ketus dari dosen pembimbing tentang draft proposal (receiving harsh comments from thesis advisor on proposal draft)",
+      "old_active": true,
+      "new_id": "d9b0fa5b-1161-4c4a-9f80-e0e7f389abd7",
+      "new_description": "memahami bahwa komentar ketus dospem mungkin karena beban kerjanya, bukan kekecewaan pribadi (understanding that thesis advisor's harsh comments might be due to workload, not personal disappointment)"
+    },
+    {
+      "old_id": "cff1f0c6-02b9-4777-af41-e4726d653a4d",
+      "old_description": "mengantisipasi kegagalan sidang tugas akhir (anticipating thesis defense failure)",
+      "old_active": true,
+      "new_id": "c5a9f69f-5cd4-4bb8-8a48-237f7ac3338e",
+      "new_description": "melakukan presentasi latihan di depan teman-teman, berjalan lancar dan mendapat masukan positif (practice presentation with friends, went well, received positive feedback)"
+    }
+  ],
+  "all_thoughts_after": [
+    {
+      "id": "16c67ee0-097b-49b7-bb6e-b12ff289d61b",
+      "content": "sidang tugas akhir tidak akan seburuk yang dibayangkan (thesis defense won't be as bad as imagined)",
+      "active": true
+    },
+    {
+      "id": "8cb53463-812b-433c-ac6c-588ee2b51b19",
+      "content": "sidang tidak akan seburuk yang saya bayangkan dulu (thesis defense will not be as bad as I imagined)",
+      "active": false
+    },
+    {
+      "id": "00dae8b8-de37-4e8c-9a33-4786946d99e4",
+      "content": "dospem gue kecewa berat sama kerjaan gue (my thesis advisor is very disappointed with my work)",
+      "active": true
+    },
+    {
+      "id": "5517b389-e7d2-4569-aa76-001d1eabf961",
+      "content": "kayaknya emang bakal berantakan semua (it seems everything will fall apart)",
+      "active": true
+    },
+    {
+      "id": "205d37df-3ac1-48f2-8467-e27e5fd43099",
+      "content": "sidang TA bakal gagal total (thesis defense will fail totally)",
+      "active": true
+    },
+    {
+      "id": "963a495e-24d5-4023-b372-8bfbd13b7346",
+      "content": "kayaknya emang bakal berantakan semua (everything will fall apart)",
+      "active": false
+    },
+    {
+      "id": "ecab219b-9a97-41d2-a8e5-824e36aaecb9",
+      "content": "sidang TA bakal gagal total (thesis defense will fail totally)",
+      "active": false
+    }
+  ],
+  "all_experiences_after": [
+    {
+      "id": "d9b0fa5b-1161-4c4a-9f80-e0e7f389abd7",
+      "description": "memahami bahwa komentar ketus dospem mungkin karena beban kerjanya, bukan kekecewaan pribadi (understanding that thesis advisor's harsh comments might be due to workload, not personal disappointment)",
+      "active": true
+    },
+    {
+      "id": "c5a9f69f-5cd4-4bb8-8a48-237f7ac3338e",
+      "description": "melakukan presentasi latihan di depan teman-teman, berjalan lancar dan mendapat masukan positif (practice presentation with friends, went well, received positive feedback)",
+      "active": true
+    },
+    {
+      "id": "a19ef931-c920-4c95-b9ea-e60340b7ba1e",
+      "description": "mendapat komentar ketus dari dosen pembimbing tentang draft proposal (receiving harsh comments from thesis advisor on proposal draft)",
+      "active": true
+    },
+    {
+      "id": "cff1f0c6-02b9-4777-af41-e4726d653a4d",
+      "description": "mengantisipasi kegagalan sidang tugas akhir (anticipating thesis defense failure)",
+      "active": true
+    },
+    {
+      "id": "a473ba5e-454e-46c5-a8da-c6e52fae98d6",
+      "description": "akan menghadapi sidang TA (facing thesis defense)",
+      "active": true
+    }
+  ],
+  "belief_evolution_present": true,
+  "leaked_graph_vocabulary": [],
+  "rendered_kg_context_block": "=== Long-term memory context ===\n\n[Recent sessions]\n  1. Pengguna sebelumnya merasa khawatir akan kegagalan sidang skripsi, namun setelah melakukan presentasi latihan dan menerima masukan positif dari teman-temannya, ia kini merasa lebih optimis dan berpikir bahwa sidang tidak akan seburuk yang dibayangkannya. Selain itu, pengguna juga merefleksikan kembali komentar negatif dari dosen pembimbingnya, dan menyadari bahwa komentar tersebut mungkin bukan karena kekecewaan terhadap dirinya, melainkan karena dosen tersebut sedang memiliki banyak beban pekerjaan pada saat itu, sehingga mengubah makna komentar tersebut baginya.\n  2. Pengguna mengungkapkan rasa takut dan cemas yang mendalam mengenai sidang Tugas Akhir (TA). Kekhawatiran ini diperparah oleh komentar negatif dari dosen pembimbingnya terhadap draf proposal TA, yang membuatnya merasa kecewa dan pesimis terhadap hasil kerjaannya.\n\n[Belief evolution]\n  - Used to think/feel: \"mendapat komentar ketus dari dosen pembimbing tentang draft proposal (receiving harsh comments from thesis advisor on proposal draft)\" -> now: \"memahami bahwa komentar ketus dospem mungkin karena beban kerjanya, bukan kekecewaan pribadi (understanding that thesis advisor's harsh comments might be due to workload, not personal disappointment)\" (reason: user_reappraisal)\n  - Used to think/feel: \"sidang tidak akan seburuk yang saya bayangkan dulu (thesis defense will not be as bad as I imagined)\" -> now: \"sidang tugas akhir tidak akan seburuk yang dibayangkan (thesis defense won't be as bad as imagined)\" (reason: user_reframe)\n  - Used to think/feel: \"mengantisipasi kegagalan sidang tugas akhir (anticipating thesis defense failure)\" -> now: \"melakukan presentasi latihan di depan teman-teman, berjalan lancar dan mendapat masukan positif (practice presentation with friends, went well, received positive feedback)\" (reason: user_reappraisal)"
+}

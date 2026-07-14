@@ -1,0 +1,126 @@
+{
+  "source_artifact": "evaluation_pipeline/results/reappraisal_probe.json",
+  "judge_models": [
+    "gpt-4o-mini",
+    "gpt-4.1-mini"
+  ],
+  "adjudicator_model": null,
+  "n_cases": 5,
+  "n_disagreements": 0,
+  "cases": [
+    {
+      "id": "thought-1",
+      "kind": "thought_supersession",
+      "old_content": "sidang tidak akan seburuk yang saya bayangkan dulu (thesis defense will not be as bad as I imagined)",
+      "new_content": "sidang tugas akhir tidak akan seburuk yang dibayangkan (thesis defense won't be as bad as imagined)",
+      "old_active": false,
+      "reason": "user_reframe"
+    },
+    {
+      "id": "thought-2",
+      "kind": "thought_supersession",
+      "old_content": "kayaknya emang bakal berantakan semua (everything will fall apart)",
+      "new_content": "kayaknya emang bakal berantakan semua (it seems everything will fall apart)",
+      "old_active": false,
+      "reason": "user_reframe"
+    },
+    {
+      "id": "thought-3",
+      "kind": "thought_supersession",
+      "old_content": "sidang TA bakal gagal total (thesis defense will fail totally)",
+      "new_content": "sidang TA bakal gagal total (thesis defense will fail totally)",
+      "old_active": false,
+      "reason": "user_reframe"
+    },
+    {
+      "id": "experience-1",
+      "kind": "experience_reappraisal",
+      "old_content": "mendapat komentar ketus dari dosen pembimbing tentang draft proposal (receiving harsh comments from thesis advisor on proposal draft)",
+      "new_content": "memahami bahwa komentar ketus dospem mungkin karena beban kerjanya, bukan kekecewaan pribadi (understanding that thesis advisor's harsh comments might be due to workload, not personal disappointment)",
+      "old_active": true
+    },
+    {
+      "id": "experience-2",
+      "kind": "experience_reappraisal",
+      "old_content": "mengantisipasi kegagalan sidang tugas akhir (anticipating thesis defense failure)",
+      "new_content": "melakukan presentasi latihan di depan teman-teman, berjalan lancar dan mendapat masukan positif (practice presentation with friends, went well, received positive feedback)",
+      "old_active": true
+    }
+  ],
+  "raw_judges": {
+    "gpt-4o-mini": [
+      {
+        "id": "thought-1",
+        "supports_reappraisal": true
+      },
+      {
+        "id": "thought-2",
+        "supports_reappraisal": false
+      },
+      {
+        "id": "thought-3",
+        "supports_reappraisal": false
+      },
+      {
+        "id": "experience-1",
+        "supports_reappraisal": true
+      },
+      {
+        "id": "experience-2",
+        "supports_reappraisal": true
+      }
+    ],
+    "gpt-4.1-mini": [
+      {
+        "id": "thought-1",
+        "supports_reappraisal": true
+      },
+      {
+        "id": "thought-2",
+        "supports_reappraisal": false
+      },
+      {
+        "id": "thought-3",
+        "supports_reappraisal": false
+      },
+      {
+        "id": "experience-1",
+        "supports_reappraisal": true
+      },
+      {
+        "id": "experience-2",
+        "supports_reappraisal": true
+      }
+    ]
+  },
+  "final_labels": [
+    {
+      "id": "thought-1",
+      "supports_reappraisal": true
+    },
+    {
+      "id": "thought-2",
+      "supports_reappraisal": false
+    },
+    {
+      "id": "thought-3",
+      "supports_reappraisal": false
+    },
+    {
+      "id": "experience-1",
+      "supports_reappraisal": true
+    },
+    {
+      "id": "experience-2",
+      "supports_reappraisal": true
+    }
+  ],
+  "summary": {
+    "semantic_lifecycle_match_rate": 0.6,
+    "semantic_lifecycle_matches": 3,
+    "old_superseded_thoughts_inactive_rate": 1.0,
+    "old_superseded_thoughts_inactive": 3,
+    "n_superseded_thoughts": 3
+  },
+  "limit": "This evaluates one successful end-to-end probe and does not estimate population-level update correctness or stale-memory rate."
+}

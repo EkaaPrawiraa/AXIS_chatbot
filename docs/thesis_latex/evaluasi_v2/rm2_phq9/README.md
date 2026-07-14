@@ -1,12 +1,34 @@
 # RM2 - PHQ-9
 
+## Re-run LLM-as-judge diperluas (2026-07-14)
+
+`llm_judge_extended_results.json` dan `llm_judge_extended_metrics.json`
+memuat 40 jawaban bebas, meliputi skor 0--3 setiap item, negasi, informal,
+bahasa campur, dan empat jawaban ambigu. Label acuan ditetapkan oleh dua model
+penilai buta dengan adjudikasi konfigurasi berinstruksi terpisah. Scorer produksi kemudian
+dijalankan tanpa mock.
+
+Pada korpus ini, 36 jawaban dengan frekuensi eksplisit memperoleh kesepakatan
+persis 1,00, macro-F1 1,00, dan QWK 1,00; empat jawaban ambigu memperoleh
+klarifikasi dengan benar. Empat jawaban item kesembilan juga menghasilkan rute
+lanjutan yang benar. Ini hanya menilai pemetaan bahasa dan rute sistem, bukan
+kesetaraan hasil PHQ-9 percakapan dengan pengisian mandiri oleh manusia.
+
 ## Fidelity orkestrasi
-Dihitung dari suite pytest nyata (`agentic/tests/test_assessment/`), 127 total lulus 0 gagal, dipetakan per kelompok kontrak (lihat `bab4_evaluasi_v2.tex` Tabel Hasil Fidelity Orkestrasi). Mood harian dan pemisahan data administratif belum punya suite kontrak khusus di direktori ini.
+
+Dihitung dari suite pytest nyata (`agentic/tests/test_assessment/` dan
+`agentic/tests/test_feature_bot/test_assessment_bot/`), 130 total
+lulus dan 0 gagal, dipetakan per kelompok kontrak pada Bab IV. Kontrak tersebut
+mencakup penawaran, penolakan, item, klarifikasi, skor, hasil, dan item
+kesembilan. Pengecualian data administratif dari memori dilindungi oleh kontrak
+memori tersendiri.
 
 ## Pemetaan jawaban bebas
-Dijalankan nyata lewat `evaluation_pipeline/rm2_phq9_mapping.py` terhadap `agentic/assessment/conversational_delivery.py::score_text_response` (scorer LLM produksi, provider Gemini, bukan mock). 14 kasus (9 item PHQ-9, termasuk 3 kasus khusus item 9), hasil di `mapping_results.json`.
+Dijalankan nyata lewat `evaluasi_v2/scripts/rm2_phq9_mapping.py` terhadap `agentic/assessment/conversational_delivery.py::score_text_response` (scorer LLM produksi, provider Gemini, bukan mock). 14 kasus (9 item PHQ-9, termasuk 3 kasus khusus item 9), hasil di `mapping_results.json`.
 
-Hasil: QWK=1,00 dan macro-F1=1,00 pada 11 pasangan skor numerik yang cocok; akurasi keseluruhan 0,917 (13/14, termasuk 1 kasus yang dipetakan ke "perlu klarifikasi" alih-alih skor 0 acuan karena keyakinan model di bawah ambang); akurasi klarifikasi 2/2 pada kasus yang memang ambigu.
+Hasil 14 kasus ini dipertahankan sebagai artefak awal. Bab IV menggunakan
+`llm_judge_extended_results.json` dan `llm_judge_extended_metrics.json` sebagai
+sumber angka akhir karena korpusnya lebih luas dan sudah melalui pelabelan buta.
 
 ## Kesesuaian skor mandiri vs percakapan
 Tidak dijalankan - secara struktural memerlukan subjek manusia nyata yang mengisi kedua bentuk pada periode rujukan yang sama, tidak bisa disimulasikan LLM secara valid. Menunggu data pengujian pengguna nyata.

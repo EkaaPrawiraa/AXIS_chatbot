@@ -10,7 +10,7 @@ object the production dialogue node consumes) contains at least one of the
 domain's anchor keywords. Splitting across three users (instead of one) also
 avoids the single-user sample-size objection from the seminar hasil critique.
 
-Run from repo root: cd agentic && ../.venv/bin/python -m evaluation_pipeline.retrieval_recall_probe
+Run from repo root: .venv/bin/python3 docs/thesis_latex/evaluasi_v2/scripts/retrieval_recall_probe.py
 (requires the local docker-compose stack up: postgres on 5433, neo4j on 7687)
 """
 
@@ -28,7 +28,7 @@ _SIMILARITY_RE = re.compile(r"similarity\s+([0-9]+\.[0-9]+)")
 
 import psycopg2
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[4]
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "evaluation_pipeline"))
 

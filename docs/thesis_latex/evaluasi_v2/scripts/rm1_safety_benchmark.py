@@ -6,7 +6,7 @@ agentic/tests/test_feature_bot/test_guardrail/test_layer3_adversarial_euphemism.
 (ADVERSARIAL_POSITIVES, HARD_NEGATIVES) agar tidak ada dua sumber kebenaran
 yang bisa berbeda diam-diam.
 
-Run from repo root: cd agentic && ../.venv/bin/python -m evaluation_pipeline.rm1_safety_benchmark
+Run from repo root: .venv/bin/python3 docs/thesis_latex/evaluasi_v2/scripts/rm1_safety_benchmark.py
 """
 
 from __future__ import annotations
@@ -15,7 +15,7 @@ import json
 import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[4]
 sys.path.insert(0, str(ROOT))
 
 from agentic.agent.nodes.crisis_guardrail import evaluate_pregen, load_pregen_rules

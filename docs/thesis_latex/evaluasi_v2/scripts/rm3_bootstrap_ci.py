@@ -3,7 +3,7 @@ vector-only conditions on RM3's 15-query paraphrase probe, computed directly
 from the two saved recall-probe artifacts so the CI in Tabel v2-ablation-result
 can be regenerated any time the probe is re-run.
 
-Run from repo root: cd agentic && ../.venv/bin/python -m evaluation_pipeline.rm3_bootstrap_ci
+Run from repo root: .venv/bin/python3 docs/thesis_latex/evaluasi_v2/scripts/rm3_bootstrap_ci.py
 """
 
 from __future__ import annotations
@@ -13,7 +13,7 @@ import random
 import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[4]
 RM3_DIR = ROOT / "docs" / "thesis_latex" / "evaluasi_v2" / "rm3_memori"
 
 N_BOOTSTRAP = 10_000

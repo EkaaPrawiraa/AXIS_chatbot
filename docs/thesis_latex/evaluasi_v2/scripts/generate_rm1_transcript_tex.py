@@ -2,7 +2,7 @@
 LaTeX fragment with the real per-scenario transcript and judge scores, so the
 appendix transcript can never drift from the actual saved evaluation artifact.
 
-Run from repo root: cd agentic && ../.venv/bin/python -m evaluation_pipeline.generate_rm1_transcript_tex
+Run from repo root: .venv/bin/python3 docs/thesis_latex/evaluasi_v2/scripts/generate_rm1_transcript_tex.py
 """
 
 from __future__ import annotations
@@ -11,7 +11,7 @@ import json
 import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[4]
 EVAL_DIR = ROOT / "docs" / "thesis_latex" / "evaluasi_v2"
 OUT_PATH = ROOT / "docs" / "thesis_latex" / "chapters" / "generated_rm1_transcript.tex"
 

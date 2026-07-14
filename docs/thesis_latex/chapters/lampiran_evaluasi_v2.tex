@@ -2,13 +2,13 @@
 \label{lamp:v2-evaluation}
 \addcontentsline{loa}{lampiran}{\protect\numberline{\thechapter}Instrumen Evaluasi}
 
-Lampiran ini memuat definisi korpus, pedoman anotasi, rubrik, dan protokol eksperimen. Seluruh tabel hasil pada Bab IV diisi setelah evaluasi dijalankan.
+Lampiran ini memuat definisi korpus, pedoman anotasi, rubrik, dan protokol eksperimen. Artefak keluaran terstruktur untuk evaluasi yang sudah dijalankan disimpan pada direktori \texttt{evaluasi\_v2/}; Bab IV merangkum hasilnya, sedangkan lampiran ini menjelaskan instrumen dan bentuk data yang digunakan.
 
 \section{Pedoman Anotasi dan Reliabilitas}
 \label{lamp:v2-annotation}
 \addcontentsline{loa}{lampiransub}{\protect\numberline{\thesection}Pedoman Anotasi dan Reliabilitas}
 
-Setiap tugas anotasi menggunakan pedoman tertulis yang dapat dijalankan oleh minimal dua konfigurasi model penilai (\textit{LLM-as-judge}) independen \parencite{liu2023geval,zheng2023judging}. Prosedurnya adalah sebagai berikut.
+Setiap tugas anotasi menggunakan pedoman tertulis yang dapat dijalankan oleh dua konfigurasi model penilai (\textit{LLM-as-judge}) \parencite{liu2023geval,zheng2023judging}. Prosedurnya adalah sebagai berikut.
 
 \begin{enumerate}[label=\arabic*.,leftmargin=*,itemsep=3pt]
   \item Setiap konfigurasi model penilai menerima definisi label dan contoh positif serta negatif melalui \textit{system prompt} yang sama.
@@ -556,7 +556,7 @@ Ekstraktor menerima pesan pengguna dan konteks minimum yang diperlukan. Ia hanya
 
 \textit{Prompt} berikut dipakai untuk penilaian buta RM1a (Subbab~\ref{sec:v2-dialogue}); \texttt{\{rubric\}} diisi definisi tujuh dimensi pada Lampiran~\ref{lamp:v2-dialogue-rubric}, \texttt{\{display\_name\}} dan \texttt{\{memory\_note\}} diisi identitas dan ringkasan memori yang sah diketahui skenario tersebut agar penilai tidak keliru menandai rujukan memori yang sah sebagai halusinasi (lihat catatan metodologis pada Subbab~\ref{sec:v2-dialogue}).
 
-\promptlisting[firstline=51,lastline=82]{../../evaluation_pipeline/rm1_rejudge.py}
+\promptlisting[firstline=51,lastline=82]{evaluasi_v2/scripts/rm1_rejudge.py}
 
 Pemetaan jawaban bebas PHQ-9 pada RM2 memakai \textit{prompt} \textit{scorer} yang sama dengan Subbab~\ref{lamp:prompt-phq9} (Lampiran~\ref{lamp:prompt-phq9}), dipasangkan dengan templat pesan pengguna berikut yang menyisipkan pertanyaan item, opsi skor, dan jawaban pengguna.
 
