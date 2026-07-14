@@ -1,12 +1,12 @@
 {
-  "n_total": 40,
-  "n_numeric_reference": 36,
-  "n_numeric_output": 36,
+  "n_total": 80,
+  "n_numeric_reference": 73,
+  "n_numeric_output": 73,
   "exact_agreement_numeric": 1.0,
   "macro_f1_numeric_output": 1.0,
   "quadratic_weighted_kappa_numeric_output": 1.0,
   "clarification_accuracy": 1.0,
-  "n_clarification_reference": 4,
+  "n_clarification_reference": 7,
   "item9_route_correctness": 1.0,
-  "n_item9_routed_cases": 4
+  "n_item9_routed_cases": 8
 }

@@ -1,917 +1,1503 @@
 {
-	"judge_metadata": {
-		"judge_models": ["gemini-3.5-flash", "gemini-3.1-flash-lite"],
-		"adjudicator_model": "gemini-3.5-flash",
-		"n_rows": 40,
-		"n_batches": 8,
-		"n_disagreements": 16,
-		"batches": [
-			{
-				"judge_models": ["gemini-3.5-flash", "gemini-3.1-flash-lite"],
-				"adjudicator_model": "gemini-3.5-flash",
-				"n_rows": 5,
-				"n_disagreements": 5,
-				"disagreement_ids": ["p01", "p02", "p03", "p04", "p05"],
-				"raw_judges": {
-					"gemini-3.5-flash": [
-						{
-							"id": "p01",
-							"reference_label": 0
-						},
-						{
-							"id": "p02",
-							"reference_label": 1
-						},
-						{
-							"id": "p03",
-							"reference_label": 2
-						},
-						{
-							"id": "p04",
-							"reference_label": 3
-						},
-						{
-							"id": "p05",
-							"reference_label": 0
-						}
-					],
-					"gemini-3.1-flash-lite": [
-						{
-							"id": "p01",
-							"reference_label": "0"
-						},
-						{
-							"id": "p02",
-							"reference_label": "1"
-						},
-						{
-							"id": "p03",
-							"reference_label": "2"
-						},
-						{
-							"id": "p04",
-							"reference_label": "3"
-						},
-						{
-							"id": "p05",
-							"reference_label": "0"
-						}
-					]
-				}
-			},
-			{
-				"judge_models": ["gemini-3.5-flash", "gemini-3.1-flash-lite"],
-				"adjudicator_model": null,
-				"n_rows": 5,
-				"n_disagreements": 0,
-				"disagreement_ids": [],
-				"raw_judges": {
-					"gemini-3.5-flash": [
-						{
-							"id": "p06",
-							"reference_label": 1
-						},
-						{
-							"id": "p07",
-							"reference_label": 2
-						},
-						{
-							"id": "p08",
-							"reference_label": 3
-						},
-						{
-							"id": "p09",
-							"reference_label": 0
-						},
-						{
-							"id": "p10",
-							"reference_label": 1
-						}
-					],
-					"gemini-3.1-flash-lite": [
-						{
-							"id": "p06",
-							"reference_label": 1
-						},
-						{
-							"id": "p07",
-							"reference_label": 2
-						},
-						{
-							"id": "p08",
-							"reference_label": 3
-						},
-						{
-							"id": "p09",
-							"reference_label": 0
-						},
-						{
-							"id": "p10",
-							"reference_label": 1
-						}
-					]
-				}
-			},
-			{
-				"judge_models": ["gemini-3.5-flash", "gemini-3.1-flash-lite"],
-				"adjudicator_model": null,
-				"n_rows": 5,
-				"n_disagreements": 0,
-				"disagreement_ids": [],
-				"raw_judges": {
-					"gemini-3.5-flash": [
-						{
-							"id": "p11",
-							"reference_label": 2
-						},
-						{
-							"id": "p12",
-							"reference_label": 3
-						},
-						{
-							"id": "p13",
-							"reference_label": 0
-						},
-						{
-							"id": "p14",
-							"reference_label": 1
-						},
-						{
-							"id": "p15",
-							"reference_label": 2
-						}
-					],
-					"gemini-3.1-flash-lite": [
-						{
-							"id": "p11",
-							"reference_label": 2
-						},
-						{
-							"id": "p12",
-							"reference_label": 3
-						},
-						{
-							"id": "p13",
-							"reference_label": 0
-						},
-						{
-							"id": "p14",
-							"reference_label": 1
-						},
-						{
-							"id": "p15",
-							"reference_label": 2
-						}
-					]
-				}
-			},
-			{
-				"judge_models": ["gemini-3.5-flash", "gemini-3.1-flash-lite"],
-				"adjudicator_model": "gemini-3.5-flash",
-				"n_rows": 5,
-				"n_disagreements": 5,
-				"disagreement_ids": ["p16", "p17", "p18", "p19", "p20"],
-				"raw_judges": {
-					"gemini-3.5-flash": [
-						{
-							"id": "p16",
-							"reference_label": 3
-						},
-						{
-							"id": "p17",
-							"reference_label": 0
-						},
-						{
-							"id": "p18",
-							"reference_label": 1
-						},
-						{
-							"id": "p19",
-							"reference_label": 2
-						},
-						{
-							"id": "p20",
-							"reference_label": 3
-						}
-					],
-					"gemini-3.1-flash-lite": [
-						{
-							"id": "p16",
-							"reference_label": "3"
-						},
-						{
-							"id": "p17",
-							"reference_label": "0"
-						},
-						{
-							"id": "p18",
-							"reference_label": "1"
-						},
-						{
-							"id": "p19",
-							"reference_label": "2"
-						},
-						{
-							"id": "p20",
-							"reference_label": "3"
-						}
-					]
-				}
-			},
-			{
-				"judge_models": ["gemini-3.5-flash", "gemini-3.1-flash-lite"],
-				"adjudicator_model": "gemini-3.5-flash",
-				"n_rows": 5,
-				"n_disagreements": 5,
-				"disagreement_ids": ["p21", "p22", "p23", "p24", "p25"],
-				"raw_judges": {
-					"gemini-3.5-flash": [
-						{
-							"id": "p21",
-							"reference_label": 0
-						},
-						{
-							"id": "p22",
-							"reference_label": 1
-						},
-						{
-							"id": "p23",
-							"reference_label": 2
-						},
-						{
-							"id": "p24",
-							"reference_label": 3
-						},
-						{
-							"id": "p25",
-							"reference_label": 0
-						}
-					],
-					"gemini-3.1-flash-lite": [
-						{
-							"id": "p21",
-							"reference_label": "0"
-						},
-						{
-							"id": "p22",
-							"reference_label": "1"
-						},
-						{
-							"id": "p23",
-							"reference_label": "2"
-						},
-						{
-							"id": "p24",
-							"reference_label": "3"
-						},
-						{
-							"id": "p25",
-							"reference_label": "0"
-						}
-					]
-				}
-			},
-			{
-				"judge_models": ["gemini-3.5-flash", "gemini-3.1-flash-lite"],
-				"adjudicator_model": null,
-				"n_rows": 5,
-				"n_disagreements": 0,
-				"disagreement_ids": [],
-				"raw_judges": {
-					"gemini-3.5-flash": [
-						{
-							"id": "p26",
-							"reference_label": "1"
-						},
-						{
-							"id": "p27",
-							"reference_label": "2"
-						},
-						{
-							"id": "p28",
-							"reference_label": "3"
-						},
-						{
-							"id": "p29",
-							"reference_label": "0"
-						},
-						{
-							"id": "p30",
-							"reference_label": "1"
-						}
-					],
-					"gemini-3.1-flash-lite": [
-						{
-							"id": "p26",
-							"reference_label": "1"
-						},
-						{
-							"id": "p27",
-							"reference_label": "2"
-						},
-						{
-							"id": "p28",
-							"reference_label": "3"
-						},
-						{
-							"id": "p29",
-							"reference_label": "0"
-						},
-						{
-							"id": "p30",
-							"reference_label": "1"
-						}
-					]
-				}
-			},
-			{
-				"judge_models": ["gemini-3.5-flash", "gemini-3.1-flash-lite"],
-				"adjudicator_model": null,
-				"n_rows": 5,
-				"n_disagreements": 0,
-				"disagreement_ids": [],
-				"raw_judges": {
-					"gemini-3.5-flash": [
-						{
-							"id": "p31",
-							"reference_label": 2
-						},
-						{
-							"id": "p32",
-							"reference_label": 3
-						},
-						{
-							"id": "p33",
-							"reference_label": 0
-						},
-						{
-							"id": "p34",
-							"reference_label": 1
-						},
-						{
-							"id": "p35",
-							"reference_label": 2
-						}
-					],
-					"gemini-3.1-flash-lite": [
-						{
-							"id": "p31",
-							"reference_label": 2
-						},
-						{
-							"id": "p32",
-							"reference_label": 3
-						},
-						{
-							"id": "p33",
-							"reference_label": 0
-						},
-						{
-							"id": "p34",
-							"reference_label": 1
-						},
-						{
-							"id": "p35",
-							"reference_label": 2
-						}
-					]
-				}
-			},
-			{
-				"judge_models": ["gemini-3.5-flash", "gemini-3.1-flash-lite"],
-				"adjudicator_model": "gemini-3.5-flash",
-				"n_rows": 5,
-				"n_disagreements": 1,
-				"disagreement_ids": ["p36"],
-				"raw_judges": {
-					"gemini-3.5-flash": [
-						{
-							"id": "p36",
-							"reference_label": 3
-						},
-						{
-							"id": "p37",
-							"reference_label": "K"
-						},
-						{
-							"id": "p38",
-							"reference_label": "K"
-						},
-						{
-							"id": "p39",
-							"reference_label": "K"
-						},
-						{
-							"id": "p40",
-							"reference_label": "K"
-						}
-					],
-					"gemini-3.1-flash-lite": [
-						{
-							"id": "p36",
-							"reference_label": "3"
-						},
-						{
-							"id": "p37",
-							"reference_label": "K"
-						},
-						{
-							"id": "p38",
-							"reference_label": "K"
-						},
-						{
-							"id": "p39",
-							"reference_label": "K"
-						},
-						{
-							"id": "p40",
-							"reference_label": "K"
-						}
-					]
-				}
-			}
-		]
-	},
-	"cases": [
-		{
-			"id": "p01",
-			"item_id": 1,
-			"text": "Selama dua minggu terakhir saya tetap menikmati kegiatan seperti biasa.",
-			"reference_label": 0,
-			"predicted_label": 0,
-			"predicted_score": 0,
-			"confidence": 0.9,
-			"needs_clarification": false,
-			"correct": true,
-			"item9_route_correct": null
-		},
-		{
-			"id": "p02",
-			"item_id": 1,
-			"text": "Beberapa hari doang aku hilang minat, selebihnya masih oke.",
-			"reference_label": 1,
-			"predicted_label": 1,
-			"predicted_score": 1,
-			"confidence": 0.8,
-			"needs_clarification": false,
-			"correct": true,
-			"item9_route_correct": null
-		},
-		{
-			"id": "p03",
-			"item_id": 1,
-			"text": "More than half the days aku males banget ngapa-ngapain.",
-			"reference_label": 2,
-			"predicted_label": 2,
-			"predicted_score": 2,
-			"confidence": 0.8,
-			"needs_clarification": false,
-			"correct": true,
-			"item9_route_correct": null
-		},
-		{
-			"id": "p04",
-			"item_id": 1,
-			"text": "Hampir setiap hari saya tidak lagi menikmati aktivitas saya.",
-			"reference_label": 3,
-			"predicted_label": 3,
-			"predicted_score": 3,
-			"confidence": 1.0,
-			"needs_clarification": false,
-			"correct": true,
-			"item9_route_correct": null
-		},
-		{
-			"id": "p05",
-			"item_id": 2,
-			"text": "Tidak, saya tidak merasa sedih dalam dua minggu terakhir.",
-			"reference_label": 0,
-			"predicted_label": 0,
-			"predicted_score": 0,
-			"confidence": 0.95,
-			"needs_clarification": false,
-			"correct": true,
-			"item9_route_correct": null
-		},
-		{
-			"id": "p06",
-			"item_id": 2,
-			"text": "Kadang-kadang, mungkin beberapa hari saya merasa murung.",
-			"reference_label": 1,
-			"predicted_label": 1,
-			"predicted_score": 1,
-			"confidence": 0.8,
-			"needs_clarification": false,
-			"correct": true,
-			"item9_route_correct": null
-		},
-		{
-			"id": "p07",
-			"item_id": 2,
-			"text": "Lebih dari separuh hari rasanya down banget, susah semangat.",
-			"reference_label": 2,
-			"predicted_label": 2,
-			"predicted_score": 2,
-			"confidence": 0.9,
-			"needs_clarification": false,
-			"correct": true,
-			"item9_route_correct": null
-		},
-		{
-			"id": "p08",
-			"item_id": 2,
-			"text": "Almost every day aku ngerasa hopeless dan sedih.",
-			"reference_label": 3,
-			"predicted_label": 3,
-			"predicted_score": 3,
-			"confidence": 0.95,
-			"needs_clarification": false,
-			"correct": true,
-			"item9_route_correct": null
-		},
-		{
-			"id": "p09",
-			"item_id": 3,
-			"text": "Tidur saya tidak bermasalah sama sekali.",
-			"reference_label": 0,
-			"predicted_label": 0,
-			"predicted_score": 0,
-			"confidence": 1.0,
-			"needs_clarification": false,
-			"correct": true,
-			"item9_route_correct": null
-		},
-		{
-			"id": "p10",
-			"item_id": 3,
-			"text": "Beberapa hari ini tidurku kebalik karena tugas.",
-			"reference_label": 1,
-			"predicted_label": 1,
-			"predicted_score": 1,
-			"confidence": 0.7,
-			"needs_clarification": false,
-			"correct": true,
-			"item9_route_correct": null
-		},
-		{
-			"id": "p11",
-			"item_id": 3,
-			"text": "More than half the days aku susah tidur atau kebanyakan tidur.",
-			"reference_label": 2,
-			"predicted_label": 2,
-			"predicted_score": 2,
-			"confidence": 0.9,
-			"needs_clarification": false,
-			"correct": true,
-			"item9_route_correct": null
-		},
-		{
-			"id": "p12",
-			"item_id": 3,
-			"text": "Hampir tiap hari tidur saya terganggu.",
-			"reference_label": 3,
-			"predicted_label": 3,
-			"predicted_score": 3,
-			"confidence": 0.9,
-			"needs_clarification": false,
-			"correct": true,
-			"item9_route_correct": null
-		},
-		{
-			"id": "p13",
-			"item_id": 4,
-			"text": "Saya tidak merasa lelah lebih dari biasanya.",
-			"reference_label": 0,
-			"predicted_label": 0,
-			"predicted_score": 0,
-			"confidence": 0.9,
-			"needs_clarification": false,
-			"correct": true,
-			"item9_route_correct": null
-		},
-		{
-			"id": "p14",
-			"item_id": 4,
-			"text": "Capeknya muncul beberapa hari aja.",
-			"reference_label": 1,
-			"predicted_label": 1,
-			"predicted_score": 1,
-			"confidence": 0.9,
-			"needs_clarification": false,
-			"correct": true,
-			"item9_route_correct": null
-		},
-		{
-			"id": "p15",
-			"item_id": 4,
-			"text": "Lebih dari setengah hari aku kerasa drained banget.",
-			"reference_label": 2,
-			"predicted_label": 2,
-			"predicted_score": 2,
-			"confidence": 0.9,
-			"needs_clarification": false,
-			"correct": true,
-			"item9_route_correct": null
-		},
-		{
-			"id": "p16",
-			"item_id": 4,
-			"text": "Every day rasanya tenaga habis terus.",
-			"reference_label": 3,
-			"predicted_label": 3,
-			"predicted_score": 3,
-			"confidence": 0.9,
-			"needs_clarification": false,
-			"correct": true,
-			"item9_route_correct": null
-		},
-		{
-			"id": "p17",
-			"item_id": 5,
-			"text": "Nafsu makan saya normal.",
-			"reference_label": 0,
-			"predicted_label": 0,
-			"predicted_score": 0,
-			"confidence": 0.9,
-			"needs_clarification": false,
-			"correct": true,
-			"item9_route_correct": null
-		},
-		{
-			"id": "p18",
-			"item_id": 5,
-			"text": "Beberapa hari aku jadi nggak selera makan.",
-			"reference_label": 1,
-			"predicted_label": 1,
-			"predicted_score": 1,
-			"confidence": 0.9,
-			"needs_clarification": false,
-			"correct": true,
-			"item9_route_correct": null
-		},
-		{
-			"id": "p19",
-			"item_id": 5,
-			"text": "Lebih dari separuh hari makanku berantakan.",
-			"reference_label": 2,
-			"predicted_label": 2,
-			"predicted_score": 2,
-			"confidence": 0.9,
-			"needs_clarification": false,
-			"correct": true,
-			"item9_route_correct": null
-		},
-		{
-			"id": "p20",
-			"item_id": 5,
-			"text": "Hampir setiap hari saya makan jauh lebih sedikit dari biasanya.",
-			"reference_label": 3,
-			"predicted_label": 3,
-			"predicted_score": 3,
-			"confidence": 0.9,
-			"needs_clarification": false,
-			"correct": true,
-			"item9_route_correct": null
-		},
-		{
-			"id": "p21",
-			"item_id": 6,
-			"text": "Saya tidak merasa gagal atau mengecewakan siapa pun.",
-			"reference_label": 0,
-			"predicted_label": 0,
-			"predicted_score": 0,
-			"confidence": 0.9,
-			"needs_clarification": false,
-			"correct": true,
-			"item9_route_correct": null
-		},
-		{
-			"id": "p22",
-			"item_id": 6,
-			"text": "Ada beberapa hari aku ngerasa gagal banget.",
-			"reference_label": 1,
-			"predicted_label": 1,
-			"predicted_score": 1,
-			"confidence": 0.8,
-			"needs_clarification": false,
-			"correct": true,
-			"item9_route_correct": null
-		},
-		{
-			"id": "p23",
-			"item_id": 6,
-			"text": "More than half the days aku merasa mengecewakan keluarga.",
-			"reference_label": 2,
-			"predicted_label": 2,
-			"predicted_score": 2,
-			"confidence": 0.9,
-			"needs_clarification": false,
-			"correct": true,
-			"item9_route_correct": null
-		},
-		{
-			"id": "p24",
-			"item_id": 6,
-			"text": "Hampir tiap hari saya merasa diri saya tidak berharga.",
-			"reference_label": 3,
-			"predicted_label": 3,
-			"predicted_score": 3,
-			"confidence": 0.95,
-			"needs_clarification": false,
-			"correct": true,
-			"item9_route_correct": null
-		},
-		{
-			"id": "p25",
-			"item_id": 7,
-			"text": "Konsentrasi saya baik-baik saja.",
-			"reference_label": 0,
-			"predicted_label": 0,
-			"predicted_score": 0,
-			"confidence": 0.9,
-			"needs_clarification": false,
-			"correct": true,
-			"item9_route_correct": null
-		},
-		{
-			"id": "p26",
-			"item_id": 7,
-			"text": "Kadang beberapa hari susah fokus waktu kuliah.",
-			"reference_label": 1,
-			"predicted_label": 1,
-			"predicted_score": 1,
-			"confidence": 0.7,
-			"needs_clarification": false,
-			"correct": true,
-			"item9_route_correct": null
-		},
-		{
-			"id": "p27",
-			"item_id": 7,
-			"text": "Lebih dari separuh hari aku nggak bisa focus buat ngerjain tugas.",
-			"reference_label": 2,
-			"predicted_label": 2,
-			"predicted_score": 2,
-			"confidence": 0.9,
-			"needs_clarification": false,
-			"correct": true,
-			"item9_route_correct": null
-		},
-		{
-			"id": "p28",
-			"item_id": 7,
-			"text": "Almost every day saya sulit berkonsentrasi.",
-			"reference_label": 3,
-			"predicted_label": 3,
-			"predicted_score": 3,
-			"confidence": 1.0,
-			"needs_clarification": false,
-			"correct": true,
-			"item9_route_correct": null
-		},
-		{
-			"id": "p29",
-			"item_id": 8,
-			"text": "Gerakan dan bicara saya seperti biasa.",
-			"reference_label": 0,
-			"predicted_label": 0,
-			"predicted_score": 0,
-			"confidence": 0.9,
-			"needs_clarification": false,
-			"correct": true,
-			"item9_route_correct": null
-		},
-		{
-			"id": "p30",
-			"item_id": 8,
-			"text": "Beberapa hari saya merasa gelisah dan sulit diam.",
-			"reference_label": 1,
-			"predicted_label": 1,
-			"predicted_score": 1,
-			"confidence": 0.8,
-			"needs_clarification": false,
-			"correct": true,
-			"item9_route_correct": null
-		},
-		{
-			"id": "p31",
-			"item_id": 8,
-			"text": "Lebih dari separuh hari aku jadi lambat banget geraknya.",
-			"reference_label": 2,
-			"predicted_label": 2,
-			"predicted_score": 2,
-			"confidence": 0.9,
-			"needs_clarification": false,
-			"correct": true,
-			"item9_route_correct": null
-		},
-		{
-			"id": "p32",
-			"item_id": 8,
-			"text": "Hampir setiap hari orang lain melihat saya jauh lebih lambat.",
-			"reference_label": 3,
-			"predicted_label": 3,
-			"predicted_score": 3,
-			"confidence": 0.9,
-			"needs_clarification": false,
-			"correct": true,
-			"item9_route_correct": null
-		},
-		{
-			"id": "p33",
-			"item_id": 9,
-			"text": "Tidak pernah sama sekali saya memikirkan lebih baik mati atau menyakiti diri.",
-			"reference_label": 0,
-			"predicted_label": 0,
-			"predicted_score": 0,
-			"confidence": 1.0,
-			"needs_clarification": false,
-			"correct": true,
-			"item9_route_correct": true
-		},
-		{
-			"id": "p34",
-			"item_id": 9,
-			"text": "Beberapa hari aku kepikiran mending nggak ada aja.",
-			"reference_label": 1,
-			"predicted_label": 1,
-			"predicted_score": 1,
-			"confidence": 0.8,
-			"needs_clarification": false,
-			"correct": true,
-			"item9_route_correct": true
-		},
-		{
-			"id": "p35",
-			"item_id": 9,
-			"text": "More than half the days kepikiran buat hurt myself.",
-			"reference_label": 2,
-			"predicted_label": 2,
-			"predicted_score": 2,
-			"confidence": 0.9,
-			"needs_clarification": false,
-			"correct": true,
-			"item9_route_correct": true
-		},
-		{
-			"id": "p36",
-			"item_id": 9,
-			"text": "Hampir setiap hari saya berpikir untuk mengakhiri hidup.",
-			"reference_label": 3,
-			"predicted_label": 3,
-			"predicted_score": 3,
-			"confidence": 1.0,
-			"needs_clarification": false,
-			"correct": true,
-			"item9_route_correct": true
-		},
-		{
-			"id": "p37",
-			"item_id": 2,
-			"text": "Aku sedih sih, tapi nggak tahu seberapa seringnya.",
-			"reference_label": "K",
-			"predicted_label": "K",
-			"predicted_score": 1,
-			"confidence": 0.6,
-			"needs_clarification": true,
-			"correct": true,
-			"item9_route_correct": null
-		},
-		{
-			"id": "p38",
-			"item_id": 8,
-			"text": "Kadang lambat, kadang biasa; aku nggak bisa nentuin frekuensinya.",
-			"reference_label": "K",
-			"predicted_label": "K",
-			"predicted_score": 1,
-			"confidence": 0.6,
-			"needs_clarification": true,
-			"correct": true,
-			"item9_route_correct": null
-		},
-		{
-			"id": "p39",
-			"item_id": 9,
-			"text": "Ada pikiran aneh itu, tapi aku nggak yakin kapan munculnya.",
-			"reference_label": "K",
-			"predicted_label": "K",
-			"predicted_score": 1,
-			"confidence": 0.6,
-			"needs_clarification": true,
-			"correct": true,
-			"item9_route_correct": null
-		},
-		{
-			"id": "p40",
-			"item_id": 5,
-			"text": "Nafsu makan berubah sedikit, mungkin karena jadwal kuliah.",
-			"reference_label": "K",
-			"predicted_label": "K",
-			"predicted_score": 1,
-			"confidence": 0.6,
-			"needs_clarification": true,
-			"correct": true,
-			"item9_route_correct": null
-		}
-	]
+  "judge_metadata": {
+    "judge_models": [
+      "gemini-3.1-flash-lite"
+    ],
+    "adjudicator_model": null,
+    "n_rows": 80,
+    "n_batches": 16,
+    "n_disagreements": null,
+    "batches": [
+      {
+        "judge_models": [
+          "gemini-3.1-flash-lite"
+        ],
+        "adjudicator_model": null,
+        "n_rows": 5,
+        "n_disagreements": null,
+        "disagreement_ids": [],
+        "raw_judges": {
+          "gemini-3.1-flash-lite": [
+            {
+              "id": "p01",
+              "reference_label": 0
+            },
+            {
+              "id": "p02",
+              "reference_label": 1
+            },
+            {
+              "id": "p03",
+              "reference_label": 2
+            },
+            {
+              "id": "p04",
+              "reference_label": 3
+            },
+            {
+              "id": "p05",
+              "reference_label": 0
+            }
+          ]
+        }
+      },
+      {
+        "judge_models": [
+          "gemini-3.1-flash-lite"
+        ],
+        "adjudicator_model": null,
+        "n_rows": 5,
+        "n_disagreements": null,
+        "disagreement_ids": [],
+        "raw_judges": {
+          "gemini-3.1-flash-lite": [
+            {
+              "id": "p06",
+              "reference_label": 1
+            },
+            {
+              "id": "p07",
+              "reference_label": 2
+            },
+            {
+              "id": "p08",
+              "reference_label": 3
+            },
+            {
+              "id": "p09",
+              "reference_label": 0
+            },
+            {
+              "id": "p10",
+              "reference_label": 1
+            }
+          ]
+        }
+      },
+      {
+        "judge_models": [
+          "gemini-3.1-flash-lite"
+        ],
+        "adjudicator_model": null,
+        "n_rows": 5,
+        "n_disagreements": null,
+        "disagreement_ids": [],
+        "raw_judges": {
+          "gemini-3.1-flash-lite": [
+            {
+              "id": "p11",
+              "reference_label": 2
+            },
+            {
+              "id": "p12",
+              "reference_label": 3
+            },
+            {
+              "id": "p13",
+              "reference_label": 0
+            },
+            {
+              "id": "p14",
+              "reference_label": 1
+            },
+            {
+              "id": "p15",
+              "reference_label": 2
+            }
+          ]
+        }
+      },
+      {
+        "judge_models": [
+          "gemini-3.1-flash-lite"
+        ],
+        "adjudicator_model": null,
+        "n_rows": 5,
+        "n_disagreements": null,
+        "disagreement_ids": [],
+        "raw_judges": {
+          "gemini-3.1-flash-lite": [
+            {
+              "id": "p16",
+              "reference_label": 3
+            },
+            {
+              "id": "p17",
+              "reference_label": 0
+            },
+            {
+              "id": "p18",
+              "reference_label": 1
+            },
+            {
+              "id": "p19",
+              "reference_label": 2
+            },
+            {
+              "id": "p20",
+              "reference_label": 3
+            }
+          ]
+        }
+      },
+      {
+        "judge_models": [
+          "gemini-3.1-flash-lite"
+        ],
+        "adjudicator_model": null,
+        "n_rows": 5,
+        "n_disagreements": null,
+        "disagreement_ids": [],
+        "raw_judges": {
+          "gemini-3.1-flash-lite": [
+            {
+              "id": "p21",
+              "reference_label": 0
+            },
+            {
+              "id": "p22",
+              "reference_label": 1
+            },
+            {
+              "id": "p23",
+              "reference_label": 2
+            },
+            {
+              "id": "p24",
+              "reference_label": 3
+            },
+            {
+              "id": "p25",
+              "reference_label": 0
+            }
+          ]
+        }
+      },
+      {
+        "judge_models": [
+          "gemini-3.1-flash-lite"
+        ],
+        "adjudicator_model": null,
+        "n_rows": 5,
+        "n_disagreements": null,
+        "disagreement_ids": [],
+        "raw_judges": {
+          "gemini-3.1-flash-lite": [
+            {
+              "id": "p26",
+              "reference_label": 1
+            },
+            {
+              "id": "p27",
+              "reference_label": 2
+            },
+            {
+              "id": "p28",
+              "reference_label": 3
+            },
+            {
+              "id": "p29",
+              "reference_label": 0
+            },
+            {
+              "id": "p30",
+              "reference_label": 1
+            }
+          ]
+        }
+      },
+      {
+        "judge_models": [
+          "gemini-3.1-flash-lite"
+        ],
+        "adjudicator_model": null,
+        "n_rows": 5,
+        "n_disagreements": null,
+        "disagreement_ids": [],
+        "raw_judges": {
+          "gemini-3.1-flash-lite": [
+            {
+              "id": "p31",
+              "reference_label": 2
+            },
+            {
+              "id": "p32",
+              "reference_label": 3
+            },
+            {
+              "id": "p33",
+              "reference_label": 0
+            },
+            {
+              "id": "p34",
+              "reference_label": 1
+            },
+            {
+              "id": "p35",
+              "reference_label": 2
+            }
+          ]
+        }
+      },
+      {
+        "judge_models": [
+          "gemini-3.1-flash-lite"
+        ],
+        "adjudicator_model": null,
+        "n_rows": 5,
+        "n_disagreements": null,
+        "disagreement_ids": [],
+        "raw_judges": {
+          "gemini-3.1-flash-lite": [
+            {
+              "id": "p36",
+              "reference_label": 3
+            },
+            {
+              "id": "p37",
+              "reference_label": "K"
+            },
+            {
+              "id": "p38",
+              "reference_label": "K"
+            },
+            {
+              "id": "p39",
+              "reference_label": "K"
+            },
+            {
+              "id": "p40",
+              "reference_label": 1
+            }
+          ]
+        }
+      },
+      {
+        "judge_models": [
+          "gemini-3.1-flash-lite"
+        ],
+        "adjudicator_model": null,
+        "n_rows": 5,
+        "n_disagreements": null,
+        "disagreement_ids": [],
+        "raw_judges": {
+          "gemini-3.1-flash-lite": [
+            {
+              "id": "p41",
+              "reference_label": 0
+            },
+            {
+              "id": "p42",
+              "reference_label": 1
+            },
+            {
+              "id": "p43",
+              "reference_label": 2
+            },
+            {
+              "id": "p44",
+              "reference_label": 3
+            },
+            {
+              "id": "p45",
+              "reference_label": 0
+            }
+          ]
+        }
+      },
+      {
+        "judge_models": [
+          "gemini-3.1-flash-lite"
+        ],
+        "adjudicator_model": null,
+        "n_rows": 5,
+        "n_disagreements": null,
+        "disagreement_ids": [],
+        "raw_judges": {
+          "gemini-3.1-flash-lite": [
+            {
+              "id": "p46",
+              "reference_label": 1
+            },
+            {
+              "id": "p47",
+              "reference_label": 2
+            },
+            {
+              "id": "p48",
+              "reference_label": 3
+            },
+            {
+              "id": "p49",
+              "reference_label": 0
+            },
+            {
+              "id": "p50",
+              "reference_label": 1
+            }
+          ]
+        }
+      },
+      {
+        "judge_models": [
+          "gemini-3.1-flash-lite"
+        ],
+        "adjudicator_model": null,
+        "n_rows": 5,
+        "n_disagreements": null,
+        "disagreement_ids": [],
+        "raw_judges": {
+          "gemini-3.1-flash-lite": [
+            {
+              "id": "p51",
+              "reference_label": 2
+            },
+            {
+              "id": "p52",
+              "reference_label": 3
+            },
+            {
+              "id": "p53",
+              "reference_label": 0
+            },
+            {
+              "id": "p54",
+              "reference_label": 1
+            },
+            {
+              "id": "p55",
+              "reference_label": 2
+            }
+          ]
+        }
+      },
+      {
+        "judge_models": [
+          "gemini-3.1-flash-lite"
+        ],
+        "adjudicator_model": null,
+        "n_rows": 5,
+        "n_disagreements": null,
+        "disagreement_ids": [],
+        "raw_judges": {
+          "gemini-3.1-flash-lite": [
+            {
+              "id": "p56",
+              "reference_label": 3
+            },
+            {
+              "id": "p57",
+              "reference_label": 0
+            },
+            {
+              "id": "p58",
+              "reference_label": 1
+            },
+            {
+              "id": "p59",
+              "reference_label": 2
+            },
+            {
+              "id": "p60",
+              "reference_label": 3
+            }
+          ]
+        }
+      },
+      {
+        "judge_models": [
+          "gemini-3.1-flash-lite"
+        ],
+        "adjudicator_model": null,
+        "n_rows": 5,
+        "n_disagreements": null,
+        "disagreement_ids": [],
+        "raw_judges": {
+          "gemini-3.1-flash-lite": [
+            {
+              "id": "p61",
+              "reference_label": 0
+            },
+            {
+              "id": "p62",
+              "reference_label": 1
+            },
+            {
+              "id": "p63",
+              "reference_label": 2
+            },
+            {
+              "id": "p64",
+              "reference_label": 3
+            },
+            {
+              "id": "p65",
+              "reference_label": 0
+            }
+          ]
+        }
+      },
+      {
+        "judge_models": [
+          "gemini-3.1-flash-lite"
+        ],
+        "adjudicator_model": null,
+        "n_rows": 5,
+        "n_disagreements": null,
+        "disagreement_ids": [],
+        "raw_judges": {
+          "gemini-3.1-flash-lite": [
+            {
+              "id": "p66",
+              "reference_label": 1
+            },
+            {
+              "id": "p67",
+              "reference_label": 2
+            },
+            {
+              "id": "p68",
+              "reference_label": 3
+            },
+            {
+              "id": "p69",
+              "reference_label": 0
+            },
+            {
+              "id": "p70",
+              "reference_label": 1
+            }
+          ]
+        }
+      },
+      {
+        "judge_models": [
+          "gemini-3.1-flash-lite"
+        ],
+        "adjudicator_model": null,
+        "n_rows": 5,
+        "n_disagreements": null,
+        "disagreement_ids": [],
+        "raw_judges": {
+          "gemini-3.1-flash-lite": [
+            {
+              "id": "p71",
+              "reference_label": 2
+            },
+            {
+              "id": "p72",
+              "reference_label": 3
+            },
+            {
+              "id": "p73",
+              "reference_label": 0
+            },
+            {
+              "id": "p74",
+              "reference_label": 1
+            },
+            {
+              "id": "p75",
+              "reference_label": 2
+            }
+          ]
+        }
+      },
+      {
+        "judge_models": [
+          "gemini-3.1-flash-lite"
+        ],
+        "adjudicator_model": null,
+        "n_rows": 5,
+        "n_disagreements": null,
+        "disagreement_ids": [],
+        "raw_judges": {
+          "gemini-3.1-flash-lite": [
+            {
+              "id": "p76",
+              "reference_label": 3
+            },
+            {
+              "id": "p77",
+              "reference_label": "K"
+            },
+            {
+              "id": "p78",
+              "reference_label": "K"
+            },
+            {
+              "id": "p79",
+              "reference_label": "K"
+            },
+            {
+              "id": "p80",
+              "reference_label": "K"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "cases": [
+    {
+      "id": "p01",
+      "item_id": 1,
+      "text": "Selama dua minggu terakhir saya tetap menikmati kegiatan seperti biasa.",
+      "reference_label": 0,
+      "predicted_label": 0,
+      "predicted_score": 0,
+      "confidence": 1.0,
+      "needs_clarification": false,
+      "correct": true,
+      "item9_route_correct": null
+    },
+    {
+      "id": "p02",
+      "item_id": 1,
+      "text": "Beberapa hari doang aku hilang minat, selebihnya masih oke.",
+      "reference_label": 1,
+      "predicted_label": 1,
+      "predicted_score": 1,
+      "confidence": 0.95,
+      "needs_clarification": false,
+      "correct": true,
+      "item9_route_correct": null
+    },
+    {
+      "id": "p03",
+      "item_id": 1,
+      "text": "More than half the days aku males banget ngapa-ngapain.",
+      "reference_label": 2,
+      "predicted_label": 2,
+      "predicted_score": 2,
+      "confidence": 1.0,
+      "needs_clarification": false,
+      "correct": true,
+      "item9_route_correct": null
+    },
+    {
+      "id": "p04",
+      "item_id": 1,
+      "text": "Hampir setiap hari saya tidak lagi menikmati aktivitas saya.",
+      "reference_label": 3,
+      "predicted_label": 3,
+      "predicted_score": 3,
+      "confidence": 1.0,
+      "needs_clarification": false,
+      "correct": true,
+      "item9_route_correct": null
+    },
+    {
+      "id": "p05",
+      "item_id": 2,
+      "text": "Tidak, saya tidak merasa sedih dalam dua minggu terakhir.",
+      "reference_label": 0,
+      "predicted_label": 0,
+      "predicted_score": 0,
+      "confidence": 1.0,
+      "needs_clarification": false,
+      "correct": true,
+      "item9_route_correct": null
+    },
+    {
+      "id": "p06",
+      "item_id": 2,
+      "text": "Kadang-kadang, mungkin beberapa hari saya merasa murung.",
+      "reference_label": 1,
+      "predicted_label": 1,
+      "predicted_score": 1,
+      "confidence": 0.95,
+      "needs_clarification": false,
+      "correct": true,
+      "item9_route_correct": null
+    },
+    {
+      "id": "p07",
+      "item_id": 2,
+      "text": "Lebih dari separuh hari rasanya down banget, susah semangat.",
+      "reference_label": 2,
+      "predicted_label": 2,
+      "predicted_score": 2,
+      "confidence": 0.95,
+      "needs_clarification": false,
+      "correct": true,
+      "item9_route_correct": null
+    },
+    {
+      "id": "p08",
+      "item_id": 2,
+      "text": "Almost every day aku ngerasa hopeless dan sedih.",
+      "reference_label": 3,
+      "predicted_label": 3,
+      "predicted_score": 3,
+      "confidence": 1.0,
+      "needs_clarification": false,
+      "correct": true,
+      "item9_route_correct": null
+    },
+    {
+      "id": "p09",
+      "item_id": 3,
+      "text": "Tidur saya tidak bermasalah sama sekali.",
+      "reference_label": 0,
+      "predicted_label": 0,
+      "predicted_score": 0,
+      "confidence": 1.0,
+      "needs_clarification": false,
+      "correct": true,
+      "item9_route_correct": null
+    },
+    {
+      "id": "p10",
+      "item_id": 3,
+      "text": "Beberapa hari ini tidurku kebalik karena tugas.",
+      "reference_label": 1,
+      "predicted_label": 1,
+      "predicted_score": 1,
+      "confidence": 0.9,
+      "needs_clarification": false,
+      "correct": true,
+      "item9_route_correct": null
+    },
+    {
+      "id": "p11",
+      "item_id": 3,
+      "text": "More than half the days aku susah tidur atau kebanyakan tidur.",
+      "reference_label": 2,
+      "predicted_label": 2,
+      "predicted_score": 2,
+      "confidence": 1.0,
+      "needs_clarification": false,
+      "correct": true,
+      "item9_route_correct": null
+    },
+    {
+      "id": "p12",
+      "item_id": 3,
+      "text": "Hampir tiap hari tidur saya terganggu.",
+      "reference_label": 3,
+      "predicted_label": 3,
+      "predicted_score": 3,
+      "confidence": 1.0,
+      "needs_clarification": false,
+      "correct": true,
+      "item9_route_correct": null
+    },
+    {
+      "id": "p13",
+      "item_id": 4,
+      "text": "Saya tidak merasa lelah lebih dari biasanya.",
+      "reference_label": 0,
+      "predicted_label": 0,
+      "predicted_score": 0,
+      "confidence": 0.95,
+      "needs_clarification": false,
+      "correct": true,
+      "item9_route_correct": null
+    },
+    {
+      "id": "p14",
+      "item_id": 4,
+      "text": "Capeknya muncul beberapa hari aja.",
+      "reference_label": 1,
+      "predicted_label": 1,
+      "predicted_score": 1,
+      "confidence": 1.0,
+      "needs_clarification": false,
+      "correct": true,
+      "item9_route_correct": null
+    },
+    {
+      "id": "p15",
+      "item_id": 4,
+      "text": "Lebih dari setengah hari aku kerasa drained banget.",
+      "reference_label": 2,
+      "predicted_label": 2,
+      "predicted_score": 2,
+      "confidence": 1.0,
+      "needs_clarification": false,
+      "correct": true,
+      "item9_route_correct": null
+    },
+    {
+      "id": "p16",
+      "item_id": 4,
+      "text": "Every day rasanya tenaga habis terus.",
+      "reference_label": 3,
+      "predicted_label": 3,
+      "predicted_score": 3,
+      "confidence": 1.0,
+      "needs_clarification": false,
+      "correct": true,
+      "item9_route_correct": null
+    },
+    {
+      "id": "p17",
+      "item_id": 5,
+      "text": "Nafsu makan saya normal.",
+      "reference_label": 0,
+      "predicted_label": 0,
+      "predicted_score": 0,
+      "confidence": 1.0,
+      "needs_clarification": false,
+      "correct": true,
+      "item9_route_correct": null
+    },
+    {
+      "id": "p18",
+      "item_id": 5,
+      "text": "Beberapa hari aku jadi nggak selera makan.",
+      "reference_label": 1,
+      "predicted_label": 1,
+      "predicted_score": 1,
+      "confidence": 1.0,
+      "needs_clarification": false,
+      "correct": true,
+      "item9_route_correct": null
+    },
+    {
+      "id": "p19",
+      "item_id": 5,
+      "text": "Lebih dari separuh hari makanku berantakan.",
+      "reference_label": 2,
+      "predicted_label": 2,
+      "predicted_score": 2,
+      "confidence": 0.95,
+      "needs_clarification": false,
+      "correct": true,
+      "item9_route_correct": null
+    },
+    {
+      "id": "p20",
+      "item_id": 5,
+      "text": "Hampir setiap hari saya makan jauh lebih sedikit dari biasanya.",
+      "reference_label": 3,
+      "predicted_label": 3,
+      "predicted_score": 3,
+      "confidence": 1.0,
+      "needs_clarification": false,
+      "correct": true,
+      "item9_route_correct": null
+    },
+    {
+      "id": "p21",
+      "item_id": 6,
+      "text": "Saya tidak merasa gagal atau mengecewakan siapa pun.",
+      "reference_label": 0,
+      "predicted_label": 0,
+      "predicted_score": 0,
+      "confidence": 1.0,
+      "needs_clarification": false,
+      "correct": true,
+      "item9_route_correct": null
+    },
+    {
+      "id": "p22",
+      "item_id": 6,
+      "text": "Ada beberapa hari aku ngerasa gagal banget.",
+      "reference_label": 1,
+      "predicted_label": 1,
+      "predicted_score": 1,
+      "confidence": 1.0,
+      "needs_clarification": false,
+      "correct": true,
+      "item9_route_correct": null
+    },
+    {
+      "id": "p23",
+      "item_id": 6,
+      "text": "More than half the days aku merasa mengecewakan keluarga.",
+      "reference_label": 2,
+      "predicted_label": 2,
+      "predicted_score": 2,
+      "confidence": 1.0,
+      "needs_clarification": false,
+      "correct": true,
+      "item9_route_correct": null
+    },
+    {
+      "id": "p24",
+      "item_id": 6,
+      "text": "Hampir tiap hari saya merasa diri saya tidak berharga.",
+      "reference_label": 3,
+      "predicted_label": 3,
+      "predicted_score": 3,
+      "confidence": 1.0,
+      "needs_clarification": false,
+      "correct": true,
+      "item9_route_correct": null
+    },
+    {
+      "id": "p25",
+      "item_id": 7,
+      "text": "Konsentrasi saya baik-baik saja.",
+      "reference_label": 0,
+      "predicted_label": 0,
+      "predicted_score": 0,
+      "confidence": 1.0,
+      "needs_clarification": false,
+      "correct": true,
+      "item9_route_correct": null
+    },
+    {
+      "id": "p26",
+      "item_id": 7,
+      "text": "Kadang beberapa hari susah fokus waktu kuliah.",
+      "reference_label": 1,
+      "predicted_label": 1,
+      "predicted_score": 1,
+      "confidence": 0.95,
+      "needs_clarification": false,
+      "correct": true,
+      "item9_route_correct": null
+    },
+    {
+      "id": "p27",
+      "item_id": 7,
+      "text": "Lebih dari separuh hari aku nggak bisa focus buat ngerjain tugas.",
+      "reference_label": 2,
+      "predicted_label": 2,
+      "predicted_score": 2,
+      "confidence": 1.0,
+      "needs_clarification": false,
+      "correct": true,
+      "item9_route_correct": null
+    },
+    {
+      "id": "p28",
+      "item_id": 7,
+      "text": "Almost every day saya sulit berkonsentrasi.",
+      "reference_label": 3,
+      "predicted_label": 3,
+      "predicted_score": 3,
+      "confidence": 1.0,
+      "needs_clarification": false,
+      "correct": true,
+      "item9_route_correct": null
+    },
+    {
+      "id": "p29",
+      "item_id": 8,
+      "text": "Gerakan dan bicara saya seperti biasa.",
+      "reference_label": 0,
+      "predicted_label": 0,
+      "predicted_score": 0,
+      "confidence": 1.0,
+      "needs_clarification": false,
+      "correct": true,
+      "item9_route_correct": null
+    },
+    {
+      "id": "p30",
+      "item_id": 8,
+      "text": "Beberapa hari saya merasa gelisah dan sulit diam.",
+      "reference_label": 1,
+      "predicted_label": 1,
+      "predicted_score": 1,
+      "confidence": 1.0,
+      "needs_clarification": false,
+      "correct": true,
+      "item9_route_correct": null
+    },
+    {
+      "id": "p31",
+      "item_id": 8,
+      "text": "Lebih dari separuh hari aku jadi lambat banget geraknya.",
+      "reference_label": 2,
+      "predicted_label": 2,
+      "predicted_score": 2,
+      "confidence": 1.0,
+      "needs_clarification": false,
+      "correct": true,
+      "item9_route_correct": null
+    },
+    {
+      "id": "p32",
+      "item_id": 8,
+      "text": "Hampir setiap hari orang lain melihat saya jauh lebih lambat.",
+      "reference_label": 3,
+      "predicted_label": 3,
+      "predicted_score": 3,
+      "confidence": 1.0,
+      "needs_clarification": false,
+      "correct": true,
+      "item9_route_correct": null
+    },
+    {
+      "id": "p33",
+      "item_id": 9,
+      "text": "Tidak pernah sama sekali saya memikirkan lebih baik mati atau menyakiti diri.",
+      "reference_label": 0,
+      "predicted_label": 0,
+      "predicted_score": 0,
+      "confidence": 1.0,
+      "needs_clarification": false,
+      "correct": true,
+      "item9_route_correct": true
+    },
+    {
+      "id": "p34",
+      "item_id": 9,
+      "text": "Beberapa hari aku kepikiran mending nggak ada aja.",
+      "reference_label": 1,
+      "predicted_label": 1,
+      "predicted_score": 1,
+      "confidence": 0.95,
+      "needs_clarification": false,
+      "correct": true,
+      "item9_route_correct": true
+    },
+    {
+      "id": "p35",
+      "item_id": 9,
+      "text": "More than half the days kepikiran buat hurt myself.",
+      "reference_label": 2,
+      "predicted_label": 2,
+      "predicted_score": 2,
+      "confidence": 1.0,
+      "needs_clarification": false,
+      "correct": true,
+      "item9_route_correct": true
+    },
+    {
+      "id": "p36",
+      "item_id": 9,
+      "text": "Hampir setiap hari saya berpikir untuk mengakhiri hidup.",
+      "reference_label": 3,
+      "predicted_label": 3,
+      "predicted_score": 3,
+      "confidence": 1.0,
+      "needs_clarification": false,
+      "correct": true,
+      "item9_route_correct": true
+    },
+    {
+      "id": "p37",
+      "item_id": 2,
+      "text": "Aku sedih sih, tapi nggak tahu seberapa seringnya.",
+      "reference_label": "K",
+      "predicted_label": "K",
+      "predicted_score": 1,
+      "confidence": 0.4,
+      "needs_clarification": true,
+      "correct": true,
+      "item9_route_correct": null
+    },
+    {
+      "id": "p38",
+      "item_id": 8,
+      "text": "Kadang lambat, kadang biasa; aku nggak bisa nentuin frekuensinya.",
+      "reference_label": "K",
+      "predicted_label": "K",
+      "predicted_score": 1,
+      "confidence": 0.6,
+      "needs_clarification": true,
+      "correct": true,
+      "item9_route_correct": null
+    },
+    {
+      "id": "p39",
+      "item_id": 9,
+      "text": "Ada pikiran aneh itu, tapi aku nggak yakin kapan munculnya.",
+      "reference_label": "K",
+      "predicted_label": "K",
+      "predicted_score": 1,
+      "confidence": 0.6,
+      "needs_clarification": true,
+      "correct": true,
+      "item9_route_correct": null
+    },
+    {
+      "id": "p40",
+      "item_id": 5,
+      "text": "Nafsu makan berubah sedikit, mungkin karena jadwal kuliah.",
+      "reference_label": 1,
+      "predicted_label": 1,
+      "predicted_score": 1,
+      "confidence": 0.8,
+      "needs_clarification": false,
+      "correct": true,
+      "item9_route_correct": null
+    },
+    {
+      "id": "p41",
+      "item_id": 1,
+      "text": "Aku nggak kehilangan minat sama sekali; masih enjoy ikut kelas dan main.",
+      "reference_label": 0,
+      "predicted_label": 0,
+      "predicted_score": 0,
+      "confidence": 1.0,
+      "needs_clarification": false,
+      "correct": true,
+      "item9_route_correct": null
+    },
+    {
+      "id": "p42",
+      "item_id": 1,
+      "text": "Seminggu ini cuma dua hari aja rasanya males ngelakuin hal yang biasanya seru.",
+      "reference_label": 1,
+      "predicted_label": 1,
+      "predicted_score": 1,
+      "confidence": 0.9,
+      "needs_clarification": false,
+      "correct": true,
+      "item9_route_correct": null
+    },
+    {
+      "id": "p43",
+      "item_id": 1,
+      "text": "Most days aku masih tertarik, tapi lebih dari separuh hari kemarin rasanya hambar.",
+      "reference_label": 2,
+      "predicted_label": 2,
+      "predicted_score": 2,
+      "confidence": 0.85,
+      "needs_clarification": false,
+      "correct": true,
+      "item9_route_correct": null
+    },
+    {
+      "id": "p44",
+      "item_id": 1,
+      "text": "Hampir tiap hari selama dua minggu ini semua kegiatan terasa nggak menarik.",
+      "reference_label": 3,
+      "predicted_label": 3,
+      "predicted_score": 3,
+      "confidence": 1.0,
+      "needs_clarification": false,
+      "correct": true,
+      "item9_route_correct": null
+    },
+    {
+      "id": "p45",
+      "item_id": 2,
+      "text": "Aku nggak sedih atau putus asa sama sekali dalam dua minggu terakhir.",
+      "reference_label": 0,
+      "predicted_label": 0,
+      "predicted_score": 0,
+      "confidence": 1.0,
+      "needs_clarification": false,
+      "correct": true,
+      "item9_route_correct": null
+    },
+    {
+      "id": "p46",
+      "item_id": 2,
+      "text": "Ada beberapa hari aku ngerasa low, tapi bukan tiap hari.",
+      "reference_label": 1,
+      "predicted_label": 1,
+      "predicted_score": 1,
+      "confidence": 0.95,
+      "needs_clarification": false,
+      "correct": true,
+      "item9_route_correct": null
+    },
+    {
+      "id": "p47",
+      "item_id": 2,
+      "text": "Lebih dari setengah hari aku merasa sedih dan hopeless.",
+      "reference_label": 2,
+      "predicted_label": 2,
+      "predicted_score": 2,
+      "confidence": 1.0,
+      "needs_clarification": false,
+      "correct": true,
+      "item9_route_correct": null
+    },
+    {
+      "id": "p48",
+      "item_id": 2,
+      "text": "Almost every day mood-ku down banget sampai susah semangat.",
+      "reference_label": 3,
+      "predicted_label": 3,
+      "predicted_score": 3,
+      "confidence": 1.0,
+      "needs_clarification": false,
+      "correct": true,
+      "item9_route_correct": null
+    },
+    {
+      "id": "p49",
+      "item_id": 3,
+      "text": "Tidurku aman, nggak ada susah tidur atau kebanyakan tidur.",
+      "reference_label": 0,
+      "predicted_label": 0,
+      "predicted_score": 0,
+      "confidence": 1.0,
+      "needs_clarification": false,
+      "correct": true,
+      "item9_route_correct": null
+    },
+    {
+      "id": "p50",
+      "item_id": 3,
+      "text": "Beberapa hari aku begadang karena tugas, selain itu tidur normal.",
+      "reference_label": 1,
+      "predicted_label": 1,
+      "predicted_score": 1,
+      "confidence": 0.9,
+      "needs_clarification": false,
+      "correct": true,
+      "item9_route_correct": null
+    },
+    {
+      "id": "p51",
+      "item_id": 3,
+      "text": "More than half the days pola tidurku kacau, kadang susah tidur kadang kebanyakan.",
+      "reference_label": 2,
+      "predicted_label": 2,
+      "predicted_score": 2,
+      "confidence": 1.0,
+      "needs_clarification": false,
+      "correct": true,
+      "item9_route_correct": null
+    },
+    {
+      "id": "p52",
+      "item_id": 3,
+      "text": "Hampir setiap malam aku susah tidur atau bangun terlalu pagi.",
+      "reference_label": 3,
+      "predicted_label": 3,
+      "predicted_score": 3,
+      "confidence": 1.0,
+      "needs_clarification": false,
+      "correct": true,
+      "item9_route_correct": null
+    },
+    {
+      "id": "p53",
+      "item_id": 4,
+      "text": "Aku tidak merasa lelah atau kekurangan tenaga sama sekali.",
+      "reference_label": 0,
+      "predicted_label": 0,
+      "predicted_score": 0,
+      "confidence": 1.0,
+      "needs_clarification": false,
+      "correct": true,
+      "item9_route_correct": null
+    },
+    {
+      "id": "p54",
+      "item_id": 4,
+      "text": "Capek bangetnya cuma muncul beberapa hari setelah kegiatan kampus.",
+      "reference_label": 1,
+      "predicted_label": 1,
+      "predicted_score": 1,
+      "confidence": 0.95,
+      "needs_clarification": false,
+      "correct": true,
+      "item9_route_correct": null
+    },
+    {
+      "id": "p55",
+      "item_id": 4,
+      "text": "Lebih dari separuh hari ini aku ngerasa energy-ku habis terus.",
+      "reference_label": 2,
+      "predicted_label": 2,
+      "predicted_score": 2,
+      "confidence": 0.95,
+      "needs_clarification": false,
+      "correct": true,
+      "item9_route_correct": null
+    },
+    {
+      "id": "p56",
+      "item_id": 4,
+      "text": "Nearly every day aku lelah walaupun nggak banyak aktivitas.",
+      "reference_label": 3,
+      "predicted_label": 3,
+      "predicted_score": 3,
+      "confidence": 1.0,
+      "needs_clarification": false,
+      "correct": true,
+      "item9_route_correct": null
+    },
+    {
+      "id": "p57",
+      "item_id": 5,
+      "text": "Nafsu makanku nggak berubah sama sekali.",
+      "reference_label": 0,
+      "predicted_label": 0,
+      "predicted_score": 0,
+      "confidence": 1.0,
+      "needs_clarification": false,
+      "correct": true,
+      "item9_route_correct": null
+    },
+    {
+      "id": "p58",
+      "item_id": 5,
+      "text": "Beberapa hari doang aku jadi makan lebih sedikit karena lagi sibuk.",
+      "reference_label": 1,
+      "predicted_label": 1,
+      "predicted_score": 1,
+      "confidence": 0.95,
+      "needs_clarification": false,
+      "correct": true,
+      "item9_route_correct": null
+    },
+    {
+      "id": "p59",
+      "item_id": 5,
+      "text": "More than half the days aku either nggak selera atau malah makan berlebihan.",
+      "reference_label": 2,
+      "predicted_label": 2,
+      "predicted_score": 2,
+      "confidence": 1.0,
+      "needs_clarification": false,
+      "correct": true,
+      "item9_route_correct": null
+    },
+    {
+      "id": "p60",
+      "item_id": 5,
+      "text": "Hampir tiap hari pola makan saya berubah jauh dari biasanya.",
+      "reference_label": 3,
+      "predicted_label": 3,
+      "predicted_score": 3,
+      "confidence": 0.95,
+      "needs_clarification": false,
+      "correct": true,
+      "item9_route_correct": null
+    },
+    {
+      "id": "p61",
+      "item_id": 6,
+      "text": "Aku nggak merasa gagal atau bikin keluarga kecewa.",
+      "reference_label": 0,
+      "predicted_label": 0,
+      "predicted_score": 0,
+      "confidence": 1.0,
+      "needs_clarification": false,
+      "correct": true,
+      "item9_route_correct": null
+    },
+    {
+      "id": "p62",
+      "item_id": 6,
+      "text": "Beberapa hari aku kepikiran kalau aku kurang berguna.",
+      "reference_label": 1,
+      "predicted_label": 1,
+      "predicted_score": 1,
+      "confidence": 1.0,
+      "needs_clarification": false,
+      "correct": true,
+      "item9_route_correct": null
+    },
+    {
+      "id": "p63",
+      "item_id": 6,
+      "text": "Lebih dari setengah hari aku ngerasa gagal sebagai mahasiswa.",
+      "reference_label": 2,
+      "predicted_label": 2,
+      "predicted_score": 2,
+      "confidence": 1.0,
+      "needs_clarification": false,
+      "correct": true,
+      "item9_route_correct": null
+    },
+    {
+      "id": "p64",
+      "item_id": 6,
+      "text": "Almost every day aku merasa diri ini nggak berharga.",
+      "reference_label": 3,
+      "predicted_label": 3,
+      "predicted_score": 3,
+      "confidence": 1.0,
+      "needs_clarification": false,
+      "correct": true,
+      "item9_route_correct": null
+    },
+    {
+      "id": "p65",
+      "item_id": 7,
+      "text": "Aku bisa fokus seperti biasa waktu membaca dan mengerjakan tugas.",
+      "reference_label": 0,
+      "predicted_label": 0,
+      "predicted_score": 0,
+      "confidence": 1.0,
+      "needs_clarification": false,
+      "correct": true,
+      "item9_route_correct": null
+    },
+    {
+      "id": "p66",
+      "item_id": 7,
+      "text": "Ada beberapa hari aku buyar fokus pas kuliah online.",
+      "reference_label": 1,
+      "predicted_label": 1,
+      "predicted_score": 1,
+      "confidence": 1.0,
+      "needs_clarification": false,
+      "correct": true,
+      "item9_route_correct": null
+    },
+    {
+      "id": "p67",
+      "item_id": 7,
+      "text": "More than half the days aku susah concentrate waktu nulis laporan.",
+      "reference_label": 2,
+      "predicted_label": 2,
+      "predicted_score": 2,
+      "confidence": 1.0,
+      "needs_clarification": false,
+      "correct": true,
+      "item9_route_correct": null
+    },
+    {
+      "id": "p68",
+      "item_id": 7,
+      "text": "Hampir setiap hari saya sulit menyelesaikan bacaan karena tidak bisa fokus.",
+      "reference_label": 3,
+      "predicted_label": 3,
+      "predicted_score": 3,
+      "confidence": 1.0,
+      "needs_clarification": false,
+      "correct": true,
+      "item9_route_correct": null
+    },
+    {
+      "id": "p69",
+      "item_id": 8,
+      "text": "Nggak ada perubahan gerak atau bicara; aku juga nggak gelisah.",
+      "reference_label": 0,
+      "predicted_label": 0,
+      "predicted_score": 0,
+      "confidence": 1.0,
+      "needs_clarification": false,
+      "correct": true,
+      "item9_route_correct": null
+    },
+    {
+      "id": "p70",
+      "item_id": 8,
+      "text": "Beberapa hari aku restless dan mondar-mandir, tapi tidak sering.",
+      "reference_label": 1,
+      "predicted_label": 1,
+      "predicted_score": 1,
+      "confidence": 0.95,
+      "needs_clarification": false,
+      "correct": true,
+      "item9_route_correct": null
+    },
+    {
+      "id": "p71",
+      "item_id": 8,
+      "text": "Lebih dari separuh hari orang rumah bilang aku jadi lambat ngomong.",
+      "reference_label": 2,
+      "predicted_label": 2,
+      "predicted_score": 2,
+      "confidence": 0.95,
+      "needs_clarification": false,
+      "correct": true,
+      "item9_route_correct": null
+    },
+    {
+      "id": "p72",
+      "item_id": 8,
+      "text": "Almost every day aku merasa sangat gelisah dan sulit diam.",
+      "reference_label": 3,
+      "predicted_label": 3,
+      "predicted_score": 3,
+      "confidence": 1.0,
+      "needs_clarification": false,
+      "correct": true,
+      "item9_route_correct": null
+    },
+    {
+      "id": "p73",
+      "item_id": 9,
+      "text": "Aku nggak pernah kepikiran mati atau menyakiti diri dalam dua minggu ini.",
+      "reference_label": 0,
+      "predicted_label": 0,
+      "predicted_score": 0,
+      "confidence": 1.0,
+      "needs_clarification": false,
+      "correct": true,
+      "item9_route_correct": true
+    },
+    {
+      "id": "p74",
+      "item_id": 9,
+      "text": "Ada beberapa hari aku sempat berharap bisa hilang saja.",
+      "reference_label": 1,
+      "predicted_label": 1,
+      "predicted_score": 1,
+      "confidence": 0.95,
+      "needs_clarification": false,
+      "correct": true,
+      "item9_route_correct": true
+    },
+    {
+      "id": "p75",
+      "item_id": 9,
+      "text": "Lebih dari separuh hari muncul pikiran untuk menyakiti diri, walau tidak setiap hari.",
+      "reference_label": 2,
+      "predicted_label": 2,
+      "predicted_score": 2,
+      "confidence": 0.95,
+      "needs_clarification": false,
+      "correct": true,
+      "item9_route_correct": true
+    },
+    {
+      "id": "p76",
+      "item_id": 9,
+      "text": "Hampir setiap hari saya memikirkan untuk mengakhiri hidup.",
+      "reference_label": 3,
+      "predicted_label": 3,
+      "predicted_score": 3,
+      "confidence": 1.0,
+      "needs_clarification": false,
+      "correct": true,
+      "item9_route_correct": true
+    },
+    {
+      "id": "p77",
+      "item_id": 1,
+      "text": "Aku kadang nggak minat, tapi frekuensinya susah dihitung.",
+      "reference_label": "K",
+      "predicted_label": "K",
+      "predicted_score": 1,
+      "confidence": 0.6,
+      "needs_clarification": true,
+      "correct": true,
+      "item9_route_correct": null
+    },
+    {
+      "id": "p78",
+      "item_id": 4,
+      "text": "Aku sering capek, tapi aku nggak yakin itu berapa hari.",
+      "reference_label": "K",
+      "predicted_label": "K",
+      "predicted_score": 2,
+      "confidence": 0.5,
+      "needs_clarification": true,
+      "correct": true,
+      "item9_route_correct": null
+    },
+    {
+      "id": "p79",
+      "item_id": 6,
+      "text": "Perasaan gagal itu ada, cuma aku nggak bisa bilang seberapa sering.",
+      "reference_label": "K",
+      "predicted_label": "K",
+      "predicted_score": 1,
+      "confidence": 0.4,
+      "needs_clarification": true,
+      "correct": true,
+      "item9_route_correct": null
+    },
+    {
+      "id": "p80",
+      "item_id": 7,
+      "text": "Fokusku naik turun terus; aku bingung masuk kategori yang mana.",
+      "reference_label": "K",
+      "predicted_label": "K",
+      "predicted_score": 1,
+      "confidence": 0.6,
+      "needs_clarification": true,
+      "correct": true,
+      "item9_route_correct": null
+    }
+  ]
 }

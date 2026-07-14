@@ -80,6 +80,7 @@ frontend/
 scripts/
 !docs/thesis_latex/evaluasi_v2/scripts/
 !docs/thesis_latex/evaluasi_v2/scripts/*.py
+/docs/thesis_latex/evaluasi_v2/rm3_memori/external_data/*.json
 # ---------- Synthetic Chat Eval Output ----------
 utility/synthetic_chat_eval/output/
 

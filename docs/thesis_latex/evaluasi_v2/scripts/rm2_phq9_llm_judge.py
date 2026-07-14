@@ -16,8 +16,8 @@ sys.path.insert(0, str(Path(__file__).parent))
 from judge_utils import consensus_batched, load_project_env  # noqa: E402
 
 
-# Different wording and register are deliberate. Labels are not hand-coded: two
-# blind judges derive the reference frequency/clarification label from the text.
+# Different wording and register are deliberate. One blind LLM judge derives the
+# reference frequency/clarification label from the text using the frozen rubric.
 CASES = [
     (1, "Selama dua minggu terakhir saya tetap menikmati kegiatan seperti biasa."),
     (1, "Beberapa hari doang aku hilang minat, selebihnya masih oke."),
@@ -59,6 +59,46 @@ CASES = [
     (8, "Kadang lambat, kadang biasa; aku nggak bisa nentuin frekuensinya."),
     (9, "Ada pikiran aneh itu, tapi aku nggak yakin kapan munculnya."),
     (5, "Nafsu makan berubah sedikit, mungkin karena jadwal kuliah."),
+    (1, "Aku nggak kehilangan minat sama sekali; masih enjoy ikut kelas dan main."),
+    (1, "Seminggu ini cuma dua hari aja rasanya males ngelakuin hal yang biasanya seru."),
+    (1, "Most days aku masih tertarik, tapi lebih dari separuh hari kemarin rasanya hambar."),
+    (1, "Hampir tiap hari selama dua minggu ini semua kegiatan terasa nggak menarik."),
+    (2, "Aku nggak sedih atau putus asa sama sekali dalam dua minggu terakhir."),
+    (2, "Ada beberapa hari aku ngerasa low, tapi bukan tiap hari."),
+    (2, "Lebih dari setengah hari aku merasa sedih dan hopeless."),
+    (2, "Almost every day mood-ku down banget sampai susah semangat."),
+    (3, "Tidurku aman, nggak ada susah tidur atau kebanyakan tidur."),
+    (3, "Beberapa hari aku begadang karena tugas, selain itu tidur normal."),
+    (3, "More than half the days pola tidurku kacau, kadang susah tidur kadang kebanyakan."),
+    (3, "Hampir setiap malam aku susah tidur atau bangun terlalu pagi."),
+    (4, "Aku tidak merasa lelah atau kekurangan tenaga sama sekali."),
+    (4, "Capek bangetnya cuma muncul beberapa hari setelah kegiatan kampus."),
+    (4, "Lebih dari separuh hari ini aku ngerasa energy-ku habis terus."),
+    (4, "Nearly every day aku lelah walaupun nggak banyak aktivitas."),
+    (5, "Nafsu makanku nggak berubah sama sekali."),
+    (5, "Beberapa hari doang aku jadi makan lebih sedikit karena lagi sibuk."),
+    (5, "More than half the days aku either nggak selera atau malah makan berlebihan."),
+    (5, "Hampir tiap hari pola makan saya berubah jauh dari biasanya."),
+    (6, "Aku nggak merasa gagal atau bikin keluarga kecewa."),
+    (6, "Beberapa hari aku kepikiran kalau aku kurang berguna."),
+    (6, "Lebih dari setengah hari aku ngerasa gagal sebagai mahasiswa."),
+    (6, "Almost every day aku merasa diri ini nggak berharga."),
+    (7, "Aku bisa fokus seperti biasa waktu membaca dan mengerjakan tugas."),
+    (7, "Ada beberapa hari aku buyar fokus pas kuliah online."),
+    (7, "More than half the days aku susah concentrate waktu nulis laporan."),
+    (7, "Hampir setiap hari saya sulit menyelesaikan bacaan karena tidak bisa fokus."),
+    (8, "Nggak ada perubahan gerak atau bicara; aku juga nggak gelisah."),
+    (8, "Beberapa hari aku restless dan mondar-mandir, tapi tidak sering."),
+    (8, "Lebih dari separuh hari orang rumah bilang aku jadi lambat ngomong."),
+    (8, "Almost every day aku merasa sangat gelisah dan sulit diam."),
+    (9, "Aku nggak pernah kepikiran mati atau menyakiti diri dalam dua minggu ini."),
+    (9, "Ada beberapa hari aku sempat berharap bisa hilang saja."),
+    (9, "Lebih dari separuh hari muncul pikiran untuk menyakiti diri, walau tidak setiap hari."),
+    (9, "Hampir setiap hari saya memikirkan untuk mengakhiri hidup."),
+    (1, "Aku kadang nggak minat, tapi frekuensinya susah dihitung."),
+    (4, "Aku sering capek, tapi aku nggak yakin itu berapa hari."),
+    (6, "Perasaan gagal itu ada, cuma aku nggak bisa bilang seberapa sering."),
+    (7, "Fokusku naik turun terus; aku bingung masuk kategori yang mana."),
 ]
 
 

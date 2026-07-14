@@ -1,4 +1,4 @@
-"""Render docs/thesis_latex/evaluasi_v2/rm1_dialogue/raw_results.json into a
+"""Render docs/thesis_latex/evaluasi_v2/rm1_dialogue/raw_results_expanded.json into a
 LaTeX fragment with the real per-scenario transcript and judge scores, so the
 appendix transcript can never drift from the actual saved evaluation artifact.
 
@@ -53,7 +53,7 @@ def esc(text: str) -> str:
 
 
 def main() -> None:
-    data = json.loads((EVAL_DIR / "rm1_dialogue" / "raw_results.json").read_text(encoding="utf-8"))
+    data = json.loads((EVAL_DIR / "rm1_dialogue" / "raw_results_expanded.json").read_text(encoding="utf-8"))
 
     lines: list[str] = []
     for scenario in data:

@@ -1,8 +1,7 @@
 {
   "source_artifact": "evaluation_pipeline/results/reappraisal_probe.json",
   "judge_models": [
-    "gpt-4o-mini",
-    "gpt-4.1-mini"
+    "gemini-3.1-flash-lite"
   ],
   "adjudicator_model": null,
   "n_cases": 5,
@@ -48,10 +47,10 @@
     }
   ],
   "raw_judges": {
-    "gpt-4o-mini": [
+    "gemini-3.1-flash-lite": [
       {
         "id": "thought-1",
-        "supports_reappraisal": true
+        "supports_reappraisal": false
       },
       {
         "id": "thought-2",
@@ -67,36 +66,14 @@
       },
       {
         "id": "experience-2",
-        "supports_reappraisal": true
-      }
-    ],
-    "gpt-4.1-mini": [
-      {
-        "id": "thought-1",
-        "supports_reappraisal": true
-      },
-      {
-        "id": "thought-2",
         "supports_reappraisal": false
-      },
-      {
-        "id": "thought-3",
-        "supports_reappraisal": false
-      },
-      {
-        "id": "experience-1",
-        "supports_reappraisal": true
-      },
-      {
-        "id": "experience-2",
-        "supports_reappraisal": true
       }
     ]
   },
   "final_labels": [
     {
       "id": "thought-1",
-      "supports_reappraisal": true
+      "supports_reappraisal": false
     },
     {
       "id": "thought-2",
@@ -112,12 +89,12 @@
     },
     {
       "id": "experience-2",
-      "supports_reappraisal": true
+      "supports_reappraisal": false
     }
   ],
   "summary": {
-    "semantic_lifecycle_match_rate": 0.6,
-    "semantic_lifecycle_matches": 3,
+    "semantic_lifecycle_match_rate": 0.2,
+    "semantic_lifecycle_matches": 1,
     "old_superseded_thoughts_inactive_rate": 1.0,
     "old_superseded_thoughts_inactive": 3,
     "n_superseded_thoughts": 3

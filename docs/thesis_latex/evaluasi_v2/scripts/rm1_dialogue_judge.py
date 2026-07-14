@@ -1,9 +1,10 @@
-"""RM1a dialogue blind evaluation: AXIS vs baseline, scored blind by two
-independent Gemini judge configurations (LLM-as-judge), per the design in
+"""RM1a dialogue blind evaluation: AXIS vs baseline, scored by one frozen
+Gemini Lite configuration (LLM-as-judge), per the design in
 bab4_evaluasi_v2.tex Subbab 4.3.1 and the instrument in lampiran_evaluasi_v2.tex.
 
-Uses only the Gemini provider throughout (baseline generation AND both judge
-configurations) per explicit instruction -- do not touch the OpenAI key.
+Uses Gemini 3.1 Flash Lite throughout: AXIS generation, baseline generation,
+and blind judgement. These overrides apply only to this evaluation process and
+do not alter the deployment configuration.
 
 Cold-start scenarios (Arya, no seeded memory) compare AXIS against B0 (generic
 companion, no memory retrieval). Rich-memory scenarios (Budi, seeded thesis/
@@ -51,11 +52,19 @@ def _load_env(path: Path, *, override: bool = False) -> None:
 
 _load_env(ROOT / ".env")
 _load_env(ROOT / "agentic" / ".env", override=True)
-_load_env(ROOT / "evaluation_pipeline" / ".env", override=True)
+_load_env(ROOT / "evaluation_pipeline" / ".env")
 
-# Force Gemini-only for baseline generation, matching AXIS's own active provider.
+# Keep all expensive generation inside this evaluation on the Lite model.
+os.environ["LLM_PROVIDER"] = "gemini"
+os.environ["GEMINI_MODEL_CHEAP"] = "gemini-3.1-flash-lite"
+os.environ["GEMINI_MODEL_STRONG"] = "gemini-3.1-flash-lite"
+os.environ["GEMINI_MODEL_STRONG_GENERATION"] = "gemini-3.1-flash-lite"
+os.environ["GEMINI_MODEL_KG_EXTRACTOR"] = "gemini-3.1-flash-lite"
+os.environ["GEMINI_RETRIEVAL_QUERY_REWRITER_MODEL"] = "gemini-3.1-flash-lite"
+
+# Force Gemini-only for baseline generation, matching the evaluation AXIS run.
 os.environ["EVAL_BASELINE_PROVIDER"] = "gemini"
-os.environ["EVAL_BASELINE_MODEL"] = "gemini-3.5-flash"
+os.environ["EVAL_BASELINE_MODEL"] = "gemini-3.1-flash-lite"
 os.environ["EVAL_BASELINE_TEMPERATURE"] = "1.0"
 os.environ["EVAL_BASELINE_MAX_TOKENS"] = "6000"
 os.environ["EVAL_EMBEDDING_PROVIDER"] = "gemini"
@@ -109,6 +118,9 @@ Konteks pengguna:
 \"\"\"
 {user_message}
 \"\"\"
+
+Konteks yang sah diketahui sistem saat merespons:
+{memory_note}
 
 Respons A:
 \"\"\"
@@ -440,7 +452,20 @@ def _judge_call(model: str, prompt: str) -> dict[str, Any]:
     return json.loads(payload)
 
 
-JUDGE_MODELS = ["gemini-3.5-flash", "gemini-3.1-flash-lite"]
+JUDGE_MODELS = ["gemini-3.1-flash-lite"]
+
+DISPLAY_NAME = {"cold_start": "Arya", "rich_memory": "Budi"}
+MEMORY_NOTE = {
+    "cold_start": (
+        "Nama panggilan pengguna adalah Arya. Tidak ada memori jangka panjang; "
+        "beri groundedness netral bila respons tidak mengklaim detail personal baru."
+    ),
+    "rich_memory": (
+        "Nama panggilan pengguna adalah Budi. Memori sah: Bab 3 pernah ditolak "
+        "dosen pembimbing, pengguna cemas terhadap bimbingan, dan cenderung "
+        "menghindari membuka laptop. Rujukan akurat terhadap fakta ini bukan halusinasi."
+    ),
+}
 
 
 async def main() -> None:
@@ -449,9 +474,20 @@ async def main() -> None:
     await init_client()
 
     random.seed(20260714)
+    out_dir = ROOT / "docs" / "thesis_latex" / "evaluasi_v2" / "rm1_dialogue"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    output_path = out_dir / "raw_results_expanded.json"
     rows: list[dict[str, Any]] = []
+    if output_path.exists():
+        previous = json.loads(output_path.read_text(encoding="utf-8"))
+        if isinstance(previous, list):
+            rows = [row for row in previous if isinstance(row, dict)]
+    completed = {str(row.get("scenario")) for row in rows}
 
     for scenario in SCENARIOS:
+        if scenario.id in completed:
+            print(f"Skipping completed scenario: {scenario.id}")
+            continue
         print(f"\n{'#'*70}\n{scenario.id} ({scenario.domain}, {scenario.memory_condition})\n{'#'*70}")
         axis_reply = await _get_axis_reply(scenario)
         print(f"AXIS: {axis_reply[:200]}")
@@ -465,6 +501,7 @@ async def main() -> None:
         prompt = JUDGE_PROMPT_TEMPLATE.format(
             rubric=RUBRIC,
             user_message=scenario.user_message,
+            memory_note=MEMORY_NOTE[scenario.memory_condition],
             response_a=response_a,
             response_b=response_b,
         )
@@ -491,13 +528,66 @@ async def main() -> None:
             "baseline_reply": baseline_reply,
             "judge_results": judge_results,
         })
+        output_path.write_text(json.dumps(rows, ensure_ascii=False, indent=2), encoding="utf-8")
 
-    out_dir = ROOT / "docs" / "thesis_latex" / "evaluasi_v2" / "rm1_dialogue"
-    out_dir.mkdir(parents=True, exist_ok=True)
-    with open(out_dir / "raw_results.json", "w", encoding="utf-8") as f:
-        json.dump(rows, f, ensure_ascii=False, indent=2)
+    summary = summarize(rows)
+    (out_dir / "expanded_summary.json").write_text(
+        json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
+    print(f"\nSaved raw results to {output_path}")
+    print(json.dumps(summary, ensure_ascii=False, indent=2))
 
-    print(f"\nSaved raw results to {out_dir / 'raw_results.json'}")
+
+def summarize(rows: list[dict[str, Any]]) -> dict[str, Any]:
+    import statistics
+
+    axis_scores: dict[str, list[float]] = {dimension: [] for dimension in DIMENSIONS}
+    baseline_scores: dict[str, list[float]] = {dimension: [] for dimension in DIMENSIONS}
+    preference = {"axis": 0, "baseline": 0, "setara": 0}
+    preference_by_memory = {
+        "cold_start": {"axis": 0, "baseline": 0, "setara": 0},
+        "rich_memory": {"axis": 0, "baseline": 0, "setara": 0},
+    }
+    for row in rows:
+        judgement = row.get("judge_results", {}).get(JUDGE_MODELS[0])
+        if not isinstance(judgement, dict):
+            continue
+        axis_is_a = bool(row["axis_is_a"])
+        scores_axis = judgement.get("scores_a" if axis_is_a else "scores_b", {})
+        scores_baseline = judgement.get("scores_b" if axis_is_a else "scores_a", {})
+        for dimension in DIMENSIONS:
+            if isinstance(scores_axis.get(dimension), (int, float)):
+                axis_scores[dimension].append(float(scores_axis[dimension]))
+            if isinstance(scores_baseline.get(dimension), (int, float)):
+                baseline_scores[dimension].append(float(scores_baseline[dimension]))
+        winner = str(judgement.get("preference", "setara")).strip().lower()
+        if winner == "a":
+            key = "axis" if axis_is_a else "baseline"
+        elif winner == "b":
+            key = "baseline" if axis_is_a else "axis"
+        else:
+            key = "setara"
+        preference[key] += 1
+        preference_by_memory[str(row["memory_condition"])][key] += 1
+    return {
+        "evaluation_configuration": {
+            "axis_generation_model": "gemini-3.1-flash-lite",
+            "baseline_generation_model": "gemini-3.1-flash-lite",
+            "blind_judge_model": "gemini-3.1-flash-lite",
+            "n_judges": 1,
+        },
+        "n_scenarios": len(rows),
+        "n_scored": sum(preference.values()),
+        "median_scores": {
+            dimension: {
+                "axis": statistics.median(axis_scores[dimension]) if axis_scores[dimension] else None,
+                "baseline": statistics.median(baseline_scores[dimension]) if baseline_scores[dimension] else None,
+            }
+            for dimension in DIMENSIONS
+        },
+        "preference": preference,
+        "preference_by_memory_condition": preference_by_memory,
+    }
 
 
 if __name__ == "__main__":

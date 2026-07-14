@@ -9,6 +9,22 @@ Dijalankan nyata via `evaluasi_v2/scripts/retrieval_recall_probe.py`, 3 pengguna
 
 Kedua kondisi sama pada probe ini karena setiap kueri hanya butuh satu fakta domain yang mirip secara semantik dengan kueri (parafrase satu hop) - jenis kueri ini bisa dijawab pencarian vektor saja tanpa penelusuran relasi graf.
 
+## Kalibrasi retrieval pada LongMemEval_S
+
+`longmemeval_retrieval_results.json` merekam kalibrasi tambahan dengan 12
+kueri yang dipilih secara acak-terstratifikasi (dua kueri untuk setiap enam tipe
+pertanyaan) dari LongMemEval_S — korpus resmi yang menyediakan puluhan sesi
+beserta sesi pengalih dan `answer_session_ids`. Setiap ringkasan sesi ditulis
+melalui penulis memori AXIS, lalu dicari dengan pemeringkatan pgvector produksi.
+Pada sampel ini, P@5 = 0,367, Recall@5 = 0,972, MRR = 0,833, dan nDCG@5 =
+0,855.
+
+Kalibrasi ini menguji pengambilan bukti sesi pada korpus eksternal, bukan
+ablasi hibrid terhadap vektor-saja. Adapter tidak mengekstraksi node atau
+relasi AXIS dari LongMemEval, sehingga hasilnya tidak dapat dipakai untuk
+menyimpulkan keunggulan *knowledge graph*, ketepatan ekstraksi, atau
+personalisasi pada mahasiswa Indonesia.
+
 ## Kasus bertarget: kueri berbagi entitas graf, kesamaan leksikal nol
 
 Untuk mengisolasi nilai tambah graf secara lebih langsung, dijalankan kasus bertarget: dua Experience milik user yang sama, berbagi satu node Trigger yang identik (dospem susah dihubungi), tapi deskripsinya sengaja tidak berbagi kata maupun makna semantik permukaan (satu soal dosen pembimbing, satu lagi soal liburan ke pantai). Pencarian vektor di-mock supaya hanya menemukan experience pertama (mensimulasikan kondisi vektor-saja yang gagal karena tidak ada kemiripan leksikal/semantik apa pun ke query).
@@ -28,14 +44,14 @@ ekstraksi LLM.
 
 `lifecycle_reappraisal_probe.json` adalah artefak probe end-to-end yang sudah
 tersedia: dua sesi difinalisasi dan relasi lifecycle yang ditulis pada Neo4j
-dibaca kembali. Dua penilai LLM buta (`gpt-4o-mini` dan `gpt-4.1-mini`) menilai
-lima relasi yang teramati. Tiga dari lima relasi dinilai selaras secara
-semantik dengan pemaknaan ulang yang tersurat; tiga dari tiga Thought yang
+dibaca kembali. Satu penilai LLM buta (`gemini-3.1-flash-lite`) menilai lima
+relasi yang teramati. Satu dari lima relasi dinilai selaras secara semantik
+dengan pemaknaan ulang yang tersurat; tiga dari tiga Thought yang
 disupersede berstatus tidak aktif. Hasil kecil ini menunjukkan bahwa transisi
 teknis tidak identik dengan ketepatan semantik ekstraksi, sehingga tidak
 digeneralisasi sebagai `update correctness` populasi.
 
-Metrik P@5, MRR, nDCG@5, `grounded-answer rate`, `contradiction rate`, dan
-`false-personalization rate` belum diisi karena belum tersedia korpus relevansi
-berjenjang maupun pasangan jawaban berlabel. Bab IV menyatakannya secara
-eksplisit, bukan menganggapnya lulus.
+Kalibrasi eksternal telah menyediakan P@5, MRR, dan nDCG@5 untuk retrieval
+sesi. Sebaliknya, `grounded-answer rate`, `contradiction rate`, dan
+`false-personalization rate` masih belum dihitung karena memerlukan pasangan
+jawaban berlabel; metrik tersebut tidak dianggap lulus.

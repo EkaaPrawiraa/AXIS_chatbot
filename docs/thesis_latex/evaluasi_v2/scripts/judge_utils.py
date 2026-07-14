@@ -10,11 +10,7 @@ from typing import Any
 
 
 ROOT = Path(__file__).resolve().parents[4]
-JUDGE_MODELS = ("gemini-3.5-flash", "gemini-3.1-flash-lite")
-# The adjudication pass has a separate instruction and request. It currently
-# reuses the stronger judge model, so reports must not call it a third
-# independent base model.
-ADJUDICATOR_MODEL = "gemini-3.5-flash"
+JUDGE_MODELS = ("gemini-3.1-flash-lite",)
 
 
 def load_project_env() -> None:
@@ -26,7 +22,9 @@ def load_project_env() -> None:
             if not raw or raw.startswith("#") or "=" not in raw:
                 continue
             key, value = raw.split("=", 1)
-            os.environ[key.strip()] = value.strip().strip("'\"")
+            # A caller may inject a replacement key for a reproducible run.
+            # Do not silently replace it with an older local evaluation key.
+            os.environ.setdefault(key.strip(), value.strip().strip("'\""))
 
 
 def call_json(*, model: str, prompt: str, max_output_tokens: int = 4000) -> Any:
@@ -67,7 +65,7 @@ def consensus_rows(
     id_key: str = "id",
     max_output_tokens: int = 4000,
 ) -> tuple[list[dict[str, Any]], dict[str, Any]]:
-    """Run two blind judge configurations and adjudicate only disagreements."""
+    """Run one deterministic blind LLM judge for a reproducible low-cost pass."""
     outputs: dict[str, list[dict[str, Any]]] = {}
     for model in JUDGE_MODELS:
         result = call_json(model=model, prompt=prompt, max_output_tokens=max_output_tokens)
@@ -79,37 +77,15 @@ def consensus_rows(
         model: {str(row[id_key]): row for row in rows if id_key in row}
         for model, rows in outputs.items()
     }
-    ids = set.intersection(*(set(rows) for rows in by_model.values()))
-    first, second = JUDGE_MODELS
-    disagreements = [
-        ident for ident in sorted(ids)
-        if {k: v for k, v in by_model[first][ident].items() if k != id_key}
-        != {k: v for k, v in by_model[second][ident].items() if k != id_key}
-    ]
-
-    adjudicated: dict[str, dict[str, Any]] = {}
-    if disagreements:
-        subset = [by_model[first][ident] for ident in disagreements]
-        adjudication_prompt = (
-            "Anda adalah adjudikator. Dua penilai independen berbeda pada beberapa "
-            "label berikut. Tentukan label akhir dengan menerapkan rubrik dari prompt "
-            "asal secara konsisten. Kembalikan HANYA JSON array dan pertahankan id.\n\n"
-            f"PROMPT ASAL:\n{prompt}\n\n"
-            f"KELUARAN PENILAI 1:\n{json.dumps(subset, ensure_ascii=False)}\n"
-            f"KELUARAN PENILAI 2:\n{json.dumps([by_model[second][i] for i in disagreements], ensure_ascii=False)}"
-        )
-        result = call_json(model=ADJUDICATOR_MODEL, prompt=adjudication_prompt, max_output_tokens=max_output_tokens)
-        if not isinstance(result, list):
-            raise ValueError("adjudicator did not return a JSON list")
-        adjudicated = {str(row[id_key]): dict(row) for row in result if id_key in row}
-
-    consensus = [adjudicated.get(ident, by_model[first][ident]) for ident in sorted(ids)]
+    only_model = JUDGE_MODELS[0]
+    ids = sorted(by_model[only_model])
+    consensus = [by_model[only_model][ident] for ident in ids]
     metadata = {
         "judge_models": list(JUDGE_MODELS),
-        "adjudicator_model": ADJUDICATOR_MODEL if disagreements else None,
+        "adjudicator_model": None,
         "n_rows": len(consensus),
-        "n_disagreements": len(disagreements),
-        "disagreement_ids": disagreements,
+        "n_disagreements": None,
+        "disagreement_ids": [],
         "raw_judges": outputs,
     }
     return consensus, metadata
@@ -137,9 +113,9 @@ def consensus_batched(
         batches.append(metadata)
     return rows, {
         "judge_models": list(JUDGE_MODELS),
-        "adjudicator_model": ADJUDICATOR_MODEL,
+        "adjudicator_model": None,
         "n_rows": len(rows),
         "n_batches": len(batches),
-        "n_disagreements": sum(batch["n_disagreements"] for batch in batches),
+        "n_disagreements": None,
         "batches": batches,
     }

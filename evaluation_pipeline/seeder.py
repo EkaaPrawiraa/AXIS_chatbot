@@ -107,6 +107,12 @@ async def seed_data():
                 f"{CONFIG.embedding_dimension}, got {len(vector)}"
             )
 
+    # Do not remove the previous fixture until every external embedding call
+    # succeeded. A temporary provider failure must not leave the evaluation
+    # database without its Arya and Budi fixtures.
+    clean_postgres()
+    clean_neo4j()
+
     now = datetime.now(timezone.utc)
     past = now - timedelta(days=2)
 
@@ -222,6 +228,4 @@ if __name__ == "__main__":
     CONFIG.validate_for(baseline=True)
     if not NEO4J_PASSWORD:
         parser.error("NEO4J_PASSWORD is required")
-    clean_postgres()
-    clean_neo4j()
     asyncio.run(seed_data())

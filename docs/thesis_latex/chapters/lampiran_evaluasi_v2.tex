@@ -8,37 +8,16 @@ Lampiran ini memuat definisi korpus, pedoman anotasi, rubrik, dan protokol ekspe
 \label{lamp:v2-annotation}
 \addcontentsline{loa}{lampiransub}{\protect\numberline{\thesection}Pedoman Anotasi dan Reliabilitas}
 
-Setiap tugas anotasi menggunakan pedoman tertulis yang dapat dijalankan oleh dua konfigurasi model penilai (\textit{LLM-as-judge}) \parencite{liu2023geval,zheng2023judging}. Prosedurnya adalah sebagai berikut.
+Setiap tugas anotasi menggunakan pedoman tertulis yang dijalankan oleh satu konfigurasi model penilai (\textit{LLM-as-judge}) yang dibekukan bersama artefak evaluasi \parencite{liu2023geval,zheng2023judging}. Prosedurnya adalah sebagai berikut.
 
 \begin{enumerate}[label=\arabic*.,leftmargin=*,itemsep=3pt]
-  \item Setiap konfigurasi model penilai menerima definisi label dan contoh positif serta negatif melalui \textit{system prompt} yang sama.
-  \item Setiap konfigurasi model penilai mengerjakan sampel kalibrasi terhadap label acuan yang sudah diketahui; sampel ini tidak dimasukkan ke hasil akhir.
-  \item Setiap konfigurasi model penilai memberi label secara independen pada korpus evaluasi.
-  \item Kesepakatan antarkonfigurasi dihitung sebelum penentuan label akhir.
-  \item Perbedaan label antarkonfigurasi diselesaikan oleh model penilai ketiga sebagai penentu.
-  \item Korpus yang telah disepakati dibekukan dan diberi versi.
+  \item Model penilai menerima definisi label dan contoh positif serta negatif melalui \textit{system prompt} yang dibekukan.
+  \item Model penilai mengerjakan sampel kalibrasi terhadap label acuan yang sudah diketahui; sampel ini tidak dimasukkan ke hasil akhir.
+  \item Model penilai memberi label pada korpus evaluasi secara buta terhadap identitas sistem yang dibandingkan.
+  \item Korpus, rubrik, profil model, dan keluaran mentah dibekukan serta diberi versi agar proses dapat dijalankan kembali.
 \end{enumerate}
 
-\begin{table}[!htbp]
-\centering
-\caption{Pemilihan ukuran kesepakatan antarkonfigurasi model penilai}
-{\footnotesize
-\begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}p{3.2cm}|>{\raggedright\arraybackslash}X|}
-\hline
-\rowcolor{tableheadgray}
-\textbf{Kondisi} & \textbf{Ukuran yang digunakan} \\
-\hline
-Dua konfigurasi model penilai, label ordinal & \textit{Weighted kappa} \\
-\hline
-Dua konfigurasi model penilai, label nominal atau biner & Cohen's kappa \\
-\hline
-Lebih dari dua konfigurasi model penilai atau terdapat label hilang & Krippendorff's alpha dengan tingkat pengukuran yang sesuai \\
-\hline
-\end{tabularx}
-}
-\end{table}
-
-Pedoman anotasi dan rubrik pada lampiran ini dibekukan bersama konfigurasi model serta artefak penilaian agar evaluasi otomatis dapat diulang. Pengujian pengguna nyata pada Subbab~\ref{sec:evaluasi-pengguna} memakai kuesioner untuk menangkap persepsi yang tidak dapat disimpulkan dari penilaian model.
+Pendekatan satu penilai dipilih untuk menjaga biaya evaluasi tetap proporsional terhadap tahap purwarupa. Karena itu, hasilnya dibaca sebagai evaluasi otomatis berbasis rubrik, bukan sebagai ukuran kesepakatan antarpenilai. Pengujian pengguna nyata pada Subbab~\ref{sec:evaluasi-pengguna} tetap memakai kuesioner untuk menangkap persepsi yang tidak dapat disimpulkan dari penilaian model.
 
 \section{Korpus Benchmark Keselamatan Percakapan}
 \label{lamp:v2-safety-corpus}
@@ -112,7 +91,7 @@ Penilai menerima konteks pengguna dan dua respons yang diberi kode A serta B. Na
 \begin{figure}[!htbp]
   \centering
   \includegraphics[width=0.85\textwidth,height=0.85\textheight,keepaspectratio]{figures/rm1_dialogue_eval_flow.pdf}
-  \caption[Alur penilaian buta RM1a]{Alur penilaian buta RM1a dari pembangkitan respons hingga agregasi preferensi dan \textit{weighted kappa}.}
+  \caption[Alur penilaian buta RM1a]{Alur penilaian buta RM1a dari pembangkitan respons hingga agregasi preferensi.}
   \label{fig:rm1-dialogue-eval-flow}
 \end{figure}
 
@@ -539,7 +518,7 @@ Pemetaan jawaban bebas PHQ-9 pada RM2 memakai \textit{prompt} \textit{scorer} ya
 \label{lamp:v2-rm1-transcript}
 \addcontentsline{loa}{lampiran}{\protect\numberline{\thechapter}Transkrip Percakapan Evaluasi RM1a}
 
-Lampiran ini memuat transkrip apa adanya keenam skenario penilaian buta RM1a (Subbab~\ref{sec:v2-dialogue}): pesan pengguna, respons AXIS, respons \textit{baseline}, serta skor dan preferensi dari kedua konfigurasi model penilai. Label A/B pada tabel skor sesuai urutan penyajian ke penilai (diacak per skenario, berbeda dari label AXIS/\textit{baseline}). Konten disisipkan langsung dari artefak evaluasi tersimpan, bukan disalin manual, sehingga tidak dapat menyimpang dari data asli hasil eksekusi.
+Lampiran ini memuat transkrip apa adanya 18 skenario penilaian buta RM1a (Subbab~\ref{sec:v2-dialogue}): pesan pengguna, respons AXIS, respons \textit{baseline}, serta skor dan preferensi dari satu konfigurasi model penilai. Label A/B pada tabel skor sesuai urutan penyajian ke penilai (diacak per skenario, berbeda dari label AXIS/\textit{baseline}). Konten disisipkan langsung dari artefak evaluasi tersimpan, bukan disalin manual, sehingga tidak dapat menyimpang dari data asli hasil eksekusi.
 
 \input{chapters/generated_rm1_transcript.tex}
 
@@ -620,7 +599,7 @@ Metrik agregat dan per slice & Sebagian; ragam formal dan bahasa campur pada RM1
 \hline
 Interval kepercayaan untuk perbandingan & Sebagian; dihitung untuk ablasi RM3 (Tabel~\ref{tab:v2-ablation-result}), belum untuk blok lain karena skala kasusnya terlalu kecil untuk bermakna \\
 \hline
-Kesepakatan antarkonfigurasi model penilai & Ya, untuk RM1a (Tabel~\ref{tab:v2-dialogue-result}); tidak berlaku untuk blok yang hanya memakai satu konfigurasi model \\
+Konfigurasi model penilai dan rubrik & Ya; dicatat pada artefak setiap blok evaluasi \\
 \hline
 Matriks kebingungan atau keluaran per kasus & Ya, tersimpan sebagai artefak (Lampiran~\ref{lamp:v2-rm1-transcript} dan berkas hasil yang menyertai lampiran ini) \\
 \hline

@@ -20,11 +20,11 @@ Pertama, AXIS menggabungkan percakapan reflektif berprinsip CBT, pengayaan
 ragam bahasa, dan batas keselamatan dalam satu alur percakapan. Validasi
 kontrak menunjukkan 54 skenario kebijakan dialog CBT dan 80 skenario
 \textit{guardrail} lulus. Pada penilaian buta berskala kecil, AXIS dipilih pada
-11 dari 12 penilaian berpasangan; perbedaan yang paling konsisten terletak pada
+10 dari 18 penilaian berpasangan; perbedaan yang paling konsisten terletak pada
 ketepatan penggunaan konteks memori, bukan pada seluruh dimensi kualitas
 percakapan. Pada \textit{benchmark} 50 pesan keselamatan, sistem mencapai
-sensitivitas 0,708 dan spesifisitas 0,923. Seluruh respons pada kasus yang
-berhasil dideteksi memenuhi rubrik keselamatan, tetapi tujuh pesan berisiko
+sensitivitas 0,654 dan spesifisitas 0,917. Seluruh respons pada kasus yang
+berhasil dideteksi memenuhi rubrik keselamatan, tetapi sembilan pesan berisiko
 masih tidak terdeteksi. Oleh sebab itu, hasil ini membuktikan bahwa mekanisme
 keselamatan dan percakapan telah berjalan pada skenario yang diuji, bukan bahwa
 sistem sudah memahami seluruh variasi ekspresi krisis atau lebih empatik secara
@@ -34,9 +34,9 @@ Kedua, mood harian dan PHQ-9 telah diorkestrasi sebagai bagian dari
 percakapan, bukan sebagai diagnosis maupun formulir yang terlepas dari konteks
 pengguna. Sebanyak 130 kontrak otomatis yang mencakup penawaran, penolakan,
 penyampaian item, klarifikasi, penskoran, umpan balik, dan rute item kesembilan
-lulus. Pada korpus 40 jawaban bebas, 36 jawaban dengan frekuensi tegas dipetakan
+lulus. Pada korpus 80 jawaban bebas, 73 jawaban dengan frekuensi tegas dipetakan
 sesuai label acuan dengan \textit{macro-F1} dan \textit{quadratic weighted
-kappa} sebesar 1,00, sedangkan empat jawaban ambigu diarahkan ke klarifikasi.
+kappa} sebesar 1,00, sedangkan tujuh jawaban ambigu diarahkan ke klarifikasi.
 Hasil ini mendukung kesetiaan orkestrasi dan pemetaan jawaban bebas pada korpus
 uji, tetapi belum membuktikan validitas psikometrik maupun manfaat klinis dari
 sistem.
@@ -48,8 +48,8 @@ Pada 15 kueri parafrase satu-\textit{hop}, kondisi hibrid dan vektor-saja
 memperoleh \textit{Recall@5} yang sama, yaitu 1,00. Sebaliknya, pada satu kueri
 yang membutuhkan identitas relasi graf, kondisi hibrid berhasil menemukan
 pengalaman terkait sedangkan kondisi vektor-saja tidak. Probe pemaknaan ulang
-ujung-ke-ujung juga menunjukkan tiga dari lima relasi yang ditulis selaras
-secara semantik menurut dua penilai LLM, dan tiga pikiran lama yang tersupersede
+ujung-ke-ujung juga menunjukkan satu dari lima relasi yang ditulis selaras
+secara semantik menurut satu penilai LLM, dan tiga pikiran lama yang tersupersede
 seluruhnya tidak lagi aktif. Temuan ini menunjukkan nilai graf pada kueri
 relasional dan pengelolaan siklus hidup memori, tetapi belum cukup untuk
 mengklaim keunggulan umum terhadap pencarian semantik atau ketepatan semantik
@@ -59,8 +59,7 @@ Secara keseluruhan, AXIS telah menghasilkan purwarupa yang memadukan
 pendampingan percakapan, asesmen skrining depresi secara percakapan, dan memori
 jangka panjang dalam satu sistem yang dapat diuji. Pengujian pengguna nyata
 belum dilakukan; karena itu, kesimpulan mengenai rasa didampingi, kemudahan
-penggunaan, kenyamanan pengguna, dan kesetaraan skor PHQ-9 dengan bentuk
-mandiri belum dapat ditarik pada laporan ini.
+penggunaan, dan kenyamanan pengguna belum dapat ditarik pada laporan ini.
 
 \section{Keterbatasan}
 \label{sec:keterbatasan}
@@ -70,19 +69,20 @@ validasi kontrak membuktikan perilaku sistem pada skenario terkontrol, bukan
 seluruh kemungkinan percakapan bebas. Verifikasi teknis untuk unduh data masih
 berada pada lapisan antarmuka dan belum memiliki kontrak otomatis tersendiri.
 
-Kedua, penilaian respons terbuka menggunakan dua konfigurasi model sebagai
+Kedua, penilaian respons terbuka menggunakan satu konfigurasi model sebagai
 \textit{LLM-as-judge}. Metode ini membantu menerapkan rubrik secara konsisten,
 tetapi tidak menggantikan penilaian pengguna atau ahli. Ukuran korpus dialog,
-keselamatan, dan jawaban bebas PHQ-9 juga masih terbatas. Tujuh pesan berisiko
+keselamatan, dan jawaban bebas PHQ-9 juga masih terbatas. Sembilan pesan berisiko
 yang luput pada \textit{benchmark} keselamatan menunjukkan bahwa deteksi
 eufemisme belum memadai untuk digeneralisasi.
 
-Ketiga, evaluasi memori belum memiliki korpus standar emas relevansi berjenjang maupun
-korpus jawaban berlabel. Oleh sebab itu, metrik seperti \textit{P@5}, MRR,
-nDCG@5, \textit{grounded-answer rate}, \textit{contradiction rate},
-\textit{false-personalization rate}, dan \textit{stale-memory rate} belum dapat
-dihitung. Probe pemaknaan ulang juga hanya terdiri atas lima relasi sehingga
-tidak dapat menjadi estimasi populasi.
+Ketiga, kalibrasi retrieval eksternal sudah menghitung \textit{P@5}, MRR, dan
+nDCG@5 pada LongMemEval_S, tetapi korpus tersebut belum menyediakan anotasi
+graf AXIS maupun pasangan jawaban berlabel. Oleh sebab itu,
+\textit{grounded-answer rate}, \textit{contradiction rate},
+\textit{false-personalization rate}, \textit{update correctness}, dan
+\textit{stale-memory rate} belum dapat dihitung. Probe pemaknaan ulang juga
+hanya terdiri atas lima relasi sehingga tidak dapat menjadi estimasi populasi.
 
 Keempat, pengujian pengguna nyata belum dilaksanakan. Dengan demikian,
 pengalaman subjektif mahasiswa, pemahaman terhadap kendali data, dan kemudahan

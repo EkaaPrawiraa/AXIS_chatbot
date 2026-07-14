@@ -46,7 +46,7 @@ DIMENSION_LABELS = {
 
 
 def plot_rm1_dialogue() -> None:
-    data = json.loads((EVAL_DIR / "rm1_dialogue" / "raw_results.json").read_text(encoding="utf-8"))
+    data = json.loads((EVAL_DIR / "rm1_dialogue" / "raw_results_expanded.json").read_text(encoding="utf-8"))
 
     dims = list(DIMENSION_LABELS.keys())
     axis_scores: dict[str, list[float]] = {d: [] for d in dims}

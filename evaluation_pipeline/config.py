@@ -109,7 +109,7 @@ class EvaluationConfig:
             neo4j_password=_env("NEO4J_PASSWORD"),
             neo4j_database=_env("NEO4J_DATABASE", "neo4j"),
             baseline_provider=baseline_provider,
-            baseline_model=_env("EVAL_BASELINE_MODEL", "gemini-3.5-flash"),
+            baseline_model=_env("EVAL_BASELINE_MODEL", "gemini-3.1-flash-lite"),
             baseline_base_url=provider_url(baseline_provider),
             baseline_api_key=provider_key(baseline_provider),
             baseline_temperature=_env_float("EVAL_BASELINE_TEMPERATURE", 0.7),

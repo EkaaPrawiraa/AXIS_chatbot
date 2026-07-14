@@ -1,27 +1,23 @@
-"""Judge the semantic adequacy of a real lifecycle probe with two LLM judges.
+"""Judge the semantic adequacy of a real lifecycle probe with one LLM judge.
 
 The probe is an earlier successful end-to-end session-finalizer run.  It
 contains the user's two explicit reappraisals and the Neo4j lifecycle edges
 observed after finalization.  This script does not expose model reasoning; it
-stores only the rubric labels, model identities, and adjudicated result.
+stores only the rubric labels, model identity, and result.
 """
 
 from __future__ import annotations
 
 import json
-import os
-import re
+import sys
 from pathlib import Path
 from typing import Any
 
-from openai import OpenAI
-
-
 ROOT = Path(__file__).resolve().parents[4]
+sys.path.insert(0, str(Path(__file__).parent))
 SOURCE = ROOT / "evaluation_pipeline/results/reappraisal_probe.json"
 OUTPUT = ROOT / "docs/thesis_latex/evaluasi_v2/rm3_memori/lifecycle_llm_judge_results.json"
-JUDGES = ("gpt-4o-mini", "gpt-4.1-mini")
-ADJUDICATOR = "gpt-4o-mini"
+JUDGES = ("gemini-3.1-flash-lite",)
 
 SESSION_2_TURNS = [
     "Saya dulu takut sidang tugas akhir akan gagal total. Setelah presentasi latihan di depan teman-teman berjalan cukup lancar dan mendapat masukan positif, saya menilai situasinya tidak seburuk bayangan awal.",
@@ -29,19 +25,9 @@ SESSION_2_TURNS = [
 ]
 
 
-def load_env() -> None:
-    for path in (ROOT / "agentic/.env", ROOT / "evaluation_pipeline/.env"):
-        if not path.exists():
-            continue
-        for line in path.read_text(encoding="utf-8").splitlines():
-            line = line.strip()
-            if not line or line.startswith("#") or "=" not in line:
-                continue
-            key, value = line.split("=", 1)
-            os.environ.setdefault(key.strip(), value.strip().strip("'\""))
+def call_judge(model: str, cases: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    from judge_utils import call_json
 
-
-def call_judge(client: OpenAI, model: str, cases: list[dict[str, Any]]) -> list[dict[str, Any]]:
     prompt = f"""Anda adalah penilai buta untuk evaluasi lifecycle memori non-klinis.
 Nilai apakah relasi memori yang diamati benar-benar merepresentasikan pemaknaan
 ulang yang tersurat dalam cerita pengguna. Jangan menilai gaya bahasa atau
@@ -55,14 +41,7 @@ Cerita pengguna pada sesi kedua:
 Relasi yang diamati:
 {json.dumps(cases, ensure_ascii=False)}
 """
-    response = client.responses.create(
-        model=model,
-        input=prompt,
-        temperature=0,
-        text={"format": {"type": "json_object"}},
-    )
-    raw = response.output_text.strip()
-    parsed = json.loads(raw)
+    parsed = call_json(model=model, prompt=prompt, max_output_tokens=1200)
     if isinstance(parsed, dict):
         parsed = parsed.get("results", parsed.get("cases", []))
     if not isinstance(parsed, list):
@@ -71,9 +50,9 @@ Relasi yang diamati:
 
 
 def main() -> None:
-    load_env()
-    if not os.getenv("OPENAI_API_KEY"):
-        raise RuntimeError("OPENAI_API_KEY is unavailable")
+    from judge_utils import load_project_env
+
+    load_project_env()
     if not SOURCE.exists():
         raise RuntimeError(f"Missing lifecycle probe artifact: {SOURCE}")
 
@@ -99,22 +78,14 @@ def main() -> None:
     if not cases:
         raise RuntimeError("Lifecycle probe did not contain any observed relation")
 
-    client = OpenAI(api_key=os.environ["OPENAI_API_KEY"])
-    outputs = {model: call_judge(client, model, cases) for model in JUDGES}
+    outputs = {model: call_judge(model, cases) for model in JUDGES}
     by_judge = {
         model: {str(row["id"]): row for row in rows}
         for model, rows in outputs.items()
     }
-    first, second = JUDGES
-    disagreements = [
-        case["id"] for case in cases
-        if by_judge[first].get(case["id"], {}).get("supports_reappraisal")
-        != by_judge[second].get(case["id"], {}).get("supports_reappraisal")
-    ]
-    final = dict(by_judge[first])
-    if disagreements:
-        adjudicated = call_judge(client, ADJUDICATOR, [case for case in cases if case["id"] in disagreements])
-        final.update({str(row["id"]): row for row in adjudicated})
+    only_judge = JUDGES[0]
+    disagreements: list[str] = []
+    final = dict(by_judge[only_judge])
 
     verdicts = [bool(final[case["id"]].get("supports_reappraisal")) for case in cases]
     old_thoughts_inactive = [
@@ -124,7 +95,7 @@ def main() -> None:
     payload = {
         "source_artifact": str(SOURCE.relative_to(ROOT)),
         "judge_models": list(JUDGES),
-        "adjudicator_model": ADJUDICATOR if disagreements else None,
+        "adjudicator_model": None,
         "n_cases": len(cases),
         "n_disagreements": len(disagreements),
         "cases": cases,

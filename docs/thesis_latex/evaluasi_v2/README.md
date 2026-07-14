@@ -18,15 +18,24 @@ agentik tersedia:
 ```bash
 set -a; source agentic/.env; set +a
 .venv/bin/python docs/thesis_latex/evaluasi_v2/scripts/rm1_safety_llm_judge.py
+.venv/bin/python docs/thesis_latex/evaluasi_v2/scripts/rm1_dialogue_judge.py
 .venv/bin/python docs/thesis_latex/evaluasi_v2/scripts/rm2_phq9_llm_judge.py
 .venv/bin/python docs/thesis_latex/evaluasi_v2/scripts/rm2_phq9_contract_eval.py
 .venv/bin/python docs/thesis_latex/evaluasi_v2/scripts/rm3_lifecycle_contract_eval.py
 .venv/bin/python docs/thesis_latex/evaluasi_v2/scripts/rm3_lifecycle_llm_judge.py
-.venv/bin/python docs/thesis_latex/evaluasi_v2/scripts/summarize_judge_agreement.py
+.venv/bin/python docs/thesis_latex/evaluasi_v2/scripts/rm3_longmemeval_retrieval.py
 .venv/bin/python docs/thesis_latex/evaluasi_v2/scripts/generate_evaluation_figures.py
 ```
 
-RM3 melaporkan kontrak lifecycle deterministik dan satu probe reappraisal
-end-to-end yang dinilai LLM, di samping probe pengambilan memori. Korpus
-relevansi berjenjang untuk P@5, MRR, nDCG@5, dan korpus kualitas jawaban belum
-tersedia; angka untuk metrik tersebut tidak diisi pada Bab IV.
+RM3 melaporkan kontrak lifecycle deterministik, satu probe reappraisal
+end-to-end yang dinilai LLM, probe pengambilan memori internal, serta kalibrasi
+retrieval sesi pada sampel LongMemEval_S. Korpus eksternal tersebut menyediakan
+label sesi bukti untuk P@5, Recall@5, MRR, dan nDCG@5, tetapi bukan anotasi graf
+AXIS atau pasangan jawaban berlabel. Karena itu, metrik kualitas penggunaan
+memori pada jawaban tetap belum diisi.
+
+Seluruh skrip penilaian dan pembangkitan teks LLM yang aktif memakai
+`gemini-3.1-flash-lite`. Pada penilaian dialog, model yang sama juga dipakai
+untuk pembangkitan AXIS dan baseline hanya selama proses evaluasi; konfigurasi
+deployment tidak berubah. Kalibrasi retrieval tetap memakai model *embedding*
+tersendiri karena tugasnya membentuk vektor, bukan menyusun atau menilai teks.

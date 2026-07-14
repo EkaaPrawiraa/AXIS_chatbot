@@ -163,7 +163,7 @@ Kendali pengguna menjadi bagian dari rancangan companionship karena AXIS membawa
 \label{sec:rancangan-percakapan-persona}
 \label{sec:rancangan-axis}
 
-Rancangan berikut memperdalam K1 pada Tabel~\ref{tab:kebutuhan-solusi} dari sisi stabilitas persona dan kalibrasi domain. Persona AXIS dirancang stabil lintas sesi. Stabilitas ini penting karena pengguna yang kembali setelah beberapa hari atau minggu perlu merasa berhadapan dengan pendamping yang sama, bukan agen yang berubah-ubah. AXIS harus terdengar hangat, tidak menghakimi, tidak terlalu formal, tetapi juga tidak berpura-pura menjadi manusia atau tenaga klinis. Dalam konteks mahasiswa Indonesia, respons perlu cukup natural untuk menerima bahasa informal dan bahasa campur, tetapi tetap jelas ketika membahas topik yang sensitif.
+Rancangan berikut memperdalam K1 dan K3 pada Tabel~\ref{tab:kebutuhan-solusi} dari sisi stabilitas persona dan kalibrasi domain. Persona AXIS dirancang stabil lintas sesi. Stabilitas ini penting karena pengguna yang kembali setelah beberapa hari atau minggu perlu merasa berhadapan dengan pendamping yang sama, bukan agen yang berubah-ubah. AXIS harus terdengar hangat, tidak menghakimi, tidak terlalu formal, tetapi juga tidak berpura-pura menjadi manusia atau tenaga klinis. Dalam konteks mahasiswa Indonesia, respons perlu cukup natural untuk menerima bahasa informal dan bahasa campur, tetapi tetap jelas ketika membahas topik yang sensitif.
 
 Kalibrasi mahasiswa Indonesia tidak berarti sistem hanya bisa digunakan mahasiswa. Artinya, rancangan awal dipusatkan pada domain yang secara empiris paling banyak muncul pada kehidupan mahasiswa: tekanan akademik dan relasi dengan dosen pembimbing \parencite{pusparini2025thesisstress}, tekanan dan ekspektasi keluarga \parencite{mardhiyah2026parentalpressure}, keterlibatan organisasi yang berisiko \textit{burnout} \parencite{octaviani2023organizationalburnout,haase2025feelingseen}, pembentukan identitas diri dan rasa tertinggal dari teman seangkatan \parencite{pakozdy2024impostor,habibie2023quarterlifecrisis}, serta ketidakpastian transisi karier \parencite{yang2025employmentanxiety}. Domain ini diturunkan dari literatur tersebut, lalu dipakai secara konsisten untuk memengaruhi kategori memori yang dirancang pada Subbab~\ref{sec:rancangan-memori-jangka-panjang}, contoh label topik pada instruksi ekstraksi memori (Lampiran~\ref{lamp:agentic-prompts-kg}), gaya bahasa, dan sumber bantuan yang disediakan.
 
@@ -302,16 +302,16 @@ Lima blok evaluasi digunakan sebagai berikut.
 \begin{enumerate}[label=\arabic*.,leftmargin=*,itemsep=4pt]
   \item \textbf{Validasi kontrak sistem.} Pengujian unit dan integrasi memeriksa transisi, rute, persistensi, dan operasi data yang memiliki keluaran benar atau salah secara eksplisit. Blok ini membuktikan kesesuaian implementasi terhadap rancangan, bukan kualitas respons terbuka.
 
-  \item \textbf{\textit{Benchmark} berlabel.} Korpus yang dibekukan digunakan untuk menguji deteksi risiko, pemetaan jawaban bebas PHQ-9, penulisan graf memori, \textit{retrieval}, pembaruan \textit{lifecycle}, dan penggunaan memori pada jawaban. Untuk kontrak yang memiliki keluaran deterministik, label acuan ditetapkan langsung dari aturan instrumen dan skenario. Untuk keluaran terbuka, label referensi operasional disusun dengan pedoman tertulis, dua konfigurasi model penilai yang berbeda, dan penentuan akhir oleh model ketiga pada kasus yang tidak selaras.
+  \item \textbf{\textit{Benchmark} berlabel.} Korpus yang dibekukan digunakan untuk menguji deteksi risiko, pemetaan jawaban bebas PHQ-9, penulisan graf memori, \textit{retrieval}, pembaruan \textit{lifecycle}, dan penggunaan memori pada jawaban. Untuk kontrak yang memiliki keluaran deterministik, label acuan ditetapkan langsung dari aturan instrumen dan skenario. Untuk keluaran terbuka, label referensi operasional disusun dengan pedoman tertulis dan konfigurasi penilai LLM yang dicatat bersama artefak evaluasi.
 
-  \item \textbf{Penilaian buta respons.} Respons AXIS dan \textit{baseline} untuk skenario yang sama diacak serta disembunyikan identitasnya. Dua konfigurasi \textit{LLM-as-judge} menerapkan rubrik ordinal untuk validasi emosi, pemahaman konteks, eksplorasi, ketepatan CBT, batas non-klinis, kesesuaian ragam bahasa, dan \textit{groundedness} ketika memori digunakan. Ketidaksesuaian yang material diperiksa oleh konfigurasi penilai ketiga.
+  \item \textbf{Penilaian buta respons.} Respons AXIS dan \textit{baseline} untuk skenario yang sama diacak serta disembunyikan identitasnya. Konfigurasi \textit{LLM-as-judge} yang dicatat pada artefak evaluasi menerapkan rubrik ordinal untuk validasi emosi, pemahaman konteks, eksplorasi, ketepatan CBT, batas non-klinis, kesesuaian ragam bahasa, dan \textit{groundedness} ketika memori digunakan.
 
   \item \textbf{Ablasi terkendali.} Kondisi retrieval vektor saja dibandingkan dengan retrieval hibrid menggunakan korpus, kueri, model, prompt, parameter decoding, jumlah kandidat, dan batas konteks yang sama. Perbandingan dilakukan berpasangan pada tingkat kueri.
 
   \item \textbf{Pengujian pengguna nyata.} Mahasiswa menggunakan purwarupa untuk menilai kegunaan, rasa didampingi, kejelasan skrining, kesinambungan memori, dan pemahaman kendali data. Hasilnya dibaca sebagai pengalaman awal penggunaan, bukan bukti efektivitas klinis.
 \end{enumerate}
 
-Korpus, \textit{prompt}, profil model, konfigurasi decoding, dan versi artefak dibekukan sebelum evaluasi. Hasil kuantitatif dilaporkan bersama interval kepercayaan ketika relevan. Penilaian otomatis melaporkan kesepakatan antarkonfigurasi model penilai; pengujian pengguna nyata tetap mengumpulkan persepsi mahasiswa melalui kuesioner. Hasil yang berkaitan dengan domain bahasa dilaporkan menurut ragam formal, informal, bahasa campur, dan eufemistik.
+Korpus, \textit{prompt}, profil model, konfigurasi decoding, dan versi artefak dibekukan sebelum evaluasi. Hasil kuantitatif dilaporkan bersama interval kepercayaan ketika relevan. Penilaian otomatis melaporkan konfigurasi model penilai, rubrik, serta artefak keluarannya; pengujian pengguna nyata tetap mengumpulkan persepsi mahasiswa melalui kuesioner. Hasil yang berkaitan dengan domain bahasa dilaporkan menurut ragam formal, informal, bahasa campur, dan eufemistik.
 
 Hubungan antara klaim, unit evaluasi, dan bukti utama dirangkum pada Tabel~\ref{tab:pemetaan-rumusan-rancangan}.
 
@@ -325,7 +325,7 @@ Hubungan antara klaim, unit evaluasi, dan bukti utama dirangkum pada Tabel~\ref{
 \rowcolor{tableheadgray}
 \textbf{Klaim} & \textbf{Unit evaluasi} & \textbf{Bukti dan metrik utama} \\
 \hline
-RM1a: kualitas respons suportif & Respons AXIS dan \textit{baseline} pada skenario yang sama & Penilaian buta dengan rubrik ordinal berbasis EPITOME dan dimensi tambahan; median atau distribusi per dimensi; preferensi berpasangan; \textit{weighted kappa} atau Krippendorff's alpha \\
+RM1a: kualitas respons suportif & Respons AXIS dan \textit{baseline} pada skenario yang sama & Penilaian buta dengan rubrik ordinal berbasis EPITOME dan dimensi tambahan; median atau distribusi per dimensi; preferensi berpasangan \\
 \hline
 RM1b: keselamatan percakapan & Pesan berisiko tinggi dan pesan pembanding tanpa risiko & Sensitivitas sebagai metrik primer; spesifisitas; presisi; $F_2$; jumlah \textit{false negative}; kepatuhan respons aman \\
 \hline

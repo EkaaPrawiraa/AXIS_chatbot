@@ -40,6 +40,19 @@ GROUPS = {
 }
 
 
+def load_agentic_env() -> None:
+    """Make database-backed contract runs reproducible from the repository root."""
+    path = ROOT / "agentic" / ".env"
+    if not path.exists():
+        return
+    for line in path.read_text(encoding="utf-8").splitlines():
+        raw = line.strip()
+        if not raw or raw.startswith("#") or "=" not in raw:
+            continue
+        key, value = raw.split("=", 1)
+        os.environ.setdefault(key.strip(), value.strip().strip("'\""))
+
+
 def run_group(name: str, targets: list[str]) -> dict[str, object]:
     command = [sys.executable, "-m", "pytest", "-q", *targets]
     completed = subprocess.run(
@@ -52,19 +65,23 @@ def run_group(name: str, targets: list[str]) -> dict[str, object]:
     )
     output = f"{completed.stdout}\n{completed.stderr}".strip()
     match = re.search(r"(\d+) passed(?:, (\d+) failed)?", output)
+    skipped_match = re.search(r"(\d+) skipped", output)
     passed = int(match.group(1)) if match else 0
     failed = int(match.group(2) or 0) if match else 0
+    skipped = int(skipped_match.group(1)) if skipped_match else 0
     return {
         "group": name,
         "command": command,
         "passed": passed,
         "failed": failed,
+        "skipped": skipped,
         "exit_code": completed.returncode,
         "output": output,
     }
 
 
 def main() -> int:
+    load_agentic_env()
     groups = [run_group(name, targets) for name, targets in GROUPS.items()]
     payload = {
         "evaluation": "RM3 deterministic lifecycle and control contracts",
@@ -77,13 +94,19 @@ def main() -> int:
         "summary": {
             "passed": sum(int(group["passed"]) for group in groups),
             "failed": sum(int(group["failed"]) for group in groups),
-            "all_groups_passed": all(int(group["exit_code"]) == 0 for group in groups),
+            "all_groups_passed": all(
+                int(group["exit_code"]) == 0 and int(group["skipped"]) == 0
+                for group in groups
+            ),
         },
     }
     OUTPUT.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(f"Wrote {OUTPUT}")
     for group in groups:
-        print(f"{group['group']}: {group['passed']} passed, {group['failed']} failed")
+        print(
+            f"{group['group']}: {group['passed']} passed, "
+            f"{group['failed']} failed, {group['skipped']} skipped"
+        )
     return 0 if payload["summary"]["all_groups_passed"] else 1
 
 
