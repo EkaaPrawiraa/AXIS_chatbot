@@ -17,7 +17,7 @@ ROOT = Path(__file__).resolve().parents[4]
 sys.path.insert(0, str(Path(__file__).parent))
 SOURCE = ROOT / "evaluation_pipeline/results/reappraisal_probe.json"
 OUTPUT = ROOT / "docs/thesis_latex/evaluasi_v2/rm3_memori/lifecycle_llm_judge_results.json"
-JUDGES = ("gemini-3.1-flash-lite",)
+JUDGES = ("gemini-3.1-flash-lite", "gemini-3.1-pro-preview")
 
 SESSION_2_TURNS = [
     "Saya dulu takut sidang tugas akhir akan gagal total. Setelah presentasi latihan di depan teman-teman berjalan cukup lancar dan mendapat masukan positif, saya menilai situasinya tidak seburuk bayangan awal.",
@@ -41,7 +41,7 @@ Cerita pengguna pada sesi kedua:
 Relasi yang diamati:
 {json.dumps(cases, ensure_ascii=False)}
 """
-    parsed = call_json(model=model, prompt=prompt, max_output_tokens=1200)
+    parsed = call_json(model=model, prompt=prompt, max_output_tokens=24000)
     if isinstance(parsed, dict):
         parsed = parsed.get("results", parsed.get("cases", []))
     if not isinstance(parsed, list):
@@ -84,8 +84,16 @@ def main() -> None:
         for model, rows in outputs.items()
     }
     only_judge = JUDGES[0]
-    disagreements: list[str] = []
     final = dict(by_judge[only_judge])
+
+    disagreements: list[str] = []
+    if len(JUDGES) > 1:
+        secondary = JUDGES[1]
+        for case in cases:
+            a = bool(by_judge[only_judge].get(case["id"], {}).get("supports_reappraisal"))
+            b = bool(by_judge.get(secondary, {}).get(case["id"], {}).get("supports_reappraisal"))
+            if a != b:
+                disagreements.append(case["id"])
 
     verdicts = [bool(final[case["id"]].get("supports_reappraisal")) for case in cases]
     old_thoughts_inactive = [

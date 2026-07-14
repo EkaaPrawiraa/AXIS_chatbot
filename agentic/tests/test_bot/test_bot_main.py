@@ -1577,8 +1577,8 @@ async def chat_loop_nodes(
 async def _bootstrap_user_and_session(user_id: str | None) -> tuple[str, str]:
     """user, ok := db.Get("user").(map[string]interface{}) if ok {     user["id"].(string) }  session, ok := db.Get("session").(map[string]interface{}) if ok {     session["id"].(string) }"""
     client = nc.get_client()
-    user_id    = user_id or f"cli-user-{uuid.uuid4()}"
-    session_id = f"cli-sess-{uuid.uuid4()}"
+    user_id    = user_id or str(uuid.uuid4())
+    session_id = str(uuid.uuid4())
 
     await client.execute_write(
         """

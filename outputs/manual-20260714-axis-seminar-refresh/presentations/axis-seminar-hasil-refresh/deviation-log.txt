@@ -1,0 +1,1 @@
+Deck baru merupakan pembaruan substantif dari deck 15 slide terdahulu. Sistem visualnya dipertahankan, sedangkan struktur diperluas menjadi deck inti dan bank artefak karena pengguna secara eksplisit meminta seluruh gambar dan tabel laporan tersedia untuk kurasi manual.

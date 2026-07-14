@@ -1,0 +1,1 @@
+QA utama menggunakan contact sheet untuk slide inti 1--20. Periksa keterbacaan judul, angka evaluasi, alur visual, crop screenshot, dan tidak adanya teks yang melewati bingkai. Bank artefak ditinjau melalui slide sampel awal, tengah, dan akhir untuk memastikan gambar/tabel halaman PDF tidak kosong dan tetap berada dalam margin slide.

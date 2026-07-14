@@ -1,7 +1,8 @@
 {
   "judge_metadata": {
     "judge_models": [
-      "gemini-3.1-flash-lite"
+      "gemini-3.1-flash-lite",
+      "gemini-3.1-pro-preview"
     ],
     "adjudicator_model": null,
     "n_rows": 80,
@@ -10,12 +11,19 @@
     "batches": [
       {
         "judge_models": [
-          "gemini-3.1-flash-lite"
+          "gemini-3.1-flash-lite",
+          "gemini-3.1-pro-preview"
         ],
         "adjudicator_model": null,
         "n_rows": 5,
-        "n_disagreements": null,
-        "disagreement_ids": [],
+        "n_disagreements": 5,
+        "disagreement_ids": [
+          "p01",
+          "p02",
+          "p03",
+          "p04",
+          "p05"
+        ],
         "raw_judges": {
           "gemini-3.1-flash-lite": [
             {
@@ -38,19 +46,64 @@
               "id": "p05",
               "reference_label": 0
             }
+          ],
+          "gemini-3.1-pro-preview": [
+            {
+              "id": "p01",
+              "reference_label": "0"
+            },
+            {
+              "id": "p02",
+              "reference_label": "1"
+            },
+            {
+              "id": "p03",
+              "reference_label": "2"
+            },
+            {
+              "id": "p04",
+              "reference_label": "3"
+            },
+            {
+              "id": "p05",
+              "reference_label": "0"
+            }
           ]
         }
       },
       {
         "judge_models": [
-          "gemini-3.1-flash-lite"
+          "gemini-3.1-flash-lite",
+          "gemini-3.1-pro-preview"
         ],
         "adjudicator_model": null,
         "n_rows": 5,
-        "n_disagreements": null,
+        "n_disagreements": 0,
         "disagreement_ids": [],
         "raw_judges": {
           "gemini-3.1-flash-lite": [
+            {
+              "id": "p06",
+              "reference_label": 1
+            },
+            {
+              "id": "p07",
+              "reference_label": 2
+            },
+            {
+              "id": "p08",
+              "reference_label": 3
+            },
+            {
+              "id": "p09",
+              "reference_label": 0
+            },
+            {
+              "id": "p10",
+              "reference_label": 1
+            }
+          ],
+          "gemini-3.1-pro-preview": [
             {
               "id": "p06",
               "reference_label": 1
@@ -76,12 +129,19 @@
       },
       {
         "judge_models": [
-          "gemini-3.1-flash-lite"
+          "gemini-3.1-flash-lite",
+          "gemini-3.1-pro-preview"
         ],
         "adjudicator_model": null,
         "n_rows": 5,
-        "n_disagreements": null,
-        "disagreement_ids": [],
+        "n_disagreements": 5,
+        "disagreement_ids": [
+          "p11",
+          "p12",
+          "p13",
+          "p14",
+          "p15"
+        ],
         "raw_judges": {
           "gemini-3.1-flash-lite": [
             {
@@ -104,17 +164,46 @@
               "id": "p15",
               "reference_label": 2
             }
+          ],
+          "gemini-3.1-pro-preview": [
+            {
+              "id": "p11",
+              "reference_label": "2"
+            },
+            {
+              "id": "p12",
+              "reference_label": "3"
+            },
+            {
+              "id": "p13",
+              "reference_label": "0"
+            },
+            {
+              "id": "p14",
+              "reference_label": "1"
+            },
+            {
+              "id": "p15",
+              "reference_label": "2"
+            }
           ]
         }
       },
       {
         "judge_models": [
-          "gemini-3.1-flash-lite"
+          "gemini-3.1-flash-lite",
+          "gemini-3.1-pro-preview"
         ],
         "adjudicator_model": null,
         "n_rows": 5,
-        "n_disagreements": null,
-        "disagreement_ids": [],
+        "n_disagreements": 5,
+        "disagreement_ids": [
+          "p16",
+          "p17",
+          "p18",
+          "p19",
+          "p20"
+        ],
         "raw_judges": {
           "gemini-3.1-flash-lite": [
             {
@@ -137,17 +226,46 @@
               "id": "p20",
               "reference_label": 3
             }
+          ],
+          "gemini-3.1-pro-preview": [
+            {
+              "id": "p16",
+              "reference_label": "3"
+            },
+            {
+              "id": "p17",
+              "reference_label": "0"
+            },
+            {
+              "id": "p18",
+              "reference_label": "1"
+            },
+            {
+              "id": "p19",
+              "reference_label": "2"
+            },
+            {
+              "id": "p20",
+              "reference_label": "3"
+            }
           ]
         }
       },
       {
         "judge_models": [
-          "gemini-3.1-flash-lite"
+          "gemini-3.1-flash-lite",
+          "gemini-3.1-pro-preview"
         ],
         "adjudicator_model": null,
         "n_rows": 5,
-        "n_disagreements": null,
-        "disagreement_ids": [],
+        "n_disagreements": 5,
+        "disagreement_ids": [
+          "p21",
+          "p22",
+          "p23",
+          "p24",
+          "p25"
+        ],
         "raw_judges": {
           "gemini-3.1-flash-lite": [
             {
@@ -170,17 +288,46 @@
               "id": "p25",
               "reference_label": 0
             }
+          ],
+          "gemini-3.1-pro-preview": [
+            {
+              "id": "p21",
+              "reference_label": "0"
+            },
+            {
+              "id": "p22",
+              "reference_label": "1"
+            },
+            {
+              "id": "p23",
+              "reference_label": "2"
+            },
+            {
+              "id": "p24",
+              "reference_label": "3"
+            },
+            {
+              "id": "p25",
+              "reference_label": "0"
+            }
           ]
         }
       },
       {
         "judge_models": [
-          "gemini-3.1-flash-lite"
+          "gemini-3.1-flash-lite",
+          "gemini-3.1-pro-preview"
         ],
         "adjudicator_model": null,
         "n_rows": 5,
-        "n_disagreements": null,
-        "disagreement_ids": [],
+        "n_disagreements": 5,
+        "disagreement_ids": [
+          "p26",
+          "p27",
+          "p28",
+          "p29",
+          "p30"
+        ],
         "raw_judges": {
           "gemini-3.1-flash-lite": [
             {
@@ -203,19 +350,64 @@
               "id": "p30",
               "reference_label": 1
             }
+          ],
+          "gemini-3.1-pro-preview": [
+            {
+              "id": "p26",
+              "reference_label": "1"
+            },
+            {
+              "id": "p27",
+              "reference_label": "2"
+            },
+            {
+              "id": "p28",
+              "reference_label": "3"
+            },
+            {
+              "id": "p29",
+              "reference_label": "0"
+            },
+            {
+              "id": "p30",
+              "reference_label": "1"
+            }
           ]
         }
       },
       {
         "judge_models": [
-          "gemini-3.1-flash-lite"
+          "gemini-3.1-flash-lite",
+          "gemini-3.1-pro-preview"
         ],
         "adjudicator_model": null,
         "n_rows": 5,
-        "n_disagreements": null,
+        "n_disagreements": 0,
         "disagreement_ids": [],
         "raw_judges": {
           "gemini-3.1-flash-lite": [
+            {
+              "id": "p31",
+              "reference_label": 2
+            },
+            {
+              "id": "p32",
+              "reference_label": 3
+            },
+            {
+              "id": "p33",
+              "reference_label": 0
+            },
+            {
+              "id": "p34",
+              "reference_label": 1
+            },
+            {
+              "id": "p35",
+              "reference_label": 2
+            }
+          ],
+          "gemini-3.1-pro-preview": [
             {
               "id": "p31",
               "reference_label": 2
@@ -241,12 +433,15 @@
       },
       {
         "judge_models": [
-          "gemini-3.1-flash-lite"
+          "gemini-3.1-flash-lite",
+          "gemini-3.1-pro-preview"
         ],
         "adjudicator_model": null,
         "n_rows": 5,
-        "n_disagreements": null,
-        "disagreement_ids": [],
+        "n_disagreements": 1,
+        "disagreement_ids": [
+          "p40"
+        ],
         "raw_judges": {
           "gemini-3.1-flash-lite": [
             {
@@ -269,17 +464,42 @@
               "id": "p40",
               "reference_label": 1
             }
+          ],
+          "gemini-3.1-pro-preview": [
+            {
+              "id": "p36",
+              "reference_label": 3
+            },
+            {
+              "id": "p37",
+              "reference_label": "K"
+            },
+            {
+              "id": "p38",
+              "reference_label": "K"
+            },
+            {
+              "id": "p39",
+              "reference_label": "K"
+            },
+            {
+              "id": "p40",
+              "reference_label": "K"
+            }
           ]
         }
       },
       {
         "judge_models": [
-          "gemini-3.1-flash-lite"
+          "gemini-3.1-flash-lite",
+          "gemini-3.1-pro-preview"
         ],
         "adjudicator_model": null,
         "n_rows": 5,
-        "n_disagreements": null,
-        "disagreement_ids": [],
+        "n_disagreements": 1,
+        "disagreement_ids": [
+          "p43"
+        ],
         "raw_judges": {
           "gemini-3.1-flash-lite": [
             {
@@ -302,17 +522,46 @@
               "id": "p45",
               "reference_label": 0
             }
+          ],
+          "gemini-3.1-pro-preview": [
+            {
+              "id": "p41",
+              "reference_label": 0
+            },
+            {
+              "id": "p42",
+              "reference_label": 1
+            },
+            {
+              "id": "p43",
+              "reference_label": 1
+            },
+            {
+              "id": "p44",
+              "reference_label": 3
+            },
+            {
+              "id": "p45",
+              "reference_label": 0
+            }
           ]
         }
       },
       {
         "judge_models": [
-          "gemini-3.1-flash-lite"
+          "gemini-3.1-flash-lite",
+          "gemini-3.1-pro-preview"
         ],
         "adjudicator_model": null,
         "n_rows": 5,
-        "n_disagreements": null,
-        "disagreement_ids": [],
+        "n_disagreements": 5,
+        "disagreement_ids": [
+          "p46",
+          "p47",
+          "p48",
+          "p49",
+          "p50"
+        ],
         "raw_judges": {
           "gemini-3.1-flash-lite": [
             {
@@ -335,17 +584,46 @@
               "id": "p50",
               "reference_label": 1
             }
+          ],
+          "gemini-3.1-pro-preview": [
+            {
+              "id": "p46",
+              "reference_label": "1"
+            },
+            {
+              "id": "p47",
+              "reference_label": "2"
+            },
+            {
+              "id": "p48",
+              "reference_label": "3"
+            },
+            {
+              "id": "p49",
+              "reference_label": "0"
+            },
+            {
+              "id": "p50",
+              "reference_label": "1"
+            }
           ]
         }
       },
       {
         "judge_models": [
-          "gemini-3.1-flash-lite"
+          "gemini-3.1-flash-lite",
+          "gemini-3.1-pro-preview"
         ],
         "adjudicator_model": null,
         "n_rows": 5,
-        "n_disagreements": null,
-        "disagreement_ids": [],
+        "n_disagreements": 5,
+        "disagreement_ids": [
+          "p51",
+          "p52",
+          "p53",
+          "p54",
+          "p55"
+        ],
         "raw_judges": {
           "gemini-3.1-flash-lite": [
             {
@@ -368,19 +646,64 @@
               "id": "p55",
               "reference_label": 2
             }
+          ],
+          "gemini-3.1-pro-preview": [
+            {
+              "id": "p51",
+              "reference_label": "2"
+            },
+            {
+              "id": "p52",
+              "reference_label": "3"
+            },
+            {
+              "id": "p53",
+              "reference_label": "0"
+            },
+            {
+              "id": "p54",
+              "reference_label": "1"
+            },
+            {
+              "id": "p55",
+              "reference_label": "2"
+            }
           ]
         }
       },
       {
         "judge_models": [
-          "gemini-3.1-flash-lite"
+          "gemini-3.1-flash-lite",
+          "gemini-3.1-pro-preview"
         ],
         "adjudicator_model": null,
         "n_rows": 5,
-        "n_disagreements": null,
+        "n_disagreements": 0,
         "disagreement_ids": [],
         "raw_judges": {
           "gemini-3.1-flash-lite": [
+            {
+              "id": "p56",
+              "reference_label": 3
+            },
+            {
+              "id": "p57",
+              "reference_label": 0
+            },
+            {
+              "id": "p58",
+              "reference_label": 1
+            },
+            {
+              "id": "p59",
+              "reference_label": 2
+            },
+            {
+              "id": "p60",
+              "reference_label": 3
+            }
+          ],
+          "gemini-3.1-pro-preview": [
             {
               "id": "p56",
               "reference_label": 3
@@ -406,12 +729,19 @@
       },
       {
         "judge_models": [
-          "gemini-3.1-flash-lite"
+          "gemini-3.1-flash-lite",
+          "gemini-3.1-pro-preview"
         ],
         "adjudicator_model": null,
         "n_rows": 5,
-        "n_disagreements": null,
-        "disagreement_ids": [],
+        "n_disagreements": 5,
+        "disagreement_ids": [
+          "p61",
+          "p62",
+          "p63",
+          "p64",
+          "p65"
+        ],
         "raw_judges": {
           "gemini-3.1-flash-lite": [
             {
@@ -434,17 +764,46 @@
               "id": "p65",
               "reference_label": 0
             }
+          ],
+          "gemini-3.1-pro-preview": [
+            {
+              "id": "p61",
+              "reference_label": "0"
+            },
+            {
+              "id": "p62",
+              "reference_label": "1"
+            },
+            {
+              "id": "p63",
+              "reference_label": "2"
+            },
+            {
+              "id": "p64",
+              "reference_label": "3"
+            },
+            {
+              "id": "p65",
+              "reference_label": "0"
+            }
           ]
         }
       },
       {
         "judge_models": [
-          "gemini-3.1-flash-lite"
+          "gemini-3.1-flash-lite",
+          "gemini-3.1-pro-preview"
         ],
         "adjudicator_model": null,
         "n_rows": 5,
-        "n_disagreements": null,
-        "disagreement_ids": [],
+        "n_disagreements": 5,
+        "disagreement_ids": [
+          "p66",
+          "p67",
+          "p68",
+          "p69",
+          "p70"
+        ],
         "raw_judges": {
           "gemini-3.1-flash-lite": [
             {
@@ -467,19 +826,64 @@
               "id": "p70",
               "reference_label": 1
             }
+          ],
+          "gemini-3.1-pro-preview": [
+            {
+              "id": "p66",
+              "reference_label": "1"
+            },
+            {
+              "id": "p67",
+              "reference_label": "2"
+            },
+            {
+              "id": "p68",
+              "reference_label": "3"
+            },
+            {
+              "id": "p69",
+              "reference_label": "0"
+            },
+            {
+              "id": "p70",
+              "reference_label": "1"
+            }
           ]
         }
       },
       {
         "judge_models": [
-          "gemini-3.1-flash-lite"
+          "gemini-3.1-flash-lite",
+          "gemini-3.1-pro-preview"
         ],
         "adjudicator_model": null,
         "n_rows": 5,
-        "n_disagreements": null,
+        "n_disagreements": 0,
         "disagreement_ids": [],
         "raw_judges": {
           "gemini-3.1-flash-lite": [
+            {
+              "id": "p71",
+              "reference_label": 2
+            },
+            {
+              "id": "p72",
+              "reference_label": 3
+            },
+            {
+              "id": "p73",
+              "reference_label": 0
+            },
+            {
+              "id": "p74",
+              "reference_label": 1
+            },
+            {
+              "id": "p75",
+              "reference_label": 2
+            }
+          ],
+          "gemini-3.1-pro-preview": [
             {
               "id": "p71",
               "reference_label": 2
@@ -505,14 +909,37 @@
       },
       {
         "judge_models": [
-          "gemini-3.1-flash-lite"
+          "gemini-3.1-flash-lite",
+          "gemini-3.1-pro-preview"
         ],
         "adjudicator_model": null,
         "n_rows": 5,
-        "n_disagreements": null,
+        "n_disagreements": 0,
         "disagreement_ids": [],
         "raw_judges": {
           "gemini-3.1-flash-lite": [
+            {
+              "id": "p76",
+              "reference_label": 3
+            },
+            {
+              "id": "p77",
+              "reference_label": "K"
+            },
+            {
+              "id": "p78",
+              "reference_label": "K"
+            },
+            {
+              "id": "p79",
+              "reference_label": "K"
+            },
+            {
+              "id": "p80",
+              "reference_label": "K"
+            }
+          ],
+          "gemini-3.1-pro-preview": [
             {
               "id": "p76",
               "reference_label": 3

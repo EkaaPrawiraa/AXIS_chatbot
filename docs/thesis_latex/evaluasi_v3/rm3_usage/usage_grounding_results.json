@@ -1,0 +1,59 @@
+{
+  "summary": {
+    "reappraisal_stale_belief": {
+      "n_scenarios": 2,
+      "n_valid": 2,
+      "stale_belief_rate": 0.0,
+      "inter_judge_cohen_kappa": 1.0,
+      "n_paired_for_kappa": 2
+    },
+    "dialogue_derived_rates": {
+      "available": true,
+      "source": "docs/thesis_latex/evaluasi_v3/rm1_language/raw_results_v3.json",
+      "grounded_answer_rate": 1.0,
+      "n_rich_memory_scenarios": 10,
+      "false_personalization_rate": 0.0,
+      "n_cold_start_scenarios": 14,
+      "method": "Proxy derived from the RM1c dialogue blind rubric's groundedness dimension (primary judge only): rich-memory scenarios scored 2 count as grounded; cold-start scenarios scored 0 count as false personalization. Looser than a purpose-built rubric -- a low score can also reflect a generic non-answer, not only a fabricated personal claim -- so treat as illustrative, not a precise rate estimate."
+    },
+    "limit": "Reappraisal scenarios are a scenario-and-outcome proxy for contradiction/stale-belief rate on two cases, not a large labeled question-answer corpus. Grounded-answer and false-personalization rates are derived post-hoc from the RM1c dialogue rubric, not from a purpose-built usage rubric."
+  },
+  "reappraisal_results": [
+    {
+      "id": "c01_advisor_reappraisal",
+      "probe_message": "Eh menurutmu gimana ya hubungan aku sama dosen pembimbingku?",
+      "ground_truth": "Pengguna sempat salah paham mengira dosen pembimbing tidak menyukainya, tetapi sekarang menyadari dosen pembimbing sebenarnya mendukung penuh. Keyakinan yang berlaku SAAT INI adalah dukungan penuh, bukan ketidaksukaan.",
+      "reply": "Kayaknya sekarang hubungan kalian jadi lebih jelas ya. Mengingat waktu itu kamu sempat lega banget setelah dengar langsung kalau revisi itu hal yang wajar, kayaknya memang beliau beneran suportif sama progres skripsimu. Gimana rasanya setelah bisa melihat situasi itu dari sudut pandang yang lebih tenang sekarang?",
+      "judge_results": {
+        "gemini-3.1-flash-lite": {
+          "reflects_updated_belief": true,
+          "contradicts_or_resurfaces_stale_belief": false,
+          "reasoning": "Chatbot mengonfirmasi dukungan dosen sesuai fakta terkini dan tidak menyinggung kesalahpahaman lama pengguna."
+        },
+        "gemini-3.1-pro-preview": {
+          "reflects_updated_belief": true,
+          "contradicts_or_resurfaces_stale_belief": false,
+          "reasoning": "Respons selaras dengan keyakinan baru bahwa dosen suportif dan tidak memunculkan kembali kesalahpahaman lama."
+        }
+      }
+    },
+    {
+      "id": "c02_organization_competence",
+      "probe_message": "Menurutmu aku cocok gak ya pegang tanggung jawab di organisasi?",
+      "ground_truth": "Pengguna dulu yakin akan gagal memegang tanggung jawab organisasi, tetapi setelah program kerja terakhir sukses, pengguna sadar dirinya cukup kompeten. Keyakinan yang berlaku SAAT INI adalah kompeten, bukan akan gagal.",
+      "reply": "Dulu kamu sempat ngerasa ragu banget soal kapasitasmu di organisasi, tapi program kerja kemarin jadi bukti nyata kalau kamu sebenarnya punya kemampuan itu. Mungkin rasa ragu yang muncul sekarang itu lebih karena kamu terlalu peduli supaya hasilnya tetap bagus. Kadang kita emang lebih gampang ingat rasa ragu daripada fakta kalau kita sebenarnya udah pernah berhasil.",
+      "judge_results": {
+        "gemini-3.1-flash-lite": {
+          "reflects_updated_belief": true,
+          "contradicts_or_resurfaces_stale_belief": false,
+          "reasoning": "Chatbot mengakui keberhasilan masa lalu sebagai bukti kompetensi pengguna saat ini, selaras dengan fakta terbaru."
+        },
+        "gemini-3.1-pro-preview": {
+          "reflects_updated_belief": true,
+          "contradicts_or_resurfaces_stale_belief": false,
+          "reasoning": "Respons menegaskan kompetensi pengguna berdasarkan kesuksesan terbaru dan membingkai keraguan masa lalu sebagai hal yang sudah teratasi."
+        }
+      }
+    }
+  ]
+}

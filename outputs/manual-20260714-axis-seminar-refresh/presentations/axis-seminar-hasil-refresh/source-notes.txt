@@ -1,0 +1,8 @@
+Sumber visual dan identitas
+
+- Laporan utama: docs/thesis_latex/main.tex dan docs/thesis_latex/main.pdf.
+- Gambar laporan: docs/thesis_latex/figures/ dan tangkapan antarmuka pada figures/application/.
+- Tabel: halaman yang memuat tabel dirender dari main.pdf agar setiap artefak tabel dapat dimasukkan ke PowerPoint.
+- Deck sebelumnya: outputs/manual-20260713-axis-seminar/presentations/axis-seminar-hasil/AXIS_Seminar_Hasil_2026.pptx. Digunakan sebagai sumber sistem visual AXIS: latar hangat, aksen cokelat, garis tipis, footer navigasi, dan struktur slide seminar.
+- Referensi penyajian: docs/references/PPT_SidangTA_Individu_NextGen_13522110.pdf. Digunakan untuk kepadatan, pemisahan masalah-solusi-implementasi-evaluasi, dan penempatan bukti visual.
+- Tidak ada logo atau aset identitas pihak ketiga yang digambar ulang.

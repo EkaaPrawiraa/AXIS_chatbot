@@ -1,0 +1,18 @@
+Preserve
+- Palet hangat AXIS: latar krem, aksen kopi/cokelat, garis tipis, dan penekanan emas lembut.
+- Tipografi sans-serif tebal untuk klaim, metadata kecil, serta footer tahap presentasi.
+- Komposisi terbuka dengan satu bukti visual dominan dan catatan ringkas.
+
+Improve
+- Judul dan metrik diperbarui mengikuti main.tex yang paling baru.
+- Bukti evaluasi memakai angka terbaru dari laporan utama.
+- Semua gambar dan tabel mendapat ruang bank artefak tersendiri.
+
+Do not imitate
+- Judul lama yang masih menyebut "arsitektur perangkat lunak".
+- Angka evaluasi lama pada deck awal.
+- Pernyataan yang membuat klaim keunggulan AXIS secara mutlak.
+
+Insertion contract
+- Slide inti menggunakan pola warna, footer, dan hierarki deck awal.
+- Slide bank artefak menambahkan satu bukti laporan per slide agar mudah dihapus atau dikurasi di PowerPoint/Canva.

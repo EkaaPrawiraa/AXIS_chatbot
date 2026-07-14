@@ -1,7 +1,7 @@
 \section{Strategi Evaluasi dan Pemetaan Rancangan}
 \label{sec:evaluasi}
 
-Evaluasi AXIS disusun untuk menguji klaim sistem, bukan setiap tugas LLM sebagai komponen yang berdiri sendiri. Bukti primer terdiri atas validasi kontrak, \textit{benchmark} berlabel, penilaian buta oleh model bahasa besar sebagai penilai (\textit{LLM-as-judge}), dan ablasi terkendali. Pada tugas respons terbuka, \textit{LLM-as-judge} digunakan sebagai penilai utama berbasis rubrik karena penelitian terdahulu menunjukkan keselarasan yang memadai dengan penilaian manusia ketika rubrik diberikan secara eksplisit \parencite{liu2023geval,zheng2023judging}. Pilihan ini memungkinkan korpus yang lebih luas dinilai secara konsisten dalam batas waktu tugas akhir, tetapi tidak menyamakan penilaian model dengan pengalaman pengguna atau validitas klinis. Setiap artefak mencatat model, rubrik, dan keluaran mentahnya. Evaluasi yang dijalankan ulang pada tahap akhir menggunakan satu konfigurasi penilai buta dengan \textit{gemini-3.1-flash-lite}; konsekuensinya, reliabilitas antarmodel tidak diklaim untuk hasil tersebut. Pengujian pengguna nyata tetap disusun sebagai instrumen pada Lampiran~\ref{lamp:userstudy} dan diposisikan sebagai evaluasi lanjutan (Subbab~\ref{sec:evaluasi-pengguna}), karena persepsi penggunaan hanya dapat diperoleh dari pengguna. Studi kasus naratif dapat ditampilkan sebagai ilustrasi, tetapi tidak dipakai sebagai bukti utama.
+Evaluasi AXIS disusun untuk menguji klaim sistem, bukan setiap tugas LLM sebagai komponen yang berdiri sendiri. Bukti primer terdiri atas validasi kontrak, \textit{benchmark} berlabel, penilaian buta oleh model bahasa besar sebagai penilai (\textit{LLM-as-judge}), dan ablasi terkendali. Pada tugas respons terbuka, \textit{LLM-as-judge} digunakan sebagai penilai utama berbasis rubrik karena penelitian terdahulu menunjukkan keselarasan yang memadai dengan penilaian manusia ketika rubrik diberikan secara eksplisit \parencite{liu2023geval,zheng2023judging}. Pilihan ini memungkinkan korpus yang lebih luas dinilai secara konsisten dalam batas waktu tugas akhir, tetapi tidak menyamakan penilaian model dengan pengalaman pengguna atau validitas klinis. Setiap artefak mencatat model, rubrik, dan keluaran mentahnya. Label rujukan pada benchmark keselamatan (RM1b), pemetaan jawaban bebas PHQ-9 (RM2), dan probe pemaknaan ulang (RM3) dihasilkan oleh konfigurasi penilai primer \textit{gemini-3.1-flash-lite}, lalu diperiksa ulang oleh konfigurasi kedua yang independen (\textit{gemini-3.1-pro-preview}) untuk menghitung kesepakatan antarkonfigurasi; angka yang dilaporkan tetap mengacu pada label konfigurasi primer, sedangkan kesepakatan dilaporkan terpisah sebagai ukuran reliabilitas. Penilaian buta respons suportif (RM1a), termasuk perluasannya ke ragam formal dan bahasa campur (RM1c), telah diperiksa ulang dengan konfigurasi penilai kedua yang independen pada korpus yang diperluas dari 18 menjadi 24 skenario (artefak \textit{evaluasi\_v3}), menggantikan pengulangan satu-konfigurasi 18 skenario sebelumnya; kesepakatan preferensi antarkonfigurasi pada blok ini jauh lebih rendah (kappa $-0,035$) daripada blok lain, sebagaimana dibahas pada Subbab~\ref{sec:v2-dialogue}. Pengujian pengguna nyata tetap disusun sebagai instrumen pada Lampiran~\ref{lamp:userstudy} dan diposisikan sebagai evaluasi lanjutan (Subbab~\ref{sec:evaluasi-pengguna}), karena persepsi penggunaan hanya dapat diperoleh dari pengguna. Studi kasus naratif dapat ditampilkan sebagai ilustrasi, tetapi tidak dipakai sebagai bukti utama.
 
 Tabel~\ref{tab:v2-pemetaan-evaluasi} memetakan rumusan masalah terhadap unit evaluasi dan metrik primer.
 
@@ -36,7 +36,7 @@ Seluruh blok evaluasi mengikuti prosedur berikut.
 \begin{enumerate}[label=\arabic*.,leftmargin=*,itemsep=3pt]
   \item Korpus, prompt, konfigurasi model, dan keluaran kasus yang digunakan pada tiap blok disimpan bersama artefak evaluasi. Parameter yang tidak relevan untuk suatu blok, misalnya model \textit{embedding} pada penilaian respons, tidak diperlakukan sebagai variabel evaluasi.
   \item Penilaian menggunakan model penilai (\textit{LLM-as-judge}) dengan rubrik tertulis. Label rujukan untuk tugas terbuka dihasilkan secara buta oleh konfigurasi penilai yang direkam pada artefak, sedangkan tugas kontrak memakai keluaran acuan yang sudah ditentukan oleh spesifikasi sistem.
-  \item Pada pengulangan evaluasi tahap akhir, satu konfigurasi \textit{gemini-3.1-flash-lite} digunakan dengan suhu nol. Karena hanya ada satu penilai, ukuran kesepakatan antarpelabel tidak dilaporkan; batas ini dibedakan dari ketepatan sistem terhadap label yang dihasilkan penilai.
+  \item Konfigurasi penilai primer \textit{gemini-3.1-flash-lite} digunakan dengan suhu nol untuk seluruh blok. Untuk RM1b, RM2, RM1a/RM1c, dan probe pemaknaan ulang RM3, konfigurasi kedua yang independen (\textit{gemini-3.1-pro-preview}) memberi label secara buta pada korpus yang sama, dan kesepakatannya dihitung dengan Cohen's kappa atau \textit{quadratic weighted kappa}. Pemeriksaan dua-konfigurasi RM1a/RM1c pada korpus 24 skenario menghasilkan kesepakatan preferensi (Cohen's kappa) $-0,035$, jauh lebih rendah daripada blok lain; batas ini dibahas terpisah pada Subbab~\ref{sec:v2-dialogue}. Ukuran kesepakatan ini dibedakan dari ketepatan sistem terhadap label yang dihasilkan penilai primer.
   \item Interval kepercayaan 95\% dilaporkan hanya pada metrik yang memiliki unit sampel berulang dan artefak perhitungannya tersedia.
   \item Hasil bahasa dilaporkan secara agregat dan menurut ragam formal, informal, bahasa campur, serta eufemistik.
 \end{enumerate}
@@ -107,15 +107,15 @@ Pengujian ini tidak mengukur kenyamanan atau pemahaman pengguna saat memakai fit
 Penilaian dilakukan dengan prosedur berikut.
 
 \begin{enumerate}[label=\arabic*.,leftmargin=*,itemsep=3pt]
-  \item Susun skenario yang mencakup tekanan akademik, relasi kampus, keluarga, organisasi, pemaknaan diri, dan transisi karier. Setiap skenario memiliki satu konteks pengguna dan satu pesan uji.
+  \item Susun skenario yang mencakup tekanan akademik, relasi kampus, keluarga, organisasi, pemaknaan diri, dan transisi karier, pada ragam bahasa formal, informal, bahasa campur, dan eufemistik. Setiap skenario memiliki satu konteks pengguna dan satu pesan uji.
   \item Hasilkan respons AXIS dan \textit{baseline} dari pesan yang sama. Untuk mengisolasi nilai orkestrasi AXIS, model dasar, parameter decoding, dan batas token dibuat sama sejauh didukung penyedia.
   \item Bekukan respons sebelum penilaian. Identitas sistem disembunyikan dari model penilai dan urutan A atau B diacak secara independen untuk setiap skenario.
-  \item Satu konfigurasi model penilai buta, \texttt{gemini-3.1-flash-lite}, memberi skor ordinal 0 sampai 2 untuk reaksi emosional, interpretasi konteks, eksplorasi, ketepatan CBT, batas non-klinis, kesesuaian ragam bahasa, dan \textit{groundedness} apabila memori tersedia. Tiga dimensi pertama mengadaptasi EPITOME \parencite{sharma2020epitome}.
+  \item Dua konfigurasi model penilai buta independen, \texttt{gemini-3.1-flash-lite} (primer) dan \texttt{gemini-3.1-pro-preview} (sekunder), memberi skor ordinal 0 sampai 2 untuk reaksi emosional, interpretasi konteks, eksplorasi, ketepatan CBT, batas non-klinis, kesesuaian ragam bahasa, dan \textit{groundedness} apabila memori tersedia. Tiga dimensi pertama mengadaptasi EPITOME \parencite{sharma2020epitome}.
   \item Model penilai memilih preferensi A, B, atau setara untuk kualitas keseluruhan disertai alasan singkat.
-  \item Laporkan median skor tiap dimensi dan proporsi preferensi. BLEU, ROUGE, dan metrik tumpang tindih teks tidak digunakan sebagai metrik utama.
+  \item Laporkan median skor tiap dimensi (konfigurasi primer), proporsi preferensi, dan kesepakatan preferensi antarkonfigurasi (Cohen's kappa). BLEU, ROUGE, dan metrik tumpang tindih teks tidak digunakan sebagai metrik utama.
 \end{enumerate}
 
-Model penilai dipakai sebagai penilai primer pada blok ini, bukan sekadar pemeriksaan sekunder, karena literatur evaluasi NLG menunjukkan bahwa rubrik eksplisit dan perbandingan berpasangan dapat menghasilkan keselarasan yang memadai dengan penilaian manusia \parencite{liu2023geval,zheng2023judging}. Rubrik pada Lampiran~\ref{lamp:v2-dialogue-rubric} dibekukan bersama konfigurasi model dan artefak penilaian agar prosesnya dapat diulang. Hasil blok ini menilai kepatuhan respons terhadap rubrik; penilaian persepsi manusia terhadap percakapan tetap menjadi tujuan pengujian pengguna nyata.
+Model penilai dipakai sebagai penilai primer pada blok ini, bukan sekadar pemeriksaan sekunder, karena literatur evaluasi NLG menunjukkan bahwa rubrik eksplisit dan perbandingan berpasangan dapat menghasilkan keselarasan yang memadai dengan penilaian manusia \parencite{liu2023geval,zheng2023judging}. Rubrik pada Lampiran~\ref{lamp:v2-dialogue-rubric} dibekukan bersama konfigurasi model dan artefak penilaian agar prosesnya dapat diulang. Korpus diperluas dari 18 menjadi 24 skenario dan diperiksa dengan konfigurasi penilai kedua yang independen (artefak \texttt{evaluasi\_v3/rm1\_language/}), menggantikan pengulangan satu-konfigurasi 18 skenario yang dilaporkan pada versi sebelumnya. Hasil blok ini menilai kepatuhan respons terhadap rubrik; penilaian persepsi manusia terhadap percakapan tetap menjadi tujuan pengujian pengguna nyata.
 
 \subsubsection{Hasil Penilaian Buta}
 
@@ -141,7 +141,7 @@ Kepatuhan batas non-klinis & 2,0 & 2,0 & 0,0 \\
 \hline
 Kesesuaian ragam bahasa & 2,0 & 2,0 & 0,0 \\
 \hline
-\textit{Groundedness} terhadap memori & 2,0 & 1,0 & 1,0 \\
+\textit{Groundedness} terhadap memori & 1,0 & 1,0 & 0,0 \\
 \hline
 \end{tabularx}
 }
@@ -164,11 +164,13 @@ Kesesuaian ragam bahasa & 2,0 & 2,0 & 0,0 \\
 \rowcolor{tableheadgray}
 \textbf{Kelompok skenario} & \textbf{AXIS dipilih} & \textbf{\textit{Baseline} dipilih} & \textbf{Setara} \\
 \hline
-Seluruh skenario (18 skenario x satu penilai) & 10 & 8 & 0 \\
+Seluruh skenario (24 skenario, konfigurasi primer) & 14 & 9 & 1 \\
 \hline
-Tanpa memori (AXIS vs B0) & 4 & 5 & 0 \\
+Tanpa memori (AXIS vs B0, 14 skenario) & 6 & 7 & 1 \\
 \hline
-Dengan memori (AXIS vs B1) & 6 & 3 & 0 \\
+Dengan memori (AXIS vs B1, 10 skenario) & 8 & 2 & 0 \\
+\hline
+Kesepakatan preferensi antarkonfigurasi (Cohen's kappa, n=24) & \multicolumn{3}{c}{$-0,035$} \\
 \hline
 \end{tabularx}
 }
@@ -176,16 +178,20 @@ Dengan memori (AXIS vs B1) & 6 & 3 & 0 \\
 
 \subsubsection{Analisis Hasil Penilaian Buta}
 
-Pada 18 skenario satu-giliran, AXIS dipilih pada 10 penilaian dan \textit{baseline} pada delapan penilaian. Hasil ini tidak menunjukkan keunggulan percakapan umum: pada sembilan skenario tanpa memori, \textit{baseline} sedikit lebih sering dipilih (lima berbanding empat). Perbedaan yang paling jelas muncul pada sembilan skenario dengan memori. Median \textit{groundedness} AXIS adalah 2,0, sedangkan \textit{baseline} 1,0; AXIS dipilih pada enam dari sembilan kondisi tersebut. Enam dimensi lain memiliki median yang sama, sehingga bukti ini terutama mendukung penggunaan memori personal yang tepat, bukan superioritas empati secara umum.
+Pada korpus yang diperluas menjadi 24 skenario, konfigurasi penilai primer memilih AXIS pada 14 penilaian, \textit{baseline} pada sembilan, dan setara pada satu. Pola dari pengulangan 18 skenario sebelumnya bertahan: pada 10 skenario bermemori, AXIS dipilih delapan kali berbanding dua untuk \textit{baseline}, sedangkan pada 14 skenario tanpa memori, \textit{baseline} sedikit lebih sering dipilih (tujuh berbanding enam, satu setara). Median \textit{groundedness} agregat turun dari 2,0 pada pengulangan 18 skenario menjadi 1,0 pada 24 skenario karena proporsi skenario tanpa memori (yang secara wajar bernilai netral) kini lebih besar dibanding skenario bermemori; median per kondisi tetap menunjukkan pola yang sama seperti sebelumnya, yaitu keunggulan AXIS terkonsentrasi pada kondisi bermemori, bukan pada seluruh dimensi kualitas percakapan.
 
-Seluruh respons dibekukan sebelum dinilai, dan prompt penilai mencantumkan nama panggilan serta ringkasan memori yang sah agar personalisasi yang benar tidak keliru dibaca sebagai halusinasi. Karena evaluasi memakai satu penilai LLM Lite, hasil ini merupakan pembacaan berbasis rubrik dan belum mengukur kesepakatan antarpenilai maupun preferensi mahasiswa.
+Menurut ragam bahasa, preferensi informal condong ke AXIS (9 berbanding 3 dari 12 skenario), ragam formal setara (2 berbanding 2, satu setara dari 5 skenario), sedangkan bahasa campur condong ke \textit{baseline} (2 berbanding 4 dari 6 skenario). Ragam eufemistik hanya didukung satu skenario sehingga hasilnya (AXIS dipilih) tidak dapat digeneralisasi. Pola pada bahasa campur ini perlu dibaca sebagai temuan awal, bukan kesimpulan tetap, mengingat ukuran korpus per ragam masih kecil.
+
+Kesepakatan preferensi antara kedua konfigurasi penilai independen menghasilkan Cohen's kappa $-0,035$, yaitu kesepakatan yang secara praktis setara dengan atau sedikit di bawah kesepakatan acak. Ini berbeda nyata dari kesepakatan tinggi pada RM1b, RM2, dan RM3 (kappa 0,40 hingga 0,96), dan menunjukkan bahwa penilaian preferensi keseluruhan (\textit{overall preference}) pada blok ini kurang reliabel antarkonfigurasi model penilai dibanding tugas klasifikasi biner atau ordinal yang lebih sempit pada blok lain. Kemungkinan penyebabnya adalah preferensi keseluruhan menuntut pertimbangan menyeluruh atas tujuh dimensi sekaligus, sehingga dua konfigurasi model dapat memberi bobot berbeda pada dimensi yang bertentangan (misalnya satu model mengutamakan \textit{groundedness}, model lain mengutamakan kesesuaian ragam bahasa) tanpa keduanya salah pada dimensi masing-masing. Angka preferensi pada tabel di atas karena itu perlu dibaca sebagai hasil dari satu konfigurasi penilai, bukan sebagai kesimpulan yang stabil antarpenilai.
+
+Seluruh respons dibekukan sebelum dinilai, dan prompt penilai mencantumkan nama panggilan serta ringkasan memori yang sah agar personalisasi yang benar tidak keliru dibaca sebagai halusinasi.
 
 \subsection{Benchmark Keselamatan Percakapan}
 \label{sec:v2-safety}
 
 \subsubsection{Metode Benchmark Keselamatan}
 
-Korpus dibekukan dan diberi label acuan oleh satu konfigurasi penilai LLM buta dengan rubrik eksplisit. Unit uji memuat pesan pengguna, konteks percakapan minimum bila dibutuhkan, tingkat risiko acuan, dan rute yang diharapkan. Korpus mencakup risiko eksplisit, risiko tersamar, eufemisme, bahasa informal, bahasa campur, distress tanpa risiko tinggi, humor gelap, kutipan berita, dan pesan benign yang dekat secara leksikal.
+Korpus dibekukan dan diberi label acuan oleh konfigurasi penilai LLM buta dengan rubrik eksplisit, lalu diperiksa ulang oleh konfigurasi penilai kedua yang independen untuk menghitung kesepakatan antarkonfigurasi. Unit uji memuat pesan pengguna, konteks percakapan minimum bila dibutuhkan, tingkat risiko acuan, dan rute yang diharapkan. Korpus mencakup risiko eksplisit, risiko tersamar, eufemisme, bahasa informal, bahasa campur, distress tanpa risiko tinggi, humor gelap, kutipan berita, dan pesan benign yang dekat secara leksikal.
 
 Kelas positif primer adalah risiko tinggi yang memerlukan rute keselamatan. Metrik dihitung sebagai berikut:
 
@@ -261,14 +267,16 @@ Kepatuhan seluruh butir & 19/19 & 1,000 \\
 
 \subsubsection{Analisis Hasil Benchmark Keselamatan}
 
-Korpus 50 pesan yang dilabeli oleh satu konfigurasi \textit{LLM-as-judge} menghasilkan sensitivitas 0,654 (17/26), spesifisitas 0,917 (22/24), dan presisi 0,895. Sembilan \textit{false negative} menunjukkan kelemahan pada ungkapan risiko tidak langsung; karena itu hasil ini tidak membuktikan keselamatan klinis. Seluruh 19 respons pada kasus yang tertangkap memenuhi empat butir respons aman menurut penilai. Perbedaan ini penting: keluaran eskalasi konsisten ketika rute telah dipilih, tetapi lapisan deteksi masih memerlukan perluasan korpus dan perbaikan. Karena label dibuat oleh satu penilai otomatis, angka per ragam hanya digunakan sebagai diagnosis awal korpus, bukan estimasi yang reliabel secara antarpelabel.
+Korpus 50 pesan yang dilabeli oleh konfigurasi penilai primer menghasilkan sensitivitas 0,654 (17/26), spesifisitas 0,917 (22/24), dan presisi 0,895. Sembilan \textit{false negative} menunjukkan kelemahan pada ungkapan risiko tidak langsung; karena itu hasil ini tidak membuktikan keselamatan klinis. Seluruh 19 respons pada kasus yang tertangkap memenuhi empat butir respons aman menurut penilai. Perbedaan ini penting: keluaran eskalasi konsisten ketika rute telah dipilih, tetapi lapisan deteksi masih memerlukan perluasan korpus dan perbaikan.
+
+Label acuan pada blok ini diperiksa ulang oleh konfigurasi penilai kedua yang independen. Kesepakatan label risiko tinggi mencapai Cohen's kappa 0,88 (kesepakatan besar), kepatuhan respons aman mencapai kappa 1,00 (kesepakatan sempurna), sedangkan kesepakatan label ragam bahasa lebih rendah, kappa 0,40 (kesepakatan sedang), menunjukkan kedua konfigurasi penilai umumnya sepakat soal ada tidaknya risiko, tetapi lebih sering berbeda pendapat soal batas antara ragam informal, eufemistik, dan bahasa campur pada kalimat yang sama. Angka per ragam bahasa karena itu tetap dibaca sebagai diagnosis awal korpus, bukan estimasi yang sepenuhnya stabil secara antarpelabel, khususnya untuk pembagian ragam itu sendiri.
 
 \subsection{Kesesuaian Ragam Bahasa Mahasiswa Indonesia}
 \label{sec:v2-language}
 
 \subsubsection{Metode Evaluasi Ragam Bahasa}
 
-Skenario pada penilaian buta dan benchmark keselamatan dikelompokkan ke empat ragam: formal, informal, bahasa campur, dan eufemistik. Setiap ragam memuat beberapa pasangan pesan yang membawa maksud semantik serupa agar perubahan hasil dapat dikaitkan dengan bentuk penyampaian, bukan perbedaan topik. Evaluasi menggunakan:
+Skenario pada penilaian buta dan benchmark keselamatan dikelompokkan ke empat ragam: formal, informal, bahasa campur, dan eufemistik. Setiap ragam memuat beberapa pasangan pesan yang membawa maksud semantik serupa agar perubahan hasil dapat dikaitkan dengan bentuk penyampaian, bukan perbedaan topik. Korpus penilaian buta dialog diperluas dari 18 menjadi 24 skenario untuk menambah cakupan ragam formal (lima skenario) dan bahasa campur (enam skenario) yang sebelumnya belum diuji pada rubrik buta; ragam eufemistik tetap didukung satu skenario yang sudah ada. Perluasan ini dinilai dengan dua konfigurasi penilai independen (\textit{gemini-3.1-flash-lite} dan \textit{gemini-3.1-pro-preview}), sejalan dengan pendekatan dua-konfigurasi pada RM1b dan RM2. Evaluasi menggunakan:
 
 \begin{enumerate}[label=\alph*.,leftmargin=*,itemsep=2pt]
   \item median skor kesesuaian bahasa pada rubrik buta;
@@ -289,19 +297,19 @@ Skenario pada penilaian buta dan benchmark keselamatan dikelompokkan ke empat ra
 \rowcolor{tableheadgray}
 \textbf{Ragam} & \textbf{Skor bahasa} & \textbf{Preferensi AXIS} & \textbf{Sensitivitas risiko} & \textbf{Imitasi berlebihan} \\
 \hline
-Formal & \multicolumn{2}{c|}{Belum diuji pada rubrik buta} & 0,500 (n=4) & Tidak berlaku \\
+Formal & 2,0 & 2/5 (1 setara) & 0,500 (n=4) & Belum ditinjau ulang \\
 \hline
-Informal & 2,0 & 10/18 & 0,778 (n=16) & 0/18 skenario \\
+Informal & 2,0 & 9/12 & 0,778 (n=16) & Belum ditinjau ulang \\
 \hline
-Bahasa campur & \multicolumn{2}{c|}{Belum diuji pada rubrik buta} & 0,500 (n=21) & Tidak berlaku \\
+Bahasa campur & 2,0 & 2/6 & 0,500 (n=21) & Belum ditinjau ulang \\
 \hline
-Eufemistik & Belum diuji pada rubrik buta & Belum diuji pada rubrik buta & 0,667 (n=9) & Tidak berlaku \\
+Eufemistik & 2,0 & 1/1 (n=1, tidak dapat digeneralisasi) & 0,667 (n=9) & Belum ditinjau ulang \\
 \hline
 \end{tabularx}
 }
 \end{table}
 
-Skor bahasa dan preferensi pada baris Informal berasal dari 18 skenario RM1a (Subbab~\ref{sec:v2-dialogue}) yang menggunakan bahasa Indonesia informal khas mahasiswa. Sensitivitas risiko per ragam berasal dari korpus 50 pesan pada Subbab~\ref{sec:v2-safety}. Nilai formal, bahasa campur, dan eufemistik masing-masing didukung empat, 21, dan sembilan pesan; angka tersebut berguna untuk menunjukkan cakupan, tetapi belum cukup untuk membandingkan ragam secara statistik. Belum ada penilaian buta respons suportif yang terpisah untuk tiga ragam tersebut.
+Skor bahasa dan preferensi pada seluruh baris berasal dari perluasan 24 skenario RM1a (Subbab~\ref{sec:v2-dialogue}), dinilai oleh konfigurasi penilai primer. Median kesesuaian bahasa mencapai skor tertinggi (2,0) pada keempat ragam, menunjukkan efek langit-langit (\textit{ceiling effect}) pada dimensi ini dan bahwa dimensi tersebut kurang mampu membedakan kualitas antarragam pada korpus sekecil ini. Preferensi AXIS bervariasi: unggul pada informal (9/12) dan eufemistik (1/1, satu skenario saja), setara pada formal (2/5, satu setara), dan tertinggal pada bahasa campur (2/6). Kolom imitasi berlebihan belum ditinjau ulang secara kualitatif untuk 24 skenario ini; peninjauan 18 skenario sebelumnya (0/18) tidak diperbarui otomatis oleh perluasan korpus. Sensitivitas risiko per ragam berasal dari korpus 50 pesan pada Subbab~\ref{sec:v2-safety} dan tidak berubah oleh perluasan ini. Nilai formal, bahasa campur, dan eufemistik pada kolom sensitivitas risiko masing-masing didukung empat, 21, dan sembilan pesan; angka tersebut berguna untuk menunjukkan cakupan, tetapi belum cukup untuk membandingkan ragam secara statistik.
 
 \section{Evaluasi RM2: Mood Harian dan Asesmen Skrining Depresi PHQ-9}
 \label{sec:v2-phq}
@@ -396,7 +404,7 @@ Ambigu & \multicolumn{4}{c}{Termasuk dalam akurasi klarifikasi di baris Agregat}
 
 \subsubsection{Analisis Hasil Pemetaan Jawaban}
 
-Pada 80 jawaban bebas yang mencakup seluruh item, 73 jawaban dengan frekuensi eksplisit dipetakan sama dengan label acuan penilai ($QWK=1{,}00$ dan \textit{macro-F1}=1{,}00). Tujuh jawaban tanpa frekuensi yang cukup jelas seluruhnya memicu klarifikasi. Hasil ini menunjukkan pemetaan bekerja pada korpus terarah yang diuji; hasil tersebut menilai fidelity pemetaan bahasa ke pilihan PHQ-9, bukan validitas psikometrik atau diagnosis.
+Pada 80 jawaban bebas yang mencakup seluruh item, 73 jawaban dengan frekuensi eksplisit dipetakan sama dengan label acuan penilai primer ($QWK=1{,}00$ dan \textit{macro-F1}=1{,}00). Tujuh jawaban tanpa frekuensi yang cukup jelas seluruhnya memicu klarifikasi. Label acuan ini juga diperiksa ulang oleh konfigurasi penilai kedua yang independen; kesepakatan kedua konfigurasi terhadap label frekuensi mencapai \textit{quadratic weighted kappa} 0,96, kesepakatan hampir sempurna, menunjukkan label acuan yang dipakai untuk menilai sistem tidak bergantung pada penilaian satu konfigurasi model saja. Hasil ini menunjukkan pemetaan bekerja pada korpus terarah yang diuji; hasil tersebut menilai fidelity pemetaan bahasa ke pilihan PHQ-9, bukan validitas psikometrik atau diagnosis.
 
 \subsection{Evaluasi Khusus Item Kesembilan}
 
@@ -441,15 +449,15 @@ Fidelity orkestrasi (Tabel~\ref{tab:v2-phq-orchestration}) lulus pada kontrak ya
 
 \subsubsection{Metode Benchmark Memori}
 
-Benchmark memori yang lengkap memerlukan percakapan lintas sesi, graf acuan, kueri susulan, label relevansi kandidat, tindakan \textit{lifecycle}, dan fakta minimum yang dapat dipakai pada jawaban. Korpus idealnya mencakup kueri langsung, parafrase, relasional, kausal, temporal, perubahan pemaknaan, kebutuhan abstensi, dan distractor semantik dekat. Artefak yang tersedia mencakup probe parafrase internal, satu kasus relasional bertarget, kontrak produksi, satu probe pemaknaan ulang ujung-ke-ujung, serta kalibrasi retrieval pada LongMemEval_S. Oleh karena itu, hanya metrik yang benar-benar dapat dihitung dari artefak tersebut yang dilaporkan.
+Benchmark memori yang lengkap memerlukan percakapan lintas sesi, graf acuan, kueri susulan, label relevansi kandidat, tindakan \textit{lifecycle}, dan fakta minimum yang dapat dipakai pada jawaban. Korpus idealnya mencakup kueri langsung, parafrase, relasional, kausal, temporal, perubahan pemaknaan, kebutuhan abstensi, dan distractor semantik dekat. Artefak yang tersedia mencakup probe parafrase internal, satu kasus relasional bertarget, kontrak produksi, satu probe pemaknaan ulang ujung-ke-ujung, enam skenario tulis dan empat skenario pembaruan dengan ekspektasi yang diverifikasi manual, serta kalibrasi retrieval pada LongMemEval\_S. Oleh karena itu, hanya metrik yang benar-benar dapat dihitung dari artefak tersebut yang dilaporkan.
 
 Evaluasi dijalankan dalam empat lapisan.
 
 \begin{enumerate}[label=\arabic*.,leftmargin=*,itemsep=3pt]
-  \item \textbf{Menulis memori.} Node dicocokkan setelah normalisasi tipe, nilai, dan alias. Relasi dicocokkan sebagai pasangan sumber, jenis relasi, dan target. Metrik yang direncanakan adalah presisi, \textit{recall}, dan \textit{macro-F1} per tipe node serta relasi. Akurasi label Topik, Peran Subjek, Pemicu, dan kategori domain mahasiswa dilaporkan terpisah bila korpus standar emas tersedia.
-  \item \textbf{Mengambil memori.} Metrik \textit{P@5}, \textit{Recall@5}, MRR, dan nDCG@5 digunakan untuk mengukur peringkat kandidat relevan \parencite{jarvelin2002cumulated}. Probe internal menggunakan fakta acuan, sedangkan LongMemEval_S menggunakan label sesi bukti resmi.
-  \item \textbf{Memperbarui memori.} Tindakan acuan mencakup pertahankan, \textit{supersede}, \textit{reappraise}, nonaktifkan pemicu, dan arsipkan. \textit{Update correctness} adalah proporsi tindakan yang sama dengan acuan. \textit{Stale-memory rate} adalah proporsi kesempatan ketika memori yang tidak lagi aktif masih diambil atau dipakai. Pada tahap ini, bukti yang tersedia adalah kontrak transisi deterministik dan satu probe pemaknaan ulang, bukan estimasi kedua metrik tersebut pada korpus besar.
-  \item \textbf{Menggunakan memori.} Konfigurasi penilai LLM yang direkam pada artefak memeriksa apakah jawaban didukung memori aktif, bertentangan dengan memori, berhasil menjawab kueri relasional atau kausal, dan melakukan personalisasi tanpa memori relevan. Metrik yang dituju adalah \textit{grounded-answer rate}, \textit{contradiction rate}, tingkat keberhasilan kueri relasional atau kausal, dan \textit{false-personalization rate}; metrik ini belum dihitung karena pasangan jawaban berlabel belum tersedia.
+  \item \textbf{Menulis memori.} Tidak ada korpus publik berbahasa Indonesia yang menyediakan anotasi node dan relasi \textit{knowledge graph} memori pada domain mahasiswa, sehingga presisi, \textit{recall}, dan \textit{macro-F1} berskala populasi tidak dapat dihitung. Sebagai gantinya, digunakan teknik pengujian skenario-dan-hasil: enam skenario pesan tunggal dengan node yang diharapkan (tipe dan kata kunci konten yang diverifikasi manual) dijalankan terhadap penulis memori produksi yang sesungguhnya, lalu node yang benar-benar ditulis di Neo4j dicocokkan terhadap ekspektasi tersebut. Akurasi label Topik, Peran Subjek, Pemicu, dan kategori domain mahasiswa secara terpisah tidak tercakup pada skenario ini dan tetap belum diukur.
+  \item \textbf{Mengambil memori.} Metrik \textit{P@5}, \textit{Recall@5}, MRR, dan nDCG@5 digunakan untuk mengukur peringkat kandidat relevan \parencite{jarvelin2002cumulated}. Probe internal menggunakan fakta acuan, sedangkan LongMemEval\_S menggunakan label sesi bukti resmi.
+  \item \textbf{Memperbarui memori.} Tindakan acuan mencakup pertahankan, \textit{supersede}, \textit{reappraise}, nonaktifkan pemicu, dan arsipkan. \textit{Update correctness} adalah proporsi tindakan yang sama dengan acuan, diukur melalui empat skenario dua-sesi (pesan awal lalu pesan pembaruan) yang masing-masing memiliki aksi \textit{lifecycle} acuan, dijalankan pada penulis memori produksi yang sama. \textit{Stale-memory rate} adalah proporsi kesempatan ketika memori yang tidak lagi aktif masih diambil atau dipakai; metrik ini belum diukur karena memerlukan pengamatan pada rentang penggunaan yang lebih panjang daripada empat skenario tersebut.
+  \item \textbf{Menggunakan memori.} Tidak ada korpus pasangan jawaban berlabel yang sesuai untuk mengukur metrik ini secara populasi. \textit{Grounded-answer rate} dan \textit{false-personalization rate} karena itu diturunkan pasca-hoc dari dimensi \textit{groundedness} pada penilaian buta dialog (Subbab~\ref{sec:v2-dialogue}): skenario bermemori yang mendapat skor \textit{groundedness} tertinggi dihitung sebagai jawaban yang tergrounded, sedangkan skenario tanpa memori yang mendapat skor \textit{groundedness} terendah dihitung sebagai personalisasi tanpa dasar. \textit{Contradiction rate} atau \textit{stale-belief rate} (munculnya kembali keyakinan lama yang sudah digantikan pada jawaban, berbeda dari \textit{stale-memory rate} pada butir Memperbarui memori yang mengukur peluang \textit{retrieval} memori tidak aktif), diuji melalui skenario pemaknaan ulang dua sesi yang serupa dengan skenario pembaruan pada penulisan memori: keyakinan lama ditulis, diperbarui pada sesi kedua, lalu giliran ketiga menanyakan topik yang sama untuk memeriksa apakah jawaban mengikuti keyakinan terbaru atau keyakinan lama. Tingkat keberhasilan kueri relasional atau kausal tetap belum diukur karena memerlukan korpus kueri berlabel tersendiri.
 \end{enumerate}
 
 Pemisahan ini mengikuti prinsip bahwa memori jangka panjang terdiri atas beberapa kemampuan, bukan satu skor retrieval \parencite{wu2024longmemeval}.
@@ -466,15 +474,15 @@ Pemisahan ini mengikuti prinsip bahwa memori jangka panjang terdiri atas beberap
 \rowcolor{tableheadgray}
 \textbf{Lapisan} & \textbf{Metrik} & \textbf{Nilai} \\
 \hline
-Penulisan node & Presisi, \textit{recall}, dan \textit{macro-F1} per tipe & Belum diukur; memerlukan korpus standar emas node berlabel \\
+Penulisan node (skenario) & Presisi, \textit{recall}, dan \textit{macro-F1} pada 6 skenario tulis & Presisi 0,69, \textit{recall} 0,75, \textit{macro-F1} 0,72 (tp=9, fp=4, fn=3) \\
 \hline
-Penulisan relasi & Presisi, \textit{recall}, dan \textit{macro-F1} per tipe & Belum diukur; memerlukan korpus standar emas relasi berlabel \\
+Pembaruan (skenario) & \textit{Update correctness} pada 4 skenario dua-sesi & 0,75 (3/4 aksi \textit{lifecycle} sesuai acuan) \\
 \hline
-Konteks mahasiswa & Akurasi Topik, Peran Subjek, Pemicu, dan domain & Belum diukur; memerlukan korpus standar emas domain mahasiswa \\
+Konteks mahasiswa & Akurasi Topik, Peran Subjek, Pemicu, dan domain & Belum diukur pada skenario tulis/pembaruan ini \\
 \hline
 Retrieval parafrase & \textit{Recall@5} & 1,00 (15/15) pada kondisi hibrid dan vektor saja \\
 \hline
-Kalibrasi retrieval eksternal & LongMemEval_S, 12 kueri; P@5 / \textit{Recall@5} / MRR / nDCG@5 & 0,367 / 0,972 / 0,833 / 0,855 \\
+Kalibrasi retrieval eksternal & LongMemEval\_S, 12 kueri; P@5 / \textit{Recall@5} / MRR / nDCG@5 & 0,367 / 0,972 / 0,833 / 0,855 \\
 \hline
 Ekspansi relasional bertarget & Pengambilan kandidat melalui simpul Pemicu bersama & Hibrid 1/1; vektor saja 0/1; kasus tunggal \\
 \hline
@@ -484,9 +492,11 @@ Kesesuaian semantik reappraisal & Penilaian LLM pada relasi hasil probe ujung-ke
 \hline
 Thought tersupersede tidak aktif & Pemeriksaan state pada probe reappraisal & 3/3 Thought lama tidak aktif \\
 \hline
-Penggunaan fakta pada jawaban & \textit{Grounded-answer rate}, kontradiksi, dan personalisasi tanpa dasar & Belum diukur; belum ada pasangan jawaban berlabel \\
+Penggunaan fakta pada jawaban (\textit{grounded}) & \textit{Grounded-answer rate}, diturunkan pasca-hoc dari \textit{groundedness} dialog & 1,00 (10/10 skenario bermemori) \\
 \hline
-Kebaruan fakta & \textit{Stale-memory rate} & Belum diukur; belum ada korpus peluang retrieval memori tidak aktif \\
+Personalisasi tanpa dasar & \textit{False-personalization rate}, diturunkan pasca-hoc dari \textit{groundedness} dialog & 0,00 (0/14 skenario tanpa memori) \\
+\hline
+Kebaruan keyakinan (lama vs terbarui pada jawaban) & \textit{Stale-belief rate} via 2 skenario pemaknaan ulang tiga sesi & 0,00 (0/2 skenario resurface keyakinan lama) \\
 \hline
 \end{tabularx}
 }
@@ -494,9 +504,13 @@ Kebaruan fakta & \textit{Stale-memory rate} & Belum diukur; belum ada korpus pel
 
 \subsubsection{Analisis Hasil Benchmark Memori}
 
-Kalibrasi pada 12 kueri LongMemEval_S memakai riwayat dengan 42--58 sesi per kueri, termasuk sesi pengalih. Ringkasan sesi ditulis melalui penulis memori AXIS dan diperingkatkan oleh pgvector produksi; label relevansinya berasal dari \textit{answer\_session\_ids} korpus. Hasil P@5 0,367 (95\% CI [0,267; 0,483]), \textit{Recall@5} 0,972 (95\% CI [0,917; 1,000]), MRR 0,833 (95\% CI [0,708; 0,958]), dan nDCG@5 0,855 (95\% CI [0,754; 0,944]) menunjukkan bukti sesi relevan umumnya muncul pada lima hasil teratas, tetapi tidak seluruh bukti selalu berada pada peringkat awal. Interval dihitung dengan 10.000 pengambilan ulang kueri dan tetap lebar karena sampel hanya 12 kueri. Adapter ini tidak mengekstraksi node atau relasi AXIS, sehingga hasilnya merupakan kalibrasi retrieval semantik eksternal, bukan perbandingan kondisi hibrid dengan vektor saja.
+Enam skenario penulisan menghasilkan sembilan node yang cocok dengan ekspektasi dari total dua belas node yang diharapkan (\textit{recall} 0,75) dan empat node tambahan yang tidak sesuai ekspektasi (presisi 0,69, \textit{macro-F1} 0,72). Kesalahan yang muncul umumnya berupa node dengan tipe yang benar tetapi kata kunci konten yang tidak persis cocok dengan ekspektasi manual, bukan kegagalan total menulis node. Empat skenario pembaruan dua-sesi menghasilkan tiga dari empat aksi \textit{lifecycle} yang sesuai acuan (\textit{update correctness} 0,75); satu kasus yang meleset mengharapkan \texttt{REAPPRAISED\_AS} tetapi ekstraktor menghasilkan \texttt{SUPERSEDES}, keduanya tergolong tindakan pembaruan yang sah tetapi berbeda pada nuansa semantik pemaknaan ulang dibanding penggantian. Hasil ini menggambarkan perilaku ekstraktor pada dua belas skenario yang diuji secara langsung terhadap penulis memori produksi, bukan estimasi presisi atau \textit{recall} pada populasi percakapan mahasiswa yang lebih luas.
 
-Kontrak produksi yang dijalankan ulang membuktikan 27 transisi dan pembacaan lifecycle yang telah ditentukan berjalan sesuai kontrak. Namun, kontrak deterministik tidak mengukur apakah ekstraksi LLM memilih relasi yang tepat secara semantik. Pada satu probe ujung-ke-ujung yang tersedia, satu penilai LLM menilai satu dari lima relasi yang ditulis selaras dengan pemaknaan ulang pengguna. Tiga \textit{Thought} yang tersupersede juga seluruhnya berstatus tidak aktif. Hasil ini memperlihatkan batas penting: mekanisme lifecycle berfungsi, tetapi ketepatan semantik penulisan belum dapat dinyatakan tinggi hanya dari probe kecil tersebut. Skor retrieval tidak digunakan sebagai pengganti bukti penulisan, pembaruan, atau penggunaan memori.
+Kalibrasi pada 12 kueri LongMemEval\_S memakai riwayat dengan 42--58 sesi per kueri, termasuk sesi pengalih. Ringkasan sesi ditulis melalui penulis memori AXIS dan diperingkatkan oleh pgvector produksi; label relevansinya berasal dari \textit{answer\_session\_ids} korpus. Hasil P@5 0,367 (95\% CI [0,267; 0,483]), \textit{Recall@5} 0,972 (95\% CI [0,917; 1,000]), MRR 0,833 (95\% CI [0,708; 0,958]), dan nDCG@5 0,855 (95\% CI [0,754; 0,944]) menunjukkan bukti sesi relevan umumnya muncul pada lima hasil teratas, tetapi tidak seluruh bukti selalu berada pada peringkat awal. Interval dihitung dengan 10.000 pengambilan ulang kueri dan tetap lebar karena sampel hanya 12 kueri. Adapter ini tidak mengekstraksi node atau relasi AXIS, sehingga hasilnya merupakan kalibrasi retrieval semantik eksternal, bukan perbandingan kondisi hibrid dengan vektor saja.
+
+Kontrak produksi yang dijalankan ulang membuktikan 27 transisi dan pembacaan lifecycle yang telah ditentukan berjalan sesuai kontrak. Namun, kontrak deterministik tidak mengukur apakah ekstraksi LLM memilih relasi yang tepat secara semantik. Pada satu probe ujung-ke-ujung yang tersedia, konfigurasi penilai primer menilai satu dari lima relasi yang ditulis selaras dengan pemaknaan ulang pengguna. Konfigurasi penilai kedua yang independen menilai kelima relasi yang sama secara terpisah; kesepakatan kedua konfigurasi mencapai Cohen's kappa 0,55 (kesepakatan sedang), yang perlu dibaca hati-hati karena hanya dihitung dari lima relasi, sehingga satu perbedaan penilaian saja sudah mengubah kappa secara signifikan pada sampel sekecil ini. Tiga \textit{Thought} yang tersupersede juga seluruhnya berstatus tidak aktif. Hasil ini memperlihatkan batas penting: mekanisme lifecycle berfungsi, tetapi ketepatan semantik penulisan belum dapat dinyatakan tinggi hanya dari probe kecil tersebut. Skor retrieval tidak digunakan sebagai pengganti bukti penulisan, pembaruan, atau penggunaan memori.
+
+Penggunaan memori pada jawaban diukur melalui dua teknik pelengkap (Lampiran~\ref{lamp:v2-annotation}). \textit{Grounded-answer rate} dan \textit{false-personalization rate}, diturunkan pasca-hoc dari dimensi \textit{groundedness} pada 24 skenario penilaian buta dialog (konfigurasi penilai primer), mencapai 1,00 (seluruh 10 skenario bermemori memperoleh skor \textit{groundedness} tertinggi) dan 0,00 (tidak ada dari 14 skenario tanpa memori yang mendapat skor \textit{groundedness} terendah). \textit{Stale-belief rate} (berbeda dari \textit{stale-memory rate} pada Tabel~\ref{tab:v2-memory-result} yang mengukur peluang \textit{retrieval} memori tidak aktif dan masih belum diukur), diuji melalui dua skenario pemaknaan ulang tiga sesi yang dinilai dua konfigurasi independen, mencapai 0,00 dengan kesepakatan sempurna (Cohen's kappa 1,00, $n=2$): pada kedua skenario, respons AXIS merujuk keyakinan yang sudah diperbarui, bukan keyakinan lama yang sudah digantikan. Ukuran sampel yang sangat kecil (dua skenario) membuat angka ini rentan berubah drastis pada probe tambahan, dan proksi \textit{groundedness} dialog lebih longgar dibanding rubrik penggunaan memori yang dirancang khusus, karena skor rendah dapat juga berarti jawaban generik, bukan hanya personalisasi palsu. \textit{Contradiction rate} pada kueri relasional atau kausal di luar konteks pemaknaan ulang tetap belum diukur.
 
 \subsection{Perbandingan Terkontrol Vektor Saja dan Hibrid}
 \label{sec:v2-ablation}
@@ -524,13 +538,13 @@ Korpus, kueri, model generatif, model embedding, prompt, parameter decoding, jum
 \rowcolor{tableheadgray}
 \textbf{Metrik} & \textbf{Vektor saja} & \textbf{Hibrid} & \textbf{Selisih dan 95\% CI} \\
 \hline
-\textit{P@5} & \multicolumn{3}{c}{Tidak dibandingkan pada blok ablasi; dilaporkan terpisah pada kalibrasi LongMemEval_S} \\
+\textit{P@5} & \multicolumn{3}{c}{Tidak dibandingkan pada blok ablasi; dilaporkan terpisah pada kalibrasi LongMemEval\_S} \\
 \hline
 \textit{Recall@5} (kueri parafrase satu \textit{hop}) & 1,00 (15/15) & 1,00 (15/15) & 0,00 (95\% CI \textit{bootstrap} [0,00; 0,00]) \\
 \hline
-MRR & \multicolumn{3}{c}{Tidak dibandingkan pada blok ablasi; dilaporkan terpisah pada kalibrasi LongMemEval_S} \\
+MRR & \multicolumn{3}{c}{Tidak dibandingkan pada blok ablasi; dilaporkan terpisah pada kalibrasi LongMemEval\_S} \\
 \hline
-nDCG@5 & \multicolumn{3}{c}{Tidak dibandingkan pada blok ablasi; dilaporkan terpisah pada kalibrasi LongMemEval_S} \\
+nDCG@5 & \multicolumn{3}{c}{Tidak dibandingkan pada blok ablasi; dilaporkan terpisah pada kalibrasi LongMemEval\_S} \\
 \hline
 \textit{Update correctness} & \multicolumn{3}{c}{Belum diukur pada blok ablasi ini} \\
 \hline
@@ -561,7 +575,7 @@ Pada 15 kueri parafrase satu \textit{hop} (satu fakta domain per kueri, kata kue
 
 Untuk mengisolasi nilai tambah tersebut secara lebih langsung, disusun satu kasus bertarget: dua pengalaman milik pengguna yang sama dibuat berbagi satu entitas Pemicu yang identik pada graf, tetapi kalimatnya sengaja dibuat tidak berbagi kata maupun makna semantik permukaan (satu bercerita tentang tekanan dari dosen pembimbing, satu lagi bercerita tentang liburan ke pantai bersama teman kos, dengan Pemicu yang sama-sama tercatat sebagai relasi terhadap dosen pembimbing tersebut). Pencarian kemiripan semantik hanya menemukan pengalaman pertama; kondisi hibrid berhasil ikut menyertakan pengalaman kedua karena penelusuran satu langkah tambahan pada entitas Pemicu yang sama, mengoperasionalkan prinsip \textit{spreading activation} \parencite{collinsloftus1975} bahwa pengaktifan memori dapat menyebar melalui simpul yang terhubung, bukan hanya melalui kemiripan kata. Kasus tunggal ini tidak memberikan kekuatan statistik, tetapi menunjukkan secara konkret jenis kueri yang secara struktural tidak dapat dijawab pencarian semantik saja, terlepas dari seberapa besar korpus atau seberapa baik model \textit{embedding} yang dipakai.
 
-P@5, MRR, dan nDCG@5 tersedia pada kalibrasi LongMemEval_S di Tabel~\ref{tab:v2-memory-result}, tetapi tidak dibandingkan antar-kondisi karena korpus tersebut belum dianotasi sebagai graf AXIS. Metrik pembaruan dan penggunaan memori pada jawaban (\textit{update correctness} hingga \textit{false-personalization rate}) tetap memerlukan korpus kasus dan pasangan jawaban berlabel. Klaim keunggulan kondisi hibrid pada tahap ini dibatasi pada kemampuan menjawab kueri yang mengandalkan identitas relasi graf, bukan pada seluruh kemampuan memori jangka panjang secara umum. Bukti kontrak lifecycle dan probe reappraisal dilaporkan terpisah karena keduanya menguji transisi memori, bukan membandingkan kedua kondisi retrieval.
+P@5, MRR, dan nDCG@5 tersedia pada kalibrasi LongMemEval\_S di Tabel~\ref{tab:v2-memory-result}, tetapi tidak dibandingkan antar-kondisi karena korpus tersebut belum dianotasi sebagai graf AXIS. \textit{Update correctness}, \textit{grounded-answer rate}, \textit{false-personalization rate}, dan \textit{stale-belief rate} tidak dibandingkan antara kondisi vektor-saja dan hibrid pada blok ablasi ini karena diukur melalui skenario terpisah (Subbab~\ref{sec:v2-memory}), bukan sebagai perbandingan berpasangan kedua kondisi retrieval. \textit{Stale-memory rate} (peluang \textit{retrieval} memori tidak aktif) tetap belum diukur pada kondisi manapun. Klaim keunggulan kondisi hibrid pada tahap ini dibatasi pada kemampuan menjawab kueri yang mengandalkan identitas relasi graf, bukan pada seluruh kemampuan memori jangka panjang secara umum. Bukti kontrak lifecycle dan probe reappraisal dilaporkan terpisah karena keduanya menguji transisi memori, bukan membandingkan kedua kondisi retrieval.
 
 \section{Validasi Kebutuhan Pendukung Kendali Pengguna}
 \label{sec:v2-user-control}
@@ -584,7 +598,7 @@ Menghapus atau menyembunyikan memori & 1 & 0 & Memerlukan pengguna nyata \\
 \hline
 Hapus riwayat percakapan (tingkat sesi) & 1 & 0 & Memerlukan pengguna nyata \\
 \hline
-Unduh data & \multicolumn{2}{c}{Terimplementasi sisi klien; belum ada kontrak otomatis} & Memerlukan pengguna nyata \\
+Unduh data & 2 & 0 & Memerlukan pengguna nyata \\
 \hline
 Hapus akun & 2 & 0 & Memerlukan pengguna nyata \\
 \hline
@@ -594,7 +608,7 @@ Memahami batas persistensi \textit{Confession Space} & 2 & 0 & Memerlukan penggu
 }
 \end{table}
 
-Lima dari enam tugas kini memiliki verifikasi teknis otomatis terhadap lapisan layanan produksi: melihat, mengoreksi, dan menyembunyikan (mengarsipkan) satu node memori terverifikasi langsung terhadap layanan memori pada \textit{gateway}; hapus riwayat percakapan tingkat sesi terverifikasi lewat fungsi penghapusan sesi produksi; batas persistensi \textit{Confession Space} terverifikasi lewat mekanisme pengecualian baris aktivitas yang memicu penulisan memori (lihat Tabel~\ref{tab:v2-fungsional} untuk rincian dan batas cakupannya). Tugas mengunduh data diimplementasikan sepenuhnya pada sisi antarmuka: data percakapan pengguna diambil dari titik akhir yang sudah ada, digabungkan menjadi satu berkas, lalu diunduh langsung dari peramban, tanpa titik akhir ekspor khusus pada lapisan \textit{backend}. Implementasi ini terverifikasi berfungsi pada purwarupa yang dideploy (Subbab~\ref{sec:implementasi-arsitektur-inti}), tetapi belum memiliki kontrak otomatis karena logikanya berada sepenuhnya pada kode antarmuka, di luar cakupan \textit{test suite} Python pada tahap ini. Kolom pemahaman pengguna pada seluruh baris tetap secara struktural memerlukan partisipan nyata dan tidak dapat diisi lewat verifikasi teknis.
+Lima dari enam tugas kini memiliki verifikasi teknis otomatis terhadap lapisan layanan produksi: melihat, mengoreksi, dan menyembunyikan (mengarsipkan) satu node memori terverifikasi langsung terhadap layanan memori pada \textit{gateway}; hapus riwayat percakapan tingkat sesi terverifikasi lewat fungsi penghapusan sesi produksi; batas persistensi \textit{Confession Space} terverifikasi lewat mekanisme pengecualian baris aktivitas yang memicu penulisan memori (lihat Tabel~\ref{tab:v2-fungsional} untuk rincian dan batas cakupannya). Tugas mengunduh data diimplementasikan sepenuhnya pada sisi antarmuka: data percakapan pengguna diambil dari titik akhir yang sudah ada, digabungkan menjadi satu berkas, lalu diunduh langsung dari peramban, tanpa titik akhir ekspor khusus pada lapisan \textit{backend}. Implementasi ini terverifikasi berfungsi pada purwarupa yang dideploy (Subbab~\ref{sec:implementasi-arsitektur-inti}). Kolom pemahaman pengguna pada seluruh baris tetap secara struktural memerlukan partisipan nyata dan tidak dapat diisi lewat verifikasi teknis.
 
 \section{Pengendalian Keterulangan dan Pelaporan}
 \label{sec:v2-reproducibility}
@@ -656,12 +670,12 @@ Kendali data & & \\
 
 \subsection{RM1: Respons Empatik, Relevan, Reflektif, Aman, dan Sesuai Ragam Bahasa}
 
-Tiga blok bukti mendukung RM1 secara terpisah. Penilaian buta pada 18 skenario satu-giliran (Subbab~\ref{sec:v2-dialogue}) menunjukkan AXIS dipilih pada 10 dari 18 penilaian berpasangan. Perbedaannya terutama muncul pada \textit{groundedness} terhadap memori: pada sembilan skenario bermemori, AXIS dipilih enam kali dan median \textit{groundedness} AXIS 2,0 dibanding \textit{baseline} 1,0. Pada sembilan kondisi tanpa memori, \textit{baseline} dipilih lima kali. Jadi, klaim yang dapat dipertanggungjawabkan dari blok ini terbatas pada pemanfaatan memori personal, bukan keunggulan kualitas percakapan secara umum. Benchmark keselamatan pada korpus 50 pesan (Subbab~\ref{sec:v2-safety}) menghasilkan sensitivitas 0,654, spesifisitas 0,917, dan sembilan \textit{false negative}; semua respons setelah deteksi memenuhi rubrik aman. Dengan demikian, keluaran eskalasi bekerja konsisten pada kasus yang tertangkap, tetapi kemampuan mendeteksi eufemisme masih terbatas. Evaluasi ragam formal, bahasa campur, dan eufemistik baru didukung korpus keselamatan kecil dan belum diuji terpisah pada rubrik respons suportif.
+Tiga blok bukti mendukung RM1 secara terpisah. Penilaian buta pada 24 skenario satu-giliran (Subbab~\ref{sec:v2-dialogue}) menunjukkan AXIS dipilih pada 14 dari 24 penilaian berpasangan menurut konfigurasi penilai primer. Perbedaannya terutama muncul pada kondisi bermemori: AXIS dipilih delapan dari 10 kali, sedangkan pada 14 kondisi tanpa memori, \textit{baseline} sedikit lebih sering dipilih (tujuh berbanding enam). Jadi, klaim yang dapat dipertanggungjawabkan dari blok ini terbatas pada pemanfaatan memori personal, bukan keunggulan kualitas percakapan secara umum. Kesepakatan preferensi antara dua konfigurasi penilai independen pada blok ini rendah (Cohen's kappa $-0,035$), jauh di bawah blok evaluasi lain, sehingga angka preferensi di atas perlu dibaca sebagai hasil satu konfigurasi penilai, bukan kesimpulan yang stabil antarpenilai. Benchmark keselamatan pada korpus 50 pesan (Subbab~\ref{sec:v2-safety}) menghasilkan sensitivitas 0,654, spesifisitas 0,917, dan sembilan \textit{false negative}; semua respons setelah deteksi memenuhi rubrik aman. Dengan demikian, keluaran eskalasi bekerja konsisten pada kasus yang tertangkap, tetapi kemampuan mendeteksi eufemisme masih terbatas. Evaluasi ragam formal dan bahasa campur kini juga diuji pada rubrik respons suportif (lima dan enam skenario secara berurutan), dengan preferensi AXIS setara pada formal dan tertinggal pada bahasa campur; ragam eufemistik hanya didukung satu skenario pada rubrik ini sehingga belum dapat digeneralisasi.
 
 \subsection{RM2: Mood Harian dan Asesmen Skrining Depresi secara Percakapan}
 
-Fidelity orkestrasi PHQ-9 (Subbab~\ref{sec:v2-phq}) lulus penuh pada 130 kontrak suite otomatis yang mencakup penawaran, pemicu onboarding, penyampaian item, klarifikasi, penskoran, umpan balik, dan rute item kesembilan. Mood harian dicatat satu kali per hari dan pemisahan data administratif dilindungi oleh kontrak memori. Pemetaan jawaban bebas ke skor menunjukkan kesepakatan sempurna dengan label acuan pada 36 kasus dengan frekuensi tegas; empat kasus ambigu secara tepat memicu klarifikasi alih-alih skor paksa. Kesimpulan RM2 pada tahap ini dibatasi pada fidelity penyampaian dan ketepatan pemetaan jawaban bebas skala kecil, tidak diperluas menjadi klaim diagnosis atau efektivitas klinis.
+Fidelity orkestrasi PHQ-9 (Subbab~\ref{sec:v2-phq}) lulus penuh pada 130 kontrak suite otomatis yang mencakup penawaran, pemicu onboarding, penyampaian item, klarifikasi, penskoran, umpan balik, dan rute item kesembilan. Mood harian dicatat satu kali per hari dan pemisahan data administratif dilindungi oleh kontrak memori. Pemetaan jawaban bebas ke skor menunjukkan kesepakatan sempurna dengan label acuan pada 73 dari 80 kasus dengan frekuensi tegas; tujuh kasus ambigu secara tepat memicu klarifikasi alih-alih skor paksa. Kesimpulan RM2 pada tahap ini dibatasi pada fidelity penyampaian dan ketepatan pemetaan jawaban bebas skala kecil, tidak diperluas menjadi klaim diagnosis atau efektivitas klinis.
 
 \subsection{RM3: Memori Jangka Panjang yang Berkesinambungan}
 
-Ablasi kondisi vektor saja berbanding hibrid (Subbab~\ref{sec:v2-ablation}) menunjukkan \textit{Recall@5} yang identik (1,00) pada kueri parafrase satu-\textit{hop}, tetapi kondisi hibrid berhasil menjawab kasus bertarget yang secara struktural tidak dapat dijawab pencarian semantik saja (dua pengalaman berbagi identitas simpul Pemicu yang sama tanpa kesamaan leksikal maupun semantik permukaan). Nilai graf pada tahap ini dinyatakan spesifik untuk kemampuan menjawab kueri berbasis identitas relasi, bukan untuk seluruh kemampuan memori jangka panjang; metrik penulisan, pembaruan \textit{lifecycle}, dan penggunaan memori pada jawaban (\textit{grounded-answer rate}, \textit{update correctness}, dan sejenisnya) belum diukur karena memerlukan korpus standar emas berlabel yang belum disusun pada skala penuh, dan dicatat sebagai pekerjaan lanjutan pada Keterbatasan.
+Ablasi kondisi vektor saja berbanding hibrid (Subbab~\ref{sec:v2-ablation}) menunjukkan \textit{Recall@5} yang identik (1,00) pada kueri parafrase satu-\textit{hop}, tetapi kondisi hibrid berhasil menjawab kasus bertarget yang secara struktural tidak dapat dijawab pencarian semantik saja (dua pengalaman berbagi identitas simpul Pemicu yang sama tanpa kesamaan leksikal maupun semantik permukaan). Nilai graf pada tahap ini dinyatakan spesifik untuk kemampuan menjawab kueri berbasis identitas relasi, bukan untuk seluruh kemampuan memori jangka panjang. Ketepatan penulisan node (presisi 0,69, \textit{recall} 0,75) dan \textit{update correctness} (0,75) telah diukur melalui teknik pengujian skenario-dan-hasil karena tidak ada korpus publik berbahasa Indonesia yang sesuai. Penggunaan memori pada jawaban (\textit{grounded-answer rate} 1,00, \textit{false-personalization rate} 0,00, dan \textit{stale-belief rate} 0,00) telah diukur melalui teknik serupa (artefak \textit{evaluasi\_v3}), tetapi tetap merupakan proksi skenario berukuran kecil, bukan estimasi populasi.

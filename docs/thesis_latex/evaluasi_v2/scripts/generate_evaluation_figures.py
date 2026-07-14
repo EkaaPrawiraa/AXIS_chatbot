@@ -46,7 +46,10 @@ DIMENSION_LABELS = {
 
 
 def plot_rm1_dialogue() -> None:
-    data = json.loads((EVAL_DIR / "rm1_dialogue" / "raw_results_expanded.json").read_text(encoding="utf-8"))
+    v3_path = ROOT / "docs" / "thesis_latex" / "evaluasi_v3" / "rm1_language" / "raw_results_v3.json"
+    v2_path = EVAL_DIR / "rm1_dialogue" / "raw_results_expanded.json"
+    data = json.loads((v3_path if v3_path.exists() else v2_path).read_text(encoding="utf-8"))
+    primary_model = "gemini-3.1-flash-lite"
 
     dims = list(DIMENSION_LABELS.keys())
     axis_scores: dict[str, list[float]] = {d: [] for d in dims}
@@ -54,14 +57,16 @@ def plot_rm1_dialogue() -> None:
 
     for scenario in data:
         axis_is_a = scenario["axis_is_a"]
-        for judge in scenario["judge_results"].values():
-            scores_axis = judge["scores_a"] if axis_is_a else judge["scores_b"]
-            scores_base = judge["scores_b"] if axis_is_a else judge["scores_a"]
-            for d in dims:
-                if d in scores_axis:
-                    axis_scores[d].append(scores_axis[d])
-                if d in scores_base:
-                    baseline_scores[d].append(scores_base[d])
+        judge = scenario["judge_results"].get(primary_model)
+        if not judge:
+            continue
+        scores_axis = judge["scores_a"] if axis_is_a else judge["scores_b"]
+        scores_base = judge["scores_b"] if axis_is_a else judge["scores_a"]
+        for d in dims:
+            if d in scores_axis:
+                axis_scores[d].append(scores_axis[d])
+            if d in scores_base:
+                baseline_scores[d].append(scores_base[d])
 
     axis_medians = [statistics.median(axis_scores[d]) for d in dims]
     baseline_medians = [statistics.median(baseline_scores[d]) for d in dims]

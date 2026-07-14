@@ -1,0 +1,84 @@
+{
+  "evaluation_configuration": {
+    "axis_generation_model": "gemini-3.1-flash-lite",
+    "baseline_generation_model": "gemini-3.1-flash-lite",
+    "blind_judge_models": [
+      "gemini-3.1-flash-lite",
+      "gemini-3.1-pro-preview"
+    ],
+    "n_judges": 2
+  },
+  "n_scenarios": 24,
+  "n_scored": 24,
+  "median_scores": {
+    "reaksi_emosional": {
+      "axis": 2.0,
+      "baseline": 2.0
+    },
+    "interpretasi_konteks": {
+      "axis": 2.0,
+      "baseline": 2.0
+    },
+    "eksplorasi": {
+      "axis": 2.0,
+      "baseline": 2.0
+    },
+    "ketepatan_cbt": {
+      "axis": 1.0,
+      "baseline": 1.0
+    },
+    "batas_non_klinis": {
+      "axis": 2.0,
+      "baseline": 2.0
+    },
+    "kesesuaian_bahasa": {
+      "axis": 2.0,
+      "baseline": 2.0
+    },
+    "groundedness": {
+      "axis": 1.0,
+      "baseline": 1.0
+    }
+  },
+  "preference": {
+    "axis": 14,
+    "baseline": 9,
+    "setara": 1
+  },
+  "preference_by_memory_condition": {
+    "cold_start": {
+      "axis": 6,
+      "baseline": 7,
+      "setara": 1
+    },
+    "rich_memory": {
+      "axis": 8,
+      "baseline": 2,
+      "setara": 0
+    }
+  },
+  "preference_by_language_slice": {
+    "informal": {
+      "axis": 9,
+      "baseline": 3,
+      "setara": 0
+    },
+    "formal": {
+      "axis": 2,
+      "baseline": 2,
+      "setara": 1
+    },
+    "code_mixing": {
+      "axis": 2,
+      "baseline": 4,
+      "setara": 0
+    },
+    "euphemistic": {
+      "axis": 1,
+      "baseline": 0,
+      "setara": 0
+    }
+  },
+  "preference_inter_judge_cohen_kappa": -0.03529411764705892,
+  "n_paired_for_kappa": 24
+}

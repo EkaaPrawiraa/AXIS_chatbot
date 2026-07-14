@@ -1,11 +1,12 @@
 {
   "source_artifact": "evaluation_pipeline/results/reappraisal_probe.json",
   "judge_models": [
-    "gemini-3.1-flash-lite"
+    "gemini-3.1-flash-lite",
+    "gemini-3.1-pro-preview"
   ],
   "adjudicator_model": null,
   "n_cases": 5,
-  "n_disagreements": 0,
+  "n_disagreements": 1,
   "cases": [
     {
       "id": "thought-1",
@@ -67,6 +68,28 @@
       {
         "id": "experience-2",
         "supports_reappraisal": false
+      }
+    ],
+    "gemini-3.1-pro-preview": [
+      {
+        "id": "thought-1",
+        "supports_reappraisal": false
+      },
+      {
+        "id": "thought-2",
+        "supports_reappraisal": false
+      },
+      {
+        "id": "thought-3",
+        "supports_reappraisal": false
+      },
+      {
+        "id": "experience-1",
+        "supports_reappraisal": true
+      },
+      {
+        "id": "experience-2",
+        "supports_reappraisal": true
       }
     ]
   },

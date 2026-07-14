@@ -1,0 +1,5 @@
+Ukuran slide: 1280 x 720 (16:9).
+
+Latar: #FFFAF4. Teks utama: #2D2119. Aksen utama: #4F3424 dan #8B5438. Aksen pendukung: #6C7B53, #C8924F, #A85F5D. Garis: #E5D4C3.
+
+Struktur: kicker kecil, judul klaim, garis pemisah, bukti visual/tabel, footer tahap presentasi dan nomor slide. Gambar laporan dibingkai tipis agar tidak menyatu dengan latar. Bank artefak memakai objek gambar yang tetap dapat dipindah/dihapus dari PowerPoint.

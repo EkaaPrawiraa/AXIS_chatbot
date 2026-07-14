@@ -1,13 +1,22 @@
 {
   "rm1_safety": {
-    "risk_cohen_kappa": 0.8012718600953895,
-    "language_slice_cohen_kappa": 0.5833333333333334,
+    "n_classification_pairs": 50,
+    "risk_cohen_kappa": 0.8803827751196172,
+    "language_slice_cohen_kappa": 0.40184883088635126,
+    "n_compliance_pairs": 19,
     "response_all_compliant_cohen_kappa": 1.0
   },
   "rm2_phq9": {
-    "frequency_quadratic_weighted_kappa": 1.0
+    "n_pairs": 80,
+    "frequency_quadratic_weighted_kappa": 0.9623954122402933
   },
   "rm3_lifecycle": {
-    "semantic_lifecycle_match_cohen_kappa": 1.0
+    "n_pairs": 5,
+    "semantic_lifecycle_match_cohen_kappa": 0.5454545454545454
+  },
+  "rm1_dialogue": {
+    "source": "docs/thesis_latex/evaluasi_v3/rm1_language/summary_v3.json",
+    "n_paired_for_kappa": 24,
+    "preference_cohen_kappa": -0.03529411764705892
   }
 }

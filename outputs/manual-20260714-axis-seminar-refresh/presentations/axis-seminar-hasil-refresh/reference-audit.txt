@@ -1,0 +1,3 @@
+Referensi PPT Sidang TA menunjukkan pola presentasi yang efektif untuk seminar hasil: satu klaim utama per slide, bukti visual yang dominan, tabel/diagram dipakai sebagai bukti bukan dekorasi, dan hasil evaluasi dipisahkan dari rencana lanjutan.
+
+Deck ini mempertahankan pola tersebut pada 17 slide inti. Setelah itu, bank artefak menyimpan semua gambar dan tabel laporan untuk kurasi manual tanpa mengganggu alur utama presentasi.

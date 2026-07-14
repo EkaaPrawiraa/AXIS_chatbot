@@ -1,0 +1,7 @@
+Tesis: AXIS mengembangkan companionship chatbot non-klinis untuk mahasiswa Indonesia dengan percakapan reflektif, asesmen skrining depresi secara percakapan, dan memori jangka panjang relasional.
+
+Audiens: penguji seminar hasil yang perlu memahami masalah, rancangan, realisasi, dan batas bukti evaluasi.
+
+Alur: masalah keberlanjutan percakapan -> tiga rumusan masalah -> rancangan solusi -> implementasi -> bukti evaluasi -> batas klaim -> bank artefak laporan.
+
+Slide inti 1--17 membawa klaim. Slide berikutnya adalah bank visual dan tabel lengkap; setiap slide bank memuat nomor artefak, judul, serta sumber halaman dari main.pdf.

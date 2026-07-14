@@ -1,0 +1,15 @@
+{
+  "title": "Pengembangan Companionship Chatbot dengan Asesmen Depresi melalui Percakapan dan Memori Jangka Panjang Berbasis Knowledge Graph untuk Mahasiswa Indonesia",
+  "functional_validation": {
+    "cbt": "54/54",
+    "guardrail": "80/80",
+    "mood_phq9": "130/130",
+    "memory": "47/47",
+    "lifecycle": "27/27",
+    "confession_space": "2/2",
+    "user_controls": "4/4"
+  },
+  "rm1": { "scenarios": 18, "axis_preference": 10, "baseline_preference": 8, "safety_messages": 50, "sensitivity": 0.654, "specificity": 0.917, "misses": 9 },
+  "rm2": { "free_text_inputs": 80, "unambiguous_inputs": 73, "macro_f1": 1.0, "item9_route": "8/8" },
+  "rm3": { "hybrid_recall5": "15/15", "vector_recall5": "15/15", "hybrid_relational_case": 1, "vector_relational_case": 0 }
+}

@@ -1,0 +1,1911 @@
+{
+  "sourcePptx": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260713-axis-seminar/presentations/axis-seminar-hasil/AXIS_Seminar_Hasil_2026_Lengkap.pptx",
+  "workspace": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect",
+  "outDir": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect",
+  "generatedAt": "2026-07-14T16:08:04.199Z",
+  "slideCount": 144,
+  "slideArtifacts": [
+    {
+      "slide": 1,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-01.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-01.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-01.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-01.layout.json"
+    },
+    {
+      "slide": 2,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-02.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-02.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-02.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-02.layout.json"
+    },
+    {
+      "slide": 3,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-03.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-03.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-03.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-03.layout.json"
+    },
+    {
+      "slide": 4,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-04.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-04.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-04.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-04.layout.json"
+    },
+    {
+      "slide": 5,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-05.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-05.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-05.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-05.layout.json"
+    },
+    {
+      "slide": 6,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-06.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-06.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-06.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-06.layout.json"
+    },
+    {
+      "slide": 7,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-07.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-07.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-07.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-07.layout.json"
+    },
+    {
+      "slide": 8,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-08.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-08.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-08.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-08.layout.json"
+    },
+    {
+      "slide": 9,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-09.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-09.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-09.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-09.layout.json"
+    },
+    {
+      "slide": 10,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-10.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-10.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-10.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-10.layout.json"
+    },
+    {
+      "slide": 11,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-11.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-11.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-11.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-11.layout.json"
+    },
+    {
+      "slide": 12,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-12.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-12.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-12.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-12.layout.json"
+    },
+    {
+      "slide": 13,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-13.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-13.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-13.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-13.layout.json"
+    },
+    {
+      "slide": 14,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-14.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-14.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-14.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-14.layout.json"
+    },
+    {
+      "slide": 15,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-15.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-15.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-15.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-15.layout.json"
+    },
+    {
+      "slide": 16,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-16.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-16.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-16.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-16.layout.json"
+    },
+    {
+      "slide": 17,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-17.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-17.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-17.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-17.layout.json"
+    },
+    {
+      "slide": 18,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-18.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-18.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-18.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-18.layout.json"
+    },
+    {
+      "slide": 19,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-19.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-19.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-19.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-19.layout.json"
+    },
+    {
+      "slide": 20,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-20.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-20.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-20.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-20.layout.json"
+    },
+    {
+      "slide": 21,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-21.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-21.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-21.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-21.layout.json"
+    },
+    {
+      "slide": 22,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-22.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-22.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-22.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-22.layout.json"
+    },
+    {
+      "slide": 23,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-23.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-23.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-23.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-23.layout.json"
+    },
+    {
+      "slide": 24,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-24.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-24.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-24.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-24.layout.json"
+    },
+    {
+      "slide": 25,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-25.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-25.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-25.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-25.layout.json"
+    },
+    {
+      "slide": 26,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-26.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-26.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-26.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-26.layout.json"
+    },
+    {
+      "slide": 27,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-27.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-27.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-27.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-27.layout.json"
+    },
+    {
+      "slide": 28,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-28.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-28.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-28.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-28.layout.json"
+    },
+    {
+      "slide": 29,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-29.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-29.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-29.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-29.layout.json"
+    },
+    {
+      "slide": 30,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-30.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-30.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-30.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-30.layout.json"
+    },
+    {
+      "slide": 31,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-31.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-31.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-31.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-31.layout.json"
+    },
+    {
+      "slide": 32,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-32.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-32.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-32.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-32.layout.json"
+    },
+    {
+      "slide": 33,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-33.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-33.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-33.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-33.layout.json"
+    },
+    {
+      "slide": 34,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-34.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-34.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-34.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-34.layout.json"
+    },
+    {
+      "slide": 35,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-35.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-35.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-35.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-35.layout.json"
+    },
+    {
+      "slide": 36,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-36.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-36.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-36.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-36.layout.json"
+    },
+    {
+      "slide": 37,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-37.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-37.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-37.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-37.layout.json"
+    },
+    {
+      "slide": 38,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-38.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-38.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-38.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-38.layout.json"
+    },
+    {
+      "slide": 39,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-39.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-39.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-39.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-39.layout.json"
+    },
+    {
+      "slide": 40,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-40.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-40.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-40.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-40.layout.json"
+    },
+    {
+      "slide": 41,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-41.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-41.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-41.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-41.layout.json"
+    },
+    {
+      "slide": 42,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-42.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-42.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-42.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-42.layout.json"
+    },
+    {
+      "slide": 43,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-43.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-43.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-43.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-43.layout.json"
+    },
+    {
+      "slide": 44,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-44.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-44.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-44.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-44.layout.json"
+    },
+    {
+      "slide": 45,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-45.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-45.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-45.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-45.layout.json"
+    },
+    {
+      "slide": 46,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-46.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-46.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-46.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-46.layout.json"
+    },
+    {
+      "slide": 47,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-47.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-47.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-47.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-47.layout.json"
+    },
+    {
+      "slide": 48,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-48.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-48.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-48.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-48.layout.json"
+    },
+    {
+      "slide": 49,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-49.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-49.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-49.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-49.layout.json"
+    },
+    {
+      "slide": 50,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-50.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-50.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-50.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-50.layout.json"
+    },
+    {
+      "slide": 51,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-51.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-51.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-51.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-51.layout.json"
+    },
+    {
+      "slide": 52,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-52.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-52.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-52.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-52.layout.json"
+    },
+    {
+      "slide": 53,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-53.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-53.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-53.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-53.layout.json"
+    },
+    {
+      "slide": 54,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-54.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-54.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-54.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-54.layout.json"
+    },
+    {
+      "slide": 55,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-55.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-55.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-55.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-55.layout.json"
+    },
+    {
+      "slide": 56,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-56.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-56.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-56.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-56.layout.json"
+    },
+    {
+      "slide": 57,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-57.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-57.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-57.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-57.layout.json"
+    },
+    {
+      "slide": 58,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-58.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-58.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-58.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-58.layout.json"
+    },
+    {
+      "slide": 59,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-59.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-59.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-59.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-59.layout.json"
+    },
+    {
+      "slide": 60,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-60.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-60.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-60.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-60.layout.json"
+    },
+    {
+      "slide": 61,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-61.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-61.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-61.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-61.layout.json"
+    },
+    {
+      "slide": 62,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-62.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-62.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-62.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-62.layout.json"
+    },
+    {
+      "slide": 63,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-63.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-63.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-63.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-63.layout.json"
+    },
+    {
+      "slide": 64,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-64.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-64.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-64.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-64.layout.json"
+    },
+    {
+      "slide": 65,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-65.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-65.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-65.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-65.layout.json"
+    },
+    {
+      "slide": 66,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-66.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-66.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-66.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-66.layout.json"
+    },
+    {
+      "slide": 67,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-67.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-67.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-67.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-67.layout.json"
+    },
+    {
+      "slide": 68,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-68.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-68.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-68.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-68.layout.json"
+    },
+    {
+      "slide": 69,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-69.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-69.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-69.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-69.layout.json"
+    },
+    {
+      "slide": 70,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-70.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-70.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-70.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-70.layout.json"
+    },
+    {
+      "slide": 71,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-71.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-71.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-71.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-71.layout.json"
+    },
+    {
+      "slide": 72,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-72.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-72.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-72.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-72.layout.json"
+    },
+    {
+      "slide": 73,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-73.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-73.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-73.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-73.layout.json"
+    },
+    {
+      "slide": 74,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-74.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-74.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-74.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-74.layout.json"
+    },
+    {
+      "slide": 75,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-75.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-75.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-75.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-75.layout.json"
+    },
+    {
+      "slide": 76,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-76.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-76.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-76.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-76.layout.json"
+    },
+    {
+      "slide": 77,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-77.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-77.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-77.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-77.layout.json"
+    },
+    {
+      "slide": 78,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-78.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-78.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-78.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-78.layout.json"
+    },
+    {
+      "slide": 79,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-79.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-79.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-79.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-79.layout.json"
+    },
+    {
+      "slide": 80,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-80.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-80.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-80.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-80.layout.json"
+    },
+    {
+      "slide": 81,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-81.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-81.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-81.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-81.layout.json"
+    },
+    {
+      "slide": 82,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-82.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-82.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-82.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-82.layout.json"
+    },
+    {
+      "slide": 83,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-83.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-83.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-83.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-83.layout.json"
+    },
+    {
+      "slide": 84,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-84.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-84.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-84.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-84.layout.json"
+    },
+    {
+      "slide": 85,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-85.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-85.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-85.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-85.layout.json"
+    },
+    {
+      "slide": 86,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-86.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-86.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-86.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-86.layout.json"
+    },
+    {
+      "slide": 87,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-87.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-87.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-87.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-87.layout.json"
+    },
+    {
+      "slide": 88,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-88.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-88.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-88.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-88.layout.json"
+    },
+    {
+      "slide": 89,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-89.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-89.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-89.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-89.layout.json"
+    },
+    {
+      "slide": 90,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-90.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-90.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-90.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-90.layout.json"
+    },
+    {
+      "slide": 91,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-91.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-91.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-91.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-91.layout.json"
+    },
+    {
+      "slide": 92,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-92.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-92.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-92.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-92.layout.json"
+    },
+    {
+      "slide": 93,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-93.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-93.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-93.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-93.layout.json"
+    },
+    {
+      "slide": 94,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-94.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-94.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-94.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-94.layout.json"
+    },
+    {
+      "slide": 95,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-95.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-95.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-95.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-95.layout.json"
+    },
+    {
+      "slide": 96,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-96.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-96.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-96.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-96.layout.json"
+    },
+    {
+      "slide": 97,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-97.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-97.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-97.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-97.layout.json"
+    },
+    {
+      "slide": 98,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-98.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-98.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-98.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-98.layout.json"
+    },
+    {
+      "slide": 99,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-99.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-99.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-99.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-99.layout.json"
+    },
+    {
+      "slide": 100,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-100.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-100.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-100.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-100.layout.json"
+    },
+    {
+      "slide": 101,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-101.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-101.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-101.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-101.layout.json"
+    },
+    {
+      "slide": 102,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-102.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-102.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-102.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-102.layout.json"
+    },
+    {
+      "slide": 103,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-103.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-103.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-103.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-103.layout.json"
+    },
+    {
+      "slide": 104,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-104.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-104.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-104.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-104.layout.json"
+    },
+    {
+      "slide": 105,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-105.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-105.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-105.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-105.layout.json"
+    },
+    {
+      "slide": 106,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-106.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-106.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-106.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-106.layout.json"
+    },
+    {
+      "slide": 107,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-107.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-107.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-107.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-107.layout.json"
+    },
+    {
+      "slide": 108,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-108.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-108.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-108.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-108.layout.json"
+    },
+    {
+      "slide": 109,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-109.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-109.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-109.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-109.layout.json"
+    },
+    {
+      "slide": 110,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-110.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-110.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-110.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-110.layout.json"
+    },
+    {
+      "slide": 111,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-111.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-111.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-111.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-111.layout.json"
+    },
+    {
+      "slide": 112,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-112.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-112.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-112.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-112.layout.json"
+    },
+    {
+      "slide": 113,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-113.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-113.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-113.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-113.layout.json"
+    },
+    {
+      "slide": 114,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-114.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-114.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-114.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-114.layout.json"
+    },
+    {
+      "slide": 115,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-115.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-115.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-115.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-115.layout.json"
+    },
+    {
+      "slide": 116,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-116.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-116.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-116.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-116.layout.json"
+    },
+    {
+      "slide": 117,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-117.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-117.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-117.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-117.layout.json"
+    },
+    {
+      "slide": 118,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-118.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-118.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-118.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-118.layout.json"
+    },
+    {
+      "slide": 119,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-119.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-119.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-119.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-119.layout.json"
+    },
+    {
+      "slide": 120,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-120.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-120.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-120.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-120.layout.json"
+    },
+    {
+      "slide": 121,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-121.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-121.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-121.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-121.layout.json"
+    },
+    {
+      "slide": 122,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-122.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-122.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-122.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-122.layout.json"
+    },
+    {
+      "slide": 123,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-123.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-123.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-123.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-123.layout.json"
+    },
+    {
+      "slide": 124,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-124.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-124.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-124.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-124.layout.json"
+    },
+    {
+      "slide": 125,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-125.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-125.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-125.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-125.layout.json"
+    },
+    {
+      "slide": 126,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-126.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-126.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-126.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-126.layout.json"
+    },
+    {
+      "slide": 127,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-127.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-127.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-127.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-127.layout.json"
+    },
+    {
+      "slide": 128,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-128.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-128.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-128.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-128.layout.json"
+    },
+    {
+      "slide": 129,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-129.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-129.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-129.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-129.layout.json"
+    },
+    {
+      "slide": 130,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-130.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-130.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-130.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-130.layout.json"
+    },
+    {
+      "slide": 131,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-131.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-131.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-131.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-131.layout.json"
+    },
+    {
+      "slide": 132,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-132.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-132.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-132.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-132.layout.json"
+    },
+    {
+      "slide": 133,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-133.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-133.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-133.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-133.layout.json"
+    },
+    {
+      "slide": 134,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-134.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-134.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-134.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-134.layout.json"
+    },
+    {
+      "slide": 135,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-135.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-135.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-135.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-135.layout.json"
+    },
+    {
+      "slide": 136,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-136.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-136.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-136.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-136.layout.json"
+    },
+    {
+      "slide": 137,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-137.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-137.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-137.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-137.layout.json"
+    },
+    {
+      "slide": 138,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-138.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-138.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-138.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-138.layout.json"
+    },
+    {
+      "slide": 139,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-139.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-139.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-139.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-139.layout.json"
+    },
+    {
+      "slide": 140,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-140.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-140.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-140.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-140.layout.json"
+    },
+    {
+      "slide": 141,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-141.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-141.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-141.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-141.layout.json"
+    },
+    {
+      "slide": 142,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-142.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-142.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-142.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-142.layout.json"
+    },
+    {
+      "slide": 143,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-143.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-143.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-143.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-143.layout.json"
+    },
+    {
+      "slide": 144,
+      "previewPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/source-slides/source-slide-144.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-144.png",
+      "layoutPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/layouts/source-slide-144.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-144.layout.json"
+    }
+  ],
+  "inspectPath": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/template-inspect.ndjson",
+  "inspectRelativePath": "template-inspect/template-inspect.ndjson",
+  "inspectTruncated": true,
+  "inspectMetadata": {
+    "revision": "88f2z2",
+    "target": {
+      "id": "pr/6lmgqg"
+    },
+    "kind": {
+      "requested": "slide,textbox,shape,image,table,chart",
+      "tokens": [
+        "slide",
+        "textbox",
+        "shape",
+        "image",
+        "table",
+        "chart"
+      ]
+    },
+    "include": {
+      "tokens": []
+    },
+    "exclude": {
+      "tokens": []
+    },
+    "notices": []
+  },
+  "extractedMedia": [
+    {
+      "entry": "ppt/media/image.png",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image.png",
+      "relativePath": "template-inspect/assets/ppt/media/image.png",
+      "bytes": 1276072
+    },
+    {
+      "entry": "ppt/media/image2.png",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image2.png",
+      "relativePath": "template-inspect/assets/ppt/media/image2.png",
+      "bytes": 99299
+    },
+    {
+      "entry": "ppt/media/image3.png",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image3.png",
+      "relativePath": "template-inspect/assets/ppt/media/image3.png",
+      "bytes": 103327
+    },
+    {
+      "entry": "ppt/media/image4.png",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image4.png",
+      "relativePath": "template-inspect/assets/ppt/media/image4.png",
+      "bytes": 103792
+    },
+    {
+      "entry": "ppt/media/image5.png",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image5.png",
+      "relativePath": "template-inspect/assets/ppt/media/image5.png",
+      "bytes": 116567
+    },
+    {
+      "entry": "ppt/media/image6.png",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image6.png",
+      "relativePath": "template-inspect/assets/ppt/media/image6.png",
+      "bytes": 85650
+    },
+    {
+      "entry": "ppt/media/image7.png",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image7.png",
+      "relativePath": "template-inspect/assets/ppt/media/image7.png",
+      "bytes": 141809
+    },
+    {
+      "entry": "ppt/media/image8.png",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image8.png",
+      "relativePath": "template-inspect/assets/ppt/media/image8.png",
+      "bytes": 1276072
+    },
+    {
+      "entry": "ppt/media/image9.png",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image9.png",
+      "relativePath": "template-inspect/assets/ppt/media/image9.png",
+      "bytes": 34709
+    },
+    {
+      "entry": "ppt/media/image10.png",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image10.png",
+      "relativePath": "template-inspect/assets/ppt/media/image10.png",
+      "bytes": 1446616
+    },
+    {
+      "entry": "ppt/media/image11.png",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image11.png",
+      "relativePath": "template-inspect/assets/ppt/media/image11.png",
+      "bytes": 39644
+    },
+    {
+      "entry": "ppt/media/image12.png",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image12.png",
+      "relativePath": "template-inspect/assets/ppt/media/image12.png",
+      "bytes": 25088
+    },
+    {
+      "entry": "ppt/media/image13.png",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image13.png",
+      "relativePath": "template-inspect/assets/ppt/media/image13.png",
+      "bytes": 21203
+    },
+    {
+      "entry": "ppt/media/image14.png",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image14.png",
+      "relativePath": "template-inspect/assets/ppt/media/image14.png",
+      "bytes": 19337
+    },
+    {
+      "entry": "ppt/media/image15.png",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image15.png",
+      "relativePath": "template-inspect/assets/ppt/media/image15.png",
+      "bytes": 30333
+    },
+    {
+      "entry": "ppt/media/image16.png",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image16.png",
+      "relativePath": "template-inspect/assets/ppt/media/image16.png",
+      "bytes": 1366456
+    },
+    {
+      "entry": "ppt/media/image17.png",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image17.png",
+      "relativePath": "template-inspect/assets/ppt/media/image17.png",
+      "bytes": 1222160
+    },
+    {
+      "entry": "ppt/media/image18.png",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image18.png",
+      "relativePath": "template-inspect/assets/ppt/media/image18.png",
+      "bytes": 34709
+    },
+    {
+      "entry": "ppt/media/image19.png",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image19.png",
+      "relativePath": "template-inspect/assets/ppt/media/image19.png",
+      "bytes": 99299
+    },
+    {
+      "entry": "ppt/media/image20.png",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image20.png",
+      "relativePath": "template-inspect/assets/ppt/media/image20.png",
+      "bytes": 103327
+    },
+    {
+      "entry": "ppt/media/image21.png",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image21.png",
+      "relativePath": "template-inspect/assets/ppt/media/image21.png",
+      "bytes": 103792
+    },
+    {
+      "entry": "ppt/media/image22.png",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image22.png",
+      "relativePath": "template-inspect/assets/ppt/media/image22.png",
+      "bytes": 116567
+    },
+    {
+      "entry": "ppt/media/image23.png",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image23.png",
+      "relativePath": "template-inspect/assets/ppt/media/image23.png",
+      "bytes": 85650
+    },
+    {
+      "entry": "ppt/media/image24.png",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image24.png",
+      "relativePath": "template-inspect/assets/ppt/media/image24.png",
+      "bytes": 96378
+    },
+    {
+      "entry": "ppt/media/image25.png",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image25.png",
+      "relativePath": "template-inspect/assets/ppt/media/image25.png",
+      "bytes": 72569
+    },
+    {
+      "entry": "ppt/media/image26.png",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image26.png",
+      "relativePath": "template-inspect/assets/ppt/media/image26.png",
+      "bytes": 141809
+    },
+    {
+      "entry": "ppt/media/image27.png",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image27.png",
+      "relativePath": "template-inspect/assets/ppt/media/image27.png",
+      "bytes": 149829
+    },
+    {
+      "entry": "ppt/media/image28.png",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image28.png",
+      "relativePath": "template-inspect/assets/ppt/media/image28.png",
+      "bytes": 52083
+    },
+    {
+      "entry": "ppt/media/image29.png",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image29.png",
+      "relativePath": "template-inspect/assets/ppt/media/image29.png",
+      "bytes": 103792
+    },
+    {
+      "entry": "ppt/media/image30.png",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image30.png",
+      "relativePath": "template-inspect/assets/ppt/media/image30.png",
+      "bytes": 77649
+    },
+    {
+      "entry": "ppt/media/image31.png",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image31.png",
+      "relativePath": "template-inspect/assets/ppt/media/image31.png",
+      "bytes": 496493
+    },
+    {
+      "entry": "ppt/media/image32.png",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image32.png",
+      "relativePath": "template-inspect/assets/ppt/media/image32.png",
+      "bytes": 117049
+    },
+    {
+      "entry": "ppt/media/image33.png",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image33.png",
+      "relativePath": "template-inspect/assets/ppt/media/image33.png",
+      "bytes": 36277
+    },
+    {
+      "entry": "ppt/media/image34.png",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image34.png",
+      "relativePath": "template-inspect/assets/ppt/media/image34.png",
+      "bytes": 120389
+    },
+    {
+      "entry": "ppt/media/image35.png",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image35.png",
+      "relativePath": "template-inspect/assets/ppt/media/image35.png",
+      "bytes": 125373
+    },
+    {
+      "entry": "ppt/media/image36.png",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image36.png",
+      "relativePath": "template-inspect/assets/ppt/media/image36.png",
+      "bytes": 1276072
+    },
+    {
+      "entry": "ppt/media/image37.png",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image37.png",
+      "relativePath": "template-inspect/assets/ppt/media/image37.png",
+      "bytes": 34709
+    },
+    {
+      "entry": "ppt/media/image38.png",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image38.png",
+      "relativePath": "template-inspect/assets/ppt/media/image38.png",
+      "bytes": 1444006
+    },
+    {
+      "entry": "ppt/media/image39.png",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image39.png",
+      "relativePath": "template-inspect/assets/ppt/media/image39.png",
+      "bytes": 25088
+    },
+    {
+      "entry": "ppt/media/image40.png",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image40.png",
+      "relativePath": "template-inspect/assets/ppt/media/image40.png",
+      "bytes": 21203
+    },
+    {
+      "entry": "ppt/media/image41.png",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image41.png",
+      "relativePath": "template-inspect/assets/ppt/media/image41.png",
+      "bytes": 19337
+    },
+    {
+      "entry": "ppt/media/image42.png",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image42.png",
+      "relativePath": "template-inspect/assets/ppt/media/image42.png",
+      "bytes": 30333
+    },
+    {
+      "entry": "ppt/media/image.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image.jpeg",
+      "bytes": 245846
+    },
+    {
+      "entry": "ppt/media/image43.png",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image43.png",
+      "relativePath": "template-inspect/assets/ppt/media/image43.png",
+      "bytes": 1063881
+    },
+    {
+      "entry": "ppt/media/image44.png",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image44.png",
+      "relativePath": "template-inspect/assets/ppt/media/image44.png",
+      "bytes": 1378178
+    },
+    {
+      "entry": "ppt/media/image45.png",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image45.png",
+      "relativePath": "template-inspect/assets/ppt/media/image45.png",
+      "bytes": 1366456
+    },
+    {
+      "entry": "ppt/media/image46.png",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image46.png",
+      "relativePath": "template-inspect/assets/ppt/media/image46.png",
+      "bytes": 1380902
+    },
+    {
+      "entry": "ppt/media/image47.png",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image47.png",
+      "relativePath": "template-inspect/assets/ppt/media/image47.png",
+      "bytes": 1446616
+    },
+    {
+      "entry": "ppt/media/image48.png",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image48.png",
+      "relativePath": "template-inspect/assets/ppt/media/image48.png",
+      "bytes": 1222160
+    },
+    {
+      "entry": "ppt/media/image49.png",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image49.png",
+      "relativePath": "template-inspect/assets/ppt/media/image49.png",
+      "bytes": 151167
+    },
+    {
+      "entry": "ppt/media/image50.png",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image50.png",
+      "relativePath": "template-inspect/assets/ppt/media/image50.png",
+      "bytes": 89630
+    },
+    {
+      "entry": "ppt/media/image51.png",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image51.png",
+      "relativePath": "template-inspect/assets/ppt/media/image51.png",
+      "bytes": 117639
+    },
+    {
+      "entry": "ppt/media/image52.png",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image52.png",
+      "relativePath": "template-inspect/assets/ppt/media/image52.png",
+      "bytes": 120515
+    },
+    {
+      "entry": "ppt/media/image53.png",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image53.png",
+      "relativePath": "template-inspect/assets/ppt/media/image53.png",
+      "bytes": 111467
+    },
+    {
+      "entry": "ppt/media/image2.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image2.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image2.jpeg",
+      "bytes": 463922
+    },
+    {
+      "entry": "ppt/media/image3.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image3.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image3.jpeg",
+      "bytes": 431781
+    },
+    {
+      "entry": "ppt/media/image4.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image4.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image4.jpeg",
+      "bytes": 451360
+    },
+    {
+      "entry": "ppt/media/image5.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image5.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image5.jpeg",
+      "bytes": 483487
+    },
+    {
+      "entry": "ppt/media/image6.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image6.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image6.jpeg",
+      "bytes": 205389
+    },
+    {
+      "entry": "ppt/media/image7.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image7.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image7.jpeg",
+      "bytes": 272384
+    },
+    {
+      "entry": "ppt/media/image8.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image8.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image8.jpeg",
+      "bytes": 325511
+    },
+    {
+      "entry": "ppt/media/image9.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image9.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image9.jpeg",
+      "bytes": 417990
+    },
+    {
+      "entry": "ppt/media/image10.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image10.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image10.jpeg",
+      "bytes": 434845
+    },
+    {
+      "entry": "ppt/media/image11.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image11.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image11.jpeg",
+      "bytes": 399743
+    },
+    {
+      "entry": "ppt/media/image12.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image12.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image12.jpeg",
+      "bytes": 329989
+    },
+    {
+      "entry": "ppt/media/image13.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image13.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image13.jpeg",
+      "bytes": 198798
+    },
+    {
+      "entry": "ppt/media/image14.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image14.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image14.jpeg",
+      "bytes": 198798
+    },
+    {
+      "entry": "ppt/media/image15.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image15.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image15.jpeg",
+      "bytes": 266625
+    },
+    {
+      "entry": "ppt/media/image16.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image16.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image16.jpeg",
+      "bytes": 266625
+    },
+    {
+      "entry": "ppt/media/image17.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image17.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image17.jpeg",
+      "bytes": 280528
+    },
+    {
+      "entry": "ppt/media/image18.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image18.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image18.jpeg",
+      "bytes": 348484
+    },
+    {
+      "entry": "ppt/media/image19.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image19.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image19.jpeg",
+      "bytes": 164295
+    },
+    {
+      "entry": "ppt/media/image20.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image20.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image20.jpeg",
+      "bytes": 325183
+    },
+    {
+      "entry": "ppt/media/image21.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image21.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image21.jpeg",
+      "bytes": 251971
+    },
+    {
+      "entry": "ppt/media/image22.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image22.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image22.jpeg",
+      "bytes": 335881
+    },
+    {
+      "entry": "ppt/media/image23.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image23.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image23.jpeg",
+      "bytes": 405924
+    },
+    {
+      "entry": "ppt/media/image24.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image24.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image24.jpeg",
+      "bytes": 388692
+    },
+    {
+      "entry": "ppt/media/image25.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image25.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image25.jpeg",
+      "bytes": 366527
+    },
+    {
+      "entry": "ppt/media/image26.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image26.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image26.jpeg",
+      "bytes": 225987
+    },
+    {
+      "entry": "ppt/media/image27.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image27.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image27.jpeg",
+      "bytes": 307097
+    },
+    {
+      "entry": "ppt/media/image28.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image28.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image28.jpeg",
+      "bytes": 245846
+    },
+    {
+      "entry": "ppt/media/image29.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image29.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image29.jpeg",
+      "bytes": 264834
+    },
+    {
+      "entry": "ppt/media/image30.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image30.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image30.jpeg",
+      "bytes": 280508
+    },
+    {
+      "entry": "ppt/media/image31.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image31.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image31.jpeg",
+      "bytes": 280508
+    },
+    {
+      "entry": "ppt/media/image32.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image32.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image32.jpeg",
+      "bytes": 282846
+    },
+    {
+      "entry": "ppt/media/image33.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image33.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image33.jpeg",
+      "bytes": 282846
+    },
+    {
+      "entry": "ppt/media/image34.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image34.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image34.jpeg",
+      "bytes": 281195
+    },
+    {
+      "entry": "ppt/media/image35.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image35.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image35.jpeg",
+      "bytes": 281195
+    },
+    {
+      "entry": "ppt/media/image36.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image36.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image36.jpeg",
+      "bytes": 300700
+    },
+    {
+      "entry": "ppt/media/image37.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image37.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image37.jpeg",
+      "bytes": 300700
+    },
+    {
+      "entry": "ppt/media/image38.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image38.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image38.jpeg",
+      "bytes": 214419
+    },
+    {
+      "entry": "ppt/media/image39.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image39.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image39.jpeg",
+      "bytes": 214419
+    },
+    {
+      "entry": "ppt/media/image40.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image40.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image40.jpeg",
+      "bytes": 283147
+    },
+    {
+      "entry": "ppt/media/image41.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image41.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image41.jpeg",
+      "bytes": 283147
+    },
+    {
+      "entry": "ppt/media/image42.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image42.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image42.jpeg",
+      "bytes": 325499
+    },
+    {
+      "entry": "ppt/media/image43.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image43.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image43.jpeg",
+      "bytes": 298804
+    },
+    {
+      "entry": "ppt/media/image44.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image44.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image44.jpeg",
+      "bytes": 369796
+    },
+    {
+      "entry": "ppt/media/image45.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image45.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image45.jpeg",
+      "bytes": 369796
+    },
+    {
+      "entry": "ppt/media/image46.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image46.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image46.jpeg",
+      "bytes": 146278
+    },
+    {
+      "entry": "ppt/media/image47.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image47.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image47.jpeg",
+      "bytes": 287954
+    },
+    {
+      "entry": "ppt/media/image48.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image48.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image48.jpeg",
+      "bytes": 287954
+    },
+    {
+      "entry": "ppt/media/image49.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image49.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image49.jpeg",
+      "bytes": 328487
+    },
+    {
+      "entry": "ppt/media/image50.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image50.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image50.jpeg",
+      "bytes": 362166
+    },
+    {
+      "entry": "ppt/media/image51.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image51.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image51.jpeg",
+      "bytes": 362166
+    },
+    {
+      "entry": "ppt/media/image52.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image52.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image52.jpeg",
+      "bytes": 342487
+    },
+    {
+      "entry": "ppt/media/image53.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image53.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image53.jpeg",
+      "bytes": 342487
+    },
+    {
+      "entry": "ppt/media/image54.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image54.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image54.jpeg",
+      "bytes": 314000
+    },
+    {
+      "entry": "ppt/media/image55.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image55.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image55.jpeg",
+      "bytes": 314000
+    },
+    {
+      "entry": "ppt/media/image56.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image56.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image56.jpeg",
+      "bytes": 321909
+    },
+    {
+      "entry": "ppt/media/image57.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image57.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image57.jpeg",
+      "bytes": 321909
+    },
+    {
+      "entry": "ppt/media/image58.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image58.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image58.jpeg",
+      "bytes": 325118
+    },
+    {
+      "entry": "ppt/media/image59.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image59.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image59.jpeg",
+      "bytes": 325118
+    },
+    {
+      "entry": "ppt/media/image60.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image60.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image60.jpeg",
+      "bytes": 325118
+    },
+    {
+      "entry": "ppt/media/image61.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image61.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image61.jpeg",
+      "bytes": 319419
+    },
+    {
+      "entry": "ppt/media/image62.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image62.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image62.jpeg",
+      "bytes": 319419
+    },
+    {
+      "entry": "ppt/media/image63.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image63.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image63.jpeg",
+      "bytes": 278996
+    },
+    {
+      "entry": "ppt/media/image64.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image64.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image64.jpeg",
+      "bytes": 278996
+    },
+    {
+      "entry": "ppt/media/image65.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image65.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image65.jpeg",
+      "bytes": 332380
+    },
+    {
+      "entry": "ppt/media/image66.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image66.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image66.jpeg",
+      "bytes": 332380
+    },
+    {
+      "entry": "ppt/media/image67.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image67.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image67.jpeg",
+      "bytes": 332380
+    },
+    {
+      "entry": "ppt/media/image68.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image68.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image68.jpeg",
+      "bytes": 195666
+    },
+    {
+      "entry": "ppt/media/image69.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image69.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image69.jpeg",
+      "bytes": 301472
+    },
+    {
+      "entry": "ppt/media/image70.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image70.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image70.jpeg",
+      "bytes": 316857
+    },
+    {
+      "entry": "ppt/media/image71.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image71.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image71.jpeg",
+      "bytes": 314488
+    },
+    {
+      "entry": "ppt/media/image72.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image72.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image72.jpeg",
+      "bytes": 280365
+    },
+    {
+      "entry": "ppt/media/image73.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image73.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image73.jpeg",
+      "bytes": 326210
+    },
+    {
+      "entry": "ppt/media/image74.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image74.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image74.jpeg",
+      "bytes": 296708
+    },
+    {
+      "entry": "ppt/media/image75.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image75.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image75.jpeg",
+      "bytes": 302236
+    },
+    {
+      "entry": "ppt/media/image76.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image76.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image76.jpeg",
+      "bytes": 295425
+    },
+    {
+      "entry": "ppt/media/image77.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image77.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image77.jpeg",
+      "bytes": 301478
+    },
+    {
+      "entry": "ppt/media/image78.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image78.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image78.jpeg",
+      "bytes": 278673
+    },
+    {
+      "entry": "ppt/media/image79.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image79.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image79.jpeg",
+      "bytes": 282488
+    },
+    {
+      "entry": "ppt/media/image80.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image80.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image80.jpeg",
+      "bytes": 295841
+    },
+    {
+      "entry": "ppt/media/image81.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image81.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image81.jpeg",
+      "bytes": 316017
+    },
+    {
+      "entry": "ppt/media/image82.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image82.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image82.jpeg",
+      "bytes": 306375
+    },
+    {
+      "entry": "ppt/media/image83.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image83.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image83.jpeg",
+      "bytes": 293387
+    },
+    {
+      "entry": "ppt/media/image84.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image84.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image84.jpeg",
+      "bytes": 337845
+    },
+    {
+      "entry": "ppt/media/image85.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image85.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image85.jpeg",
+      "bytes": 288700
+    },
+    {
+      "entry": "ppt/media/image86.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image86.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image86.jpeg",
+      "bytes": 104979
+    },
+    {
+      "entry": "ppt/media/image87.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image87.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image87.jpeg",
+      "bytes": 319329
+    },
+    {
+      "entry": "ppt/media/image88.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image88.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image88.jpeg",
+      "bytes": 319329
+    },
+    {
+      "entry": "ppt/media/image89.jpeg",
+      "path": "/Users/ekaaprawira/Downloads/TA/CompanionshipChatBot/outputs/manual-20260714-axis-seminar-refresh/presentations/axis-seminar-hasil-refresh/final-inspect/template-inspect/assets/ppt/media/image89.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image89.jpeg",
+      "bytes": 166185
+    }
+  ],
+  "fonts": [
+    "+mj-lt",
+    "+mn-lt",
+    "Arial",
+    "Calibri",
+    "Calibri Light"
+  ],
+  "packageParts": {
+    "mediaCount": 142,
+    "slideXmlCount": 144,
+    "chartCount": 0,
+    "tableSlideCount": 0
+  }
+}

@@ -1,0 +1,120 @@
+{
+  "summary": {
+    "node_relation_writing": {
+      "n_scenarios": 6,
+      "n_valid": 6,
+      "tp": 9,
+      "fp": 4,
+      "fn": 3,
+      "precision": 0.6923076923076923,
+      "recall": 0.75,
+      "f1": 0.7199999999999999
+    },
+    "update_correctness": {
+      "n_scenarios": 4,
+      "n_valid": 4,
+      "update_correctness": 0.75
+    },
+    "limit": "Scenario-and-outcome test technique with hand-verified expected nodes/relations, not a large statistical gold corpus (no suitable Indonesian-language KG memory dataset exists publicly). Results are illustrative of extractor behavior on these specific cases, not a population-level precision/recall estimate."
+  },
+  "writing_results": [
+    {
+      "id": "w01_thesis_advisor_anxiety",
+      "extracted_count": 1,
+      "tp": 1,
+      "fp": 1,
+      "fn": 1,
+      "precision": 0.5,
+      "recall": 0.5,
+      "misses": [
+        "Emotion:cemas"
+      ],
+      "n_written_relevant_label": 2
+    },
+    {
+      "id": "w02_negative_self_thought",
+      "extracted_count": 1,
+      "tp": 2,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "misses": [],
+      "n_written_relevant_label": 2
+    },
+    {
+      "id": "w03_family_conflict_behavior",
+      "extracted_count": 1,
+      "tp": 2,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "misses": [],
+      "n_written_relevant_label": 2
+    },
+    {
+      "id": "w04_organizational_avoidance",
+      "extracted_count": 1,
+      "tp": 1,
+      "fp": 1,
+      "fn": 1,
+      "precision": 0.5,
+      "recall": 0.5,
+      "misses": [
+        "Behavior:males"
+      ],
+      "n_written_relevant_label": 2
+    },
+    {
+      "id": "w05_internship_rejection_distortion",
+      "extracted_count": 1,
+      "tp": 2,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "misses": [],
+      "n_written_relevant_label": 2
+    },
+    {
+      "id": "w06_groupmate_conflict",
+      "extracted_count": 1,
+      "tp": 1,
+      "fp": 2,
+      "fn": 1,
+      "precision": 0.3333333333333333,
+      "recall": 0.5,
+      "misses": [
+        "Emotion:kesel"
+      ],
+      "n_written_relevant_label": 3
+    }
+  ],
+  "update_results": [
+    {
+      "id": "u01_advisor_reappraisal",
+      "expected_action": "reappraise",
+      "observed_action": "reappraise",
+      "correct": true
+    },
+    {
+      "id": "u02_organization_competence",
+      "expected_action": "reappraise",
+      "observed_action": "supersede",
+      "correct": false
+    },
+    {
+      "id": "u03_procrastination_behavior_change",
+      "expected_action": "replace",
+      "observed_action": "replace",
+      "correct": true
+    },
+    {
+      "id": "u04_family_support_reappraisal",
+      "expected_action": "reappraise",
+      "observed_action": "reappraise",
+      "correct": true
+    }
+  ]
+}

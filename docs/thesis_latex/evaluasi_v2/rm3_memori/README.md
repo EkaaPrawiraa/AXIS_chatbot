@@ -42,14 +42,41 @@ pengguna, dan 2 kontrak `Confession Space`; seluruhnya lulus. Kontrak ini
 menguji transisi dan persistensi deterministik, bukan kualitas semantik
 ekstraksi LLM.
 
-`lifecycle_reappraisal_probe.json` adalah artefak probe end-to-end yang sudah
-tersedia: dua sesi difinalisasi dan relasi lifecycle yang ditulis pada Neo4j
-dibaca kembali. Satu penilai LLM buta (`gemini-3.1-flash-lite`) menilai lima
-relasi yang teramati. Satu dari lima relasi dinilai selaras secara semantik
-dengan pemaknaan ulang yang tersurat; tiga dari tiga Thought yang
-disupersede berstatus tidak aktif. Hasil kecil ini menunjukkan bahwa transisi
-teknis tidak identik dengan ketepatan semantik ekstraksi, sehingga tidak
-digeneralisasi sebagai `update correctness` populasi.
+`lifecycle_reappraisal_probe.json` adalah artefak probe end-to-end mentah yang
+sudah tersedia (salinan dari `evaluation_pipeline/results/reappraisal_probe.json`):
+dua sesi difinalisasi dan relasi lifecycle yang ditulis pada Neo4j dibaca
+kembali. `lifecycle_llm_judge_results.json` merekam hasil penilaiannya: dua
+konfigurasi penilai independen (`gemini-3.1-flash-lite` dan
+`gemini-3.1-pro-preview`) menilai lima relasi yang teramati secara terpisah.
+Konfigurasi penilai primer menilai satu dari lima relasi selaras secara
+semantik dengan pemaknaan ulang yang tersurat; kesepakatan kedua konfigurasi
+mencapai Cohen's kappa 0,55 (sedang, dibaca hati-hati karena n=5). Tiga dari
+tiga Thought yang disupersede berstatus tidak aktif. Hasil kecil ini
+menunjukkan bahwa transisi teknis tidak identik dengan ketepatan semantik
+ekstraksi.
+
+## Penulisan node dan update correctness (skenario-dan-hasil)
+
+Tidak ada korpus publik berbahasa Indonesia yang menyediakan anotasi node dan
+relasi *knowledge graph* memori pada domain mahasiswa. Sebagai gantinya,
+`node_writing_and_update_results.json` (dihasilkan oleh
+`evaluasi_v2/scripts/rm3_node_writing_and_update_eval.py`) merekam teknik
+pengujian skenario-dan-hasil terhadap penulis memori (finalizer) produksi
+yang sesungguhnya, bukan mock:
+
+- **Penulisan node** (6 skenario pesan tunggal, node yang diharapkan
+  diverifikasi manual per tipe dan kata kunci konten): tp=9, fp=4, fn=3,
+  presisi=0,69, *recall*=0,75, *macro-F1*=0,72.
+- **Update correctness** (4 skenario dua-sesi dengan aksi *lifecycle* acuan
+  `reappraise`/`replace`): 3 dari 4 aksi sesuai acuan (0,75); satu kasus
+  meleset karena ekstraktor menghasilkan `SUPERSEDES` alih-alih
+  `REAPPRAISED_AS` yang diharapkan.
+
+Hasil ini menggambarkan perilaku ekstraktor pada dua belas skenario yang
+diuji secara langsung, bukan estimasi presisi/*recall*/*update correctness*
+pada populasi percakapan mahasiswa yang lebih luas. Akurasi label Topik,
+Peran Subjek, Pemicu, dan kategori domain mahasiswa secara terpisah, serta
+`stale-memory rate`, tidak tercakup pada skenario ini.
 
 Kalibrasi eksternal telah menyediakan P@5, MRR, dan nDCG@5 untuk retrieval
 sesi. Sebaliknya, `grounded-answer rate`, `contradiction rate`, dan

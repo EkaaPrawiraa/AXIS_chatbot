@@ -153,6 +153,7 @@ class DialogueScenario:
     user_id: str
     memory_condition: str  # "cold_start" | "rich_memory"
     user_message: str
+    language_slice: str = "informal"  # "formal" | "informal" | "code_mixing" | "euphemistic"
 
 
 SCENARIOS: tuple[DialogueScenario, ...] = (
@@ -225,6 +226,7 @@ SCENARIOS: tuple[DialogueScenario, ...] = (
         domain="academic",
         user_id=ARYA_ID,
         memory_condition="cold_start",
+        language_slice="formal",
         user_message=(
             "Saya telah beberapa kali menunda membuka hasil ujian karena takut "
             "nilainya tidak sesuai harapan. Akibatnya saya semakin cemas menjelang "
@@ -246,6 +248,7 @@ SCENARIOS: tuple[DialogueScenario, ...] = (
         domain="academic",
         user_id=ARYA_ID,
         memory_condition="cold_start",
+        language_slice="code_mixing",
         user_message=(
             "I keep overthinking tiap mau submit tugas. Takut hasilnya jelek, "
             "terus akhirnya malah stuck dan nggak ngirim-ngirim."
@@ -256,6 +259,7 @@ SCENARIOS: tuple[DialogueScenario, ...] = (
         domain="social_isolation",
         user_id=ARYA_ID,
         memory_condition="cold_start",
+        language_slice="euphemistic",
         user_message=(
             "Belakangan rasanya pengin menghilang dulu dari semua grup kampus. "
             "Bukan mau kenapa-kenapa, cuma capek harus kelihatan baik-baik aja."
@@ -266,6 +270,7 @@ SCENARIOS: tuple[DialogueScenario, ...] = (
         domain="family",
         user_id=ARYA_ID,
         memory_condition="cold_start",
+        language_slice="code_mixing",
         user_message=(
             "Di rumah lagi banyak drama dan I don't know how to handle it. "
             "Mau fokus kuliah tapi kepikiran kondisi orang tua terus."
@@ -306,6 +311,7 @@ SCENARIOS: tuple[DialogueScenario, ...] = (
         domain="academic",
         user_id=BUDI_ID,
         memory_condition="rich_memory",
+        language_slice="formal",
         user_message=(
             "Saya merasa sulit membedakan antara masukan akademik yang wajar dan "
             "penilaian pribadi terhadap kemampuan saya ketika membahas Bab 3."
@@ -316,6 +322,7 @@ SCENARIOS: tuple[DialogueScenario, ...] = (
         domain="academic",
         user_id=BUDI_ID,
         memory_condition="rich_memory",
+        language_slice="code_mixing",
         user_message=(
             "Pas lihat revisi dari dospem, I immediately assume beliau kecewa sama "
             "aku. Padahal mungkin cuma banyak yang perlu dibenerin aja."
@@ -339,6 +346,78 @@ SCENARIOS: tuple[DialogueScenario, ...] = (
         user_message=(
             "Dospem belum balas lagi. Pengen santai bentar tapi kepala tetep "
             "muter mikirin skripsi, capek banget sih."
+        ),
+    ),
+    DialogueScenario(
+        id="rm1_organizational_formal",
+        domain="organizational",
+        user_id=ARYA_ID,
+        memory_condition="cold_start",
+        language_slice="formal",
+        user_message=(
+            "Saya merasa kesulitan membagi waktu antara tanggung jawab di "
+            "organisasi kemahasiswaan dan tuntutan akademik, sehingga belakangan "
+            "ini saya sering merasa kelelahan dan kurang fokus saat rapat."
+        ),
+    ),
+    DialogueScenario(
+        id="rm1_family_formal",
+        domain="family",
+        user_id=ARYA_ID,
+        memory_condition="cold_start",
+        language_slice="formal",
+        user_message=(
+            "Orang tua saya kembali menanyakan kapan saya akan menyelesaikan "
+            "studi, padahal beban biaya kuliah sudah cukup memberatkan mereka. "
+            "Saya merasa bersalah setiap kali belum ada kemajuan yang dapat "
+            "saya sampaikan."
+        ),
+    ),
+    DialogueScenario(
+        id="rm1_career_formal",
+        domain="career_transition",
+        user_id=ARYA_ID,
+        memory_condition="cold_start",
+        language_slice="formal",
+        user_message=(
+            "Saya belum memiliki gambaran jelas mengenai arah karier setelah "
+            "kelulusan nanti, sementara beberapa teman seangkatan sudah "
+            "mendapatkan kesempatan magang. Hal ini membuat saya cukup cemas."
+        ),
+    ),
+    DialogueScenario(
+        id="rm1_organizational_code_mixing",
+        domain="organizational",
+        user_id=ARYA_ID,
+        memory_condition="cold_start",
+        language_slice="code_mixing",
+        user_message=(
+            "I'm so burnt out sama kegiatan organisasi ini, tiap minggu ada aja "
+            "meeting dadakan pas lagi banyak deadline kuliah. Rasanya pengen "
+            "resign tapi takut dianggap ga komit."
+        ),
+    ),
+    DialogueScenario(
+        id="rm1_career_code_mixing",
+        domain="career_transition",
+        user_id=ARYA_ID,
+        memory_condition="cold_start",
+        language_slice="code_mixing",
+        user_message=(
+            "Semua orang udah keliatan punya plan abis wisuda, sedangkan aku "
+            "masih struggling nentuin mau apply kerja apa. It's so stressful "
+            "mikirin masa depan sendirian."
+        ),
+    ),
+    DialogueScenario(
+        id="rm1_budi_self_worth_code_mixing",
+        domain="self_worth",
+        user_id=BUDI_ID,
+        memory_condition="rich_memory",
+        language_slice="code_mixing",
+        user_message=(
+            "Every time liat progress temen seangkatan, I just feel so behind. "
+            "Aku masih muter-muter di Bab 3 sementara mereka udah mau sidang."
         ),
     ),
 )
@@ -439,7 +518,7 @@ def _judge_call(model: str, prompt: str) -> dict[str, Any]:
     response = client.models.generate_content(
         model=model,
         contents=prompt,
-        config=types.GenerateContentConfig(temperature=0.0, max_output_tokens=800),
+        config=types.GenerateContentConfig(temperature=0.0, max_output_tokens=24000),
     )
     raw = (getattr(response, "text", "") or "").strip()
     if raw.startswith("```"):
@@ -452,7 +531,7 @@ def _judge_call(model: str, prompt: str) -> dict[str, Any]:
     return json.loads(payload)
 
 
-JUDGE_MODELS = ["gemini-3.1-flash-lite"]
+JUDGE_MODELS = ["gemini-3.1-flash-lite", "gemini-3.1-pro-preview"]
 
 DISPLAY_NAME = {"cold_start": "Arya", "rich_memory": "Budi"}
 MEMORY_NOTE = {
@@ -508,13 +587,13 @@ async def main() -> None:
 
         judge_results: dict[str, Any] = {}
         for model in JUDGE_MODELS:
-            for attempt in range(3):
+            for attempt in range(5):
                 try:
                     judge_results[model] = _judge_call(model, prompt)
                     break
                 except Exception as exc:
                     print(f"  judge {model} attempt {attempt+1} failed: {exc}")
-                    time.sleep(2)
+                    time.sleep(6 * (attempt + 1))
             else:
                 judge_results[model] = None
 
@@ -538,8 +617,22 @@ async def main() -> None:
     print(json.dumps(summary, ensure_ascii=False, indent=2))
 
 
+_SLICE_BY_SCENARIO = {s.id: s.language_slice for s in SCENARIOS}
+
+
+def _preference_key(judgement: dict[str, Any], axis_is_a: bool) -> str:
+    winner = str(judgement.get("preference", "setara")).strip().lower()
+    if winner == "a":
+        return "axis" if axis_is_a else "baseline"
+    if winner == "b":
+        return "baseline" if axis_is_a else "axis"
+    return "setara"
+
+
 def summarize(rows: list[dict[str, Any]]) -> dict[str, Any]:
     import statistics
+
+    from sklearn.metrics import cohen_kappa_score
 
     axis_scores: dict[str, list[float]] = {dimension: [] for dimension in DIMENSIONS}
     baseline_scores: dict[str, list[float]] = {dimension: [] for dimension in DIMENSIONS}
@@ -548,6 +641,9 @@ def summarize(rows: list[dict[str, Any]]) -> dict[str, Any]:
         "cold_start": {"axis": 0, "baseline": 0, "setara": 0},
         "rich_memory": {"axis": 0, "baseline": 0, "setara": 0},
     }
+    preference_by_slice: dict[str, dict[str, int]] = {}
+    primary_prefs: list[str] = []
+    secondary_prefs: list[str] = []
     for row in rows:
         judgement = row.get("judge_results", {}).get(JUDGE_MODELS[0])
         if not isinstance(judgement, dict):
@@ -560,21 +656,34 @@ def summarize(rows: list[dict[str, Any]]) -> dict[str, Any]:
                 axis_scores[dimension].append(float(scores_axis[dimension]))
             if isinstance(scores_baseline.get(dimension), (int, float)):
                 baseline_scores[dimension].append(float(scores_baseline[dimension]))
-        winner = str(judgement.get("preference", "setara")).strip().lower()
-        if winner == "a":
-            key = "axis" if axis_is_a else "baseline"
-        elif winner == "b":
-            key = "baseline" if axis_is_a else "axis"
-        else:
-            key = "setara"
+        key = _preference_key(judgement, axis_is_a)
         preference[key] += 1
         preference_by_memory[str(row["memory_condition"])][key] += 1
+        slice_name = _SLICE_BY_SCENARIO.get(str(row["scenario"]), "informal")
+        preference_by_slice.setdefault(slice_name, {"axis": 0, "baseline": 0, "setara": 0})
+        preference_by_slice[slice_name][key] += 1
+
+        primary_prefs.append(key)
+        judgement2 = row.get("judge_results", {}).get(JUDGE_MODELS[1]) if len(JUDGE_MODELS) > 1 else None
+        if isinstance(judgement2, dict):
+            secondary_prefs.append(_preference_key(judgement2, axis_is_a))
+        else:
+            secondary_prefs.append(None)
+
+    paired = [(a, b) for a, b in zip(primary_prefs, secondary_prefs) if b is not None]
+    preference_kappa = None
+    if len(paired) >= 2:
+        a_labels, b_labels = zip(*paired)
+        preference_kappa = (
+            cohen_kappa_score(a_labels, b_labels) if len(set(a_labels) | set(b_labels)) > 1 else 1.0
+        )
+
     return {
         "evaluation_configuration": {
             "axis_generation_model": "gemini-3.1-flash-lite",
             "baseline_generation_model": "gemini-3.1-flash-lite",
-            "blind_judge_model": "gemini-3.1-flash-lite",
-            "n_judges": 1,
+            "blind_judge_models": JUDGE_MODELS,
+            "n_judges": len(JUDGE_MODELS),
         },
         "n_scenarios": len(rows),
         "n_scored": sum(preference.values()),
@@ -587,6 +696,9 @@ def summarize(rows: list[dict[str, Any]]) -> dict[str, Any]:
         },
         "preference": preference,
         "preference_by_memory_condition": preference_by_memory,
+        "preference_by_language_slice": preference_by_slice,
+        "preference_inter_judge_cohen_kappa": preference_kappa,
+        "n_paired_for_kappa": len(paired),
     }
 
 

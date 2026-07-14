@@ -8,16 +8,47 @@ Lampiran ini memuat definisi korpus, pedoman anotasi, rubrik, dan protokol ekspe
 \label{lamp:v2-annotation}
 \addcontentsline{loa}{lampiransub}{\protect\numberline{\thesection}Pedoman Anotasi dan Reliabilitas}
 
-Setiap tugas anotasi menggunakan pedoman tertulis yang dijalankan oleh satu konfigurasi model penilai (\textit{LLM-as-judge}) yang dibekukan bersama artefak evaluasi \parencite{liu2023geval,zheng2023judging}. Prosedurnya adalah sebagai berikut.
+Setiap tugas anotasi menggunakan pedoman tertulis yang dijalankan oleh konfigurasi model penilai (\textit{LLM-as-judge}) yang dibekukan bersama artefak evaluasi \parencite{liu2023geval,zheng2023judging}. Prosedurnya adalah sebagai berikut.
 
 \begin{enumerate}[label=\arabic*.,leftmargin=*,itemsep=3pt]
   \item Model penilai menerima definisi label dan contoh positif serta negatif melalui \textit{system prompt} yang dibekukan.
   \item Model penilai mengerjakan sampel kalibrasi terhadap label acuan yang sudah diketahui; sampel ini tidak dimasukkan ke hasil akhir.
   \item Model penilai memberi label pada korpus evaluasi secara buta terhadap identitas sistem yang dibandingkan.
+  \item Untuk benchmark keselamatan (RM1b), pemetaan jawaban bebas PHQ-9 (RM2), penilaian buta dialog dan ragam bahasa (RM1a/RM1c), dan probe pemaknaan ulang memori (RM3), konfigurasi model penilai kedua yang independen memberi label secara terpisah pada korpus yang sama; kesepakatan keduanya dihitung dengan Cohen's kappa atau \textit{quadratic weighted kappa} sesuai skala labelnya.
   \item Korpus, rubrik, profil model, dan keluaran mentah dibekukan serta diberi versi agar proses dapat dijalankan kembali.
 \end{enumerate}
 
-Pendekatan satu penilai dipilih untuk menjaga biaya evaluasi tetap proporsional terhadap tahap purwarupa. Karena itu, hasilnya dibaca sebagai evaluasi otomatis berbasis rubrik, bukan sebagai ukuran kesepakatan antarpenilai. Pengujian pengguna nyata pada Subbab~\ref{sec:evaluasi-pengguna} tetap memakai kuesioner untuk menangkap persepsi yang tidak dapat disimpulkan dari penilaian model.
+Pendekatan dua-konfigurasi pada butir 4 dipilih untuk blok yang label acuannya menjadi dasar perhitungan metrik primer (sensitivitas, QWK, dan sejenisnya), sehingga label acuan itu sendiri punya ukuran reliabilitas, bukan berasal dari satu model tanpa pembanding. Penilaian buta respons suportif dan ragam bahasa (RM1a/RM1c) telah diperiksa ulang dengan konfigurasi kedua pada korpus yang diperluas dari 18 menjadi 24 skenario (artefak \texttt{evaluasi\_v3/rm1\_language/}); berbeda dari blok lain, kesepakatan preferensi keseluruhan pada blok ini rendah (Tabel~\ref{tab:lamp-judge-agreement}), sehingga hasil preferensi tetap dibaca sebagai keluaran satu konfigurasi penilai. Pengujian pengguna nyata pada Subbab~\ref{sec:evaluasi-pengguna} tetap memakai kuesioner untuk menangkap persepsi yang tidak dapat disimpulkan dari penilaian model.
+
+\begin{table}[!htbp]
+\centering
+\caption{Kesepakatan dua konfigurasi penilai (\texttt{judge\_agreement.json})}
+\label{tab:lamp-judge-agreement}
+{\footnotesize
+\begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}p{3.0cm}|>{\raggedright\arraybackslash}X|>{\centering\arraybackslash}p{1.6cm}|>{\centering\arraybackslash}p{1.2cm}|}
+\hline
+\rowcolor{tableheadgray}
+\textbf{Blok} & \textbf{Dimensi label} & \textbf{Kappa} & \textbf{n} \\
+\hline
+\multirow{3}{3.0cm}{RM1b -- keselamatan} & Risiko tinggi (Cohen's kappa) & 0,88 & 50 \\
+\cline{2-4}
+ & Ragam bahasa (Cohen's kappa) & 0,40 & 19 \\
+\cline{2-4}
+ & Kepatuhan respons aman (Cohen's kappa) & 1,00 & 19 \\
+\hline
+RM2 -- PHQ-9 & Frekuensi jawaban bebas (\textit{quadratic weighted kappa}) & 0,96 & 80 \\
+\hline
+RM3 -- \textit{lifecycle} & Kesesuaian semantik pemaknaan ulang (Cohen's kappa) & 0,55 & 5 \\
+\hline
+RM3 -- penggunaan memori & Kebaruan/kesesuaian keyakinan pemaknaan ulang (Cohen's kappa) & 1,00 & 2 \\
+\hline
+RM1a/RM1c -- dialog & Preferensi keseluruhan (Cohen's kappa) & $-0,04$ & 24 \\
+\hline
+\end{tabularx}
+}
+\end{table}
+
+Kappa pada RM3 \textit{lifecycle} dihitung dari lima relasi, dan kappa RM3 penggunaan memori dari dua skenario, sehingga keduanya perlu dibaca hati-hati; satu perbedaan label saja mengubah kappa secara signifikan pada sampel sekecil ini. Kappa RM1a/RM1c menonjol karena bernilai negatif, satu-satunya blok dengan kesepakatan preferensi di bawah nol, dan dibahas terpisah pada Subbab~\ref{sec:v2-dialogue}.
 
 \section{Korpus Benchmark Keselamatan Percakapan}
 \label{lamp:v2-safety-corpus}
@@ -270,11 +301,70 @@ Ambigu tanpa frekuensi & Klarifikasi & Jangan memaksakan skor; pemeriksaan kesel
 }
 \end{table}
 
-\section{Korpus Standar Emas Memori dan Lifecycle}
+\section{Definisi Anotasi dan Skenario Evaluasi Memori}
 \label{lamp:v2-memory-gold}
-\addcontentsline{loa}{lampiransub}{\protect\numberline{\thesection}Korpus Standar Emas Memori dan Lifecycle}
+\addcontentsline{loa}{lampiransub}{\protect\numberline{\thesection}Definisi Anotasi dan Skenario Evaluasi Memori}
 
-Satu kasus memori terdiri atas percakapan benih lintas sesi, graf acuan, kueri susulan, kumpulan kandidat, label relevansi, tindakan lifecycle, dan fakta minimum untuk jawaban.
+Tidak ada korpus publik berbahasa Indonesia yang menyediakan anotasi node dan relasi \textit{knowledge graph} memori pada domain mahasiswa (lihat Subbab~\ref{sec:v2-memory}), sehingga lampiran ini tidak mendokumentasikan korpus berskala besar. Definisi pada subbab berikut dipakai untuk dua kebutuhan: menskor skenario tulis dan pembaruan yang dijalankan langsung pada penulis memori produksi (Subbab~\ref{lamp:v2-memory-scenarios}), serta menjadi acuan istilah bagi probe dan kontrak lifecycle yang telah dilaporkan pada Bab IV. Satu kasus memori pada definisi ini terdiri atas percakapan benih lintas sesi, graf acuan, kueri susulan, kumpulan kandidat, label relevansi, tindakan lifecycle, dan fakta minimum untuk jawaban; struktur ini melampaui apa yang sudah dapat diukur pada laporan ini dan sebagian tetap tercatat sebagai keterbatasan.
+
+\subsection{Skenario Penulisan dan Pembaruan Memori}
+\label{lamp:v2-memory-scenarios}
+
+Artefak \texttt{evaluasi\_v2/rm3\_memori/node\_writing\_and\_update\_results.json}, dihasilkan oleh \texttt{evaluasi\_v2/scripts/rm3\_node\_writing\_and\_update\_eval.py}, merekam sepuluh skenario yang dijalankan langsung terhadap penulis memori (\textit{finalizer}) produksi dan Neo4j asli, bukan mock. Tabel~\ref{tab:lamp-rm3-writing} mencantumkan enam skenario penulisan beserta node yang diharapkan (diverifikasi manual); Tabel~\ref{tab:lamp-rm3-update} mencantumkan empat skenario pembaruan dua-sesi beserta aksi \textit{lifecycle} acuan dan aksi yang teramati.
+
+\begin{table}[!htbp]
+\centering
+\caption{Skenario penulisan memori dan hasilnya}
+\label{tab:lamp-rm3-writing}
+{\footnotesize
+\begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}p{3.2cm}|>{\raggedright\arraybackslash}X|>{\centering\arraybackslash}p{2.0cm}|}
+\hline
+\rowcolor{tableheadgray}
+\textbf{Skenario} & \textbf{Node yang diharapkan (tipe: kata kunci)} & \textbf{tp/fp/fn} \\
+\hline
+w01\_thesis\_advisor\_anxiety & Emotion: cemas/khawatir/takut/gelisah; Subject: dosen pembimbing/dospem & 1/1/1 \\
+\hline
+w02\_negative\_self\_thought & Thought: nggak pantas/gagal/tidak layak; Subject: dosen pembimbing/dospem & 2/0/0 \\
+\hline
+w03\_family\_conflict\_behavior & Subject: ibu; Behavior: susah tidur/sulit tidur & 2/0/0 \\
+\hline
+w04\_organizational\_avoidance & Trigger: rapat/organisasi; Behavior: males/malas/menghindar & 1/1/1 \\
+\hline
+w05\_internship\_rejection\_distortion & Trigger: wawancara/magang/gagal; Thought: nggak becus/sia-sia & 2/0/0 \\
+\hline
+w06\_groupmate\_conflict & Subject: teman sekelompok; Emotion: kesel/kesal/marah/capek & 1/2/1 \\
+\hline
+\multicolumn{2}{|r|}{\textbf{Total (presisi/\textit{recall}/\textit{macro-F1})}} & \textbf{0,69/0,75/0,72} \\
+\hline
+\end{tabularx}
+}
+\end{table}
+
+\begin{table}[!htbp]
+\centering
+\caption{Skenario pembaruan memori dua-sesi dan hasilnya}
+\label{tab:lamp-rm3-update}
+{\footnotesize
+\begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}p{3.6cm}|>{\centering\arraybackslash}p{2.4cm}|>{\centering\arraybackslash}p{2.4cm}|>{\centering\arraybackslash}p{1.2cm}|}
+\hline
+\rowcolor{tableheadgray}
+\textbf{Skenario} & \textbf{Aksi acuan} & \textbf{Aksi teramati} & \textbf{Sesuai} \\
+\hline
+u01\_advisor\_reappraisal & reappraise & reappraise & Ya \\
+\hline
+u02\_organization\_competence & reappraise & supersede & Tidak \\
+\hline
+u03\_procrastination\_behavior\_change & replace & replace & Ya \\
+\hline
+u04\_family\_support\_reappraisal & reappraise & reappraise & Ya \\
+\hline
+\multicolumn{3}{|r|}{\textbf{\textit{Update correctness}}} & \textbf{0,75} \\
+\hline
+\end{tabularx}
+}
+\end{table}
+
+Skenario u02 meleset karena ekstraktor menghasilkan relasi \texttt{SUPERSEDES} pada Thought lama, sedangkan acuan mengharapkan \texttt{REAPPRAISED\_AS}; keduanya sah sebagai tindakan pembaruan, tetapi berbeda pada nuansa semantik pemaknaan ulang dibanding penggantian keyakinan. Hasil pada kedua tabel ini menggambarkan perilaku ekstraktor pada dua belas skenario yang diuji, bukan estimasi populasi.
 
 \subsection{Anotasi Penulisan Memori}
 
@@ -299,7 +389,7 @@ Pengecualian & Pesan administratif, isi sementara, dan informasi yang tidak cuku
 }
 \end{table}
 
-Node dinyatakan cocok setelah normalisasi tipe, nilai, dan alias. Relasi dinyatakan cocok bila sumber, jenis, dan target sesuai. Node atau relasi yang tidak didukung teks dihitung sebagai \textit{false positive}.
+Definisi kecocokan node dan relasi di atas berlaku pada tingkat konsep. Pada implementasi skenario Subbab~\ref{lamp:v2-memory-scenarios}, node dinyatakan cocok bila tipenya sesuai dan salah satu kata kunci konten acuan muncul pada properti node yang ditulis; node atau relasi yang tidak sesuai ekspektasi manapun dihitung sebagai \textit{false positive}. Pencocokan relasi penuh (sumber, jenis, target) belum diuji terpisah dari pencocokan node pada skenario ini, kecuali jenis relasi \textit{lifecycle} pada skenario pembaruan.
 
 \subsection{Anotasi Retrieval}
 
@@ -383,6 +473,8 @@ Abstensi benar & Jawaban tidak memaksakan personalisasi ketika tidak ada memori 
 \end{tabularx}
 }
 \end{table}
+
+Definisi di atas diterapkan pada laporan ini melalui dua teknik pelengkap, bukan korpus pasangan jawaban berlabel berskala besar (lihat Subbab~\ref{sec:v2-memory}). \textit{Grounded-answer rate} dan \textit{false-personalization rate} diturunkan pasca-hoc dari dimensi \textit{groundedness} pada penilaian buta dialog RM1a/RM1c (Subbab~\ref{sec:v2-dialogue}): skenario bermemori berskor \textit{groundedness} 2 dihitung \textit{grounded}, skenario tanpa memori berskor 0 dihitung personalisasi palsu. \textit{Stale-belief rate} (kemunculan kembali keyakinan lama pada jawaban, bukan \textit{stale-memory rate} pada awal subbab ini yang mengukur peluang \textit{retrieval} memori tidak aktif dan tetap belum diukur) diuji melalui dua skenario pemaknaan ulang tiga sesi (artefak \texttt{evaluasi\_v3/rm3\_usage/usage\_grounding\_results.json}, skrip \texttt{rm3\_usage\_grounding\_eval.py}): keyakinan lama ditulis pada sesi pertama, diperbarui pada sesi kedua, lalu giliran ketiga menanyakan topik yang sama untuk memeriksa apakah jawaban menyatakan keyakinan yang berlaku saat ini atau menyatakan kembali keyakinan lama yang sudah digantikan, dinilai oleh dua konfigurasi penilai independen. \textit{Contradiction rate} pada kueri relasional atau kausal yang tidak melibatkan pemaknaan ulang, serta label \textit{berhasil relasional atau kausal} secara umum, tetap belum diukur karena memerlukan korpus kueri berlabel tersendiri. Hasilnya: \textit{grounded-answer rate} 1,00 (10/10 skenario bermemori), \textit{false-personalization rate} 0,00 (0/14 skenario tanpa memori), dan \textit{stale-belief rate} 0,00 (0/2 skenario resurface keyakinan lama, kesepakatan dua penilai sempurna).
 
 \section{Protokol Perbandingan Vektor Saja dan Hibrid}
 \label{lamp:v2-ablation-protocol}
