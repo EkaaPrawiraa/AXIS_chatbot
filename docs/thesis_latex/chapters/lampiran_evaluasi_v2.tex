@@ -18,7 +18,7 @@ Setiap tugas anotasi menggunakan pedoman tertulis yang dijalankan oleh konfigura
   \item Korpus, rubrik, profil model, dan keluaran mentah dibekukan serta diberi versi agar proses dapat dijalankan kembali.
 \end{enumerate}
 
-Pendekatan dua-konfigurasi pada butir 4 dipilih untuk blok yang label acuannya menjadi dasar perhitungan metrik primer (sensitivitas, QWK, dan sejenisnya), sehingga label acuan itu sendiri punya ukuran reliabilitas, bukan berasal dari satu model tanpa pembanding. Penilaian buta respons suportif dan ragam bahasa (RM1a/RM1c) telah diperiksa ulang dengan konfigurasi kedua pada korpus yang diperluas dari 18 menjadi 24 skenario (artefak \texttt{evaluasi\_v3/rm1\_language/}); berbeda dari blok lain, kesepakatan preferensi keseluruhan pada blok ini rendah (Tabel~\ref{tab:lamp-judge-agreement}), sehingga hasil preferensi tetap dibaca sebagai keluaran satu konfigurasi penilai. Pengujian pengguna nyata pada Subbab~\ref{sec:evaluasi-pengguna} tetap memakai kuesioner untuk menangkap persepsi yang tidak dapat disimpulkan dari penilaian model.
+Pendekatan dua konfigurasi pada butir 4 memberi ukuran reliabilitas bagi label acuan yang digunakan dalam perhitungan metrik primer. Penilaian buta respons suportif dan ragam bahasa (RM1a/RM1c) diperiksa ulang pada korpus yang diperluas dari 18 menjadi 24 skenario (artefak \texttt{evaluasi\_v3/rm1\_language/}). Kesepakatan preferensi keseluruhan pada blok ini rendah (Tabel~\ref{tab:lamp-judge-agreement}), sehingga hasil preferensi dibaca sebagai keluaran konfigurasi penilai primer, bukan kesimpulan yang stabil antarkonfigurasi. Instrumen kuesioner untuk pengujian pengguna nyata telah disiapkan, tetapi belum digunakan pada laporan ini.
 
 \begin{table}[!htbp]
 \centering
@@ -47,6 +47,13 @@ RM1a/RM1c -- dialog & Preferensi keseluruhan (Cohen's kappa) & $-0,04$ & 24 \\
 \end{tabularx}
 }
 \end{table}
+
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=0.85\textwidth]{figures/judge_kappa_comparison.pdf}
+  \caption[Perbandingan kesepakatan dua penilai antarblok]{Cohen's kappa/\textit{quadratic weighted kappa} antara dua konfigurasi penilai independen, dari data pada Tabel~\ref{tab:lamp-judge-agreement}.}
+  \label{fig:judge-kappa-comparison}
+\end{figure}
 
 Kappa pada RM3 \textit{lifecycle} dihitung dari lima relasi, dan kappa RM3 penggunaan memori dari dua skenario, sehingga keduanya perlu dibaca hati-hati; satu perbedaan label saja mengubah kappa secara signifikan pada sampel sekecil ini. Kappa RM1a/RM1c menonjol karena bernilai negatif, satu-satunya blok dengan kesepakatan preferensi di bawah nol, dan dibahas terpisah pada Subbab~\ref{sec:v2-dialogue}.
 

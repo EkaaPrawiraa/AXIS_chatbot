@@ -9,33 +9,28 @@
 \label{sec:kesimpulan}
 
 Tugas akhir ini mengembangkan AXIS sebagai \textit{companionship chatbot}
-non-klinis untuk mahasiswa Indonesia. Pengembangan diarahkan oleh tiga
-rumusan masalah: membangun percakapan pendamping yang empatik, kontekstual, dan aman,
-mengorkestrasi mood harian serta asesmen skrining depresi PHQ-9 melalui
-percakapan, dan menjaga kesinambungan konteks lintas sesi melalui memori
-jangka panjang berbasis \textit{knowledge graph}. Berdasarkan rancangan,
-implementasi, dan evaluasi pada Bab IV, diperoleh kesimpulan berikut:
+non-klinis yang dikalibrasi untuk konteks mahasiswa Indonesia. Pengembangan
+mengikuti tiga rumusan masalah: kelayakan percakapan pendamping, orkestrasi
+mood harian dan asesmen skrining depresi PHQ-9, serta kesinambungan konteks
+lintas sesi melalui memori jangka panjang hibrid dengan \textit{knowledge graph}
+sebagai struktur relasional utama. Berdasarkan rancangan, implementasi, dan
+evaluasi pada Bab IV, diperoleh kesimpulan berikut:
 
 \begin{enumerate}[label=\arabic*.,leftmargin=*,itemsep=4pt]
 
-    \item AXIS menggabungkan percakapan reflektif berprinsip CBT, pengayaan
-ragam bahasa, dan batas keselamatan dalam satu alur percakapan. Validasi
-kontrak menunjukkan 54 skenario kebijakan dialog CBT dan 80 skenario
-\textit{guardrail} lulus. Pada 24 skenario penilaian buta (diperluas dari 18
-untuk menambah cakupan ragam formal dan bahasa campur), AXIS dipilih pada 14
-dari 24 penilaian berpasangan menurut konfigurasi penilai primer; perbedaan
-yang paling konsisten terletak pada ketepatan penggunaan konteks memori (AXIS
-dipilih 8 dari 10 pada kondisi bermemori), bukan pada seluruh dimensi kualitas
-percakapan. Kesepakatan preferensi antara dua konfigurasi penilai independen
-pada blok ini rendah (Cohen's kappa $-0,035$), jauh di bawah blok evaluasi
-lain, sehingga angka preferensi ini dibaca sebagai hasil satu konfigurasi
-penilai (Subbab~\ref{sec:v2-dialogue}). Pada \textit{benchmark} 50 pesan keselamatan, sistem mencapai
-sensitivitas 0,654 dan spesifisitas 0,917. Seluruh respons pada kasus yang
-berhasil dideteksi memenuhi rubrik keselamatan, tetapi sembilan pesan berisiko
-masih tidak terdeteksi. Oleh sebab itu, hasil ini membuktikan bahwa mekanisme
-keselamatan dan percakapan telah berjalan pada skenario yang diuji, bukan bahwa
-sistem sudah memahami seluruh variasi ekspresi krisis atau lebih empatik secara
-umum.
+    \item AXIS menunjukkan kelayakan percakapan pendamping pada skenario yang
+diuji. Sebanyak 54 kontrak kebijakan dialog CBT dan 80 kontrak \textit{guardrail}
+lulus. Pada 24 skenario penilaian buta, AXIS dipilih 14 kali menurut konfigurasi
+penilai primer. Nilai tambah paling jelas muncul pada kondisi bermemori, ketika
+AXIS dipilih delapan dari 10 kali. Pada kondisi tanpa memori, \textit{baseline}
+sedikit lebih sering dipilih.
+
+Kesepakatan preferensi antarkonfigurasi penilai rendah, yaitu Cohen's kappa
+$-0,035$. Karena itu, hasil ini mendukung kelayakan alur percakapan dan indikasi
+nilai konteks memori, bukan keunggulan dialog secara umum. Pada \textit{benchmark}
+50 pesan keselamatan, sensitivitas mencapai 0,654 dan spesifisitas 0,917.
+Seluruh respons setelah risiko terdeteksi memenuhi rubrik aman, tetapi sembilan
+pesan berisiko masih terlewat.
 
 \item Mood harian dan PHQ-9 telah diorkestrasi sebagai bagian dari
 percakapan, bukan sebagai diagnosis maupun formulir yang terlepas dari konteks
@@ -48,40 +43,30 @@ Hasil ini mendukung kesetiaan orkestrasi dan pemetaan jawaban bebas pada korpus
 uji, tetapi belum membuktikan validitas psikometrik maupun manfaat klinis dari
 sistem.
 
-\item Arsitektur memori hibrid memungkinkan sistem menyimpan dan membaca
-kembali konteks secara relasional. Sebanyak 47 kontrak memori inti dan 27
-kontrak \textit{lifecycle} serta konteks lulus pada skenario deterministik.
-Pada 15 kueri parafrase satu-\textit{hop}, kondisi hibrid dan vektor-saja
-memperoleh \textit{Recall@5} yang sama, yaitu 1,00. Sebaliknya, pada satu kueri
-yang membutuhkan identitas relasi graf, kondisi hibrid berhasil menemukan
-pengalaman terkait sedangkan kondisi vektor-saja tidak. Probe pemaknaan ulang
-ujung-ke-ujung juga menunjukkan satu dari lima relasi yang ditulis selaras
-secara semantik menurut konfigurasi penilai primer (kesepakatan dua konfigurasi
-penilai kappa 0,55), dan tiga pikiran lama yang tersupersede
-seluruhnya tidak lagi aktif. Pengujian skenario-dan-hasil pada enam skenario
-penulisan dan empat skenario pembaruan, dijalankan langsung terhadap penulis
-memori produksi, memperoleh presisi 0,69 dan \textit{recall} 0,75 untuk
-penulisan node serta \textit{update correctness} 0,75 untuk aksi \textit{lifecycle}.
-Penggunaan memori pada jawaban, diukur melalui proksi \textit{groundedness}
-dialog dan dua skenario pemaknaan ulang tiga sesi, mencapai \textit{grounded-
-answer rate} 1,00, \textit{false-personalization rate} 0,00, dan
-\textit{stale-belief rate} 0,00 (kemunculan kembali keyakinan lama pada
-jawaban, berbeda dari \textit{stale-memory rate} yang mengukur peluang
-\textit{retrieval} memori tidak aktif dan tetap belum diukur) dengan
-kesepakatan dua penilai sempurna (kappa 1,00, $n=2$) -- ukuran sampel yang
-sangat kecil sehingga rentan berubah pada probe tambahan. Temuan ini
-menunjukkan nilai graf pada kueri
-relasional dan pengelolaan siklus hidup memori, tetapi belum cukup untuk
-mengklaim keunggulan umum terhadap pencarian semantik atau ketepatan semantik
-penulisan memori pada penggunaan nyata secara populasi.
+\item Arsitektur memori hibrid memungkinkan sistem menyimpan konteks secara
+relasional dan menemukannya melalui pencarian semantik. Sebanyak 47 kontrak
+memori inti dan 27 kontrak \textit{lifecycle} serta konteks lulus. Pada 15
+kueri parafrase satu \textit{hop}, kondisi hibrid dan vektor saja memperoleh
+\textit{Recall@5} yang sama, yaitu 1,00. Pada satu kueri yang membutuhkan
+identitas relasi graf, kondisi hibrid menemukan pengalaman terkait yang tidak
+ditemukan oleh kondisi vektor saja.
+
+Pengujian skenario dan hasil terhadap penulis memori produksi menghasilkan
+presisi 0,69, \textit{recall} 0,75, dan \textit{update correctness} 0,75.
+Penggunaan memori pada jawaban mencapai \textit{grounded-answer rate} 1,00,
+\textit{false-personalization rate} 0,00, dan \textit{stale-belief rate} 0,00
+pada proksi berukuran kecil. Temuan ini menunjukkan nilai graf pada kasus
+relasional tertentu dan dukungan awal bagi pengelolaan siklus hidup memori,
+tetapi tidak membuktikan keunggulan umum terhadap pencarian semantik.
 
 \end{enumerate}
 
-Secara keseluruhan, AXIS telah menghasilkan purwarupa yang memadukan
-pendampingan percakapan, asesmen skrining depresi secara percakapan, dan memori
-jangka panjang dalam satu sistem yang dapat diuji. Pengujian pengguna nyata
-belum dilakukan; karena itu, kesimpulan mengenai rasa didampingi, kemudahan
-penggunaan, dan kenyamanan pengguna belum dapat ditarik pada laporan ini.
+Secara keseluruhan, AXIS menghasilkan purwarupa yang memadukan percakapan
+pendamping, asesmen skrining depresi secara percakapan, dan memori jangka
+panjang hibrid. Sistem dikembangkan dan dikalibrasi untuk konteks mahasiswa
+Indonesia, tetapi pengalaman pengguna pada populasi tersebut belum divalidasi.
+Pengujian pengguna nyata belum dilakukan, sehingga rasa didampingi, kemudahan
+penggunaan, dan pemahaman kendali data belum dapat disimpulkan.
 
 \section{Keterbatasan Evaluasi}
 \label{sec:keterbatasan}
@@ -95,14 +80,14 @@ Evaluasi pada laporan ini masih memiliki beberapa keterbatasan, yaitu:
 
     \item Kalibrasi retrieval eksternal sudah menghitung \textit{P@5}, MRR, dan nDCG@5 pada LongMemEval\_S, tetapi korpus tersebut belum menyediakan anotasi graf AXIS maupun pasangan jawaban berlabel. \textit{Update correctness} dan presisi/\textit{recall} penulisan node sudah diukur melalui sepuluh skenario tulis dan pembaruan yang diverifikasi manual, tetapi ukurannya kecil sehingga tidak dapat menjadi estimasi populasi. \textit{Grounded-answer rate} (1,00) dan \textit{false-personalization rate} (0,00), diukur pasca-hoc dari dimensi \textit{groundedness} pada penilaian buta dialog, dan \textit{stale-belief rate} (0,00), diukur melalui dua skenario pemaknaan ulang tiga sesi, tetap merupakan proksi skenario berukuran sangat kecil, bukan estimasi populasi dari korpus pasangan jawaban berlabel. \textit{Stale-memory rate} (peluang \textit{retrieval} memori tidak aktif, berbeda dari \textit{stale-belief rate} di atas) dan \textit{contradiction rate} pada kueri relasional atau kausal di luar konteks pemaknaan ulang tetap belum diukur sama sekali. Probe pemaknaan ulang juga hanya terdiri atas lima relasi sehingga tidak dapat menjadi estimasi populasi.
     
-    \item Pengujian pengguna nyata belum dilaksanakan. Dengan demikian,pengalaman subjektif mahasiswa, pemahaman terhadap kendali data, dan kemudahan antarmuka belum memiliki bukti empiris dari partisipan. Sistem ini juga bukan alat diagnosis dan tidak dievaluasi sebagai intervensi klinis.
+    \item Pengujian pengguna nyata belum dilaksanakan. Dengan demikian, pengalaman subjektif mahasiswa, pemahaman terhadap kendali data, dan kemudahan antarmuka belum memiliki bukti empiris dari partisipan. Sistem ini juga bukan alat diagnosis dan tidak dievaluasi sebagai intervensi klinis.
 \end{enumerate}
 
 \section{Saran}
 \label{sec:saran}
 
 
-Meski penelitian ini telah mendemonstrasikan hasil yang menjanjikan, terdapat berbagai peluang untuk penelitian lanjutan guna menyempurnakan sistem ini pada masa mendatang, di antaranya:
+Berdasarkan keterbatasan evaluasi, pengembangan lanjutan diprioritaskan pada hal berikut:
 \begin{enumerate}[label=\arabic*.,leftmargin=*,itemsep=4pt]
 \item Pengembangan berikutnya perlu memprioritaskan pengujian pengguna nyata dengan instrumen yang telah disiapkan pada Lampiran~\ref{lamp:userstudy}. Pengujian tersebut perlu mengukur pengalaman pendampingan, kemudahan penggunaan, dan pemahaman kendali data tanpa memperluasnya menjadi klaim diagnosis.
 

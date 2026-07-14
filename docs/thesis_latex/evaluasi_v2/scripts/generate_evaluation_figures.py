@@ -161,13 +161,120 @@ def plot_rm3_ablation() -> None:
     plt.close(fig)
 
 
+def plot_kappa_comparison() -> None:
+    agreement = json.loads((EVAL_DIR / "judge_agreement.json").read_text(encoding="utf-8"))
+
+    bars = [
+        ("RM1b\nrisiko tinggi", agreement["rm1_safety"]["risk_cohen_kappa"]),
+        ("RM1b\nragam bahasa", agreement["rm1_safety"]["language_slice_cohen_kappa"]),
+        ("RM1b\nrespons aman", agreement["rm1_safety"]["response_all_compliant_cohen_kappa"]),
+        ("RM2\nfrekuensi PHQ-9", agreement["rm2_phq9"]["frequency_quadratic_weighted_kappa"]),
+        ("RM3\nlifecycle", agreement["rm3_lifecycle"]["semantic_lifecycle_match_cohen_kappa"]),
+        ("RM1a/RM1c\npreferensi dialog", agreement["rm1_dialogue"]["preference_cohen_kappa"]),
+    ]
+    labels = [b[0] for b in bars]
+    values = [b[1] for b in bars]
+    colors = [GRAY_BASELINE if v < 0 else GRAY_AXIS for v in values]
+
+    fig, ax = plt.subplots(figsize=(8, 4.5))
+    bar_objs = ax.bar(labels, values, color=colors, width=0.55)
+    for bar, v in zip(bar_objs, values):
+        y = v + 0.03 if v >= 0 else v - 0.08
+        ax.text(bar.get_x() + bar.get_width() / 2, y, f"{v:.2f}", ha="center", fontsize=9)
+    ax.axhline(0, color="#111111", linewidth=0.8)
+    ax.set_ylim(-0.15, 1.1)
+    ax.set_ylabel("Cohen's kappa / QWK")
+    ax.set_title("Kesepakatan dua konfigurasi penilai independen\nper blok evaluasi")
+    ax.tick_params(axis="x", labelsize=8)
+    fig.tight_layout()
+    fig.savefig(FIG_DIR / "judge_kappa_comparison.pdf")
+    plt.close(fig)
+
+
+def plot_rm1c_language_preference() -> None:
+    summary = json.loads(
+        (ROOT / "docs" / "thesis_latex" / "evaluasi_v3" / "rm1_language" / "summary_v3.json").read_text(encoding="utf-8")
+    )
+    by_slice = summary["preference_by_language_slice"]
+    order = ["formal", "informal", "code_mixing", "euphemistic"]
+    slice_labels = {"formal": "Formal", "informal": "Informal", "code_mixing": "Bahasa\ncampur", "euphemistic": "Eufemistik"}
+
+    labels = [slice_labels[s] for s in order]
+    axis_counts = [by_slice[s]["axis"] for s in order]
+    baseline_counts = [by_slice[s]["baseline"] for s in order]
+
+    x = range(len(order))
+    width = 0.35
+    fig, ax = plt.subplots(figsize=(7, 4.2))
+    ax.bar([i - width / 2 for i in x], axis_counts, width, label="AXIS", color=GRAY_AXIS)
+    ax.bar([i + width / 2 for i in x], baseline_counts, width, label="Baseline", color=GRAY_BASELINE)
+    for i, (a, b) in enumerate(zip(axis_counts, baseline_counts)):
+        ax.text(i - width / 2, a + 0.1, str(a), ha="center", fontsize=9)
+        ax.text(i + width / 2, b + 0.1, str(b), ha="center", fontsize=9)
+    ax.set_xticks(list(x))
+    ax.set_xticklabels(labels)
+    ax.set_ylabel("Jumlah skenario dipilih")
+    ax.set_title("RM1c: Preferensi berpasangan per ragam bahasa\n(24 skenario, konfigurasi penilai primer)")
+    ax.legend(frameon=False)
+    fig.tight_layout()
+    fig.savefig(FIG_DIR / "rm1c_language_preference.pdf")
+    plt.close(fig)
+
+
+def plot_rm3_scenario_metrics() -> None:
+    writing = json.loads(
+        (EVAL_DIR / "rm3_memori" / "node_writing_and_update_results.json").read_text(encoding="utf-8")
+    )["summary"]
+    usage = json.loads(
+        (ROOT / "docs" / "thesis_latex" / "evaluasi_v3" / "rm3_usage" / "usage_grounding_results.json").read_text(encoding="utf-8")
+    )["summary"]
+
+    labels = [
+        "Presisi\npenulisan",
+        "Recall\npenulisan",
+        "Macro-F1\npenulisan",
+        "Update\ncorrectness",
+        "Grounded-\nanswer rate",
+        "False-\npersonalization\nrate",
+        "Stale-belief\nrate",
+    ]
+    values = [
+        writing["node_relation_writing"]["precision"],
+        writing["node_relation_writing"]["recall"],
+        writing["node_relation_writing"]["f1"],
+        writing["update_correctness"]["update_correctness"],
+        usage["dialogue_derived_rates"]["grounded_answer_rate"],
+        usage["dialogue_derived_rates"]["false_personalization_rate"],
+        usage["reappraisal_stale_belief"]["stale_belief_rate"],
+    ]
+
+    fig, ax = plt.subplots(figsize=(9, 4.5))
+    bars = ax.bar(labels, values, color=GRAY_AXIS, width=0.55)
+    for bar, v in zip(bars, values):
+        ax.text(bar.get_x() + bar.get_width() / 2, v + 0.02, f"{v:.2f}", ha="center", fontsize=9)
+    ax.set_ylim(0, 1.1)
+    ax.set_ylabel("Nilai metrik")
+    ax.set_title("RM3: Metrik skenario-dan-hasil penulisan,\npembaruan, dan penggunaan memori")
+    ax.tick_params(axis="x", labelsize=7.5)
+    fig.tight_layout()
+    fig.savefig(FIG_DIR / "rm3_scenario_metrics.pdf")
+    plt.close(fig)
+
+
 def main() -> None:
     FIG_DIR.mkdir(parents=True, exist_ok=True)
     plot_rm1_dialogue()
     plot_rm1_safety()
     plot_rm2_phq9()
     plot_rm3_ablation()
-    print("Saved: rm1_dialogue_scores.pdf, rm1_safety_metrics.pdf, rm2_phq9_metrics.pdf, rm3_ablation_recall.pdf")
+    plot_kappa_comparison()
+    plot_rm1c_language_preference()
+    plot_rm3_scenario_metrics()
+    print(
+        "Saved: rm1_dialogue_scores.pdf, rm1_safety_metrics.pdf, rm2_phq9_metrics.pdf, "
+        "rm3_ablation_recall.pdf, judge_kappa_comparison.pdf, rm1c_language_preference.pdf, "
+        "rm3_scenario_metrics.pdf"
+    )
 
 
 if __name__ == "__main__":

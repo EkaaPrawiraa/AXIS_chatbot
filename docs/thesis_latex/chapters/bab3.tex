@@ -11,7 +11,7 @@
 
 Rumusan masalah pertama menunjukkan bahwa tantangan utama AXIS bukan sekadar menjawab pesan pengguna, melainkan membangun percakapan yang terasa didengar. Mahasiswa sering menyampaikan tekanan akademik, relasi kampus, konflik keluarga, atau rasa tidak percaya diri dengan bahasa yang tidak selalu rapi. Sebagian pesan ditulis dalam bahasa Indonesia informal, sebagian mencampurkan istilah Inggris kampus, dan sebagian lagi memakai ungkapan tidak langsung ketika topiknya terasa berat. Karena itu, sistem perlu memahami cerita pengguna sebagai ekspresi personal, bukan hanya sebagai teks yang perlu dibalas.
 
-Kebutuhan ini menuntut percakapan yang empatik, tetapi tetap berada pada batas non-klinis dan relevan konteksnya. AXIS perlu memvalidasi emosi, mengajak refleksi, dan menawarkan latihan ringan berdasarkan prinsip CBT tanpa menyatakan diagnosis atau mengambil peran tenaga profesional. CBT dipilih sebagai kerangka refleksi karena kajian pada Subbab~\ref{sec:cbt} menunjukkan strukturnya dapat disampaikan dalam bentuk percakapan sehari-hari tanpa kehadiran terapis, dan penyampaiannya melalui chatbot terbukti bermanfaat pada populasi mahasiswa. Percakapan ini juga harus dibangun berdasakan konteks pemahaman terhadap pengguna tersebut sehingga empatik yang diberikan ini benar-benar relevan dengan pengguna tersebut. Pada saat yang sama, percakapan semacam ini harus tetap aman: jika pengguna menyampaikan risiko yang melewati batas pendampingan non-klinis, sistem perlu keluar dari pola dialog biasa dan mengarahkan pengguna pada bantuan yang lebih tepat.
+Kebutuhan ini menuntut percakapan yang empatik, relevan secara konteks, dan tetap berada dalam batas non-klinis. AXIS perlu memvalidasi emosi, mengajak refleksi, dan menawarkan latihan ringan berdasarkan prinsip CBT tanpa menyatakan diagnosis atau mengambil peran tenaga profesional. CBT dipilih karena kajian pada Subbab~\ref{sec:cbt} menunjukkan bahwa strukturnya dapat disampaikan melalui percakapan sehari-hari. Konteks pengguna digunakan agar respons tidak berhenti pada empati yang generik. Jika pengguna menyampaikan risiko yang melewati batas pendampingan non-klinis, sistem perlu keluar dari pola dialog biasa dan mengarahkan pengguna pada bantuan yang lebih tepat.
 
 Percakapan pendamping juga membutuhkan kendali pengguna. Jika sistem dirancang untuk digunakan berulang kali, pengguna tidak hanya berhadapan dengan respons hari ini, tetapi juga dengan jejak cerita yang mungkin dibawa ke sesi berikutnya. Karena itu, rancangan companionship tidak cukup hanya membahas empati dan memori. Sistem juga perlu memberi pilihan kepada pengguna: kapan cerita boleh menjadi memori, kapan percakapan cukup berlangsung sementara, bagaimana memori dapat dilihat atau dihapus, dan bagaimana preferensi pengalaman dapat diatur. Kendali ini penting agar personalisasi tidak berubah menjadi rasa diawasi.
 
@@ -35,7 +35,7 @@ K1: Respons suportif kontekstual & Pengguna membutuhkan ruang yang tidak hanya m
 \hline
 K2: Mood dan asesmen skrining depresi & Mood memberi konteks harian, sedangkan gejala dua mingguan memerlukan skrining depresi yang tervalidasi. & Mood harian sebagai konteks, PHQ-9 sebagai skrining percakapan adaptif dan sukarela. \\
 \hline
-K3: Memori jangka panjang & Cerita pengguna saling terkait lintas sesi dan dapat berubah makna. & Memori relasional, siklus hidup memori, dan pemilihan konteks yang relevan. \\
+K3: Memori jangka panjang & Cerita pengguna saling terkait lintas sesi dan dapat berubah makna. & Memori hibrid dengan struktur relasional graf, pencarian semantik, siklus hidup memori, dan pemilihan konteks yang relevan. \\
 \hline
 K4: Batas keselamatan & Chatbot pendamping tidak boleh menggantikan tenaga profesional. & Batas non-klinis, pemeriksaan risiko, dan rujukan bantuan ketika diperlukan. \\
 \hline
@@ -45,14 +45,14 @@ K5: Kendali pengguna & Personalisasi dan memori jangka panjang perlu tetap teras
 }
 \end{table}
 
-Tabel \ref{tab:kebutuhan-solusi} berperan sebagai ringkasan kebutuhan pada tingkat rancangan. Rincian kebutuhan fungsional dan non-fungsional yang lebih operasional ditempatkan pada Lampiran~\ref{lamp:fr} agar BAB III tetap berfokus pada alasan dan keputusan solusi. Secara umum, AXIS juga memiliki kebutuhan non-fungsional: sistem harus dapat diaudit karena keputusan percakapan menyangkut data emosional, menjaga privasi karena pengguna menceritakan pengalaman personal, dan cukup transparan agar pengguna dapat melihat serta mengoreksi memori yang dipakai. Pada sisi pengalaman, antarmuka web dan mobile diperlukan sebagai sarana penggunaan dan pengujian, tetapi bukan pusat kontribusi penelitian. Kontribusi utama berada pada bagaimana percakapan, mood, PHQ-9, dan memori jangka panjang diorkestrasikan menjadi satu sistem pendamping.
+Tabel \ref{tab:kebutuhan-solusi} merangkum kebutuhan pada tingkat rancangan. Rincian fungsional dan non-fungsional ditempatkan pada Lampiran~\ref{lamp:fr} agar BAB III tetap berfokus pada alasan serta keputusan solusi. Kontribusi utama berada pada orkestrasi percakapan pendamping, mood dan PHQ-9, serta memori jangka panjang hibrid. Sistem juga perlu dapat diaudit, menjaga privasi, dan memberi transparansi terhadap memori yang digunakan.
 
-K1, K2, dan K3 merupakan turunan langsung dari tiga rumusan masalah pada BAB I. K4 dan K5 tidak menambah rumusan masalah baru, melainkan menjadi kebutuhan lintas-rumusan: batas keselamatan menjaga seluruh bentuk percakapan tetap non-klinis, sedangkan kendali pengguna menjaga personalisasi dan memori tetap berada di bawah keputusan pengguna.
+K1, K2, dan K3 merupakan turunan langsung dari tiga rumusan masalah pada BAB I. K4 dan K5 menjadi kebutuhan pendukung lintas rumusan. Batas keselamatan menjaga percakapan tetap non-klinis, sedangkan kendali pengguna menjaga personalisasi tetap berada di bawah keputusan pengguna. Antarmuka, interaksi suara, dan \textit{Confession Space} menjadi sarana penggunaan kemampuan inti, bukan kontribusi penelitian yang berdiri sendiri.
 
 \section{Gambaran Umum Solusi}
 \label{sec:gambaran-umum}
 
-AXIS dirancang sebagai chatbot pendamping non-klinis untuk mahasiswa Indonesia, dengan pengguna mahasiswa sebagai aktor utamanya. Dari sudut pandang pengguna, terdapat delapan kelompok interaksi: bercerita dan berefleksi dalam percakapan, berbicara di ruang suara sementara, mencatat suasana hati harian, mengisi skrining PHQ-9, melakukan latihan reflektif, melihat dan mengelola memori, mengakses bantuan dan hotline, serta mengatur akun dan data pribadi. Diagram \textit{use case} pada Gambar \ref{fig:solution-use-case} merangkum kedelapan interaksi tersebut.
+AXIS dirancang sebagai chatbot pendamping non-klinis yang dikalibrasi untuk konteks mahasiswa Indonesia. Tiga interaksi utama mengikuti rumusan masalah: percakapan dan latihan reflektif, mood harian serta skrining PHQ-9, dan pengelolaan memori lintas sesi. Lima interaksi lain mendukung penggunaan ketiga kemampuan tersebut, yaitu ruang suara sementara, pengelolaan memori oleh pengguna, bantuan dan hotline, serta pengaturan akun dan data pribadi. Diagram \textit{use case} pada Gambar \ref{fig:solution-use-case} merangkum keseluruhan interaksi dari sudut pandang pengguna.
 
 \begin{figure}[!htbp]
   \centering
@@ -61,7 +61,7 @@ AXIS dirancang sebagai chatbot pendamping non-klinis untuk mahasiswa Indonesia, 
   \label{fig:solution-use-case}
 \end{figure}
 
-Alur penggunaan kedelapan interaksi tersebut ditunjukkan pada Gambar \ref{fig:solution-overview-flow}. Pengguna memilih ruang sesuai kebutuhannya saat itu, setiap giliran percakapan melewati pemeriksaan keselamatan, dan respons selalu berada pada batas non-klinis. Ketika sesi berakhir, hanya sesi yang layak yang ditulis menjadi memori jangka panjang. Percakapan di ruang suara sementara mengikuti alur yang sama, tetapi tidak pernah meninggalkan memori.
+Alur penggunaan ditunjukkan pada Gambar \ref{fig:solution-overview-flow}. Pengguna memilih ruang sesuai kebutuhannya, sedangkan pemeriksaan keselamatan berlaku pada setiap giliran. Ketika sesi chat berakhir, hanya isi yang layak yang ditulis menjadi memori jangka panjang. Percakapan pada ruang suara sementara tetap melewati batas keselamatan, tetapi tidak ditulis menjadi memori.
 
 \begin{figure}[!htbp]
   \centering
@@ -70,7 +70,7 @@ Alur penggunaan kedelapan interaksi tersebut ditunjukkan pada Gambar \ref{fig:so
   \label{fig:solution-overview-flow}
 \end{figure}
 
-Rancangan AXIS tidak memandang fitur-fitur tersebut sebagai daftar kemampuan yang berdiri sendiri, melainkan sebagai satu kesatuan peran \textit{companionship} yang saling melengkapi, dari ruang bercerita utama hingga kendali pengguna atas data personalnya. Tabel \ref{tab:peran-fitur-companionship} memetakan peran masing-masing fitur tersebut.
+Rancangan AXIS membedakan kemampuan inti dari kebutuhan pendukung, tetapi keduanya tetap membentuk satu pengalaman \textit{companionship}. Tabel \ref{tab:peran-fitur-companionship} memetakan peran setiap fitur tanpa menyamakannya sebagai kontribusi penelitian yang setara.
 
 \begin{table}[!htbp]
 \centering
@@ -100,7 +100,7 @@ Bantuan, hotline, dan pengaturan & Penjelasan batas sistem, rujukan bantuan, res
 }
 \end{table}
 
-Tabel tersebut juga menetapkan posisi fitur kontrol pengguna, yang menjawab K5 pada Tabel~\ref{tab:kebutuhan-solusi}. Fitur seperti hapus memori, unduh data, hapus akun, visibilitas sensitif, dan preferensi respons bukan kontribusi algoritmik yang berdiri sendiri. Perannya menjaga agar personalisasi tidak berubah menjadi pengalaman yang terasa mengawasi. Kendali pengguna dengan demikian menjadi syarat sosial dari \textit{companionship}: sistem boleh mengingat pengguna sejauh pengguna tetap dapat melihat, mengatur, dan menghentikan ingatan tersebut.
+Fitur kontrol pengguna menjawab K5 pada Tabel~\ref{tab:kebutuhan-solusi}. Hapus memori, unduh data, hapus akun, visibilitas sensitif, dan preferensi respons bukan kontribusi algoritmik tersendiri. Fitur tersebut menjaga agar pengguna tetap dapat melihat, mengatur, dan menghentikan penggunaan memori personal.
 
 \subsection{Rancangan Peran \textit{Companionship Chatbot}}
 \label{sec:rancangan-companionship}
@@ -109,7 +109,9 @@ Rancangan berikut menjawab K1 pada Tabel~\ref{tab:kebutuhan-solusi}. Peran AXIS 
 
 Prinsip CBT dipakai sebagai kerangka refleksi, bukan sebagai terapi. AXIS dapat membantu pengguna melihat hubungan antara situasi, pikiran, emosi, dan perilaku. Jika pengguna menunjukkan kritik diri, sistem dapat mengajak pengguna melihat cara bicara kepada diri sendiri. Jika pengguna menunjukkan kepanikan, sistem dapat menawarkan latihan penjangkaran (\textit{grounding}). Jika pengguna menunjukkan pikiran katastrofik, sistem dapat mengajak pengguna menimbang kemungkinan lain. Semua latihan tersebut tetap berada dalam batas non-klinis dan harus terasa sebagai undangan, bukan kewajiban.
 
-Perancangan respons reflektif ini memisahkan proses secara eksplisit menjadi dua tahap berurutan: memahami, baru kemudian menyuarakan. Pemisahan ini mengikuti pembedaan empati kognitif dan empati belas kasih pada Subbab~\ref{subsec:model-empati} \parencite{decetyCowell2014}, karena memahami mengapa pengguna merasakan sesuatu dalam konteks yang spesifik adalah proses yang berbeda dari memutuskan tindakan respons yang membantu. Tahap pemahaman menyusun model psikologis pengguna dari memori yang tersedia mengikuti struktur situasi-emosi-pikiran-perilaku pada model \textit{hot cross bun} \parencite{greenbergerPadesky1995}, memperlakukan distorsi kognitif yang terdeteksi sebagai skema yang dapat dievaluasi terprogram \parencite{beck1979}, tanpa pernah menyusun kalimat balasan itu sendiri. Tahap penyuaraan menerima hasil pemahaman tersebut dan menerjemahkannya menjadi kalimat yang hangat, tanpa pernah menyebutkan mekanisme analisis yang mendasarinya kepada pengguna. Pemisahan ini dirancang agar kedalaman pemahaman memperkaya ketepatan dan nada respons, bukan ditunjukkan sebagai proses analitis yang terlihat pengguna.
+AXIS memisahkan tahap memahami dari tahap menyusun respons. Pemisahan ini mengikuti pembedaan empati kognitif dan empati belas kasih pada Subbab~\ref{subsec:model-empati} \parencite{decetyCowell2014}: memahami konteks pengguna berbeda dari menentukan cara merespons secara membantu.
+
+Tahap pemahaman menyusun representasi internal berdasarkan struktur situasi, emosi, pikiran, dan perilaku pada model \textit{hot cross bun} \parencite{greenbergerPadesky1995}. Distorsi kognitif yang terdeteksi diperlakukan sebagai sinyal analisis \parencite{beck1979}. Tahap penyusunan respons kemudian menerjemahkan hasil tersebut menjadi kalimat yang hangat tanpa memperlihatkan proses analisis internal kepada pengguna.
 
 Alur pemilihan teknik ditunjukkan pada Gambar \ref{fig:cbt-dialogue-flow}. Teknik tidak dipilih sebagai langkah otomatis yang selalu muncul. Sistem lebih dahulu memeriksa apakah percakapan sedang berada dalam alur skrining atau kondisi risiko, menghormati penolakan yang baru saja diberikan pengguna, menimbang apakah muatan emosi dan kesiapan pengguna sudah cukup, dan baru memilih teknik yang sesuai dengan sinyal dominan pada pesan. Dengan cara ini, CBT memperkaya percakapan tanpa memaksa pengguna masuk ke format latihan.
 
@@ -150,14 +152,16 @@ Permintaan penjelasan konsep emosional & Penjelasan singkat tanpa label klinis (
 }
 \end{table}
 
-Tabel \ref{tab:pemetaan-teknik-reflektif} menyajikan tiap sinyal sebagai baris independen, tetapi pada percakapan nyata lebih dari satu sinyal dapat muncul bersamaan pada satu pesan yang sama, misalnya pikiran katastrofik yang diutarakan bersamaan dengan afek akut (jantung berdebar, panik). Untuk kondisi ini, rancangan AXIS memprioritaskan regulasi afek akut (\textit{grounding}) di atas penantangan pola pikir (\textit{reframing}), mengikuti prinsip dialectical behavior therapy bahwa penalaran yang ditawarkan saat afek sedang sangat aktif cenderung kurang efektif diterima \parencite{linehan1993dbt}. Prioritas ini konsisten, tetapi berarti distorsi kognitif yang muncul bersamaan afek akut tidak langsung ditantang pada giliran yang sama. Agar distorsi tersebut tidak hilang begitu saja setelah giliran \textit{grounding}, sistem menyimpan nama distorsi yang terdeteksi bersamaan sinyal akut tadi, lalu secara otomatis menawarkan \textit{reframing} pada giliran berikutnya jika pengguna masih menunjukkan muatan emosional dan belum berpindah topik. Mekanisme susulan ini diverifikasi berjalan pada pemanggilan LLM nyata (Subbab~\ref{subsec:impl-pipeline-agentik}).
+Lebih dari satu sinyal dapat muncul pada pesan yang sama. Ketika afek akut muncul bersama pikiran katastrofik, AXIS memprioritaskan \textit{grounding} karena penalaran cenderung lebih sulit diterima saat afek sangat aktif \parencite{linehan1993dbt}.
 
-Ruang percakapan suara sementara yang diperkenalkan pada BAB I disebut \textit{Confession Space} pada rancangan AXIS. Fitur ini dirancang untuk situasi ketika pengguna lebih nyaman berbicara daripada mengetik. Rancangan ini berangkat dari landasan pada Subbab~\ref{subsec:landasan-confession-space}: nilai bercerita tidak selalu bergantung pada apakah cerita tersebut diingat, sehingga kanal yang sengaja tidak menulis isi percakapan ke memori jangka panjang tetap memberi manfaat tersendiri. Fitur ini berupa percakapan suara dengan hasil transkripsi yang ditampilkan sebagai takarir agar pengguna dapat mengikuti isi percakapan secara visual.
+Distorsi yang terdeteksi tidak dibuang. Sistem menyimpannya dan menawarkan \textit{reframing} pada giliran berikutnya apabila pengguna masih membawa muatan emosional yang sama dan belum berpindah topik. Implementasi mekanisme susulan ini dijelaskan pada Subbab~\ref{subsec:impl-pipeline-agentik}.
+
+Sebagai kebutuhan pendukung, AXIS menyediakan ruang percakapan suara sementara bernama \textit{Confession Space}. Fitur ini ditujukan bagi pengguna yang lebih nyaman berbicara daripada mengetik. Berdasarkan landasan pada Subbab~\ref{subsec:landasan-confession-space}, nilai bercerita tidak selalu bergantung pada penyimpanan permanen. Transkripsi ditampilkan sebagai takarir agar isi percakapan tetap dapat diikuti secara visual.
 
 Perbedaan utamanya dari chat biasa terletak pada batas persistensi. Isi pesan dan transkrip hanya dipakai sebagai konteks selama percakapan berlangsung, tidak dijadikan riwayat permanen maupun memori personal AXIS. Batas ini disampaikan secara jujur: audio tetap diproses oleh layanan transkripsi dan sintesis suara pihak ketiga, dan metadata operasional minimum seperti keberadaan sesi serta penanda keselamatan tetap dicatat. Pengguna memperoleh ruang yang lebih ringan tanpa diberi janji privasi yang melampaui kendali AXIS, dan batas keselamatan tetap berlaku penuh: jika terdapat risiko tinggi, sistem tetap mengarahkan pengguna ke bantuan yang sesuai.
 \label{subsec:rancangan-confession-space}
 
-Kendali pengguna menjadi bagian dari rancangan companionship karena AXIS membawa memori personal ke dalam percakapan. Pengguna perlu dapat melihat memori yang tersimpan, menyembunyikan informasi sensitif dari tampilan, memperbarui atau menghapus catatan yang tidak lagi tepat, serta menghapus riwayat atau akun ketika tidak ingin melanjutkan penggunaan. Pilihan-pilihan ini bukan pusat kontribusi algoritmik, tetapi menjadi syarat agar kontribusi memori jangka panjang dapat diterima dalam pengalaman pendampingan.
+Kendali pengguna menjadi kebutuhan pendukung karena AXIS membawa memori personal ke dalam percakapan. Pengguna dapat melihat, memperbarui, menyembunyikan, atau menghapus memori, serta menghapus riwayat dan akun. Kontrol tersebut bukan pusat kontribusi algoritmik, tetapi diperlukan agar penggunaan memori tetap transparan dan dapat dihentikan oleh pengguna.
 
 \subsection{Rancangan Percakapan Reflektif dan Persona}
 \label{sec:rancangan-percakapan-persona}
@@ -295,23 +299,21 @@ Pada percakapan biasa, \textit{guardrail} tidak boleh membuat AXIS terasa sepert
 \section{Rancangan Evaluasi}
 \label{sec:rancangan-evaluasi}
 
-Evaluasi dirancang sebagai arsitektur bukti yang langsung mengikuti klaim pada tiga rumusan masalah. Bukti primer berasal dari pengujian kontrak, \textit{benchmark} berlabel, penilaian buta, dan ablasi terkendali. Studi kasus naratif hanya digunakan sebagai ilustrasi perilaku sistem, sedangkan pengujian pengguna nyata digunakan untuk menilai pengalaman awal memakai purwarupa.
-
-Lima blok evaluasi digunakan sebagai berikut.
+Evaluasi dirancang sebagai arsitektur bukti yang mengikuti klaim pada tiga rumusan masalah. Empat blok bukti dilaksanakan pada laporan ini. Studi kasus naratif hanya digunakan sebagai ilustrasi perilaku sistem.
 
 \begin{enumerate}[label=\arabic*.,leftmargin=*,itemsep=4pt]
-  \item \textbf{Validasi kontrak sistem.} Pengujian unit dan integrasi memeriksa transisi, rute, persistensi, dan operasi data yang memiliki keluaran benar atau salah secara eksplisit. Blok ini membuktikan kesesuaian implementasi terhadap rancangan, bukan kualitas respons terbuka.
+  \item \textbf{Validasi kontrak sistem.} Pengujian unit dan integrasi memeriksa transisi, rute, persistensi, dan operasi data dengan keluaran yang dapat ditentukan secara eksplisit. Blok ini membuktikan kesesuaian implementasi terhadap rancangan, bukan kualitas respons terbuka.
 
-  \item \textbf{\textit{Benchmark} berlabel.} Korpus yang dibekukan digunakan untuk menguji deteksi risiko, pemetaan jawaban bebas PHQ-9, penulisan graf memori, \textit{retrieval}, pembaruan \textit{lifecycle}, dan penggunaan memori pada jawaban. Untuk kontrak yang memiliki keluaran deterministik, label acuan ditetapkan langsung dari aturan instrumen dan skenario. Untuk keluaran terbuka, label referensi operasional disusun dengan pedoman tertulis dan konfigurasi penilai LLM yang dicatat bersama artefak evaluasi.
+  \item \textbf{\textit{Benchmark} berlabel.} Korpus yang dibekukan digunakan untuk menguji deteksi risiko, pemetaan jawaban bebas PHQ-9, penulisan memori, \textit{retrieval}, pembaruan \textit{lifecycle}, dan penggunaan memori pada jawaban. Label acuan ditetapkan melalui aturan instrumen, skenario terverifikasi, atau pedoman anotasi yang dicatat bersama artefak evaluasi.
 
-  \item \textbf{Penilaian buta respons.} Respons AXIS dan \textit{baseline} untuk skenario yang sama diacak serta disembunyikan identitasnya. Konfigurasi \textit{LLM-as-judge} yang dicatat pada artefak evaluasi menerapkan rubrik ordinal untuk validasi emosi, pemahaman konteks, eksplorasi, ketepatan CBT, batas non-klinis, kesesuaian ragam bahasa, dan \textit{groundedness} ketika memori digunakan.
+  \item \textbf{Penilaian buta respons.} Respons AXIS dan \textit{baseline} pada skenario yang sama diacak serta disembunyikan identitasnya. Rubrik ordinal mencakup validasi emosi, pemahaman konteks, eksplorasi, ketepatan CBT, batas non-klinis, kesesuaian ragam bahasa, dan \textit{groundedness} ketika memori digunakan.
 
-  \item \textbf{Ablasi terkendali.} Kondisi retrieval vektor saja dibandingkan dengan retrieval hibrid menggunakan korpus, kueri, model, prompt, parameter decoding, jumlah kandidat, dan batas konteks yang sama. Perbandingan dilakukan berpasangan pada tingkat kueri.
-
-  \item \textbf{Pengujian pengguna nyata.} Mahasiswa menggunakan purwarupa untuk menilai kegunaan, rasa didampingi, kejelasan skrining, kesinambungan memori, dan pemahaman kendali data. Hasilnya dibaca sebagai pengalaman awal penggunaan, bukan bukti efektivitas klinis.
+  \item \textbf{Ablasi terkendali.} Kondisi \textit{retrieval} vektor saja dibandingkan dengan kondisi hibrid menggunakan korpus, kueri, model, \textit{prompt}, parameter pembangkitan, jumlah kandidat, dan batas konteks yang sama. Perbandingan dilakukan berpasangan pada tingkat kueri.
 \end{enumerate}
 
-Korpus, \textit{prompt}, profil model, konfigurasi decoding, dan versi artefak dibekukan sebelum evaluasi. Hasil kuantitatif dilaporkan bersama interval kepercayaan ketika relevan. Penilaian otomatis melaporkan konfigurasi model penilai, rubrik, serta artefak keluarannya; pengujian pengguna nyata tetap mengumpulkan persepsi mahasiswa melalui kuesioner. Hasil yang berkaitan dengan domain bahasa dilaporkan menurut ragam formal, informal, bahasa campur, dan eufemistik.
+Instrumen pengujian pengguna nyata disiapkan untuk evaluasi lanjutan, tetapi tidak dijalankan pada laporan ini. Instrumen tersebut ditujukan untuk menilai pengalaman pendampingan, kejelasan skrining, kesinambungan memori, dan pemahaman kendali data yang tidak dapat disimpulkan dari pengujian otomatis.
+
+Korpus, \textit{prompt}, profil model, konfigurasi pembangkitan, dan versi artefak dibekukan sebelum evaluasi. Hasil kuantitatif dilaporkan bersama interval kepercayaan ketika relevan. Konfigurasi model penilai, rubrik, dan keluaran per kasus turut disimpan. Hasil terkait bahasa dilaporkan menurut ragam formal, informal, bahasa campur, dan eufemistik.
 
 Hubungan antara klaim, unit evaluasi, dan bukti utama dirangkum pada Tabel~\ref{tab:pemetaan-rumusan-rancangan}.
 
@@ -323,19 +325,11 @@ Hubungan antara klaim, unit evaluasi, dan bukti utama dirangkum pada Tabel~\ref{
 \begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}p{2.3cm}|>{\raggedright\arraybackslash}p{3.2cm}|>{\raggedright\arraybackslash}X|}
 \hline
 \rowcolor{tableheadgray}
-\textbf{Klaim} & \textbf{Unit evaluasi} & \textbf{Bukti dan metrik utama} \\
+\textbf{Klaim} & \textbf{Unit evaluasi} & \textbf{Bukti yang direalisasikan dan batasnya} \\
 \hline
-RM1a: kualitas respons suportif & Respons AXIS dan \textit{baseline} pada skenario yang sama & Penilaian buta dengan rubrik ordinal berbasis EPITOME dan dimensi tambahan; median atau distribusi per dimensi; preferensi berpasangan \\
+RM1a: kelayakan respons suportif dan nilai konteks memori & Respons AXIS dan \textit{baseline} pada skenario yang sama & Penilaian buta dengan rubrik ordinal berbasis EPITOME dan dimensi tambahan; median atau distribusi per dimensi; preferensi berpasangan. Hasil tidak digunakan untuk mengklaim keunggulan dialog secara umum. \\RM3: memori jangka panjang & Penulisan, \textit{retrieval}, pembaruan, penggunaan, dan ablasi & Metrik yang direalisasikan mencakup presisi dan \textit{recall} penulisan, \textit{P@5}, \textit{Recall@5}, MRR, nDCG@5, \textit{update correctness}, \textit{grounded-answer rate}, \textit{false-personalization rate}, \textit{stale-belief rate}, serta selisih berpasangan. \textit{Stale-memory rate} dan \textit{contradiction rate} pada korpus yang lebih luas diposisikan sebagai evaluasi lanjutan. \\
 \hline
-RM1b: keselamatan percakapan & Pesan berisiko tinggi dan pesan pembanding tanpa risiko & Sensitivitas sebagai metrik primer; spesifisitas; presisi; $F_2$; jumlah \textit{false negative}; kepatuhan respons aman \\
-\hline
-RM1c: kesesuaian ragam bahasa & Skenario formal, informal, bahasa campur, dan eufemistik & Skor kesesuaian bahasa dan preferensi per ragam; metrik keselamatan dilaporkan per ragam \\
-\hline
-RM2: penyampaian skrining PHQ-9 & Transisi orkestrasi, jawaban bebas, dan item kesembilan & Tingkat kelulusan kontrak; \textit{quadratic weighted kappa}; \textit{macro-F1}; akurasi; akurasi klarifikasi; sensitivitas, spesifisitas, dan ketepatan rute item kesembilan \\
-\hline
-RM3: memori jangka panjang & Penulisan, retrieval, pembaruan, penggunaan, dan ablasi & Presisi, \textit{recall}, dan \textit{macro-F1} node serta relasi; \textit{P@5}, \textit{Recall@5}, MRR, nDCG@5; \textit{update correctness}; \textit{stale-memory rate}; \textit{grounded-answer rate}; kontradiksi; \textit{false-personalization rate}; selisih berpasangan dan 95\% CI \\
-\hline
-K5: kendali pengguna sebagai kebutuhan pendukung & Tugas pengelolaan memori dan data personal & Kelulusan kontrak fungsional, keberhasilan tugas pengguna, dan pemahaman kontrol; tidak diperlakukan sebagai rumusan masalah terpisah \\
+K5: kendali pengguna sebagai kebutuhan pendukung & Operasi pengelolaan memori dan data personal & Kelulusan kontrak serta verifikasi teknis operasi. Keberhasilan tugas dan pemahaman pengguna memerlukan pengujian pengguna nyata yang belum dilaksanakan. \\
 \hline
 \end{tabularx}
 }

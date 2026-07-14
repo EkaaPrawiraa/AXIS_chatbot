@@ -13,7 +13,7 @@
 \subsection{Arsitektur Sistem}
 \label{sec:implementasi-arsitektur-inti}
 
-Rancangan AXIS direalisasikan sebagai arsitektur berlapis. Antarmuka web menjadi ruang interaksi pengguna. Layanan \textit{backend} menangani autentikasi, sesi, data pengguna, dan penghubung ke layanan agentik. Layanan agentik menjalankan alur keputusan percakapan, mulai dari pengayaan bahasa, pengambilan memori, kebijakan dialog, PHQ-9, hingga \textit{guardrail}. Penyimpanan data dibagi sesuai perannya: PostgreSQL untuk data relasional dan vektor, Neo4j untuk memori relasional, serta Redis untuk \textit{state} sementara dan pengendalian penggunaan. Komponen suara terhubung ke layanan STT/TTS dan audio respons dikembalikan ke klien sebagai \textit{payload} suara, bukan sebagai kontribusi penyimpanan utama. Arsitektur implementasi ditunjukkan pada Gambar \ref{fig:system-arch}.
+Rancangan AXIS direalisasikan sebagai arsitektur berlapis. Antarmuka web menjadi ruang interaksi pengguna. Layanan \textit{backend} menangani autentikasi, sesi, data pengguna, dan penghubung ke layanan agentik. Layanan agentik menjalankan alur keputusan percakapan, mulai dari pengayaan bahasa, pengambilan memori, kebijakan dialog, PHQ-9, hingga \textit{guardrail}. Penyimpanan data dibagi sesuai perannya: PostgreSQL untuk data relasional dan vektor, Neo4j untuk struktur relasional memori, serta Redis untuk \textit{state} sementara dan pengendalian penggunaan. Komponen suara terhubung ke layanan STT/TTS sebagai sarana interaksi pendukung. Arsitektur implementasi ditunjukkan pada Gambar \ref{fig:system-arch}.
 
 \begin{figure}[!htbp]
   \centering
@@ -22,9 +22,9 @@ Rancangan AXIS direalisasikan sebagai arsitektur berlapis. Antarmuka web menjadi
   \label{fig:system-arch}
 \end{figure}
 
-Redis digunakan sebagai lapisan pendukung, bukan kontribusi utama penelitian. Perannya adalah menyimpan state sementara, membantu pengendalian penggunaan, dan menyiapkan sistem untuk evaluasi pengguna nyata agar layanan tidak mudah disalahgunakan. Dengan cara ini, pembatasan teknis tetap hadir tanpa mengambil fokus dari kontribusi utama, yaitu percakapan, mood/PHQ-9, dan memori jangka panjang.
+Redis digunakan sebagai lapisan pendukung, bukan kontribusi utama penelitian. Perannya adalah menyimpan \textit{state} sementara dan membantu pengendalian penggunaan agar layanan tidak mudah disalahgunakan. Pembatasan teknis ini mendukung penggunaan purwarupa tanpa mengambil fokus dari percakapan, mood dan PHQ-9, serta memori jangka panjang hibrid.
 
-Purwarupa AXIS dijalankan pada domain publik (\url{https://axis-chatbot.my.id}) dengan sertifikat HTTPS asli, bukan sekadar lingkungan pengembangan lokal. Reverse proxy menangani penerbitan dan pembaruan sertifikat secara otomatis, serta memisahkan lalu lintas ke layanan \textit{backend} dan antarmuka web pada satu titik masuk. Ketersediaan ini menjadi prasyarat teknis bagi pengujian pengguna nyata pada Subbab~\ref{sec:evaluasi-pengguna}, karena partisipan dapat mengakses sistem langsung melalui tautan publik tanpa memerlukan konfigurasi jaringan khusus.
+Purwarupa AXIS dijalankan pada domain publik (\url{https://axis-chatbot.my.id}) dengan sertifikat HTTPS. \textit{Reverse proxy} menangani penerbitan dan pembaruan sertifikat serta memisahkan lalu lintas ke layanan \textit{backend} dan antarmuka web. Ketersediaan ini menyiapkan akses bagi evaluasi pengguna nyata pada penelitian lanjutan tanpa memerlukan konfigurasi jaringan khusus dari partisipan.
 
 Karena kualitas respons dan ekstraksi memori sangat dipengaruhi oleh model bahasa yang dipakai, konfigurasi model perlu dinyatakan secara eksplisit tanpa mengunci laporan pada satu nama model tertentu. Implementasi AXIS menyediakan lapisan konfigurasi penyedia yang dapat diarahkan ke OpenAI, Gemini, atau model lokal berbasis MLX. Setiap komponen menggunakan profil model yang berbeda sesuai perannya: generasi respons, peringkasan sesi, ekstraksi graf, penilaian PHQ-9, dan penulisan ulang \textit{guardrail}. Tabel \ref{tab:llm-config} merangkum profil tersebut sebagaimana direalisasikan pada konfigurasi layanan agentik.
 
@@ -92,11 +92,15 @@ Pemilihan teknik CBT menggabungkan dua jalur: pencocokan sinyal deterministik da
 
 Kebijakan dialog juga menangani penolakan dan perpindahan status percakapan. Penolakan berturut-turut terhadap teknik yang berbeda menekan penawaran teknik baru untuk sementara. Status latihan reflektif yang sedang berjalan direset ketika percakapan ditandai sebagai krisis, sehingga latihan tersebut tidak berlanjut diam-diam setelah momen krisis berlalu. Perilaku ini diverifikasi melalui pengujian unit (Subbab~\ref{sec:evaluasi-fungsional}) dan studi kasus ilustratif pada Subbab~\ref{sec:evaluasi-komparatif}.
 
-Rancangan reflektif memprioritaskan regulasi afek di atas penantangan pola pikir (Subbab~\ref{sec:rancangan-companionship}), sehingga distorsi kognitif yang muncul bersamaan afek akut (mis. pikiran katastrofik yang diutarakan bersamaan kepanikan) memerlukan mekanisme susulan agar tetap ditantang balik setelah giliran \textit{grounding} selesai, bukan dibiarkan lewat begitu saja. Ketika giliran sebelumnya adalah \textit{grounding} dan sebuah distorsi tercatat pada saat itu, sistem otomatis menawarkan \textit{reframing} atas distorsi tersebut pada giliran berikutnya, selama pengguna belum berpindah topik atau kehilangan muatan emosional. \textit{Prompt} penilai LLM mencatat nama distorsi pada bidang keluarannya bahkan ketika teknik yang dipilih adalah \textit{grounding}, sehingga mekanisme susulan ini punya informasi yang dibutuhkan untuk bekerja.
+Saat afek akut muncul, sistem memprioritaskan \textit{grounding}. Distorsi kognitif yang terdeteksi pada giliran tersebut tetap dicatat oleh penilai dialog.
 
-Mekanisme susulan ini diverifikasi dengan pemanggilan LLM nyata, dilaporkan pada Subbab~\ref{sec:evaluasi-fungsional}.
+Pada giliran berikutnya, sistem menawarkan \textit{reframing} apabila pengguna masih membawa muatan emosional yang sama dan belum berpindah topik. Mekanisme susulan ini diverifikasi melalui pemanggilan LLM nyata dan dilaporkan pada Subbab~\ref{sec:evaluasi-fungsional}.
 
-Frekuensi penyebutan nama pengguna dibatasi lewat pemeriksaan berbasis kode: sebelum setiap giliran, sistem memeriksa langsung riwayat giliran asisten sebelumnya untuk mendeteksi apakah nama pengguna baru saja dipakai, lalu menyisipkan instruksi kontekstual yang sesuai (larangan mutlak jika dipakai pada giliran tepat sebelumnya, larangan lunak jika dipakai pada dua giliran terakhir). Mekanisme serupa juga diterapkan pada pola menutup giliran dengan pertanyaan: jika beberapa giliran asisten berturut-turut sama-sama berakhir dengan tanda tanya, sistem menyisipkan instruksi agar giliran berikutnya ditutup sebagai pernyataan reflektif atau observasi, bukan pertanyaan lagi, sehingga ritme percakapan tidak seragam sepanjang sesi. Pola gaung-parafrasa di awal giliran (misalnya beberapa giliran berturut-turut sama-sama dibuka dengan kata yang sama) juga dideteksi secara mekanis dari riwayat giliran asisten, tanpa mengunci deteksinya pada kata pembuka tertentu, sehingga mekanismenya tetap berlaku pada pola pembuka apa pun yang berulang, bukan hanya pola yang pernah teramati. Efektivitas ketiga mekanisme ini diukur pada Subbab~\ref{sec:evaluasi-fungsional}. Prinsip yang sama, yaitu menghitung pola pengulangan langsung dari riwayat giliran alih-alih meminta model menghitung sendiri lewat instruksi \textit{prompt}, juga diterapkan pada pengulangan rujukan memori: sebelum setiap giliran, sistem memeriksa apakah pengalaman atau pola yang sama baru saja dirujuk pada satu hingga dua giliran terakhir, dan jika demikian menyisipkan instruksi agar giliran ini tidak mengulang rujukan yang sama.
+Sistem membatasi penyebutan nama pengguna dengan memeriksa dua giliran asisten sebelumnya. Jika nama baru saja digunakan, instruksi kontekstual mencegah pengulangannya pada respons berikutnya.
+
+Pemeriksaan berbasis kode juga digunakan untuk mengurangi pola respons yang berulang. Sistem mendeteksi rangkaian giliran yang terus ditutup dengan pertanyaan dan pembuka yang menggaungkan bentuk serupa. Instruksi berikutnya kemudian meminta variasi penutup atau pembuka. Efektivitas mekanisme tersebut diukur pada Subbab~\ref{sec:evaluasi-fungsional}.
+
+Prinsip yang sama diterapkan pada rujukan memori. Jika pengalaman atau pola yang sama baru saja disebut, sistem meminta pembangkit respons tidak mengulang rujukan tersebut pada giliran berikutnya.
 
 \textit{Guardrail} diimplementasikan pada beberapa titik \textit{pipeline} sebagai pagar bagi kebijakan dialog di atas, bukan sebagai pengganti percakapan empatik. Pemeriksaan awal menangkap sinyal eksplisit pada pesan pengguna. Pemeriksaan lanjutan membaca sinyal yang lebih samar. Pemeriksaan keluaran memastikan respons tidak membuat klaim klinis, tidak memberi instruksi berbahaya, dan tetap berada pada batas peran pendamping. Pada risiko tinggi, sistem mengalihkan respons ke rujukan bantuan. Alur eskalasi krisis ditunjukkan pada Gambar \ref{fig:crisis-flow}.
 
@@ -110,7 +114,9 @@ Frekuensi penyebutan nama pengguna dibatasi lewat pemeriksaan berbasis kode: seb
 \textit{Guardrail} tidak diposisikan sebagai fitur utama yang ingin ditonjolkan, tetapi sebagai syarat agar percakapan pendamping tetap bertanggung jawab.
 \label{subsec:impl-guardrail-phq9}
 
-Rancangan pemahaman-lalu-suara pada Subbab~\ref{sec:rancangan-companionship} direalisasikan sebagai konfigurasi \textit{pipeline} alternatif yang dapat diaktifkan tanpa mengubah topologi node lain: pada konfigurasi dasar, node penyusun respons langsung menerima konteks memori dan menyusun balasan dalam satu langkah. Pada konfigurasi alternatif, satu node tambahan disisipkan sebelum penyusunan respons untuk menjalankan tahap pemahaman secara terpisah, memakai profil model yang lebih ringan karena tugasnya terbatas pada penalaran internal, bukan menyusun kalimat yang dibaca pengguna. Keluaran tahap pemahaman ini tidak pernah ditampilkan ke pengguna secara langsung; node penyusun respons menerima hasilnya sebagai konteks tambahan dan tetap bertanggung jawab penuh atas nada, batas topik, dan larangan istilah klinis. Kedua konfigurasi dibandingkan pada Subbab~\ref{sec:v2-dialogue}.
+Rancangan memahami lalu menyuarakan pada Subbab~\ref{sec:rancangan-companionship} direalisasikan sebagai konfigurasi \textit{pipeline} alternatif. Pada konfigurasi dasar, pembangkit respons menerima konteks memori dan menyusun balasan dalam satu langkah. Pada konfigurasi alternatif, satu node pemahaman internal dijalankan lebih dahulu dengan profil model yang lebih ringan.
+
+Keluaran node pemahaman tidak ditampilkan kepada pengguna. Pembangkit respons tetap bertanggung jawab atas nada, batas topik, dan larangan istilah klinis. Kedua konfigurasi dibandingkan pada Subbab~\ref{sec:v2-dialogue}.
 
 \subsection{Mood Harian dan Asesmen Skrining Depresi PHQ-9}
 \label{subsec:impl-mood-phq9}
@@ -241,7 +247,7 @@ Riwayat catatan pikiran terstruktur (ThoughtRecord) dan riwayat asesmen PHQ-9 ju
 \subsection{Antarmuka dan Kendali Pengguna}
 \label{sec:hasil-implementasi}
 
-Antarmuka AXIS disediakan sebagai aplikasi web dengan pengalaman mobile sebagai prioritas. Pembahasan pada bagian ini ditulis dari sudut pandang pengguna: apa yang dapat dilakukan pengguna pada setiap halaman, bukan bagaimana komponen \textit{frontend} dibangun. Setiap halaman ditempatkan sebagai perwujudan rumusan masalah: chat dan voice mendukung percakapan pendamping, mood dan PHQ-9 mendukung refleksi kondisi emosional, sedangkan memori, peta memori, profil, bantuan, dan pengaturan memberi transparansi serta kendali atas pengalaman jangka panjang.
+Antarmuka AXIS disediakan sebagai aplikasi web dengan pengalaman mobile sebagai prioritas. Bagian ini menjelaskan tindakan yang tersedia bagi pengguna, bukan rincian pembangunan komponen \textit{frontend}. Chat, mood dan PHQ-9, serta memori menjadi antarmuka bagi tiga kemampuan inti. Interaksi suara, profil, bantuan, hotline, dan pengaturan menjadi fitur pendukung untuk akses, keselamatan, transparansi, dan kendali pengguna.
 
 \subsubsection{Autentikasi dan Orientasi}
 \label{subsec:impl-auth}
@@ -264,7 +270,9 @@ Halaman chat menjadi ruang utama pengguna bercerita. Pengguna dapat membuka sesi
 \label{subsec:impl-fitur-pendukung}
 \label{subsec:impl-confession-space}
 
-\textit{Confession Space} memberi pengguna ruang suara sementara. Pengguna berbicara melalui mikrofon, sistem menampilkan transkrip dan subtitle, lalu membalas dengan suara dan teks. Isi pesan dan transkrip tidak ditulis ke riwayat pesan permanen atau memori jangka panjang, sehingga pengguna memperoleh ruang yang lebih ringan untuk bercerita. Batas ini berlaku pada penyimpanan utama AXIS, bukan sebagai jaminan bahwa audio tidak pernah melewati sistem lain: implementasi STT dan TTS dapat meneruskan audio atau teks ke penyedia OpenAI, Gemini, atau ElevenLabs sesuai konfigurasi layanan. Pada saat yang sama, \textit{guardrail} tetap aktif jika muncul sinyal risiko. Secara pengalaman, fitur ini menjadi bentuk kendali atas penggunaan memori, bukan klaim anonimitas menyeluruh. Tampilan \textit{Confession Space} ditunjukkan pada Gambar \ref{fig:impl-voice}.
+Sebagai fitur pendukung, \textit{Confession Space} menyediakan ruang suara sementara. Pengguna berbicara melalui mikrofon, melihat transkripsi, lalu menerima balasan dalam bentuk suara dan teks. Isi percakapan tidak ditulis ke riwayat permanen atau memori jangka panjang AXIS.
+
+Batas tersebut berlaku pada penyimpanan utama AXIS, bukan sebagai jaminan anonimitas menyeluruh. Audio atau teks tetap dapat diproses oleh penyedia STT dan TTS sesuai konfigurasi layanan, sedangkan \textit{guardrail} tetap aktif ketika muncul sinyal risiko. Tampilan \textit{Confession Space} ditunjukkan pada Gambar \ref{fig:impl-voice}.
 
 \begin{figure}[!htbp]
   \centering

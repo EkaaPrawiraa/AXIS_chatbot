@@ -1,7 +1,11 @@
 \section{Strategi Evaluasi dan Pemetaan Rancangan}
 \label{sec:evaluasi}
 
-Evaluasi AXIS disusun untuk menguji klaim sistem, bukan setiap tugas LLM sebagai komponen yang berdiri sendiri. Bukti primer terdiri atas validasi kontrak, \textit{benchmark} berlabel, penilaian buta oleh model bahasa besar sebagai penilai (\textit{LLM-as-judge}), dan ablasi terkendali. Pada tugas respons terbuka, \textit{LLM-as-judge} digunakan sebagai penilai utama berbasis rubrik karena penelitian terdahulu menunjukkan keselarasan yang memadai dengan penilaian manusia ketika rubrik diberikan secara eksplisit \parencite{liu2023geval,zheng2023judging}. Pilihan ini memungkinkan korpus yang lebih luas dinilai secara konsisten dalam batas waktu tugas akhir, tetapi tidak menyamakan penilaian model dengan pengalaman pengguna atau validitas klinis. Setiap artefak mencatat model, rubrik, dan keluaran mentahnya. Label rujukan pada benchmark keselamatan (RM1b), pemetaan jawaban bebas PHQ-9 (RM2), dan probe pemaknaan ulang (RM3) dihasilkan oleh konfigurasi penilai primer \textit{gemini-3.1-flash-lite}, lalu diperiksa ulang oleh konfigurasi kedua yang independen (\textit{gemini-3.1-pro-preview}) untuk menghitung kesepakatan antarkonfigurasi; angka yang dilaporkan tetap mengacu pada label konfigurasi primer, sedangkan kesepakatan dilaporkan terpisah sebagai ukuran reliabilitas. Penilaian buta respons suportif (RM1a), termasuk perluasannya ke ragam formal dan bahasa campur (RM1c), telah diperiksa ulang dengan konfigurasi penilai kedua yang independen pada korpus yang diperluas dari 18 menjadi 24 skenario (artefak \textit{evaluasi\_v3}), menggantikan pengulangan satu-konfigurasi 18 skenario sebelumnya; kesepakatan preferensi antarkonfigurasi pada blok ini jauh lebih rendah (kappa $-0,035$) daripada blok lain, sebagaimana dibahas pada Subbab~\ref{sec:v2-dialogue}. Pengujian pengguna nyata tetap disusun sebagai instrumen pada Lampiran~\ref{lamp:userstudy} dan diposisikan sebagai evaluasi lanjutan (Subbab~\ref{sec:evaluasi-pengguna}), karena persepsi penggunaan hanya dapat diperoleh dari pengguna. Studi kasus naratif dapat ditampilkan sebagai ilustrasi, tetapi tidak dipakai sebagai bukti utama.
+Evaluasi AXIS diarahkan pada klaim sistem, bukan pada setiap tugas LLM secara terpisah. Bukti primer terdiri atas validasi kontrak, \textit{benchmark} berlabel, penilaian buta \textit{LLM-as-judge}, dan ablasi terkendali. Studi kasus naratif hanya digunakan sebagai ilustrasi.
+
+Pada respons terbuka, penilaian berbasis model digunakan untuk menerapkan rubrik secara konsisten pada korpus yang tersedia \parencite{liu2023geval,zheng2023judging}. Metode ini tidak diperlakukan sebagai pengganti pengalaman pengguna atau validitas klinis. Setiap artefak menyimpan konfigurasi model, rubrik, dan keluaran per kasus.
+
+Label rujukan untuk keselamatan, pemetaan jawaban bebas PHQ-9, dan probe pemaknaan ulang diperiksa dengan dua konfigurasi penilai independen. Angka kinerja sistem mengacu pada label konfigurasi primer, sedangkan kesepakatan antarkonfigurasi dilaporkan sebagai ukuran reliabilitas. Penilaian buta RM1a dan RM1c juga diulang pada 24 skenario dengan konfigurasi kedua. Kesepakatan preferensinya rendah, yaitu kappa $-0,035$, sehingga hasil preferensi tidak digunakan sebagai bukti keunggulan dialog secara umum. Instrumen pengguna nyata disiapkan pada Lampiran~\ref{lamp:userstudy}, tetapi belum dijalankan dan diposisikan sebagai evaluasi lanjutan pada Subbab~\ref{sec:evaluasi-pengguna}.
 
 Tabel~\ref{tab:v2-pemetaan-evaluasi} memetakan rumusan masalah terhadap unit evaluasi dan metrik primer.
 
@@ -13,9 +17,9 @@ Tabel~\ref{tab:v2-pemetaan-evaluasi} memetakan rumusan masalah terhadap unit eva
 \begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}p{2.0cm}|>{\raggedright\arraybackslash}p{3.2cm}|>{\raggedright\arraybackslash}X|}
 \hline
 \rowcolor{tableheadgray}
-\textbf{Klaim} & \textbf{Unit evaluasi} & \textbf{Metrik primer dan pendamping} \\
+\textbf{Klaim} & \textbf{Unit evaluasi} & \textbf{Metrik yang direalisasikan} \\
 \hline
-RM1a & Kualitas respons suportif & Median atau distribusi skor rubrik per dimensi dan preferensi berpasangan terhadap \textit{baseline} \\
+RM1a & Kelayakan respons suportif dan nilai konteks memori & Median atau distribusi skor rubrik per dimensi dan preferensi berpasangan terhadap \textit{baseline}; hasil dibatasi oleh reliabilitas preferensi antarkonfigurasi penilai \\
 \hline
 RM1b & Keselamatan percakapan & Sensitivitas risiko tinggi, spesifisitas, presisi, $F_2$, jumlah \textit{false negative}, dan kepatuhan respons aman \\
 \hline
@@ -23,7 +27,7 @@ RM1c & Kesesuaian ragam bahasa & Skor kesesuaian bahasa dan preferensi per ragam
 \hline
 RM2 & Fidelity penyampaian dan pemetaan jawaban bebas PHQ-9 & Tingkat kelulusan kontrak, \textit{quadratic weighted kappa}, \textit{macro-F1}, akurasi, akurasi klarifikasi, serta metrik khusus item kesembilan \\
 \hline
-RM3 & Penulisan, retrieval, pembaruan, dan penggunaan memori & Presisi, \textit{recall}, \textit{macro-F1}, \textit{P@5}, \textit{Recall@5}, MRR, nDCG@5, \textit{update correctness}, \textit{stale-memory rate}, \textit{grounded-answer rate}, kontradiksi, dan \textit{false-personalization rate} \\
+RM3 & Penulisan, \textit{retrieval}, pembaruan, dan penggunaan memori & Presisi dan \textit{recall} penulisan, \textit{P@5}, \textit{Recall@5}, MRR, nDCG@5, \textit{update correctness}, \textit{grounded-answer rate}, \textit{false-personalization rate}, dan \textit{stale-belief rate}. \textit{Stale-memory rate} dan \textit{contradiction rate} belum diukur. \\
 \hline
 \end{tabularx}
 }
@@ -94,7 +98,7 @@ Empat kelompok kontrak (kebijakan dialog CBT, \textit{guardrail}, mood dan PHQ-9
 
 \textit{Confession Space} dan kendali pengguna diverifikasi langsung terhadap fungsi produksi (bukan tiruan). Untuk \textit{Confession Space}, kontrak yang diperiksa adalah mekanisme pengecualian memori: sesi yang ditandai sebagai mode \textit{Confession Space} tidak pernah menulis catatan aktivitas sesi, sehingga secara struktural tidak pernah ditemukan oleh mekanisme penyapu sesi yang memicu penulisan \textit{knowledge graph}, sedangkan sesi biasa tetap menulis catatan tersebut. Kontrak ini membuktikan mekanisme pengecualiannya, bukan seluruh permukaan \textit{Confession Space}: kepatuhan lapisan \textit{backend} lain yang bertanggung jawab agar isi pesan tidak tersimpan ke basis data relasional berada di luar cakupan pengujian pada tahap ini, dan belum ada pengujian terpisah yang secara eksplisit memaksa jalur \textit{guardrail} untuk membaca status mode tersebut, meskipun topologi \textit{pipeline} pada Gambar~\ref{fig:langgraph-flow} menunjukkan node \textit{guardrail} tidak pernah dilewati secara kondisional oleh status mode ini. Untuk kendali pengguna, kontrak yang diperiksa mencakup melihat memori melalui lapisan layanan yang sama dipakai antarmuka pengguna, mengoreksi satu bidang tanpa mengubah bidang lain, mengarsipkan (menyembunyikan) satu node memori sehingga tidak lagi tampil pada daftar, dan menghapus riwayat percakapan pada tingkat sesi.
 
-Pengujian ini tidak mengukur kenyamanan atau pemahaman pengguna saat memakai fitur tersebut. Kedua aspek tetap memerlukan pengujian pengguna nyata pada Subbab~\ref{sec:evaluasi-pengguna}.
+Pengujian ini tidak mengukur kenyamanan atau pemahaman pengguna saat memakai fitur tersebut. Kedua aspek memerlukan pengujian pengguna nyata yang direncanakan pada Subbab~\ref{sec:evaluasi-pengguna}, tetapi belum dilaksanakan pada laporan ini.
 
 \section{Evaluasi RM1: Percakapan Pendamping}
 \label{sec:evaluasi-komparatif}
@@ -297,19 +301,26 @@ Skenario pada penilaian buta dan benchmark keselamatan dikelompokkan ke empat ra
 \rowcolor{tableheadgray}
 \textbf{Ragam} & \textbf{Skor bahasa} & \textbf{Preferensi AXIS} & \textbf{Sensitivitas risiko} & \textbf{Imitasi berlebihan} \\
 \hline
-Formal & 2,0 & 2/5 (1 setara) & 0,500 (n=4) & Belum ditinjau ulang \\
+Formal & 2,0 & 2/5 (1 setara) & 0,500 (n=4) & 0/5; register tidak konsisten dipertahankan (lihat teks) \\
 \hline
-Informal & 2,0 & 9/12 & 0,778 (n=16) & Belum ditinjau ulang \\
+Informal & 2,0 & 9/12 & 0,778 (n=16) & 0/12 \\
 \hline
-Bahasa campur & 2,0 & 2/6 & 0,500 (n=21) & Belum ditinjau ulang \\
+Bahasa campur & 2,0 & 2/6 & 0,500 (n=21) & 0/6 \\
 \hline
-Eufemistik & 2,0 & 1/1 (n=1, tidak dapat digeneralisasi) & 0,667 (n=9) & Belum ditinjau ulang \\
+Eufemistik & 2,0 & 1/1 (n=1, tidak dapat digeneralisasi) & 0,667 (n=9) & 0/1 \\
 \hline
 \end{tabularx}
 }
 \end{table}
 
-Skor bahasa dan preferensi pada seluruh baris berasal dari perluasan 24 skenario RM1a (Subbab~\ref{sec:v2-dialogue}), dinilai oleh konfigurasi penilai primer. Median kesesuaian bahasa mencapai skor tertinggi (2,0) pada keempat ragam, menunjukkan efek langit-langit (\textit{ceiling effect}) pada dimensi ini dan bahwa dimensi tersebut kurang mampu membedakan kualitas antarragam pada korpus sekecil ini. Preferensi AXIS bervariasi: unggul pada informal (9/12) dan eufemistik (1/1, satu skenario saja), setara pada formal (2/5, satu setara), dan tertinggal pada bahasa campur (2/6). Kolom imitasi berlebihan belum ditinjau ulang secara kualitatif untuk 24 skenario ini; peninjauan 18 skenario sebelumnya (0/18) tidak diperbarui otomatis oleh perluasan korpus. Sensitivitas risiko per ragam berasal dari korpus 50 pesan pada Subbab~\ref{sec:v2-safety} dan tidak berubah oleh perluasan ini. Nilai formal, bahasa campur, dan eufemistik pada kolom sensitivitas risiko masing-masing didukung empat, 21, dan sembilan pesan; angka tersebut berguna untuk menunjukkan cakupan, tetapi belum cukup untuk membandingkan ragam secara statistik.
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=0.85\textwidth]{figures/rm1c_language_preference.pdf}
+  \caption[Preferensi berpasangan RM1c per ragam bahasa]{Preferensi berpasangan AXIS terhadap \textit{baseline} per ragam bahasa, dari data pada Tabel~\ref{tab:v2-language-result}.}
+  \label{fig:rm1c-language-preference}
+\end{figure}
+
+Skor bahasa dan preferensi pada seluruh baris berasal dari perluasan 24 skenario RM1a (Subbab~\ref{sec:v2-dialogue}), dinilai oleh konfigurasi penilai primer. Median kesesuaian bahasa mencapai skor tertinggi (2,0) pada keempat ragam, menunjukkan efek langit-langit (\textit{ceiling effect}) pada dimensi ini dan bahwa dimensi tersebut kurang mampu membedakan kualitas antarragam pada korpus sekecil ini. Preferensi AXIS bervariasi: unggul pada informal (9/12) dan eufemistik (1/1, satu skenario saja), setara pada formal (2/5, satu setara), dan tertinggal pada bahasa campur (2/6). Peninjauan kualitatif atas seluruh 24 transkrip tidak menemukan slang berlebihan atau perubahan makna pengguna (0/24), konsisten dengan peninjauan 18 skenario sebelumnya. Namun, pada kelima skenario formal, respons AXIS tidak konsisten mempertahankan register: partikel informal seperti "emang", "kebayang sih", dan "ya" tetap muncul meski pesan pengguna ditulis dalam bahasa Indonesia baku. Ini bukan imitasi slang yang berlebihan (arah kesalahannya terbalik: register justru kurang formal dari yang seharusnya), tetapi tetap relevan untuk menjelaskan mengapa preferensi pada ragam formal hanya setara (2/5, satu setara) alih-alih unggul. Sensitivitas risiko per ragam berasal dari korpus 50 pesan pada Subbab~\ref{sec:v2-safety} dan tidak berubah oleh perluasan ini. Nilai formal, bahasa campur, dan eufemistik pada kolom sensitivitas risiko masing-masing didukung empat, 21, dan sembilan pesan; angka tersebut berguna untuk menunjukkan cakupan, tetapi belum cukup untuk membandingkan ragam secara statistik.
 
 \section{Evaluasi RM2: Mood Harian dan Asesmen Skrining Depresi PHQ-9}
 \label{sec:v2-phq}
@@ -502,6 +513,13 @@ Kebaruan keyakinan (lama vs terbarui pada jawaban) & \textit{Stale-belief rate} 
 }
 \end{table}
 
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=0.95\textwidth]{figures/rm3_scenario_metrics.pdf}
+  \caption[Metrik skenario-dan-hasil RM3]{Metrik penulisan, pembaruan, dan penggunaan memori dari pengujian skenario-dan-hasil, dari data pada Tabel~\ref{tab:v2-memory-result}.}
+  \label{fig:rm3-scenario-metrics}
+\end{figure}
+
 \subsubsection{Analisis Hasil Benchmark Memori}
 
 Enam skenario penulisan menghasilkan sembilan node yang cocok dengan ekspektasi dari total dua belas node yang diharapkan (\textit{recall} 0,75) dan empat node tambahan yang tidak sesuai ekspektasi (presisi 0,69, \textit{macro-F1} 0,72). Kesalahan yang muncul umumnya berupa node dengan tipe yang benar tetapi kata kunci konten yang tidak persis cocok dengan ekspektasi manual, bukan kegagalan total menulis node. Empat skenario pembaruan dua-sesi menghasilkan tiga dari empat aksi \textit{lifecycle} yang sesuai acuan (\textit{update correctness} 0,75); satu kasus yang meleset mengharapkan \texttt{REAPPRAISED\_AS} tetapi ekstraktor menghasilkan \texttt{SUPERSEDES}, keduanya tergolong tindakan pembaruan yang sah tetapi berbeda pada nuansa semantik pemaknaan ulang dibanding penggantian. Hasil ini menggambarkan perilaku ekstraktor pada dua belas skenario yang diuji secara langsung terhadap penulis memori produksi, bukan estimasi presisi atau \textit{recall} pada populasi percakapan mahasiswa yang lebih luas.
@@ -580,7 +598,7 @@ P@5, MRR, dan nDCG@5 tersedia pada kalibrasi LongMemEval\_S di Tabel~\ref{tab:v2
 \section{Validasi Kebutuhan Pendukung Kendali Pengguna}
 \label{sec:v2-user-control}
 
-Kendali pengguna tidak diperlakukan sebagai rumusan masalah terpisah. Seluruh kontrol pengguna yang dirancang pada purwarupa telah tersedia pada antarmuka dan dapat digunakan untuk mengelola memori, riwayat percakapan, data pribadi, serta preferensi pengalaman. Verifikasi teknis dilakukan melalui tugas melihat, mengoreksi, menghapus, dan menyembunyikan memori; mengunduh data; menghapus riwayat; menghapus akun; dan memastikan isi \textit{Confession Space} tidak masuk ke memori jangka panjang. Keberhasilan dan kegagalan setiap tugas diverifikasi lewat eksekusi teknis langsung terhadap setiap kontrol. Evaluasi terhadap pemahaman dan kenyamanan pengguna dalam memakai kontrol tersebut tetap menjadi bagian pengujian pengguna nyata (Subbab~\ref{sec:evaluasi-pengguna}).
+Kendali pengguna diposisikan sebagai kebutuhan pendukung, bukan rumusan masalah terpisah. Kontrol pada purwarupa mencakup pengelolaan memori, riwayat percakapan, data pribadi, dan preferensi pengalaman. Verifikasi teknis dilakukan terhadap operasi melihat, mengoreksi, menyembunyikan, dan menghapus data, serta terhadap pengecualian memori pada \textit{Confession Space}. Pemahaman dan kenyamanan pengguna belum dinilai karena pengujian pengguna nyata belum dilaksanakan.
 
 \begin{table}[!htbp]
 \centering
@@ -629,7 +647,7 @@ Pelaporan mengikuti aturan berikut:
 \section{Rencana Evaluasi Lanjutan Pengujian Pengguna Nyata}
 \label{sec:evaluasi-pengguna}
 
-Blok ini menjawab aspek yang secara struktural tidak dapat diukur oleh validasi kontrak, \textit{benchmark} berlabel, maupun penilaian buta \textit{LLM-as-judge}, karena ketiganya menilai keluaran sistem terhadap acuan atau rubrik, bukan pengalaman subjektif pengguna itu sendiri. Pengujian pengguna nyata ditujukan untuk mengumpulkan persepsi kegunaan dan rasa didampingi pada RM1 (Subbab~\ref{sec:tujuan} butir 1), kejelasan penyampaian mood dan PHQ-9 pada RM2, serta pemahaman pengguna terhadap konsekuensi tiap kontrol memori pada RM3 (Tabel~\ref{tab:v2-user-control}).
+Rencana ini mencakup aspek yang tidak dapat diukur oleh validasi kontrak, \textit{benchmark} berlabel, atau penilaian \textit{LLM-as-judge}. Pengujian pengguna nyata ditujukan untuk mengumpulkan persepsi kegunaan dan rasa didampingi, kejelasan penyampaian mood dan PHQ-9, serta pemahaman terhadap kontrol memori. Pelaksanaannya berada di luar evaluasi yang telah diselesaikan pada laporan ini.
 
 \subsection{Metode Evaluasi}
 
@@ -665,12 +683,16 @@ Kendali data & & \\
 }
 \end{table}
 
+Pengujian ini belum dilaksanakan pada laporan tugas akhir. Oleh karena itu, bagian ini hanya mendokumentasikan metode dan rencana pengolahan data, tanpa tabel hasil atau klaim mengenai pengalaman pengguna.
+
 \section{Diskusi terhadap Rumusan Masalah}
 \label{sec:diskusi-hasil}
 
-\subsection{RM1: Respons Empatik, Relevan, Reflektif, Aman, dan Sesuai Ragam Bahasa}
+\subsection{RM1: Kelayakan Percakapan Pendamping dan Nilai Konteks Memori}
 
-Tiga blok bukti mendukung RM1 secara terpisah. Penilaian buta pada 24 skenario satu-giliran (Subbab~\ref{sec:v2-dialogue}) menunjukkan AXIS dipilih pada 14 dari 24 penilaian berpasangan menurut konfigurasi penilai primer. Perbedaannya terutama muncul pada kondisi bermemori: AXIS dipilih delapan dari 10 kali, sedangkan pada 14 kondisi tanpa memori, \textit{baseline} sedikit lebih sering dipilih (tujuh berbanding enam). Jadi, klaim yang dapat dipertanggungjawabkan dari blok ini terbatas pada pemanfaatan memori personal, bukan keunggulan kualitas percakapan secara umum. Kesepakatan preferensi antara dua konfigurasi penilai independen pada blok ini rendah (Cohen's kappa $-0,035$), jauh di bawah blok evaluasi lain, sehingga angka preferensi di atas perlu dibaca sebagai hasil satu konfigurasi penilai, bukan kesimpulan yang stabil antarpenilai. Benchmark keselamatan pada korpus 50 pesan (Subbab~\ref{sec:v2-safety}) menghasilkan sensitivitas 0,654, spesifisitas 0,917, dan sembilan \textit{false negative}; semua respons setelah deteksi memenuhi rubrik aman. Dengan demikian, keluaran eskalasi bekerja konsisten pada kasus yang tertangkap, tetapi kemampuan mendeteksi eufemisme masih terbatas. Evaluasi ragam formal dan bahasa campur kini juga diuji pada rubrik respons suportif (lima dan enam skenario secara berurutan), dengan preferensi AXIS setara pada formal dan tertinggal pada bahasa campur; ragam eufemistik hanya didukung satu skenario pada rubrik ini sehingga belum dapat digeneralisasi.
+Bukti RM1 menunjukkan bahwa alur percakapan, kebijakan reflektif, dan keluaran keselamatan dapat dijalankan pada skenario yang diuji. Pada 24 skenario penilaian buta, AXIS dipilih 14 kali menurut konfigurasi penilai primer. Perbedaan paling jelas muncul pada kondisi bermemori, ketika AXIS dipilih delapan dari 10 kali. Pada kondisi tanpa memori, \textit{baseline} sedikit lebih sering dipilih.
+
+Kesepakatan preferensi antara dua konfigurasi penilai rendah, yaitu Cohen's kappa $-0,035$. Karena itu, hasil tersebut dibaca sebagai indikasi nilai konteks memori pada skenario tertentu, bukan bukti keunggulan kualitas percakapan secara umum. \textit{Benchmark} keselamatan pada 50 pesan menghasilkan sensitivitas 0,654, spesifisitas 0,917, dan sembilan \textit{false negative}. Seluruh respons setelah risiko terdeteksi memenuhi rubrik aman, tetapi deteksi ungkapan eufemistik masih perlu ditingkatkan. Evaluasi ragam bahasa juga belum cukup luas untuk mendukung generalisasi kepada seluruh variasi bahasa mahasiswa Indonesia.
 
 \subsection{RM2: Mood Harian dan Asesmen Skrining Depresi secara Percakapan}
 
@@ -678,4 +700,4 @@ Fidelity orkestrasi PHQ-9 (Subbab~\ref{sec:v2-phq}) lulus penuh pada 130 kontrak
 
 \subsection{RM3: Memori Jangka Panjang yang Berkesinambungan}
 
-Ablasi kondisi vektor saja berbanding hibrid (Subbab~\ref{sec:v2-ablation}) menunjukkan \textit{Recall@5} yang identik (1,00) pada kueri parafrase satu-\textit{hop}, tetapi kondisi hibrid berhasil menjawab kasus bertarget yang secara struktural tidak dapat dijawab pencarian semantik saja (dua pengalaman berbagi identitas simpul Pemicu yang sama tanpa kesamaan leksikal maupun semantik permukaan). Nilai graf pada tahap ini dinyatakan spesifik untuk kemampuan menjawab kueri berbasis identitas relasi, bukan untuk seluruh kemampuan memori jangka panjang. Ketepatan penulisan node (presisi 0,69, \textit{recall} 0,75) dan \textit{update correctness} (0,75) telah diukur melalui teknik pengujian skenario-dan-hasil karena tidak ada korpus publik berbahasa Indonesia yang sesuai. Penggunaan memori pada jawaban (\textit{grounded-answer rate} 1,00, \textit{false-personalization rate} 0,00, dan \textit{stale-belief rate} 0,00) telah diukur melalui teknik serupa (artefak \textit{evaluasi\_v3}), tetapi tetap merupakan proksi skenario berukuran kecil, bukan estimasi populasi.
+Ablasi kondisi vektor saja dan hibrid (Subbab~\ref{sec:v2-ablation}) menghasilkan \textit{Recall@5} yang sama, yaitu 1,00, pada kueri parafrase satu \textit{hop}. Pada satu kasus bertarget yang bergantung pada identitas simpul Pemicu, kondisi hibrid menemukan pengalaman terkait yang tidak ditemukan oleh kondisi vektor saja. Nilai graf pada tahap ini dibatasi pada kasus relasional tersebut, bukan pada seluruh kemampuan memori jangka panjang. Ketepatan penulisan node (presisi 0,69, \textit{recall} 0,75) dan \textit{update correctness} (0,75) telah diukur melalui teknik pengujian skenario-dan-hasil karena tidak ada korpus publik berbahasa Indonesia yang sesuai. Penggunaan memori pada jawaban (\textit{grounded-answer rate} 1,00, \textit{false-personalization rate} 0,00, dan \textit{stale-belief rate} 0,00) telah diukur melalui teknik serupa (artefak \textit{evaluasi\_v3}), tetapi tetap merupakan proksi skenario berukuran kecil, bukan estimasi populasi.

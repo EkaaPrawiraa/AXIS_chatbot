@@ -1,41 +1,53 @@
-\contentsline {lampiran}{\numberline {A}Kebutuhan Fungsional dan Non-Fungsional Sistem}{113}{appendix.A}%
-\contentsline {lampiran}{\numberline {B}Spesifikasi Teknis Sistem}{115}{appendix.B}%
-\contentsline {lampiransub}{\numberline {B.1}Skema Basis Data}{115}{section.B.1}%
-\contentsline {lampiransub}{\numberline {B.2}Kamus Atribut Node dan Properti Temporal Graf}{117}{section.B.2}%
-\contentsline {lampiransub}{\numberline {B.3}Topologi Pipeline dan State Machine}{126}{section.B.3}%
-\contentsline {lampiransub}{\numberline {B.4}Skema Audit Trail Guardrail}{128}{section.B.4}%
-\contentsline {lampiran}{\numberline {C}Antarmuka dan Visualisasi Sistem}{130}{appendix.C}%
-\contentsline {lampiransub}{\numberline {C.1}Tampilan Antarmuka Pendukung}{130}{section.C.1}%
-\contentsline {lampiransub}{\numberline {C.2}Visualisasi Knowledge Graph Pengguna}{130}{section.C.2}%
-\contentsline {lampiran}{\numberline {D}Instrumen dan Korpus Pengujian}{138}{appendix.D}%
-\contentsline {lampiransub}{\numberline {D.1}Instrumen PHQ-9}{138}{section.D.1}%
-\contentsline {lampiransub}{\numberline {D.2}Instrumen Pengujian Pengguna}{139}{section.D.2}%
-\contentsline {lampiransub}{\numberline {D.3}Skema dan Distribusi Korpus Linguistik}{142}{section.D.3}%
-\contentsline {lampiran}{\numberline {E}Instrumen Evaluasi}{143}{appendix.E}%
-\contentsline {lampiransub}{\numberline {E.1}Pedoman Anotasi dan Reliabilitas}{143}{section.E.1}%
-\contentsline {lampiransub}{\numberline {E.2}Korpus Benchmark Keselamatan Percakapan}{144}{section.E.2}%
-\contentsline {lampiransub}{\numberline {E.3}Rubrik Buta Respons Suportif}{146}{section.E.3}%
-\contentsline {lampiransub}{\numberline {E.4}Definisi Slice Ragam Bahasa}{146}{section.E.4}%
-\contentsline {lampiransub}{\numberline {E.5}Instrumen Evaluasi Mood dan PHQ-9}{148}{section.E.5}%
-\contentsline {lampiransub}{\numberline {E.6}Korpus Standar Emas Memori dan Lifecycle}{150}{section.E.6}%
-\contentsline {lampiransub}{\numberline {E.7}Protokol Perbandingan Vektor Saja dan Hibrid}{152}{section.E.7}%
-\contentsline {lampiran}{\numberline {F}Konfigurasi Prompt dan Model}{154}{appendix.F}%
-\contentsline {lampiransub}{\numberline {F.1}Identitas Sistem}{154}{section.F.1}%
-\contentsline {lampiransub}{\numberline {F.2}Pembangkit Respons}{156}{section.F.2}%
-\contentsline {lampiransub}{\numberline {F.3}Tahap Pemahaman (\textit {Understanding Synthesis})}{165}{section.F.3}%
-\contentsline {lampiransub}{\numberline {F.4}Kebijakan Dialog CBT}{169}{section.F.4}%
-\contentsline {lampiransub}{\numberline {F.5}\textit {Guardrail}}{172}{section.F.5}%
-\contentsline {lampiransub}{\numberline {F.6}Mood dan PHQ-9}{177}{section.F.6}%
-\contentsline {lampiransub}{\numberline {F.7}Ekstraksi Knowledge Graph}{179}{section.F.7}%
-\contentsline {lampiransub}{\numberline {F.8}Peringkas Sesi}{186}{section.F.8}%
-\contentsline {lampiransub}{\numberline {F.9}Prompt Penilai LLM-as-Judge untuk Evaluasi}{187}{section.F.9}%
-\contentsline {lampiran}{\numberline {G}Transkrip Percakapan Evaluasi RM1a}{189}{appendix.G}%
-\contentsline {lampiransub}{\numberline {G.1}Tekanan Keluarga (Arya, \textit {cold start})}{189}{section.G.1}%
-\contentsline {lampiransub}{\numberline {G.2}Beban Organisasi (Arya, \textit {cold start})}{190}{section.G.2}%
-\contentsline {lampiransub}{\numberline {G.3}Ketidakpastian Karier (Arya, \textit {cold start})}{191}{section.G.3}%
-\contentsline {lampiransub}{\numberline {G.4}Kelanjutan Tekanan Akademik (Budi, memori kaya) \#1}{192}{section.G.4}%
-\contentsline {lampiransub}{\numberline {G.5}Kelanjutan Tekanan Akademik (Budi, memori kaya) \#2}{193}{section.G.5}%
-\contentsline {lampiransub}{\numberline {G.6}Kelanjutan Tekanan Akademik (Budi, memori kaya) \#3}{195}{section.G.6}%
-\contentsline {lampiran}{\numberline {H}Format Pelaporan Evaluasi}{197}{appendix.H}%
-\contentsline {lampiransub}{\numberline {H.1}Log Keterulangan Eksperimen}{197}{section.H.1}%
-\contentsline {lampiransub}{\numberline {H.2}Checklist Pelaporan Hasil}{197}{section.H.2}%
+\contentsline {lampiran}{\numberline {A}Kebutuhan Fungsional dan Non-Fungsional Sistem}{118}{appendix.A}%
+\contentsline {lampiran}{\numberline {B}Spesifikasi Teknis Sistem}{120}{appendix.B}%
+\contentsline {lampiransub}{\numberline {B.1}Skema Basis Data}{120}{section.B.1}%
+\contentsline {lampiransub}{\numberline {B.2}Kamus Atribut Node dan Properti Temporal Graf}{122}{section.B.2}%
+\contentsline {lampiransub}{\numberline {B.3}Topologi Pipeline dan State Machine}{131}{section.B.3}%
+\contentsline {lampiransub}{\numberline {B.4}Skema Audit Trail Guardrail}{133}{section.B.4}%
+\contentsline {lampiran}{\numberline {C}Antarmuka dan Visualisasi Sistem}{135}{appendix.C}%
+\contentsline {lampiransub}{\numberline {C.1}Tampilan Antarmuka Pendukung}{135}{section.C.1}%
+\contentsline {lampiransub}{\numberline {C.2}Visualisasi Knowledge Graph Pengguna}{135}{section.C.2}%
+\contentsline {lampiran}{\numberline {D}Instrumen dan Korpus Pengujian}{143}{appendix.D}%
+\contentsline {lampiransub}{\numberline {D.1}Instrumen PHQ-9}{143}{section.D.1}%
+\contentsline {lampiransub}{\numberline {D.2}Instrumen Pengujian Pengguna}{144}{section.D.2}%
+\contentsline {lampiransub}{\numberline {D.3}Skema dan Distribusi Korpus Linguistik}{147}{section.D.3}%
+\contentsline {lampiran}{\numberline {E}Instrumen Evaluasi}{148}{appendix.E}%
+\contentsline {lampiransub}{\numberline {E.1}Pedoman Anotasi dan Reliabilitas}{148}{section.E.1}%
+\contentsline {lampiransub}{\numberline {E.2}Korpus Benchmark Keselamatan Percakapan}{150}{section.E.2}%
+\contentsline {lampiransub}{\numberline {E.3}Rubrik Buta Respons Suportif}{151}{section.E.3}%
+\contentsline {lampiransub}{\numberline {E.4}Definisi Slice Ragam Bahasa}{153}{section.E.4}%
+\contentsline {lampiransub}{\numberline {E.5}Instrumen Evaluasi Mood dan PHQ-9}{154}{section.E.5}%
+\contentsline {lampiransub}{\numberline {E.6}Definisi Anotasi dan Skenario Evaluasi Memori}{156}{section.E.6}%
+\contentsline {lampiransub}{\numberline {E.7}Protokol Perbandingan Vektor Saja dan Hibrid}{160}{section.E.7}%
+\contentsline {lampiran}{\numberline {F}Konfigurasi Prompt dan Model}{161}{appendix.F}%
+\contentsline {lampiransub}{\numberline {F.1}Identitas Sistem}{161}{section.F.1}%
+\contentsline {lampiransub}{\numberline {F.2}Pembangkit Respons}{163}{section.F.2}%
+\contentsline {lampiransub}{\numberline {F.3}Tahap Pemahaman (\textit {Understanding Synthesis})}{172}{section.F.3}%
+\contentsline {lampiransub}{\numberline {F.4}Kebijakan Dialog CBT}{176}{section.F.4}%
+\contentsline {lampiransub}{\numberline {F.5}\textit {Guardrail}}{179}{section.F.5}%
+\contentsline {lampiransub}{\numberline {F.6}Mood dan PHQ-9}{184}{section.F.6}%
+\contentsline {lampiransub}{\numberline {F.7}Ekstraksi Knowledge Graph}{186}{section.F.7}%
+\contentsline {lampiransub}{\numberline {F.8}Peringkas Sesi}{193}{section.F.8}%
+\contentsline {lampiransub}{\numberline {F.9}Prompt Penilai LLM-as-Judge untuk Evaluasi}{194}{section.F.9}%
+\contentsline {lampiran}{\numberline {G}Transkrip Percakapan Evaluasi RM1a}{196}{appendix.G}%
+\contentsline {lampiransub}{\numberline {G.1}Tekanan Keluarga (Arya, \textit {cold start})}{196}{section.G.1}%
+\contentsline {lampiransub}{\numberline {G.2}Beban Organisasi (Arya, \textit {cold start})}{197}{section.G.2}%
+\contentsline {lampiransub}{\numberline {G.3}Ketidakpastian Karier (Arya, \textit {cold start})}{198}{section.G.3}%
+\contentsline {lampiransub}{\numberline {G.4}Kelanjutan Tekanan Akademik (Budi, memori kaya) \#1}{199}{section.G.4}%
+\contentsline {lampiransub}{\numberline {G.5}Kelanjutan Tekanan Akademik (Budi, memori kaya) \#2}{200}{section.G.5}%
+\contentsline {lampiransub}{\numberline {G.6}Kelanjutan Tekanan Akademik (Budi, memori kaya) \#3}{201}{section.G.6}%
+\contentsline {lampiransub}{\numberline {G.7}rm1\_\allowbreak academic\_\allowbreak formal}{202}{section.G.7}%
+\contentsline {lampiransub}{\numberline {G.8}rm1\_\allowbreak academic\_\allowbreak informal}{203}{section.G.8}%
+\contentsline {lampiransub}{\numberline {G.9}rm1\_\allowbreak academic\_\allowbreak code\_\allowbreak mixing}{204}{section.G.9}%
+\contentsline {lampiransub}{\numberline {G.10}rm1\_\allowbreak social\_\allowbreak euphemistic}{205}{section.G.10}%
+\contentsline {lampiransub}{\numberline {G.11}rm1\_\allowbreak family\_\allowbreak code\_\allowbreak mixing}{206}{section.G.11}%
+\contentsline {lampiransub}{\numberline {G.12}rm1\_\allowbreak campus\_\allowbreak relationship}{207}{section.G.12}%
+\contentsline {lampiransub}{\numberline {G.13}rm1\_\allowbreak budi\_\allowbreak avoidance\_\allowbreak memory}{208}{section.G.13}%
+\contentsline {lampiransub}{\numberline {G.14}rm1\_\allowbreak budi\_\allowbreak reframe\_\allowbreak memory}{209}{section.G.14}%
+\contentsline {lampiransub}{\numberline {G.15}rm1\_\allowbreak budi\_\allowbreak formal\_\allowbreak memory}{210}{section.G.15}%
+\contentsline {lampiransub}{\numberline {G.16}rm1\_\allowbreak budi\_\allowbreak code\_\allowbreak mixing\_\allowbreak memory}{211}{section.G.16}%
+\contentsline {lampiransub}{\numberline {G.17}rm1\_\allowbreak budi\_\allowbreak self\_\allowbreak worth\_\allowbreak memory}{212}{section.G.17}%
+\contentsline {lampiransub}{\numberline {G.18}rm1\_\allowbreak budi\_\allowbreak casual\_\allowbreak memory}{213}{section.G.18}%
+\contentsline {lampiran}{\numberline {H}Format Pelaporan Evaluasi}{215}{appendix.H}%
+\contentsline {lampiransub}{\numberline {H.1}Log Keterulangan Eksperimen}{215}{section.H.1}%
+\contentsline {lampiransub}{\numberline {H.2}Checklist Pelaporan Hasil}{215}{section.H.2}%
