@@ -1,0 +1,1353 @@
+{
+  "aggregate": {
+    "node": {
+      "tp": 40,
+      "fp": 32,
+      "fn": 17,
+      "precision": 0.5555555555555556,
+      "recall": 0.7017543859649122,
+      "f1": 0.6201550387596899
+    },
+    "relation": {
+      "tp": 15,
+      "fp": 35,
+      "fn": 18,
+      "precision": 0.3,
+      "recall": 0.45454545454545453,
+      "f1": 0.3614457831325301
+    },
+    "domain_labels": {
+      "subject_role": {
+        "correct": 6,
+        "total": 7,
+        "accuracy": 0.8571428571428571
+      },
+      "topic": {
+        "correct": 6,
+        "total": 12,
+        "accuracy": 0.5
+      },
+      "topic_category": {
+        "correct": 7,
+        "total": 12,
+        "accuracy": 0.5833333333333334
+      },
+      "trigger_category": {
+        "correct": 5,
+        "total": 5,
+        "accuracy": 1.0
+      }
+    },
+    "case_count": 12
+  },
+  "case_scores": [
+    {
+      "scenario_id": "gw01_advisor_anxiety",
+      "node": {
+        "tp": 5,
+        "fp": 2,
+        "fn": 0,
+        "precision": 0.7142857142857143,
+        "recall": 1.0,
+        "f1": 0.8333333333333333
+      },
+      "relation": {
+        "tp": 3,
+        "fp": 2,
+        "fn": 0,
+        "precision": 0.6,
+        "recall": 1.0,
+        "f1": 0.7499999999999999
+      },
+      "domain_labels": {
+        "topic": true,
+        "subject_role": true,
+        "trigger_category": true,
+        "topic_category": true
+      },
+      "node_matches": [
+        {
+          "gold_id": "topic1",
+          "actual_id": "0f2f4922-5cd3-40da-950a-c171007686a0",
+          "score": 1.0
+        },
+        {
+          "gold_id": "t1",
+          "actual_id": "c38a89cb-bd7e-4090-93b5-12137661385d",
+          "score": 1.0
+        },
+        {
+          "gold_id": "s1",
+          "actual_id": "71a93802-ce77-4a8e-b7cb-d28b2e60a34b",
+          "score": 1.0
+        },
+        {
+          "gold_id": "e1",
+          "actual_id": "56a5412d-cc04-466d-9bd6-3a3361a853cf",
+          "score": 1.0
+        },
+        {
+          "gold_id": "exp1",
+          "actual_id": "0d6df6ea-b934-48c5-8bb5-29c4f262ecbc",
+          "score": 0.7692307692307693
+        }
+      ],
+      "actual_case": {
+        "nodes": [
+          {
+            "node_id": "0f2f4922-5cd3-40da-950a-c171007686a0",
+            "node_type": "Topic",
+            "text": "thesis_stress"
+          },
+          {
+            "node_id": "71a93802-ce77-4a8e-b7cb-d28b2e60a34b",
+            "node_type": "Subject",
+            "text": "dosen pembimbing"
+          },
+          {
+            "node_id": "0b747bff-e633-43f3-921e-545649723d8b",
+            "node_type": "Behavior",
+            "text": "sulit fokus setelah menerima pesan revisi"
+          },
+          {
+            "node_id": "c38a89cb-bd7e-4090-93b5-12137661385d",
+            "node_type": "Trigger",
+            "text": "pesan revisi dari dosen pembimbing"
+          },
+          {
+            "node_id": "0d6df6ea-b934-48c5-8bb5-29c4f262ecbc",
+            "node_type": "Experience",
+            "text": "Menerima pesan dari dosen pembimbing terkait revisi skripsi"
+          },
+          {
+            "node_id": "5afcb4f3-06bf-4fea-8895-068c4844be5b",
+            "node_type": "Thought",
+            "text": "Aku merasa tertekan dan tidak mampu berkonsentrasi setiap kali revisi skripsi muncul (academic anxiety, poor concentration)"
+          },
+          {
+            "node_id": "56a5412d-cc04-466d-9bd6-3a3361a853cf",
+            "node_type": "Emotion",
+            "text": "cemas"
+          }
+        ],
+        "relations": [
+          {
+            "source_id": "0d6df6ea-b934-48c5-8bb5-29c4f262ecbc",
+            "relation_type": "TRIGGERED_BY",
+            "target_id": "c38a89cb-bd7e-4090-93b5-12137661385d",
+            "active": true
+          },
+          {
+            "source_id": "0d6df6ea-b934-48c5-8bb5-29c4f262ecbc",
+            "relation_type": "TRIGGERED_EMOTION",
+            "target_id": "56a5412d-cc04-466d-9bd6-3a3361a853cf",
+            "active": true
+          },
+          {
+            "source_id": "0d6df6ea-b934-48c5-8bb5-29c4f262ecbc",
+            "relation_type": "INVOLVES_SUBJECT",
+            "target_id": "71a93802-ce77-4a8e-b7cb-d28b2e60a34b",
+            "active": true
+          },
+          {
+            "source_id": "56a5412d-cc04-466d-9bd6-3a3361a853cf",
+            "relation_type": "ACTIVATED_THOUGHT",
+            "target_id": "5afcb4f3-06bf-4fea-8895-068c4844be5b",
+            "active": true
+          },
+          {
+            "source_id": "56a5412d-cc04-466d-9bd6-3a3361a853cf",
+            "relation_type": "LED_TO_BEHAVIOR",
+            "target_id": "0b747bff-e633-43f3-921e-545649723d8b",
+            "active": true
+          }
+        ],
+        "domain_labels": {
+          "topic": "thesis_stress",
+          "topic_category": "academic",
+          "subject_role": "thesis_advisor",
+          "trigger_category": "academic"
+        }
+      }
+    },
+    {
+      "scenario_id": "gw02_academic_self_worth",
+      "node": {
+        "tp": 3,
+        "fp": 3,
+        "fn": 1,
+        "precision": 0.5,
+        "recall": 0.75,
+        "f1": 0.6
+      },
+      "relation": {
+        "tp": 1,
+        "fp": 2,
+        "fn": 1,
+        "precision": 0.3333333333333333,
+        "recall": 0.5,
+        "f1": 0.4
+      },
+      "domain_labels": {
+        "topic": false,
+        "topic_category": false
+      },
+      "node_matches": [
+        {
+          "gold_id": "topic1",
+          "actual_id": "204889fe-a532-43c2-8466-3c8d9a2be1c9",
+          "score": 1.0
+        },
+        {
+          "gold_id": "e1",
+          "actual_id": "0e7b7903-6cea-49f7-b462-b9b81d0082b6",
+          "score": 1.0
+        },
+        {
+          "gold_id": "th1",
+          "actual_id": "5ed946ed-9f4b-4066-9a75-ace127474508",
+          "score": 0.8235294117647058
+        }
+      ],
+      "actual_case": {
+        "nodes": [
+          {
+            "node_id": "2c210fbf-551e-43d8-8840-b0acd67073ea",
+            "node_type": "Topic",
+            "text": "impostor_syndrome"
+          },
+          {
+            "node_id": "204889fe-a532-43c2-8466-3c8d9a2be1c9",
+            "node_type": "Topic",
+            "text": "academic_pressure"
+          },
+          {
+            "node_id": "71713dd5-f905-4ee2-999c-995860909776",
+            "node_type": "Trigger",
+            "text": "mendapat nilai kuis jelek"
+          },
+          {
+            "node_id": "f871321f-98a7-42cd-9f16-e32cf0027b67",
+            "node_type": "Experience",
+            "text": "mendapat nilai kuis yang buruk (academic failure, poor grade)"
+          },
+          {
+            "node_id": "5ed946ed-9f4b-4066-9a75-ace127474508",
+            "node_type": "Thought",
+            "text": "aku emang nggak pantas kuliah di sini (I don't belong here, impostor syndrome)"
+          },
+          {
+            "node_id": "0e7b7903-6cea-49f7-b462-b9b81d0082b6",
+            "node_type": "Emotion",
+            "text": "putus asa"
+          }
+        ],
+        "relations": [
+          {
+            "source_id": "f871321f-98a7-42cd-9f16-e32cf0027b67",
+            "relation_type": "TRIGGERED_BY",
+            "target_id": "71713dd5-f905-4ee2-999c-995860909776",
+            "active": true
+          },
+          {
+            "source_id": "f871321f-98a7-42cd-9f16-e32cf0027b67",
+            "relation_type": "TRIGGERED_EMOTION",
+            "target_id": "0e7b7903-6cea-49f7-b462-b9b81d0082b6",
+            "active": true
+          },
+          {
+            "source_id": "0e7b7903-6cea-49f7-b462-b9b81d0082b6",
+            "relation_type": "ACTIVATED_THOUGHT",
+            "target_id": "5ed946ed-9f4b-4066-9a75-ace127474508",
+            "active": true
+          }
+        ],
+        "domain_labels": {
+          "topic": "impostor_syndrome",
+          "topic_category": "identity",
+          "trigger_category": "academic"
+        }
+      }
+    },
+    {
+      "scenario_id": "gw03_family_sleep",
+      "node": {
+        "tp": 3,
+        "fp": 3,
+        "fn": 2,
+        "precision": 0.5,
+        "recall": 0.6,
+        "f1": 0.5454545454545454
+      },
+      "relation": {
+        "tp": 1,
+        "fp": 3,
+        "fn": 2,
+        "precision": 0.25,
+        "recall": 0.3333333333333333,
+        "f1": 0.28571428571428575
+      },
+      "domain_labels": {
+        "topic": true,
+        "subject_role": true,
+        "topic_category": true
+      },
+      "node_matches": [
+        {
+          "gold_id": "topic1",
+          "actual_id": "24238576-7829-4507-8d1f-ba18e8b335d0",
+          "score": 1.0
+        },
+        {
+          "gold_id": "s1",
+          "actual_id": "bfba8b03-9dac-48ad-a27e-918bdfe4c8d7",
+          "score": 1.0
+        },
+        {
+          "gold_id": "exp1",
+          "actual_id": "3d8cab0e-c84e-44ee-b3fc-8b985091aa96",
+          "score": 0.8780487804878049
+        }
+      ],
+      "actual_case": {
+        "nodes": [
+          {
+            "node_id": "24238576-7829-4507-8d1f-ba18e8b335d0",
+            "node_type": "Topic",
+            "text": "family_financial_pressure"
+          },
+          {
+            "node_id": "bfba8b03-9dac-48ad-a27e-918bdfe4c8d7",
+            "node_type": "Subject",
+            "text": "ibu"
+          },
+          {
+            "node_id": "2bf92072-47d5-4ba9-b708-646d6b1a9ab8",
+            "node_type": "Behavior",
+            "text": "susah tidur selama beberapa malam (insomnia)"
+          },
+          {
+            "node_id": "bd7ea075-3c4f-47a9-a9e4-2c57519c24bb",
+            "node_type": "Trigger",
+            "text": "konflik finansial dengan ibu mengenai biaya kuliah (financial pressure from family)"
+          },
+          {
+            "node_id": "3d8cab0e-c84e-44ee-b3fc-8b985091aa96",
+            "node_type": "Experience",
+            "text": "bertengkar dengan ibu mengenai biaya kuliah (family conflict over tuition fees)"
+          },
+          {
+            "node_id": "797cec8a-2d3a-4757-be5d-ce53b2d5c0da",
+            "node_type": "Emotion",
+            "text": "sad"
+          }
+        ],
+        "relations": [
+          {
+            "source_id": "3d8cab0e-c84e-44ee-b3fc-8b985091aa96",
+            "relation_type": "TRIGGERED_BY",
+            "target_id": "bd7ea075-3c4f-47a9-a9e4-2c57519c24bb",
+            "active": true
+          },
+          {
+            "source_id": "3d8cab0e-c84e-44ee-b3fc-8b985091aa96",
+            "relation_type": "TRIGGERED_EMOTION",
+            "target_id": "797cec8a-2d3a-4757-be5d-ce53b2d5c0da",
+            "active": true
+          },
+          {
+            "source_id": "3d8cab0e-c84e-44ee-b3fc-8b985091aa96",
+            "relation_type": "INVOLVES_SUBJECT",
+            "target_id": "bfba8b03-9dac-48ad-a27e-918bdfe4c8d7",
+            "active": true
+          },
+          {
+            "source_id": "797cec8a-2d3a-4757-be5d-ce53b2d5c0da",
+            "relation_type": "LED_TO_BEHAVIOR",
+            "target_id": "2bf92072-47d5-4ba9-b708-646d6b1a9ab8",
+            "active": true
+          }
+        ],
+        "domain_labels": {
+          "topic": "family_financial_pressure",
+          "topic_category": "family",
+          "subject_role": "parent",
+          "trigger_category": "family"
+        }
+      }
+    },
+    {
+      "scenario_id": "gw04_organization_avoidance",
+      "node": {
+        "tp": 3,
+        "fp": 3,
+        "fn": 2,
+        "precision": 0.5,
+        "recall": 0.6,
+        "f1": 0.5454545454545454
+      },
+      "relation": {
+        "tp": 1,
+        "fp": 5,
+        "fn": 2,
+        "precision": 0.16666666666666666,
+        "recall": 0.3333333333333333,
+        "f1": 0.2222222222222222
+      },
+      "domain_labels": {
+        "topic": true,
+        "trigger_category": true,
+        "topic_category": false
+      },
+      "node_matches": [
+        {
+          "gold_id": "topic1",
+          "actual_id": "a7271371-08a5-481e-9633-67a2a3e7b649",
+          "score": 1.0
+        },
+        {
+          "gold_id": "t1",
+          "actual_id": "9496db10-7bc4-4159-84ee-83255aa5b4de",
+          "score": 1.0
+        },
+        {
+          "gold_id": "exp1",
+          "actual_id": "9157fe63-114f-4790-abc9-5fcd3a1714d1",
+          "score": 1.0
+        }
+      ],
+      "actual_case": {
+        "nodes": [
+          {
+            "node_id": "a7271371-08a5-481e-9633-67a2a3e7b649",
+            "node_type": "Topic",
+            "text": "organizational_burnout"
+          },
+          {
+            "node_id": "447fa601-2e93-444c-a375-a52a5f7b81b5",
+            "node_type": "Behavior",
+            "text": "memilih tidak datang ke rapat organisasi"
+          },
+          {
+            "node_id": "9496db10-7bc4-4159-84ee-83255aa5b4de",
+            "node_type": "Trigger",
+            "text": "rapat organisasi molor"
+          },
+          {
+            "node_id": "9157fe63-114f-4790-abc9-5fcd3a1714d1",
+            "node_type": "Experience",
+            "text": "rapat organisasi yang sering molor (organizational meeting delays)"
+          },
+          {
+            "node_id": "9df4670c-947d-4169-a1fd-e475bc6d0281",
+            "node_type": "Emotion",
+            "text": "exhausted"
+          },
+          {
+            "node_id": "8a1c8f7b-feb6-42bb-af5f-298d8b75956c",
+            "node_type": "Emotion",
+            "text": "angry"
+          }
+        ],
+        "relations": [
+          {
+            "source_id": "9157fe63-114f-4790-abc9-5fcd3a1714d1",
+            "relation_type": "TRIGGERED_BY",
+            "target_id": "9496db10-7bc4-4159-84ee-83255aa5b4de",
+            "active": true
+          },
+          {
+            "source_id": "9157fe63-114f-4790-abc9-5fcd3a1714d1",
+            "relation_type": "TRIGGERED_EMOTION",
+            "target_id": "9df4670c-947d-4169-a1fd-e475bc6d0281",
+            "active": true
+          },
+          {
+            "source_id": "9df4670c-947d-4169-a1fd-e475bc6d0281",
+            "relation_type": "LED_TO_BEHAVIOR",
+            "target_id": "447fa601-2e93-444c-a375-a52a5f7b81b5",
+            "active": true
+          },
+          {
+            "source_id": "9157fe63-114f-4790-abc9-5fcd3a1714d1",
+            "relation_type": "TRIGGERED_BY",
+            "target_id": "9496db10-7bc4-4159-84ee-83255aa5b4de",
+            "active": true
+          },
+          {
+            "source_id": "9157fe63-114f-4790-abc9-5fcd3a1714d1",
+            "relation_type": "TRIGGERED_EMOTION",
+            "target_id": "8a1c8f7b-feb6-42bb-af5f-298d8b75956c",
+            "active": true
+          },
+          {
+            "source_id": "8a1c8f7b-feb6-42bb-af5f-298d8b75956c",
+            "relation_type": "LED_TO_BEHAVIOR",
+            "target_id": "447fa601-2e93-444c-a375-a52a5f7b81b5",
+            "active": true
+          }
+        ],
+        "domain_labels": {
+          "topic": "organizational_burnout",
+          "topic_category": "organizational",
+          "trigger_category": "organizational"
+        }
+      }
+    },
+    {
+      "scenario_id": "gw05_internship_rejection",
+      "node": {
+        "tp": 4,
+        "fp": 1,
+        "fn": 0,
+        "precision": 0.8,
+        "recall": 1.0,
+        "f1": 0.888888888888889
+      },
+      "relation": {
+        "tp": 2,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "domain_labels": {
+        "topic": false,
+        "topic_category": false
+      },
+      "node_matches": [
+        {
+          "gold_id": "topic1",
+          "actual_id": "cd97c84e-9c60-4e94-b302-a0d3e6d912a2",
+          "score": 1.0
+        },
+        {
+          "gold_id": "exp1",
+          "actual_id": "2c2443c9-d237-4fba-bed5-4908c9eee165",
+          "score": 1.0
+        },
+        {
+          "gold_id": "e1",
+          "actual_id": "a6e2b822-c46e-4529-be10-9ad6684c4072",
+          "score": 1.0
+        },
+        {
+          "gold_id": "th1",
+          "actual_id": "3dc4df13-9d6b-44d8-a8d2-25fe7221cfd7",
+          "score": 0.85
+        }
+      ],
+      "actual_case": {
+        "nodes": [
+          {
+            "node_id": "d579d8fd-3959-442a-8ac8-56d744d3fb3f",
+            "node_type": "Topic",
+            "text": "self_worth"
+          },
+          {
+            "node_id": "cd97c84e-9c60-4e94-b302-a0d3e6d912a2",
+            "node_type": "Topic",
+            "text": "internship_stress"
+          },
+          {
+            "node_id": "2c2443c9-d237-4fba-bed5-4908c9eee165",
+            "node_type": "Experience",
+            "text": "gagal wawancara magang (failed internship interview)"
+          },
+          {
+            "node_id": "3dc4df13-9d6b-44d8-a8d2-25fe7221cfd7",
+            "node_type": "Thought",
+            "text": "semua usahaku sia-sia, aku emang nggak becus (worthless, personal failure)"
+          },
+          {
+            "node_id": "a6e2b822-c46e-4529-be10-9ad6684c4072",
+            "node_type": "Emotion",
+            "text": "kecewa"
+          }
+        ],
+        "relations": [
+          {
+            "source_id": "2c2443c9-d237-4fba-bed5-4908c9eee165",
+            "relation_type": "TRIGGERED_EMOTION",
+            "target_id": "a6e2b822-c46e-4529-be10-9ad6684c4072",
+            "active": true
+          },
+          {
+            "source_id": "a6e2b822-c46e-4529-be10-9ad6684c4072",
+            "relation_type": "ACTIVATED_THOUGHT",
+            "target_id": "3dc4df13-9d6b-44d8-a8d2-25fe7221cfd7",
+            "active": true
+          }
+        ],
+        "domain_labels": {
+          "topic": "self_worth",
+          "topic_category": "identity"
+        }
+      }
+    },
+    {
+      "scenario_id": "gw06_group_conflict",
+      "node": {
+        "tp": 3,
+        "fp": 2,
+        "fn": 2,
+        "precision": 0.6,
+        "recall": 0.6,
+        "f1": 0.6
+      },
+      "relation": {
+        "tp": 1,
+        "fp": 2,
+        "fn": 2,
+        "precision": 0.3333333333333333,
+        "recall": 0.3333333333333333,
+        "f1": 0.3333333333333333
+      },
+      "domain_labels": {
+        "topic": false,
+        "subject_role": true,
+        "topic_category": false
+      },
+      "node_matches": [
+        {
+          "gold_id": "s1",
+          "actual_id": "c17f8a96-8a25-477d-9135-ba30ef7eae13",
+          "score": 0.9375
+        },
+        {
+          "gold_id": "exp1",
+          "actual_id": "0206371a-c2db-410b-b9fd-804794c9c767",
+          "score": 0.9148936170212766
+        },
+        {
+          "gold_id": "b1",
+          "actual_id": "c725a154-9a99-49b1-8815-8e3835c1fd71",
+          "score": 0.888888888888889
+        }
+      ],
+      "actual_case": {
+        "nodes": [
+          {
+            "node_id": "f6c5013c-9f2f-4e62-bcfe-c1dea340a132",
+            "node_type": "Topic",
+            "text": "academic_pressure"
+          },
+          {
+            "node_id": "c17f8a96-8a25-477d-9135-ba30ef7eae13",
+            "node_type": "Subject",
+            "text": "temen sekelompok"
+          },
+          {
+            "node_id": "c725a154-9a99-49b1-8815-8e3835c1fd71",
+            "node_type": "Behavior",
+            "text": "Mengerjakan semua tugas kelompok sendiri (doing all group work alone)"
+          },
+          {
+            "node_id": "0206371a-c2db-410b-b9fd-804794c9c767",
+            "node_type": "Experience",
+            "text": "Temen sekelompok tidak mengerjakan bagian tugasnya (groupmate failed to complete tasks)"
+          },
+          {
+            "node_id": "40d3caa7-f3b6-4eb1-8fe0-0b51623ffae8",
+            "node_type": "Emotion",
+            "text": "angry"
+          }
+        ],
+        "relations": [
+          {
+            "source_id": "0206371a-c2db-410b-b9fd-804794c9c767",
+            "relation_type": "TRIGGERED_EMOTION",
+            "target_id": "40d3caa7-f3b6-4eb1-8fe0-0b51623ffae8",
+            "active": true
+          },
+          {
+            "source_id": "0206371a-c2db-410b-b9fd-804794c9c767",
+            "relation_type": "INVOLVES_SUBJECT",
+            "target_id": "c17f8a96-8a25-477d-9135-ba30ef7eae13",
+            "active": true
+          },
+          {
+            "source_id": "40d3caa7-f3b6-4eb1-8fe0-0b51623ffae8",
+            "relation_type": "LED_TO_BEHAVIOR",
+            "target_id": "c725a154-9a99-49b1-8815-8e3835c1fd71",
+            "active": true
+          }
+        ],
+        "domain_labels": {
+          "topic": "academic_pressure",
+          "topic_category": "academic",
+          "subject_role": "groupmate"
+        }
+      }
+    },
+    {
+      "scenario_id": "gw07_boarding_house_loneliness",
+      "node": {
+        "tp": 3,
+        "fp": 2,
+        "fn": 2,
+        "precision": 0.6,
+        "recall": 0.6,
+        "f1": 0.6
+      },
+      "relation": {
+        "tp": 0,
+        "fp": 3,
+        "fn": 3,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "domain_labels": {
+        "topic": true,
+        "subject_role": true,
+        "topic_category": true
+      },
+      "node_matches": [
+        {
+          "gold_id": "topic1",
+          "actual_id": "a3c82293-85e0-4ae5-a2fa-906e877f43d8",
+          "score": 1.0
+        },
+        {
+          "gold_id": "b1",
+          "actual_id": "2481984e-62bb-43ce-ae99-2e8f863c4bd5",
+          "score": 0.888888888888889
+        },
+        {
+          "gold_id": "s1",
+          "actual_id": "67c23dbc-269c-49d6-a4c9-11e126aaeaf1",
+          "score": 0.8888888888888888
+        }
+      ],
+      "actual_case": {
+        "nodes": [
+          {
+            "node_id": "a3c82293-85e0-4ae5-a2fa-906e877f43d8",
+            "node_type": "Topic",
+            "text": "social_isolation"
+          },
+          {
+            "node_id": "67c23dbc-269c-49d6-a4c9-11e126aaeaf1",
+            "node_type": "Subject",
+            "text": "temen kos"
+          },
+          {
+            "node_id": "2481984e-62bb-43ce-ae99-2e8f863c4bd5",
+            "node_type": "Behavior",
+            "text": "sering mengurung diri di kamar (social withdrawal, isolation)"
+          },
+          {
+            "node_id": "13b30e1a-7e19-4c9f-899f-155efd14af2b",
+            "node_type": "Experience",
+            "text": "teman kos pindah sehingga kamar terasa sepi (roommate moved out, boarding room feels empty)"
+          },
+          {
+            "node_id": "f4584cf5-49dd-431f-b893-2a15ac988a33",
+            "node_type": "Emotion",
+            "text": "lonely"
+          }
+        ],
+        "relations": [
+          {
+            "source_id": "13b30e1a-7e19-4c9f-899f-155efd14af2b",
+            "relation_type": "TRIGGERED_EMOTION",
+            "target_id": "f4584cf5-49dd-431f-b893-2a15ac988a33",
+            "active": true
+          },
+          {
+            "source_id": "13b30e1a-7e19-4c9f-899f-155efd14af2b",
+            "relation_type": "INVOLVES_SUBJECT",
+            "target_id": "67c23dbc-269c-49d6-a4c9-11e126aaeaf1",
+            "active": true
+          },
+          {
+            "source_id": "f4584cf5-49dd-431f-b893-2a15ac988a33",
+            "relation_type": "LED_TO_BEHAVIOR",
+            "target_id": "2481984e-62bb-43ce-ae99-2e8f863c4bd5",
+            "active": true
+          }
+        ],
+        "domain_labels": {
+          "topic": "social_isolation",
+          "topic_category": "social",
+          "subject_role": "roommate"
+        }
+      }
+    },
+    {
+      "scenario_id": "gw08_financial_pressure",
+      "node": {
+        "tp": 2,
+        "fp": 7,
+        "fn": 3,
+        "precision": 0.2222222222222222,
+        "recall": 0.4,
+        "f1": 0.2857142857142857
+      },
+      "relation": {
+        "tp": 0,
+        "fp": 9,
+        "fn": 3,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "domain_labels": {
+        "topic": false,
+        "subject_role": true,
+        "trigger_category": true,
+        "topic_category": false
+      },
+      "node_matches": [
+        {
+          "gold_id": "topic1",
+          "actual_id": "9943c5a7-374e-4ae6-b5fb-7df5f00a40e8",
+          "score": 1.0
+        },
+        {
+          "gold_id": "s1",
+          "actual_id": "0ecf4714-0029-471d-b57b-f2efb740700f",
+          "score": 1.0
+        }
+      ],
+      "actual_case": {
+        "nodes": [
+          {
+            "node_id": "4619838b-134e-46b3-8e53-3b16d1633236",
+            "node_type": "Topic",
+            "text": "academic_pressure"
+          },
+          {
+            "node_id": "9943c5a7-374e-4ae6-b5fb-7df5f00a40e8",
+            "node_type": "Topic",
+            "text": "family_financial_pressure"
+          },
+          {
+            "node_id": "0ecf4714-0029-471d-b57b-f2efb740700f",
+            "node_type": "Subject",
+            "text": "orang tua"
+          },
+          {
+            "node_id": "f1e99a9d-8963-495c-9806-0e54be0d1a10",
+            "node_type": "Behavior",
+            "text": "menahan diri untuk tidak meminta uang tambahan (avoidance of financial burdening)"
+          },
+          {
+            "node_id": "78d28a3a-92f1-4e95-9265-3d87efaea74e",
+            "node_type": "Trigger",
+            "text": "kebutuhan biaya praktikum saat kondisi ekonomi orang tua sulit"
+          },
+          {
+            "node_id": "a0e57df4-7982-4b1a-8219-931942651a1c",
+            "node_type": "Experience",
+            "text": "Perlu meminta uang tambahan untuk biaya praktikum namun merasa tidak enak karena kondisi finansial orang tua"
+          },
+          {
+            "node_id": "5a734e7e-3593-457b-8771-1fa2e76d3beb",
+            "node_type": "Thought",
+            "text": "Aku takut minta uang tambahan buat praktikum karena orang tua lagi kesulitan keuangan (fear of burdening parents, financial guilt)"
+          },
+          {
+            "node_id": "013c6e01-0312-460f-82ac-04789e61085c",
+            "node_type": "Emotion",
+            "text": "guilty"
+          },
+          {
+            "node_id": "f886f810-9ec3-4c19-8bff-c27b642d4880",
+            "node_type": "Emotion",
+            "text": "anxious"
+          }
+        ],
+        "relations": [
+          {
+            "source_id": "a0e57df4-7982-4b1a-8219-931942651a1c",
+            "relation_type": "TRIGGERED_BY",
+            "target_id": "78d28a3a-92f1-4e95-9265-3d87efaea74e",
+            "active": true
+          },
+          {
+            "source_id": "a0e57df4-7982-4b1a-8219-931942651a1c",
+            "relation_type": "TRIGGERED_EMOTION",
+            "target_id": "013c6e01-0312-460f-82ac-04789e61085c",
+            "active": true
+          },
+          {
+            "source_id": "a0e57df4-7982-4b1a-8219-931942651a1c",
+            "relation_type": "INVOLVES_SUBJECT",
+            "target_id": "0ecf4714-0029-471d-b57b-f2efb740700f",
+            "active": true
+          },
+          {
+            "source_id": "a0e57df4-7982-4b1a-8219-931942651a1c",
+            "relation_type": "TRIGGERED_BY",
+            "target_id": "78d28a3a-92f1-4e95-9265-3d87efaea74e",
+            "active": true
+          },
+          {
+            "source_id": "a0e57df4-7982-4b1a-8219-931942651a1c",
+            "relation_type": "TRIGGERED_EMOTION",
+            "target_id": "f886f810-9ec3-4c19-8bff-c27b642d4880",
+            "active": true
+          },
+          {
+            "source_id": "a0e57df4-7982-4b1a-8219-931942651a1c",
+            "relation_type": "INVOLVES_SUBJECT",
+            "target_id": "0ecf4714-0029-471d-b57b-f2efb740700f",
+            "active": true
+          },
+          {
+            "source_id": "f886f810-9ec3-4c19-8bff-c27b642d4880",
+            "relation_type": "ACTIVATED_THOUGHT",
+            "target_id": "5a734e7e-3593-457b-8771-1fa2e76d3beb",
+            "active": true
+          },
+          {
+            "source_id": "f886f810-9ec3-4c19-8bff-c27b642d4880",
+            "relation_type": "LED_TO_BEHAVIOR",
+            "target_id": "f1e99a9d-8963-495c-9806-0e54be0d1a10",
+            "active": true
+          },
+          {
+            "source_id": "5a734e7e-3593-457b-8771-1fa2e76d3beb",
+            "relation_type": "LED_TO_BEHAVIOR",
+            "target_id": "f1e99a9d-8963-495c-9806-0e54be0d1a10",
+            "active": true
+          }
+        ],
+        "domain_labels": {
+          "topic": "academic_pressure",
+          "topic_category": "academic",
+          "subject_role": "parent",
+          "trigger_category": "financial"
+        }
+      }
+    },
+    {
+      "scenario_id": "gw09_revision_procrastination",
+      "node": {
+        "tp": 4,
+        "fp": 2,
+        "fn": 1,
+        "precision": 0.6666666666666666,
+        "recall": 0.8,
+        "f1": 0.7272727272727272
+      },
+      "relation": {
+        "tp": 3,
+        "fp": 2,
+        "fn": 0,
+        "precision": 0.6,
+        "recall": 1.0,
+        "f1": 0.7499999999999999
+      },
+      "domain_labels": {
+        "topic": false,
+        "trigger_category": true,
+        "topic_category": true
+      },
+      "node_matches": [
+        {
+          "gold_id": "e1",
+          "actual_id": "ea3aaef8-3f0a-444e-8c4e-99aa8033706c",
+          "score": 1.0
+        },
+        {
+          "gold_id": "b1",
+          "actual_id": "ac6ca325-9c94-44d1-a1e1-32dca9787b3e",
+          "score": 0.8354430379746836
+        },
+        {
+          "gold_id": "t1",
+          "actual_id": "b096b762-b68e-4f7f-98ae-500fb1e0f3f3",
+          "score": 0.8
+        },
+        {
+          "gold_id": "exp1",
+          "actual_id": "f9d34da7-5c80-4edb-97c6-aa5b925fa4d4",
+          "score": 0.75
+        }
+      ],
+      "actual_case": {
+        "nodes": [
+          {
+            "node_id": "92155fb3-9a71-4407-b58a-9e26a95d7a74",
+            "node_type": "Topic",
+            "text": "thesis_stress"
+          },
+          {
+            "node_id": "ac6ca325-9c94-44d1-a1e1-32dca9787b3e",
+            "node_type": "Behavior",
+            "text": "begadang ngerjain revisi skripsi semalaman (academic procrastination and sleep deprivation)"
+          },
+          {
+            "node_id": "b096b762-b68e-4f7f-98ae-500fb1e0f3f3",
+            "node_type": "Trigger",
+            "text": "revisi skripsi"
+          },
+          {
+            "node_id": "f9d34da7-5c80-4edb-97c6-aa5b925fa4d4",
+            "node_type": "Experience",
+            "text": "mengerjakan revisi skripsi semalaman (working on thesis revision all night)"
+          },
+          {
+            "node_id": "449ae1b7-4c99-43ca-ac9e-6bb4ab3e254d",
+            "node_type": "Thought",
+            "text": "takut nggak kelar (fear of not finishing on time)"
+          },
+          {
+            "node_id": "ea3aaef8-3f0a-444e-8c4e-99aa8033706c",
+            "node_type": "Emotion",
+            "text": "cemas"
+          }
+        ],
+        "relations": [
+          {
+            "source_id": "f9d34da7-5c80-4edb-97c6-aa5b925fa4d4",
+            "relation_type": "TRIGGERED_BY",
+            "target_id": "b096b762-b68e-4f7f-98ae-500fb1e0f3f3",
+            "active": true
+          },
+          {
+            "source_id": "f9d34da7-5c80-4edb-97c6-aa5b925fa4d4",
+            "relation_type": "TRIGGERED_EMOTION",
+            "target_id": "ea3aaef8-3f0a-444e-8c4e-99aa8033706c",
+            "active": true
+          },
+          {
+            "source_id": "ea3aaef8-3f0a-444e-8c4e-99aa8033706c",
+            "relation_type": "ACTIVATED_THOUGHT",
+            "target_id": "449ae1b7-4c99-43ca-ac9e-6bb4ab3e254d",
+            "active": true
+          },
+          {
+            "source_id": "ea3aaef8-3f0a-444e-8c4e-99aa8033706c",
+            "relation_type": "LED_TO_BEHAVIOR",
+            "target_id": "ac6ca325-9c94-44d1-a1e1-32dca9787b3e",
+            "active": true
+          },
+          {
+            "source_id": "449ae1b7-4c99-43ca-ac9e-6bb4ab3e254d",
+            "relation_type": "LED_TO_BEHAVIOR",
+            "target_id": "ac6ca325-9c94-44d1-a1e1-32dca9787b3e",
+            "active": true
+          }
+        ],
+        "domain_labels": {
+          "topic": "thesis_stress",
+          "topic_category": "academic",
+          "trigger_category": "academic"
+        }
+      }
+    },
+    {
+      "scenario_id": "gw10_presentation_panic",
+      "node": {
+        "tp": 3,
+        "fp": 2,
+        "fn": 1,
+        "precision": 0.6,
+        "recall": 0.75,
+        "f1": 0.6666666666666665
+      },
+      "relation": {
+        "tp": 0,
+        "fp": 3,
+        "fn": 2,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "domain_labels": {
+        "topic": true,
+        "trigger_category": true,
+        "topic_category": true
+      },
+      "node_matches": [
+        {
+          "gold_id": "topic1",
+          "actual_id": "a41df4e8-9e8e-4272-9d83-9b9326782bb6",
+          "score": 1.0
+        },
+        {
+          "gold_id": "t1",
+          "actual_id": "afc2bed9-5c0f-4c4c-8158-91d2d404a7d1",
+          "score": 1.0
+        },
+        {
+          "gold_id": "e1",
+          "actual_id": "992725e6-4123-4da3-bd5f-6a6dc0c6ba7c",
+          "score": 1.0
+        }
+      ],
+      "actual_case": {
+        "nodes": [
+          {
+            "node_id": "a41df4e8-9e8e-4272-9d83-9b9326782bb6",
+            "node_type": "Topic",
+            "text": "academic_pressure"
+          },
+          {
+            "node_id": "afc2bed9-5c0f-4c4c-8158-91d2d404a7d1",
+            "node_type": "Trigger",
+            "text": "presentasi kelas"
+          },
+          {
+            "node_id": "5f44def6-f4a6-4fa3-952a-ff2b3b5236b0",
+            "node_type": "Experience",
+            "text": "mengalami kecemasan fisik saat akan presentasi kelas (anxiety during public speaking)"
+          },
+          {
+            "node_id": "9a4f3be5-8da3-4f17-9061-c5753fbe80a6",
+            "node_type": "Thought",
+            "text": "presentasi kelas bikin panik (fear of public speaking)"
+          },
+          {
+            "node_id": "992725e6-4123-4da3-bd5f-6a6dc0c6ba7c",
+            "node_type": "Emotion",
+            "text": "panik"
+          }
+        ],
+        "relations": [
+          {
+            "source_id": "5f44def6-f4a6-4fa3-952a-ff2b3b5236b0",
+            "relation_type": "TRIGGERED_BY",
+            "target_id": "afc2bed9-5c0f-4c4c-8158-91d2d404a7d1",
+            "active": true
+          },
+          {
+            "source_id": "5f44def6-f4a6-4fa3-952a-ff2b3b5236b0",
+            "relation_type": "TRIGGERED_EMOTION",
+            "target_id": "992725e6-4123-4da3-bd5f-6a6dc0c6ba7c",
+            "active": true
+          },
+          {
+            "source_id": "992725e6-4123-4da3-bd5f-6a6dc0c6ba7c",
+            "relation_type": "ACTIVATED_THOUGHT",
+            "target_id": "9a4f3be5-8da3-4f17-9061-c5753fbe80a6",
+            "active": true
+          }
+        ],
+        "domain_labels": {
+          "topic": "academic_pressure",
+          "topic_category": "academic",
+          "trigger_category": "academic"
+        }
+      }
+    },
+    {
+      "scenario_id": "gw11_career_uncertainty",
+      "node": {
+        "tp": 2,
+        "fp": 4,
+        "fn": 3,
+        "precision": 0.3333333333333333,
+        "recall": 0.4,
+        "f1": 0.3636363636363636
+      },
+      "relation": {
+        "tp": 0,
+        "fp": 3,
+        "fn": 3,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "domain_labels": {
+        "topic": false,
+        "subject_role": false,
+        "topic_category": true
+      },
+      "node_matches": [
+        {
+          "gold_id": "topic1",
+          "actual_id": "00b0d4f2-6d31-47db-ba7a-3cb687f8790c",
+          "score": 1.0
+        },
+        {
+          "gold_id": "e1",
+          "actual_id": "6de9f507-ac78-4566-a240-b11fba82f7cf",
+          "score": 1.0
+        }
+      ],
+      "actual_case": {
+        "nodes": [
+          {
+            "node_id": "ddf2d909-4c9d-4ef4-ba37-ffa10ea14fe1",
+            "node_type": "Topic",
+            "text": "post_graduation_anxiety"
+          },
+          {
+            "node_id": "00b0d4f2-6d31-47db-ba7a-3cb687f8790c",
+            "node_type": "Topic",
+            "text": "career_uncertainty"
+          },
+          {
+            "node_id": "3df4e6e4-8ef4-49b7-9322-d32e58515458",
+            "node_type": "Trigger",
+            "text": "teman sebaya sudah mendapatkan pekerjaan"
+          },
+          {
+            "node_id": "9ce94f0e-f3f3-4785-b980-141abc51c569",
+            "node_type": "Experience",
+            "text": "sering membandingkan diri sendiri dengan teman yang sudah mendapatkan pekerjaan saat menjelang kelulusan (social comparison regarding career trajectory)"
+          },
+          {
+            "node_id": "2956e4d2-794e-454c-af55-297fb8030a54",
+            "node_type": "Thought",
+            "text": "aku tertinggal jauh dari teman-temanku (feeling left behind, comparison with peers)"
+          },
+          {
+            "node_id": "6de9f507-ac78-4566-a240-b11fba82f7cf",
+            "node_type": "Emotion",
+            "text": "minder"
+          }
+        ],
+        "relations": [
+          {
+            "source_id": "9ce94f0e-f3f3-4785-b980-141abc51c569",
+            "relation_type": "TRIGGERED_BY",
+            "target_id": "3df4e6e4-8ef4-49b7-9322-d32e58515458",
+            "active": true
+          },
+          {
+            "source_id": "9ce94f0e-f3f3-4785-b980-141abc51c569",
+            "relation_type": "TRIGGERED_EMOTION",
+            "target_id": "6de9f507-ac78-4566-a240-b11fba82f7cf",
+            "active": true
+          },
+          {
+            "source_id": "6de9f507-ac78-4566-a240-b11fba82f7cf",
+            "relation_type": "ACTIVATED_THOUGHT",
+            "target_id": "2956e4d2-794e-454c-af55-297fb8030a54",
+            "active": true
+          }
+        ],
+        "domain_labels": {
+          "topic": "post_graduation_anxiety",
+          "topic_category": "career",
+          "trigger_category": "career"
+        }
+      }
+    },
+    {
+      "scenario_id": "gw12_father_expectation",
+      "node": {
+        "tp": 5,
+        "fp": 1,
+        "fn": 0,
+        "precision": 0.8333333333333334,
+        "recall": 1.0,
+        "f1": 0.9090909090909091
+      },
+      "relation": {
+        "tp": 3,
+        "fp": 1,
+        "fn": 0,
+        "precision": 0.75,
+        "recall": 1.0,
+        "f1": 0.8571428571428571
+      },
+      "domain_labels": {
+        "topic": true,
+        "subject_role": true,
+        "topic_category": true
+      },
+      "node_matches": [
+        {
+          "gold_id": "topic1",
+          "actual_id": "795bdfa5-29b1-44c4-8228-963daacb3ed4",
+          "score": 1.0
+        },
+        {
+          "gold_id": "s1",
+          "actual_id": "74d100a1-fe6d-492e-8120-f774a4a171cf",
+          "score": 1.0
+        },
+        {
+          "gold_id": "exp1",
+          "actual_id": "5f543a12-399a-4c64-8865-48eaa02d1185",
+          "score": 1.0
+        },
+        {
+          "gold_id": "e1",
+          "actual_id": "ed9a7399-be47-4984-808c-55629c2d84ed",
+          "score": 1.0
+        },
+        {
+          "gold_id": "th1",
+          "actual_id": "4f0835ea-0a2c-4bfc-8e57-b2c1c5bc0df6",
+          "score": 0.8125
+        }
+      ],
+      "actual_case": {
+        "nodes": [
+          {
+            "node_id": "795bdfa5-29b1-44c4-8228-963daacb3ed4",
+            "node_type": "Topic",
+            "text": "family_expectation_pressure"
+          },
+          {
+            "node_id": "74d100a1-fe6d-492e-8120-f774a4a171cf",
+            "node_type": "Subject",
+            "text": "ayah"
+          },
+          {
+            "node_id": "c08d567f-337e-4c18-a848-1ff25fc47c6a",
+            "node_type": "Trigger",
+            "text": "pertanyaan ayah tentang nilai kuliah"
+          },
+          {
+            "node_id": "5f543a12-399a-4c64-8865-48eaa02d1185",
+            "node_type": "Experience",
+            "text": "Ayah selalu menanyakan nilai kuliah"
+          },
+          {
+            "node_id": "4f0835ea-0a2c-4bfc-8e57-b2c1c5bc0df6",
+            "node_type": "Thought",
+            "text": "dia cuma peduli nilai, bukan aku (he only cares about grades, not me)"
+          },
+          {
+            "node_id": "ed9a7399-be47-4984-808c-55629c2d84ed",
+            "node_type": "Emotion",
+            "text": "tertekan (pressured)"
+          }
+        ],
+        "relations": [
+          {
+            "source_id": "5f543a12-399a-4c64-8865-48eaa02d1185",
+            "relation_type": "TRIGGERED_BY",
+            "target_id": "c08d567f-337e-4c18-a848-1ff25fc47c6a",
+            "active": true
+          },
+          {
+            "source_id": "5f543a12-399a-4c64-8865-48eaa02d1185",
+            "relation_type": "TRIGGERED_EMOTION",
+            "target_id": "ed9a7399-be47-4984-808c-55629c2d84ed",
+            "active": true
+          },
+          {
+            "source_id": "5f543a12-399a-4c64-8865-48eaa02d1185",
+            "relation_type": "INVOLVES_SUBJECT",
+            "target_id": "74d100a1-fe6d-492e-8120-f774a4a171cf",
+            "active": true
+          },
+          {
+            "source_id": "ed9a7399-be47-4984-808c-55629c2d84ed",
+            "relation_type": "ACTIVATED_THOUGHT",
+            "target_id": "4f0835ea-0a2c-4bfc-8e57-b2c1c5bc0df6",
+            "active": true
+          }
+        ],
+        "domain_labels": {
+          "topic": "family_expectation_pressure",
+          "topic_category": "family",
+          "subject_role": "parent",
+          "trigger_category": "family"
+        }
+      }
+    }
+  ],
+  "n_gold": 12
+}

@@ -1,0 +1,2231 @@
+{
+  "aggregate": {
+    "conditions": {
+      "hybrid": {
+        "query_count": 24,
+        "grounded": {
+          "count": 23,
+          "total": 24,
+          "rate": 0.9583333333333334,
+          "ci95": [
+            0.875,
+            1.0
+          ]
+        },
+        "relational_or_causal_success": {
+          "count": 16,
+          "total": 24,
+          "rate": 0.6666666666666666,
+          "ci95": [
+            0.4583333333333333,
+            0.8333333333333334
+          ]
+        },
+        "false_personalization": {
+          "count": 7,
+          "total": 24,
+          "rate": 0.2916666666666667,
+          "ci95": [
+            0.125,
+            0.5
+          ]
+        },
+        "correct_abstention": {
+          "count": 6,
+          "total": 24,
+          "rate": 0.25,
+          "ci95": [
+            0.08333333333333333,
+            0.4166666666666667
+          ]
+        },
+        "stale_belief": {
+          "count": 2,
+          "total": 24,
+          "rate": 0.08333333333333333,
+          "ci95": [
+            0.0,
+            0.20833333333333334
+          ]
+        },
+        "contradiction_rate": {
+          "count": 2,
+          "total": 24,
+          "rate": 0.08333333333333333,
+          "ci95": [
+            0.0,
+            0.20833333333333334
+          ]
+        }
+      },
+      "vector_only": {
+        "query_count": 24,
+        "grounded": {
+          "count": 23,
+          "total": 24,
+          "rate": 0.9583333333333334,
+          "ci95": [
+            0.875,
+            1.0
+          ]
+        },
+        "relational_or_causal_success": {
+          "count": 15,
+          "total": 24,
+          "rate": 0.625,
+          "ci95": [
+            0.4166666666666667,
+            0.8333333333333334
+          ]
+        },
+        "false_personalization": {
+          "count": 7,
+          "total": 24,
+          "rate": 0.2916666666666667,
+          "ci95": [
+            0.125,
+            0.5
+          ]
+        },
+        "correct_abstention": {
+          "count": 6,
+          "total": 24,
+          "rate": 0.25,
+          "ci95": [
+            0.08333333333333333,
+            0.4166666666666667
+          ]
+        },
+        "stale_belief": {
+          "count": 2,
+          "total": 24,
+          "rate": 0.08333333333333333,
+          "ci95": [
+            0.0,
+            0.20833333333333334
+          ]
+        },
+        "contradiction_rate": {
+          "count": 1,
+          "total": 24,
+          "rate": 0.041666666666666664,
+          "ci95": [
+            0.0,
+            0.125
+          ]
+        }
+      }
+    },
+    "by_query_type": {
+      "hybrid": {
+        "abstention": {
+          "grounded": 1.0,
+          "contradictory": 0.0,
+          "relational_or_causal_success": 0.0,
+          "false_personalization": 0.0,
+          "correct_abstention": 1.0,
+          "stale_belief": 0.0,
+          "query_count": 6
+        },
+        "causal": {
+          "grounded": 0.8333333333333334,
+          "contradictory": 0.16666666666666666,
+          "relational_or_causal_success": 0.8333333333333334,
+          "false_personalization": 0.6666666666666666,
+          "correct_abstention": 0.0,
+          "stale_belief": 0.16666666666666666,
+          "query_count": 6
+        },
+        "relational": {
+          "grounded": 1.0,
+          "contradictory": 0.16666666666666666,
+          "relational_or_causal_success": 1.0,
+          "false_personalization": 0.3333333333333333,
+          "correct_abstention": 0.0,
+          "stale_belief": 0.16666666666666666,
+          "query_count": 6
+        },
+        "temporal": {
+          "grounded": 1.0,
+          "contradictory": 0.0,
+          "relational_or_causal_success": 0.8333333333333334,
+          "false_personalization": 0.16666666666666666,
+          "correct_abstention": 0.0,
+          "stale_belief": 0.0,
+          "query_count": 6
+        }
+      },
+      "vector_only": {
+        "abstention": {
+          "grounded": 1.0,
+          "contradictory": 0.0,
+          "relational_or_causal_success": 0.0,
+          "false_personalization": 0.0,
+          "correct_abstention": 1.0,
+          "stale_belief": 0.0,
+          "query_count": 6
+        },
+        "causal": {
+          "grounded": 0.8333333333333334,
+          "contradictory": 0.16666666666666666,
+          "relational_or_causal_success": 0.8333333333333334,
+          "false_personalization": 0.8333333333333334,
+          "correct_abstention": 0.0,
+          "stale_belief": 0.16666666666666666,
+          "query_count": 6
+        },
+        "relational": {
+          "grounded": 1.0,
+          "contradictory": 0.0,
+          "relational_or_causal_success": 1.0,
+          "false_personalization": 0.16666666666666666,
+          "correct_abstention": 0.0,
+          "stale_belief": 0.16666666666666666,
+          "query_count": 6
+        },
+        "temporal": {
+          "grounded": 1.0,
+          "contradictory": 0.0,
+          "relational_or_causal_success": 0.6666666666666666,
+          "false_personalization": 0.16666666666666666,
+          "correct_abstention": 0.0,
+          "stale_belief": 0.0,
+          "query_count": 6
+        }
+      }
+    }
+  },
+  "agreement": {
+    "available": true,
+    "judge_ids": [
+      "gemini-3.1-flash-lite",
+      "gemini-3.1-pro-preview"
+    ],
+    "labels": {
+      "grounded": {
+        "kappa": 0.0476190476190473,
+        "n": 48,
+        "agreement": 0.6875,
+        "confusion": {
+          "false_false": 1,
+          "false_true": 1,
+          "true_false": 14,
+          "true_true": 32
+        }
+      },
+      "contradictory": {
+        "kappa": 0.0,
+        "n": 48,
+        "agreement": 0.9375,
+        "confusion": {
+          "false_false": 45,
+          "false_true": 0,
+          "true_false": 3,
+          "true_true": 0
+        }
+      },
+      "relational_or_causal_success": {
+        "kappa": 0.4834437086092715,
+        "n": 48,
+        "agreement": 0.7291666666666666,
+        "confusion": {
+          "false_false": 16,
+          "false_true": 1,
+          "true_false": 12,
+          "true_true": 19
+        }
+      },
+      "false_personalization": {
+        "kappa": 0.6279069767441862,
+        "n": 48,
+        "agreement": 0.8333333333333334,
+        "confusion": {
+          "false_false": 28,
+          "false_true": 6,
+          "true_false": 2,
+          "true_true": 12
+        }
+      },
+      "correct_abstention": {
+        "kappa": 1.0,
+        "n": 48,
+        "agreement": 1.0,
+        "confusion": {
+          "false_false": 36,
+          "false_true": 0,
+          "true_false": 0,
+          "true_true": 12
+        }
+      },
+      "stale_belief": {
+        "kappa": 0.0,
+        "n": 48,
+        "agreement": 0.9166666666666666,
+        "confusion": {
+          "false_false": 44,
+          "false_true": 0,
+          "true_false": 4,
+          "true_true": 0
+        }
+      }
+    }
+  },
+  "ablation": {
+    "retrieval": {
+      "p_at_k": {
+        "paired_queries": 0,
+        "vector_mean": null,
+        "hybrid_mean": null,
+        "difference_hybrid_minus_vector": NaN,
+        "ci95": [
+          NaN,
+          NaN
+        ]
+      },
+      "recall_at_k": {
+        "paired_queries": 0,
+        "vector_mean": null,
+        "hybrid_mean": null,
+        "difference_hybrid_minus_vector": NaN,
+        "ci95": [
+          NaN,
+          NaN
+        ]
+      },
+      "mrr": {
+        "paired_queries": 0,
+        "vector_mean": null,
+        "hybrid_mean": null,
+        "difference_hybrid_minus_vector": NaN,
+        "ci95": [
+          NaN,
+          NaN
+        ]
+      },
+      "ndcg_at_k": {
+        "paired_queries": 0,
+        "vector_mean": null,
+        "hybrid_mean": null,
+        "difference_hybrid_minus_vector": NaN,
+        "ci95": [
+          NaN,
+          NaN
+        ]
+      },
+      "stale_event": {
+        "paired_queries": 0,
+        "vector_rate": null,
+        "hybrid_rate": null,
+        "sign_test_p_value": 1.0
+      },
+      "relational_or_causal_success": {
+        "paired_queries": 0,
+        "vector_rate": null,
+        "hybrid_rate": null,
+        "sign_test_p_value": 1.0
+      },
+      "temporal_success": {
+        "paired_queries": 0,
+        "vector_rate": null,
+        "hybrid_rate": null,
+        "sign_test_p_value": 1.0
+      },
+      "abstention_success": {
+        "paired_queries": 0,
+        "vector_rate": null,
+        "hybrid_rate": null,
+        "sign_test_p_value": 1.0
+      }
+    },
+    "answer_usage": {
+      "grounded": {
+        "paired_queries": 24,
+        "vector_rate": 0.9583333333333334,
+        "hybrid_rate": 0.9583333333333334,
+        "sign_test_p_value": 1.0
+      },
+      "contradictory": {
+        "paired_queries": 24,
+        "vector_rate": 0.041666666666666664,
+        "hybrid_rate": 0.08333333333333333,
+        "sign_test_p_value": 1.0
+      },
+      "relational_or_causal_success": {
+        "paired_queries": 24,
+        "vector_rate": 0.625,
+        "hybrid_rate": 0.6666666666666666,
+        "sign_test_p_value": 1.0
+      },
+      "false_personalization": {
+        "paired_queries": 24,
+        "vector_rate": 0.2916666666666667,
+        "hybrid_rate": 0.2916666666666667,
+        "sign_test_p_value": 1.0
+      },
+      "correct_abstention": {
+        "paired_queries": 24,
+        "vector_rate": 0.25,
+        "hybrid_rate": 0.25,
+        "sign_test_p_value": 1.0
+      },
+      "stale_belief": {
+        "paired_queries": 24,
+        "vector_rate": 0.08333333333333333,
+        "hybrid_rate": 0.08333333333333333,
+        "sign_test_p_value": 1.0
+      }
+    },
+    "lifecycle": {
+      "action_correct": {
+        "paired_scenarios": 0,
+        "vector_rate": null,
+        "hybrid_rate": null,
+        "sign_test_p_value": 1.0
+      },
+      "active_state_correct": {
+        "paired_scenarios": 0,
+        "vector_rate": null,
+        "hybrid_rate": null,
+        "sign_test_p_value": 1.0
+      },
+      "inactive_state_correct": {
+        "paired_scenarios": 0,
+        "vector_rate": null,
+        "hybrid_rate": null,
+        "sign_test_p_value": 1.0
+      },
+      "lifecycle_correct": {
+        "paired_scenarios": 0,
+        "vector_rate": null,
+        "hybrid_rate": null,
+        "sign_test_p_value": 1.0
+      }
+    }
+  },
+  "rows": [
+    {
+      "query_id": "r01",
+      "query_type": "relational",
+      "condition": "vector_only",
+      "reply": "Wajar banget kamu ngerasa cemas, apalagi setelah kejadian penolakan proposal di bulan April lalu. Pesan itu seolah jadi pengingat instan buat rasa kecewa dan takut gagal yang kamu alami waktu itu.\n\nKayak ada alarm otomatis di kepala kamu yang langsung nyala setiap ada notifikasi dari beliau, padahal mungkin pesan itu cuma soal revisi biasa. Menurut kamu, apa yang paling bikin takut dari isi revisi atau interaksi sama beliau kali ini?",
+      "judgements": {
+        "gemini-3.1-flash-lite": {
+          "grounded": true,
+          "contradictory": false,
+          "relational_or_causal_success": true,
+          "false_personalization": false,
+          "correct_abstention": false,
+          "stale_belief": false,
+          "reasoning": "Chatbot akurat menghubungkan kecemasan pengguna dengan fakta penolakan proposal di bulan April sesuai memori yang tersimpan."
+        },
+        "gemini-3.1-pro-preview": {
+          "grounded": true,
+          "contradictory": false,
+          "relational_or_causal_success": true,
+          "false_personalization": false,
+          "correct_abstention": false,
+          "stale_belief": false,
+          "reasoning": "Respons secara akurat menghubungkan rasa cemas dengan penolakan proposal di bulan April sesuai fakta aktif."
+        }
+      },
+      "score": {
+        "query_id": "r01",
+        "query_type": "relational",
+        "condition": "vector_only",
+        "grounded": true,
+        "contradictory": false,
+        "relational_or_causal_success": true,
+        "false_personalization": false,
+        "correct_abstention": false,
+        "stale_belief": false,
+        "judge_source": "gemini-3.1-flash-lite"
+      }
+    },
+    {
+      "query_id": "r01",
+      "query_type": "relational",
+      "condition": "hybrid",
+      "reply": "Kejadian penolakan proposal bulan April lalu memang ninggalin kesan yang cukup berat buat kamu, jadi nggak heran kalau otakmu otomatis jadi \"waspada\" setiap kali ada notifikasi dari dosen pembimbing. Sebenarnya itu reaksi perlindungan diri, seolah otakmu mau mencegah kamu kaget kalau hal yang sama terjadi lagi, padahal sekarang situasinya jauh berbeda karena kamu sudah punya progres rutin setiap Jumat. Kamu ngerasa nggak sih, kalau rutinitas pengiriman revisi yang kamu bangun tiap minggu itu pelan-pelan mulai bikin kamu merasa lebih punya kendali dibanding dulu?",
+      "judgements": {
+        "gemini-3.1-flash-lite": {
+          "grounded": true,
+          "contradictory": false,
+          "relational_or_causal_success": true,
+          "false_personalization": true,
+          "correct_abstention": false,
+          "stale_belief": false,
+          "reasoning": "Chatbot berhasil menghubungkan kecemasan dengan penolakan proposal, namun berhalusinasi tentang rutinitas revisi hari Jumat yang tidak ada dalam fakta."
+        },
+        "gemini-3.1-pro-preview": {
+          "grounded": true,
+          "contradictory": false,
+          "relational_or_causal_success": true,
+          "false_personalization": true,
+          "correct_abstention": false,
+          "stale_belief": false,
+          "reasoning": "Respons menghubungkan kecemasan dengan penolakan proposal secara tepat, namun berhalusinasi tentang progres rutin setiap Jumat."
+        }
+      },
+      "score": {
+        "query_id": "r01",
+        "query_type": "relational",
+        "condition": "hybrid",
+        "grounded": true,
+        "contradictory": false,
+        "relational_or_causal_success": true,
+        "false_personalization": true,
+        "correct_abstention": false,
+        "stale_belief": false,
+        "judge_source": "gemini-3.1-flash-lite"
+      }
+    },
+    {
+      "query_id": "r02",
+      "query_type": "relational",
+      "condition": "vector_only",
+      "reply": "Susah ya, pas cara ayah nunjukin peduli lewat nilai akademik justru bikin kamu ngerasa jadi sekadar angka, bukan anaknya yang lagi berjuang. Mungkin bagi dia, itu cara paling nyata buat mastiin masa depanmu aman, tapi sayangnya cara itu malah bikin kamu ngerasa berjarak karena kebutuhan emosionalmu nggak tersentuh.\n\nSetelah kamu mulai sadar kalau ini mungkin cuma cara dia nunjukin kasih sayang yang canggung, menurutmu apa yang bakal terjadi kalau kamu jujur bilang ke dia kalau kamu butuh didengar soal kondisimu, bukan cuma nilaimu?",
+      "judgements": {
+        "gemini-3.1-flash-lite": {
+          "grounded": true,
+          "contradictory": false,
+          "relational_or_causal_success": true,
+          "false_personalization": false,
+          "correct_abstention": false,
+          "stale_belief": false,
+          "reasoning": "Respons akurat menghubungkan cara ayah bertanya dengan perasaan pengguna sesuai fakta aktif tanpa menggunakan fakta kadaluwarsa."
+        },
+        "gemini-3.1-pro-preview": {
+          "grounded": true,
+          "contradictory": false,
+          "relational_or_causal_success": true,
+          "false_personalization": false,
+          "correct_abstention": false,
+          "stale_belief": false,
+          "reasoning": "Respons akurat menghubungkan niat ayah (peduli) dengan perasaan tertekan pengguna sesuai fakta aktif."
+        }
+      },
+      "score": {
+        "query_id": "r02",
+        "query_type": "relational",
+        "condition": "vector_only",
+        "grounded": true,
+        "contradictory": false,
+        "relational_or_causal_success": true,
+        "false_personalization": false,
+        "correct_abstention": false,
+        "stale_belief": false,
+        "judge_source": "gemini-3.1-flash-lite"
+      }
+    },
+    {
+      "query_id": "r02",
+      "query_type": "relational",
+      "condition": "hybrid",
+      "reply": "Pertanyaan soal nilai itu kayaknya jadi cara ayah buat memastikan masa depan keluarga aman di tengah kondisi finansial yang lagi sulit. Meskipun kamu sekarang bisa lihat kalau itu bentuk kepeduliannya, beban untuk harus selalu sukses biar nggak jadi beban tambahan itu tetap terasa menekan di kamu. Rasanya jadi kayak keberhargaan diri kamu di mata keluarga cuma diukur dari angka-angka itu.\n\nMenurutmu, apa yang paling bikin obrolan soal nilai ini terasa lebih menekan dibanding obrolan lainnya sama ayah?",
+      "judgements": {
+        "gemini-3.1-flash-lite": {
+          "grounded": true,
+          "contradictory": false,
+          "relational_or_causal_success": true,
+          "false_personalization": false,
+          "correct_abstention": false,
+          "stale_belief": false,
+          "reasoning": "Respons akurat menghubungkan cara ayah bertanya dengan perasaan pengguna berdasarkan fakta aktif tanpa menggunakan fakta yang sudah basi."
+        },
+        "gemini-3.1-pro-preview": {
+          "grounded": true,
+          "contradictory": false,
+          "relational_or_causal_success": false,
+          "false_personalization": true,
+          "correct_abstention": false,
+          "stale_belief": false,
+          "reasoning": "Respons merujuk fakta aktif namun berhalusinasi tentang kondisi finansial keluarga yang sulit (false personalization)."
+        }
+      },
+      "score": {
+        "query_id": "r02",
+        "query_type": "relational",
+        "condition": "hybrid",
+        "grounded": true,
+        "contradictory": false,
+        "relational_or_causal_success": true,
+        "false_personalization": false,
+        "correct_abstention": false,
+        "stale_belief": false,
+        "judge_source": "gemini-3.1-flash-lite"
+      }
+    },
+    {
+      "query_id": "r03",
+      "query_type": "relational",
+      "condition": "vector_only",
+      "reply": "Rasanya wajar kalau kamu jadi males dateng rapat kalau situasinya kayak gitu. Tiap kali denger jadwal rapat, otakmu mungkin langsung asosiasikan itu sama rasa kesel gara-gara konflik sama koordinator acara dan waktu yang kebuang karena sering molor. Menghindar itu bisa jadi cara kamu buat ngelindungin energi biar nggak makin terkuras sama hal-hal yang bikin penat.\n\nApa setelah kamu milih buat nggak dateng, perasaanmu jadi beneran lebih tenang, atau malah ada rasa nggak enak karena merasa belum selesai dengan urusannya?",
+      "judgements": {
+        "gemini-3.1-flash-lite": {
+          "grounded": true,
+          "contradictory": false,
+          "relational_or_causal_success": true,
+          "false_personalization": false,
+          "correct_abstention": false,
+          "stale_belief": false,
+          "reasoning": "Chatbot akurat menghubungkan konflik koordinator dan rapat molor sebagai penyebab keinginan pengguna menghindari rapat."
+        },
+        "gemini-3.1-pro-preview": {
+          "grounded": true,
+          "contradictory": false,
+          "relational_or_causal_success": true,
+          "false_personalization": false,
+          "correct_abstention": false,
+          "stale_belief": false,
+          "reasoning": "Respons akurat menghubungkan konflik koordinator dan rapat molor sebagai penyebab kebiasaan menghindar untuk melindungi energi."
+        }
+      },
+      "score": {
+        "query_id": "r03",
+        "query_type": "relational",
+        "condition": "vector_only",
+        "grounded": true,
+        "contradictory": false,
+        "relational_or_causal_success": true,
+        "false_personalization": false,
+        "correct_abstention": false,
+        "stale_belief": false,
+        "judge_source": "gemini-3.1-flash-lite"
+      }
+    },
+    {
+      "query_id": "r03",
+      "query_type": "relational",
+      "condition": "hybrid",
+      "reply": "Rasanya masuk akal kalau konflik sama koordinator acara itu bikin rapat kerasa jadi beban, apalagi kalau sebelumnya kamu juga udah capek karena rapat sering molor. Menghindari rapat mungkin jadi cara kamu buat ngejaga ruang aman dari tekanan emosional yang muncul tiap kali harus ketemu dia. Sebenarnya, kamu merasa lebih tenang nggak kalau nggak harus berurusan sama dia langsung di rapat?",
+      "judgements": {
+        "gemini-3.1-flash-lite": {
+          "grounded": true,
+          "contradictory": false,
+          "relational_or_causal_success": true,
+          "false_personalization": false,
+          "correct_abstention": false,
+          "stale_belief": false,
+          "reasoning": "Chatbot berhasil menghubungkan konflik koordinator dan rapat molor sebagai alasan pengguna menghindari rapat secara akurat."
+        },
+        "gemini-3.1-pro-preview": {
+          "grounded": true,
+          "contradictory": false,
+          "relational_or_causal_success": true,
+          "false_personalization": false,
+          "correct_abstention": false,
+          "stale_belief": false,
+          "reasoning": "Respons akurat menghubungkan konflik koordinator dan rapat molor sebagai penyebab kebiasaan menghindari rapat tanpa halusinasi."
+        }
+      },
+      "score": {
+        "query_id": "r03",
+        "query_type": "relational",
+        "condition": "hybrid",
+        "grounded": true,
+        "contradictory": false,
+        "relational_or_causal_success": true,
+        "false_personalization": false,
+        "correct_abstention": false,
+        "stale_belief": false,
+        "judge_source": "gemini-3.1-flash-lite"
+      }
+    },
+    {
+      "query_id": "r04",
+      "query_type": "relational",
+      "condition": "vector_only",
+      "reply": "Kegagalan kemarin itu kayaknya jadi 'bahan' yang bikin kamu sadar bagian mana yang perlu diperbaiki. Dulu mungkin rasanya berat karena kamu ngeliat hasil wawancara sebagai nilai diri, tapi sekarang kamu bisa naruh kegagalan itu sebagai data buat berkembang.\n\nProses latihan rutin yang kamu lakuin sekarang itu bukti nyata kalau kamu udah ambil kendali, bukan lagi nungguin keadaan berubah sendiri. Menurut kamu, apa hal yang paling kerasa bedanya pas kamu latihan sekarang dibanding sebelum gagal dulu?",
+      "judgements": {
+        "gemini-3.1-flash-lite": {
+          "grounded": true,
+          "contradictory": false,
+          "relational_or_causal_success": true,
+          "false_personalization": false,
+          "correct_abstention": false,
+          "stale_belief": false,
+          "reasoning": "Respons akurat menghubungkan kegagalan magang dengan perubahan pola pikir setelah latihan wawancara sesuai fakta memori."
+        },
+        "gemini-3.1-pro-preview": {
+          "grounded": true,
+          "contradictory": false,
+          "relational_or_causal_success": true,
+          "false_personalization": false,
+          "correct_abstention": false,
+          "stale_belief": false,
+          "reasoning": "Respons akurat menghubungkan kegagalan magang dengan perubahan perspektif menjadi kebutuhan perbaikan sesuai fakta aktif."
+        }
+      },
+      "score": {
+        "query_id": "r04",
+        "query_type": "relational",
+        "condition": "vector_only",
+        "grounded": true,
+        "contradictory": false,
+        "relational_or_causal_success": true,
+        "false_personalization": false,
+        "correct_abstention": false,
+        "stale_belief": false,
+        "judge_source": "gemini-3.1-flash-lite"
+      }
+    },
+    {
+      "query_id": "r04",
+      "query_type": "relational",
+      "condition": "hybrid",
+      "reply": "Kegagalan yang dulu sempat bikin kamu ngerasa putus asa itu, sekarang justru jadi bahan evaluasi yang bikin kamu lebih siap. Kemampuan kamu untuk ngelihat proses latihan kemarin sebagai kesempatan buat memperbaiki diri - bukannya malah menyalahkan keadaan - itu perubahan yang besar banget.\n\nMenurutmu, apa yang paling bikin pola pikirmu bergeser dari rasa kecewa jadi lebih terbuka kayak sekarang?",
+      "judgements": {
+        "gemini-3.1-flash-lite": {
+          "grounded": true,
+          "contradictory": false,
+          "relational_or_causal_success": true,
+          "false_personalization": false,
+          "correct_abstention": false,
+          "stale_belief": false,
+          "reasoning": "Respons akurat menghubungkan kegagalan magang dengan pergeseran pola pikir setelah latihan wawancara sesuai fakta memori pengguna."
+        },
+        "gemini-3.1-pro-preview": {
+          "grounded": true,
+          "contradictory": false,
+          "relational_or_causal_success": true,
+          "false_personalization": false,
+          "correct_abstention": false,
+          "stale_belief": false,
+          "reasoning": "Respons akurat menghubungkan kegagalan magang yang awalnya memicu keputusasaan menjadi bahan evaluasi setelah latihan wawancara."
+        }
+      },
+      "score": {
+        "query_id": "r04",
+        "query_type": "relational",
+        "condition": "hybrid",
+        "grounded": true,
+        "contradictory": false,
+        "relational_or_causal_success": true,
+        "false_personalization": false,
+        "correct_abstention": false,
+        "stale_belief": false,
+        "judge_source": "gemini-3.1-flash-lite"
+      }
+    },
+    {
+      "query_id": "r05",
+      "query_type": "relational",
+      "condition": "vector_only",
+      "reply": "Kayaknya kebiasaan kamu itu muncul karena rasa nggak tenang kalau hasilnya nanti nggak sesuai standar. Inget kan kamu pernah cerita soal tugas kelompok yang bikin frustrasi karena anggota lain nggak kontribusi, mungkin di titik itu kamu ngerasa harus ambil alih biar nilaimu nggak kena dampaknya. \n\nRasanya jadi lebih susah ya buat lepas kendali dan ngasih kepercayaan ke orang lain kalau kamu sendiri yang harus nanggung risikonya?",
+      "judgements": {
+        "gemini-3.1-flash-lite": {
+          "grounded": true,
+          "contradictory": false,
+          "relational_or_causal_success": true,
+          "false_personalization": false,
+          "correct_abstention": false,
+          "stale_belief": false,
+          "reasoning": "Chatbot akurat menghubungkan fakta tugas kelompok dengan perilaku pengguna mengambil alih pekerjaan secara logis."
+        },
+        "gemini-3.1-pro-preview": {
+          "grounded": true,
+          "contradictory": false,
+          "relational_or_causal_success": true,
+          "false_personalization": false,
+          "correct_abstention": false,
+          "stale_belief": false,
+          "reasoning": "Respons menghubungkan fakta teman sekelompok yang tidak berkontribusi dengan kebiasaan mengambil alih pekerjaan secara logis dan akurat."
+        }
+      },
+      "score": {
+        "query_id": "r05",
+        "query_type": "relational",
+        "condition": "vector_only",
+        "grounded": true,
+        "contradictory": false,
+        "relational_or_causal_success": true,
+        "false_personalization": false,
+        "correct_abstention": false,
+        "stale_belief": false,
+        "judge_source": "gemini-3.1-flash-lite"
+      }
+    },
+    {
+      "query_id": "r05",
+      "query_type": "relational",
+      "condition": "hybrid",
+      "reply": "Kayaknya kamu ngambil alih semua tugas itu jadi cara kamu buat mastiin hasilnya tetap aman, terutama kalau kamu ngerasa teman sekelompok nggak bisa diandalkan. Rasanya kayak, daripada nungguin mereka dan malah kepikiran hasilnya bakal berantakan, mending kamu beresin sendiri supaya kamu punya kendali penuh atas situasi itu.\n\nIni sebenarnya bentuk perlindungan diri biar kamu nggak perlu cemas sama ketidakpastian kerjaan orang lain. Tapi, kira-kira menurutmu pola ini lebih ngebantu kamu ngerasa tenang, atau justru malah nambah beban pikiran?",
+      "judgements": {
+        "gemini-3.1-flash-lite": {
+          "grounded": true,
+          "contradictory": false,
+          "relational_or_causal_success": true,
+          "false_personalization": false,
+          "correct_abstention": false,
+          "stale_belief": false,
+          "reasoning": "Chatbot berhasil menghubungkan fakta ketidakandalan teman dengan perilaku pengguna mengambil alih tugas secara logis dan empatik."
+        },
+        "gemini-3.1-pro-preview": {
+          "grounded": true,
+          "contradictory": false,
+          "relational_or_causal_success": true,
+          "false_personalization": false,
+          "correct_abstention": false,
+          "stale_belief": false,
+          "reasoning": "Respons secara akurat menghubungkan fakta teman sekelompok yang tidak bekerja dengan tindakan pengguna mengambil semua tugas."
+        }
+      },
+      "score": {
+        "query_id": "r05",
+        "query_type": "relational",
+        "condition": "hybrid",
+        "grounded": true,
+        "contradictory": false,
+        "relational_or_causal_success": true,
+        "false_personalization": false,
+        "correct_abstention": false,
+        "stale_belief": false,
+        "judge_source": "gemini-3.1-flash-lite"
+      }
+    },
+    {
+      "query_id": "r06",
+      "query_type": "relational",
+      "condition": "vector_only",
+      "reply": "Dulu kamu pernah cerita rasanya frustrasi banget tiap kali ngerasa gagal ngatur uang bulanan, apalagi pas lagi nunggu kiriman. Sekarang, dengan rutin nyatet pengeluaran harian, kamu kayak nemuin cara buat dapet kendali balik - fokusnya bukan lagi di \"uangnya cukup apa nggak\", tapi di \"aku tahu ke mana perginya uangku\". \n\nRasanya beda banget kan, pas sadar kalau kamu sebenarnya punya andil buat ngatur itu semua tiap hari?",
+      "judgements": {
+        "gemini-3.1-flash-lite": {
+          "grounded": true,
+          "contradictory": false,
+          "relational_or_causal_success": true,
+          "false_personalization": true,
+          "correct_abstention": false,
+          "stale_belief": true,
+          "reasoning": "Chatbot menggunakan fakta kadaluwarsa dan mengklaim riwayat personal yang tidak pernah diceritakan pengguna."
+        },
+        "gemini-3.1-pro-preview": {
+          "grounded": true,
+          "contradictory": false,
+          "relational_or_causal_success": true,
+          "false_personalization": true,
+          "correct_abstention": false,
+          "stale_belief": false,
+          "reasoning": "Menghubungkan fakta dengan baik, tetapi menghalusinasi detail personal 'nunggu kiriman' yang tidak ada dalam memori."
+        }
+      },
+      "score": {
+        "query_id": "r06",
+        "query_type": "relational",
+        "condition": "vector_only",
+        "grounded": true,
+        "contradictory": false,
+        "relational_or_causal_success": true,
+        "false_personalization": true,
+        "correct_abstention": false,
+        "stale_belief": true,
+        "judge_source": "gemini-3.1-flash-lite"
+      }
+    },
+    {
+      "query_id": "r06",
+      "query_type": "relational",
+      "condition": "hybrid",
+      "reply": "Kayaknya pencatatan itu pelan-pelan nggeser persepsi kamu dari ngerasa \"selalu gagal\" jadi lebih ke \"punya kendali\". Waktu kiriman uang dari orang tua telat, mungkin dulu itu kerasa kayak kiamat kecil yang bikin panik, tapi sekarang kamu punya data nyata buat nentuin langkah selanjutnya.\n\nBukan lagi soal hasil akhirnya uang bakal habis atau nggak, tapi lebih ke bukti kalau kamu bisa ngadepin ketidakpastian itu dengan cara yang terukur. Menurut kamu sendiri, bagian mana dari proses nyatet itu yang paling bikin rasa panikmu jadi lebih tenang?",
+      "judgements": {
+        "gemini-3.1-flash-lite": {
+          "grounded": true,
+          "contradictory": true,
+          "relational_or_causal_success": true,
+          "false_personalization": true,
+          "correct_abstention": false,
+          "stale_belief": true,
+          "reasoning": "Chatbot merujuk fakta kadaluwarsa 'selalu gagal' dan mengasumsikan detail personal tentang kiriman uang orang tua tanpa dasar."
+        },
+        "gemini-3.1-pro-preview": {
+          "grounded": true,
+          "contradictory": false,
+          "relational_or_causal_success": true,
+          "false_personalization": true,
+          "correct_abstention": false,
+          "stale_belief": false,
+          "reasoning": "Respons menghubungkan fakta dengan baik, namun berhalusinasi tentang kiriman uang orang tua yang telat."
+        }
+      },
+      "score": {
+        "query_id": "r06",
+        "query_type": "relational",
+        "condition": "hybrid",
+        "grounded": true,
+        "contradictory": true,
+        "relational_or_causal_success": true,
+        "false_personalization": true,
+        "correct_abstention": false,
+        "stale_belief": true,
+        "judge_source": "gemini-3.1-flash-lite"
+      }
+    },
+    {
+      "query_id": "c01",
+      "query_type": "causal",
+      "condition": "vector_only",
+      "reply": "Ingat nggak waktu proposalmu ditolak bulan April lalu? Itu titik di mana bimbingan mulai terasa jadi ancaman, bukan lagi proses belajar. \n\nKarena rasa sakit dari penolakan itu membekas, otak kamu otomatis memilih untuk menghindar supaya nggak perlu merasakan hal yang sama lagi. Jadi, tindakan itu sebenarnya adalah cara kamu melindungi diri dari rasa kecewa yang dalam, bukan karena kamu nggak niat ngerjain skripsi.",
+      "judgements": {
+        "gemini-3.1-flash-lite": {
+          "grounded": false,
+          "contradictory": true,
+          "relational_or_causal_success": false,
+          "false_personalization": true,
+          "correct_abstention": false,
+          "stale_belief": true,
+          "reasoning": "Chatbot mengaitkan penolakan proposal dengan perilaku menghindari bimbingan yang sudah dinyatakan sebagai fakta tidak berlaku."
+        },
+        "gemini-3.1-pro-preview": {
+          "grounded": true,
+          "contradictory": false,
+          "relational_or_causal_success": true,
+          "false_personalization": false,
+          "correct_abstention": false,
+          "stale_belief": false,
+          "reasoning": "Respons menghubungkan penolakan proposal April dengan alasan masa lalu menghindari bimbingan secara logis dan akurat."
+        }
+      },
+      "score": {
+        "query_id": "c01",
+        "query_type": "causal",
+        "condition": "vector_only",
+        "grounded": false,
+        "contradictory": true,
+        "relational_or_causal_success": false,
+        "false_personalization": true,
+        "correct_abstention": false,
+        "stale_belief": true,
+        "judge_source": "gemini-3.1-flash-lite"
+      }
+    },
+    {
+      "query_id": "c01",
+      "query_type": "causal",
+      "condition": "hybrid",
+      "reply": "Dulu kayaknya pas proposalmu ditolak di bulan April, kamu ngerasa itu bukan cuma soal skripsi, tapi harga dirimu yang ikut kena. Jadi, menghindari bimbingan itu sebenarnya cara kamu nahan rasa sakit supaya nggak merasa \"gagal\" lagi setiap harus berhadapan sama dosen.\n\nSekarang pas kamu udah mulai rutin kirim revisi tiap Jumat, menurutmu rasanya beda nggak dibanding waktu awal-awal dulu?",
+      "judgements": {
+        "gemini-3.1-flash-lite": {
+          "grounded": false,
+          "contradictory": true,
+          "relational_or_causal_success": false,
+          "false_personalization": true,
+          "correct_abstention": false,
+          "stale_belief": true,
+          "reasoning": "Chatbot mengaitkan penolakan proposal dengan perilaku menghindari bimbingan yang sudah dinyatakan tidak berlaku sebagai fakta saat ini."
+        },
+        "gemini-3.1-pro-preview": {
+          "grounded": false,
+          "contradictory": false,
+          "relational_or_causal_success": false,
+          "false_personalization": true,
+          "correct_abstention": false,
+          "stale_belief": false,
+          "reasoning": "Respons mengarang detail personal tentang harga diri dan rutinitas revisi tiap Jumat yang tidak ada dalam fakta."
+        }
+      },
+      "score": {
+        "query_id": "c01",
+        "query_type": "causal",
+        "condition": "hybrid",
+        "grounded": false,
+        "contradictory": true,
+        "relational_or_causal_success": false,
+        "false_personalization": true,
+        "correct_abstention": false,
+        "stale_belief": true,
+        "judge_source": "gemini-3.1-flash-lite"
+      }
+    },
+    {
+      "query_id": "c02",
+      "query_type": "causal",
+      "condition": "vector_only",
+      "reply": "Mungkin karena pas bahas biaya itu, pikiranmu langsung lari ke rasa bersalah yang pernah kamu alami sebelumnya, kayak waktu harus bayar biaya praktikum tambahan saat orang tuamu lagi kesulitan. Rasanya beban finansial keluarga jadi seolah-olah tanggung jawabmu sendiri, makanya badan jadi nggak bisa santai pas malam. Wajar kalau hal seberat itu bikin otakmu tetep \"siaga\" dan akhirnya susah buat istirahat. Apa kamu ngerasa kalau habis bahas itu, ekspektasi keluarga jadi kerasa makin berat di pundakmu?",
+      "judgements": {
+        "gemini-3.1-flash-lite": {
+          "grounded": true,
+          "contradictory": false,
+          "relational_or_causal_success": true,
+          "false_personalization": true,
+          "correct_abstention": false,
+          "stale_belief": false,
+          "reasoning": "Chatbot berhalusinasi mengenai detail biaya praktikum yang tidak pernah diceritakan pengguna dalam fakta memori."
+        },
+        "gemini-3.1-pro-preview": {
+          "grounded": false,
+          "contradictory": false,
+          "relational_or_causal_success": false,
+          "false_personalization": true,
+          "correct_abstention": false,
+          "stale_belief": false,
+          "reasoning": "Chatbot mengarang detail personal tentang biaya praktikum tambahan yang tidak ada dalam fakta aktif (halusinasi)."
+        }
+      },
+      "score": {
+        "query_id": "c02",
+        "query_type": "causal",
+        "condition": "vector_only",
+        "grounded": true,
+        "contradictory": false,
+        "relational_or_causal_success": true,
+        "false_personalization": true,
+        "correct_abstention": false,
+        "stale_belief": false,
+        "judge_source": "gemini-3.1-flash-lite"
+      }
+    },
+    {
+      "query_id": "c02",
+      "query_type": "causal",
+      "condition": "hybrid",
+      "reply": "Membahas soal biaya kuliah emang sering banget bikin cemas, apalagi kalau kamu ngerasa bersalah tiap ada pengeluaran tambahan kayak biaya praktikum kemarin. Pikiran jadi terus terjaga karena beban finansial itu rasanya berat banget buat ditanggung sendiri. Kamu merasa pikiran itu muncul karena ngerasa harus jadi satu-satunya yang bertanggung jawab atas kondisi keuangan orang tua, atau ada hal lain yang bikin kamu ngerasa nggak tenang?",
+      "judgements": {
+        "gemini-3.1-flash-lite": {
+          "grounded": true,
+          "contradictory": false,
+          "relational_or_causal_success": true,
+          "false_personalization": true,
+          "correct_abstention": false,
+          "stale_belief": false,
+          "reasoning": "Chatbot berhalusinasi tentang biaya praktikum yang tidak ada dalam fakta memori pengguna."
+        },
+        "gemini-3.1-pro-preview": {
+          "grounded": false,
+          "contradictory": false,
+          "relational_or_causal_success": false,
+          "false_personalization": true,
+          "correct_abstention": false,
+          "stale_belief": false,
+          "reasoning": "Chatbot gagal menyebutkan pertengkaran dengan ibu dan berhalusinasi tentang biaya praktikum serta rasa bersalah."
+        }
+      },
+      "score": {
+        "query_id": "c02",
+        "query_type": "causal",
+        "condition": "hybrid",
+        "grounded": true,
+        "contradictory": false,
+        "relational_or_causal_success": true,
+        "false_personalization": true,
+        "correct_abstention": false,
+        "stale_belief": false,
+        "judge_source": "gemini-3.1-flash-lite"
+      }
+    },
+    {
+      "query_id": "c03",
+      "query_type": "causal",
+      "condition": "vector_only",
+      "reply": "Ada banyak hal yang menumpuk ya, mulai dari konflik sama koordinator acara sampai capek sendiri karena jadwal rapat yang sering nggak jelas. Nggak heran kalau tanggung jawab kepemimpinan itu jadi kerasa makin berat saat kamu lagi ngerasa ragu sama kemampuan diri sendiri. Kalau coba ditarik benang merahnya, dari konflik interpersonal, manajemen waktu yang berantakan, atau beban peran itu, bagian mana sih yang sebenarnya paling bikin kamu ngerasa pengen menghindar?",
+      "judgements": {
+        "gemini-3.1-flash-lite": {
+          "grounded": true,
+          "contradictory": false,
+          "relational_or_causal_success": true,
+          "false_personalization": true,
+          "correct_abstention": false,
+          "stale_belief": false,
+          "reasoning": "Chatbot menyertakan asumsi keraguan diri yang tidak ada dalam fakta memori pengguna."
+        },
+        "gemini-3.1-pro-preview": {
+          "grounded": true,
+          "contradictory": false,
+          "relational_or_causal_success": true,
+          "false_personalization": true,
+          "correct_abstention": false,
+          "stale_belief": false,
+          "reasoning": "Respons menyebutkan fakta dengan benar, namun menghalusinasikan detail tentang tanggung jawab kepemimpinan dan keraguan diri."
+        }
+      },
+      "score": {
+        "query_id": "c03",
+        "query_type": "causal",
+        "condition": "vector_only",
+        "grounded": true,
+        "contradictory": false,
+        "relational_or_causal_success": true,
+        "false_personalization": true,
+        "correct_abstention": false,
+        "stale_belief": false,
+        "judge_source": "gemini-3.1-flash-lite"
+      }
+    },
+    {
+      "query_id": "c03",
+      "query_type": "causal",
+      "condition": "hybrid",
+      "reply": "Kayaknya ada dua faktor utama yang bikin kamu merasa berat buat datang rapat. Konflik yang belum beres sama koordinator acara itu memang nguras energi banget, apalagi kalau ditambah rasa capek tiap kali harus nunggu rapat yang sering molor.\n\nKira-kira menurutmu, pilihan buat nggak datang ini lebih ke arah menjaga kesehatan mental dari situasi yang toksik, atau sebenarnya ada rasa kesal yang bikin kamu ingin menghindar dari tanggung jawab tersebut?",
+      "judgements": {
+        "gemini-3.1-flash-lite": {
+          "grounded": true,
+          "contradictory": false,
+          "relational_or_causal_success": true,
+          "false_personalization": false,
+          "correct_abstention": false,
+          "stale_belief": false,
+          "reasoning": "Respons akurat menghubungkan dua fakta aktif sebagai penyebab keinginan pengguna untuk tidak menghadiri rapat organisasi."
+        },
+        "gemini-3.1-pro-preview": {
+          "grounded": true,
+          "contradictory": false,
+          "relational_or_causal_success": true,
+          "false_personalization": false,
+          "correct_abstention": false,
+          "stale_belief": false,
+          "reasoning": "Respons akurat menyebutkan konflik dengan koordinator dan rapat molor sebagai penyebab keengganan pengguna hadir."
+        }
+      },
+      "score": {
+        "query_id": "c03",
+        "query_type": "causal",
+        "condition": "hybrid",
+        "grounded": true,
+        "contradictory": false,
+        "relational_or_causal_success": true,
+        "false_personalization": false,
+        "correct_abstention": false,
+        "stale_belief": false,
+        "judge_source": "gemini-3.1-flash-lite"
+      }
+    },
+    {
+      "query_id": "c04",
+      "query_type": "causal",
+      "condition": "vector_only",
+      "reply": "Wajar banget kalau perasaan itu muncul, apalagi pas kamu lagi di fase transisi mau lulus kayak sekarang. Kadang pas kita kasih banyak energi buat persiapan karier, terus hasilnya belum sesuai ekspektasi, otak kita otomatis jadi gampang narik kesimpulan kalau semuanya nggak ada gunanya.\n\nPadahal, kalau diingat lagi pas kamu gagal wawancara kemarin, kamu justru bisa belajar banyak buat perbaiki cara jawabmu ke depannya. Kira-kira apa yang bikin perasaan \"sia-sia\" itu jadi lebih kuat muncul belakangan ini, apa karena ngelihat teman-teman yang udah mulai dapet kerjaan?",
+      "judgements": {
+        "gemini-3.1-flash-lite": {
+          "grounded": true,
+          "contradictory": false,
+          "relational_or_causal_success": true,
+          "false_personalization": false,
+          "correct_abstention": false,
+          "stale_belief": false,
+          "reasoning": "Chatbot akurat menghubungkan kegagalan wawancara dengan perasaan sia-sia sesuai fakta memori pengguna."
+        },
+        "gemini-3.1-pro-preview": {
+          "grounded": true,
+          "contradictory": false,
+          "relational_or_causal_success": true,
+          "false_personalization": true,
+          "correct_abstention": false,
+          "stale_belief": false,
+          "reasoning": "Respons menghubungkan kegagalan wawancara dengan perasaan sia-sia, namun berhalusinasi tentang fase kelulusan dan teman."
+        }
+      },
+      "score": {
+        "query_id": "c04",
+        "query_type": "causal",
+        "condition": "vector_only",
+        "grounded": true,
+        "contradictory": false,
+        "relational_or_causal_success": true,
+        "false_personalization": false,
+        "correct_abstention": false,
+        "stale_belief": false,
+        "judge_source": "gemini-3.1-flash-lite"
+      }
+    },
+    {
+      "query_id": "c04",
+      "query_type": "causal",
+      "condition": "hybrid",
+      "reply": "Rasanya wajar banget kalau kamu sempat ngerasa kayak gitu, apalagi setelah kamu udah taruh banyak tenaga dan ekspektasi buat wawancara magang kemarin. Waktu kita ngerasa udah kasih yang terbaik tapi hasilnya belum sesuai, emang gampang banget buat ngelihat hambatan itu sebagai titik henti, bukan cuma bagian dari proses. \n\nIngat nggak, dulu kamu pernah ngerasa hal yang sama pas gagal magang, tapi akhirnya kamu justru berhasil mengubah cara pandang itu jadi bahan evaluasi buat latihan wawancara lagi? Sekarang, kira-kira apa hal paling beda yang kamu rasain waktu melihat hambatan itu dibanding pertama kali kamu ngalamin?",
+      "judgements": {
+        "gemini-3.1-flash-lite": {
+          "grounded": true,
+          "contradictory": false,
+          "relational_or_causal_success": true,
+          "false_personalization": true,
+          "correct_abstention": false,
+          "stale_belief": false,
+          "reasoning": "Chatbot mengaitkan kegagalan magang dengan perasaan sia-sia, namun berhalusinasi tentang pengalaman masa lalu pengguna yang tidak ada dasarnya."
+        },
+        "gemini-3.1-pro-preview": {
+          "grounded": true,
+          "contradictory": false,
+          "relational_or_causal_success": true,
+          "false_personalization": true,
+          "correct_abstention": false,
+          "stale_belief": false,
+          "reasoning": "Respons menghubungkan sebab-akibat dengan benar, namun mengarang detail personal tentang evaluasi dan latihan wawancara sebelumnya."
+        }
+      },
+      "score": {
+        "query_id": "c04",
+        "query_type": "causal",
+        "condition": "hybrid",
+        "grounded": true,
+        "contradictory": false,
+        "relational_or_causal_success": true,
+        "false_personalization": true,
+        "correct_abstention": false,
+        "stale_belief": false,
+        "judge_source": "gemini-3.1-flash-lite"
+      }
+    },
+    {
+      "query_id": "c05",
+      "query_type": "causal",
+      "condition": "vector_only",
+      "reply": "Mungkin karena setelah teman kosmu pindah, suasana kamar jadi terasa jauh lebih sepi dari biasanya. Ditambah lagi dengan beban tugas kelompok yang harus kamu tanggung sendiri belakangan ini, wajar kalau kamu merasa kamar jadi tempat satu-satunya buat menghindar dari tuntutan luar. \n\nKira-kira, apakah dengan mengurung diri itu kamu merasa lebih tenang, atau justru malah bikin perasaan sepi itu jadi makin terasa?",
+      "judgements": {
+        "gemini-3.1-flash-lite": {
+          "grounded": true,
+          "contradictory": false,
+          "relational_or_causal_success": true,
+          "false_personalization": true,
+          "correct_abstention": false,
+          "stale_belief": false,
+          "reasoning": "Chatbot mengaitkan fakta pindahnya teman dengan perilaku pengguna, namun menambahkan halusinasi tentang beban tugas kelompok yang tidak ada dasarnya."
+        },
+        "gemini-3.1-pro-preview": {
+          "grounded": true,
+          "contradictory": false,
+          "relational_or_causal_success": true,
+          "false_personalization": true,
+          "correct_abstention": false,
+          "stale_belief": false,
+          "reasoning": "Respons menghubungkan fakta aktif dengan benar, namun berhalusinasi tentang beban tugas kelompok yang tidak pernah diceritakan pengguna."
+        }
+      },
+      "score": {
+        "query_id": "c05",
+        "query_type": "causal",
+        "condition": "vector_only",
+        "grounded": true,
+        "contradictory": false,
+        "relational_or_causal_success": true,
+        "false_personalization": true,
+        "correct_abstention": false,
+        "stale_belief": false,
+        "judge_source": "gemini-3.1-flash-lite"
+      }
+    },
+    {
+      "query_id": "c05",
+      "query_type": "causal",
+      "condition": "hybrid",
+      "reply": "Kamar kos pasti terasa beda banget ya suasananya semenjak teman kosmu pindah. Mungkin mengurung diri itu jadi cara kamu buat ngerasa aman sementara waktu sambil menyesuaikan diri dengan sepinya lingkungan kos yang sekarang.\n\nKira-kira, kamu lebih merasa tenang saat sendirian di kamar, atau justru merasa semakin bosan dan sepi?",
+      "judgements": {
+        "gemini-3.1-flash-lite": {
+          "grounded": true,
+          "contradictory": false,
+          "relational_or_causal_success": true,
+          "false_personalization": false,
+          "correct_abstention": false,
+          "stale_belief": false,
+          "reasoning": "Chatbot akurat menghubungkan kepindahan teman kos sebagai penyebab pengguna mengurung diri sesuai fakta memori."
+        },
+        "gemini-3.1-pro-preview": {
+          "grounded": true,
+          "contradictory": false,
+          "relational_or_causal_success": true,
+          "false_personalization": false,
+          "correct_abstention": false,
+          "stale_belief": false,
+          "reasoning": "Respons akurat menghubungkan mengurung diri dengan teman kos yang pindah dan kamar yang sepi."
+        }
+      },
+      "score": {
+        "query_id": "c05",
+        "query_type": "causal",
+        "condition": "hybrid",
+        "grounded": true,
+        "contradictory": false,
+        "relational_or_causal_success": true,
+        "false_personalization": false,
+        "correct_abstention": false,
+        "stale_belief": false,
+        "judge_source": "gemini-3.1-flash-lite"
+      }
+    },
+    {
+      "query_id": "c06",
+      "query_type": "causal",
+      "condition": "vector_only",
+      "reply": "Kekhawatiran itu muncul karena keterlambatan kiriman uang bulanan itu faktor di luar kendalimu, yang bikin rasa amanmu jadi terganggu. Wajar kalau kamu merasa cemas pas stabilitas tempat tinggalmu sendiri yang jadi taruhannya.\n\nSeingatku, kamu sudah mulai rutin mencatat pengeluaran harian, dan itu sebenarnya cara yang bagus banget buat ngebantu kamu ngerasa punya kendali lebih atas uangmu sendiri. Di luar kendala kiriman yang terlambat itu, ada nggak bagian dari pengeluaran harianmu yang akhir-akhir ini bikin kamu ngerasa paling berat buat dikontrol?",
+      "judgements": {
+        "gemini-3.1-flash-lite": {
+          "grounded": true,
+          "contradictory": false,
+          "relational_or_causal_success": true,
+          "false_personalization": true,
+          "correct_abstention": false,
+          "stale_belief": false,
+          "reasoning": "Chatbot berhasil menjawab penyebab kekhawatiran, namun berhalusinasi mengenai kebiasaan mencatat pengeluaran yang tidak pernah ada dalam fakta memori."
+        },
+        "gemini-3.1-pro-preview": {
+          "grounded": true,
+          "contradictory": false,
+          "relational_or_causal_success": true,
+          "false_personalization": true,
+          "correct_abstention": false,
+          "stale_belief": false,
+          "reasoning": "Respons menjawab sebab-akibat dengan benar, tetapi berhalusinasi tentang fakta mencatat pengeluaran harian."
+        }
+      },
+      "score": {
+        "query_id": "c06",
+        "query_type": "causal",
+        "condition": "vector_only",
+        "grounded": true,
+        "contradictory": false,
+        "relational_or_causal_success": true,
+        "false_personalization": true,
+        "correct_abstention": false,
+        "stale_belief": false,
+        "judge_source": "gemini-3.1-flash-lite"
+      }
+    },
+    {
+      "query_id": "c06",
+      "query_type": "causal",
+      "condition": "hybrid",
+      "reply": "Memang menekan banget ya kalau kiriman uang dari orang tua yang seharusnya buat bayar kos jadi telat, karena itu langsung menyentuh kebutuhan paling dasar kamu. Ketidakpastian itu akhirnya bikin pikiranmu lari ke skenario terburuk, apalagi kamu ngerasa jadi nggak punya kontrol atas situasi tersebut.\n\nPadahal, kebiasaan kamu mencatat pengeluaran harian belakangan ini sebenarnya langkah nyata yang menunjukkan kamu tetap punya kendali, meskipun kirimannya sendiri lagi telat. Menurutmu, seberapa membantu kebiasaan mencatat itu bikin perasaanmu agak lebih tenang di tengah situasi kayak gini?",
+      "judgements": {
+        "gemini-3.1-flash-lite": {
+          "grounded": true,
+          "contradictory": false,
+          "relational_or_causal_success": true,
+          "false_personalization": true,
+          "correct_abstention": false,
+          "stale_belief": false,
+          "reasoning": "Chatbot mengaitkan keterlambatan uang dengan kekhawatiran kos, namun berhalusinasi tentang kebiasaan mencatat pengeluaran pengguna."
+        },
+        "gemini-3.1-pro-preview": {
+          "grounded": true,
+          "contradictory": false,
+          "relational_or_causal_success": true,
+          "false_personalization": true,
+          "correct_abstention": false,
+          "stale_belief": false,
+          "reasoning": "Respons menjawab penyebab dengan benar, tetapi berhalusinasi tentang kebiasaan mencatat pengeluaran harian yang tidak ada di fakta."
+        }
+      },
+      "score": {
+        "query_id": "c06",
+        "query_type": "causal",
+        "condition": "hybrid",
+        "grounded": true,
+        "contradictory": false,
+        "relational_or_causal_success": true,
+        "false_personalization": true,
+        "correct_abstention": false,
+        "stale_belief": false,
+        "judge_source": "gemini-3.1-flash-lite"
+      }
+    },
+    {
+      "query_id": "t01",
+      "query_type": "temporal",
+      "condition": "vector_only",
+      "reply": "Kayaknya sekarang kamu ngelihat penolakan itu cuma sebagai salah satu langkah dalam proses belajar, bukan lagi penentu harga dirimu. Kamu sudah mulai memisahkan hambatan akademik dari nilai diri kamu sebagai mahasiswa. Rasanya pasti beda ya, bisa lebih tenang menghadapi revisi setelah tahu kalau kegagalan kemarin itu bukan akhir segalanya?",
+      "judgements": {
+        "gemini-3.1-flash-lite": {
+          "grounded": true,
+          "contradictory": false,
+          "relational_or_causal_success": false,
+          "false_personalization": false,
+          "correct_abstention": false,
+          "stale_belief": false,
+          "reasoning": "Respons akurat mencerminkan fakta aktif bahwa penolakan proposal bukan kegagalan mahasiswa tanpa menyebutkan fakta lama yang tidak berlaku."
+        },
+        "gemini-3.1-pro-preview": {
+          "grounded": true,
+          "contradictory": false,
+          "relational_or_causal_success": false,
+          "false_personalization": false,
+          "correct_abstention": false,
+          "stale_belief": false,
+          "reasoning": "Respons akurat merujuk fakta aktif bahwa penolakan proposal bukan berarti gagal sebagai mahasiswa."
+        }
+      },
+      "score": {
+        "query_id": "t01",
+        "query_type": "temporal",
+        "condition": "vector_only",
+        "grounded": true,
+        "contradictory": false,
+        "relational_or_causal_success": false,
+        "false_personalization": false,
+        "correct_abstention": false,
+        "stale_belief": false,
+        "judge_source": "gemini-3.1-flash-lite"
+      }
+    },
+    {
+      "query_id": "t01",
+      "query_type": "temporal",
+      "condition": "hybrid",
+      "reply": "Kamu dulu sempat merasa penolakan itu bukti kalau kamu gagal jadi mahasiswa, tapi sekarang perspektifmu sudah jauh lebih tenang. Kamu mulai sadar kalau satu penolakan proposal itu cuma bagian dari proses akademik, bukan penentu harga diri atau kapasitas kamu secara keseluruhan. Keren banget bisa sampai di titik ini. Menurutmu sendiri, apa hal paling penting yang bikin kamu sekarang lebih bisa memisahkan antara kritik dosen sama nilai dirimu?",
+      "judgements": {
+        "gemini-3.1-flash-lite": {
+          "grounded": true,
+          "contradictory": false,
+          "relational_or_causal_success": false,
+          "false_personalization": false,
+          "correct_abstention": false,
+          "stale_belief": false,
+          "reasoning": "Chatbot akurat merujuk fakta aktif dan tidak menganggap fakta lama sebagai kebenaran saat ini."
+        },
+        "gemini-3.1-pro-preview": {
+          "grounded": true,
+          "contradictory": false,
+          "relational_or_causal_success": false,
+          "false_personalization": false,
+          "correct_abstention": false,
+          "stale_belief": false,
+          "reasoning": "Respons akurat merujuk fakta aktif bahwa penolakan proposal bukan berarti gagal, tanpa kontradiksi."
+        }
+      },
+      "score": {
+        "query_id": "t01",
+        "query_type": "temporal",
+        "condition": "hybrid",
+        "grounded": true,
+        "contradictory": false,
+        "relational_or_causal_success": false,
+        "false_personalization": false,
+        "correct_abstention": false,
+        "stale_belief": false,
+        "judge_source": "gemini-3.1-flash-lite"
+      }
+    },
+    {
+      "query_id": "t02",
+      "query_type": "temporal",
+      "condition": "vector_only",
+      "reply": "Langkahmu buat konsisten kirim revisi tiap Jumat pagi itu progres yang nyata banget. Dibandingin sama waktu proposalmu ditolak bulan April lalu, cara kamu sekarang jauh lebih proaktif buat ngelawan rasa cemas pas harus bimbingan. Rasanya gimana pas akhirnya berhasil mutusin buat punya jadwal rutin kayak gitu?",
+      "judgements": {
+        "gemini-3.1-flash-lite": {
+          "grounded": true,
+          "contradictory": false,
+          "relational_or_causal_success": false,
+          "false_personalization": true,
+          "correct_abstention": false,
+          "stale_belief": false,
+          "reasoning": "Chatbot berhalusinasi tentang penolakan proposal bulan April yang tidak ada dalam fakta memori pengguna."
+        },
+        "gemini-3.1-pro-preview": {
+          "grounded": true,
+          "contradictory": false,
+          "relational_or_causal_success": false,
+          "false_personalization": true,
+          "correct_abstention": false,
+          "stale_belief": false,
+          "reasoning": "Respons akurat menyebutkan fakta aktif, namun menghalusinasikan detail personal tentang proposal ditolak bulan April lalu."
+        }
+      },
+      "score": {
+        "query_id": "t02",
+        "query_type": "temporal",
+        "condition": "vector_only",
+        "grounded": true,
+        "contradictory": false,
+        "relational_or_causal_success": false,
+        "false_personalization": true,
+        "correct_abstention": false,
+        "stale_belief": false,
+        "judge_source": "gemini-3.1-flash-lite"
+      }
+    },
+    {
+      "query_id": "t02",
+      "query_type": "temporal",
+      "condition": "hybrid",
+      "reply": "Kebiasaan rutin kirim revisi tiap Jumat pagi itu progres yang solid banget dibanding pola menghindar yang sempat kamu alami dulu. Kelihatan banget kamu lebih pegang kendali sekarang dan nggak lagi nunggu bimbingan dalam rasa cemas.\n\nGimana perasaanmu sendiri pas udah ngejalanin rutinitas hari Jumat ini selama beberapa minggu terakhir?",
+      "judgements": {
+        "gemini-3.1-flash-lite": {
+          "grounded": true,
+          "contradictory": false,
+          "relational_or_causal_success": true,
+          "false_personalization": false,
+          "correct_abstention": false,
+          "stale_belief": false,
+          "reasoning": "Chatbot akurat merujuk fakta aktif dan membandingkannya dengan fakta lama secara tepat sebagai progres positif."
+        },
+        "gemini-3.1-pro-preview": {
+          "grounded": true,
+          "contradictory": false,
+          "relational_or_causal_success": false,
+          "false_personalization": false,
+          "correct_abstention": false,
+          "stale_belief": false,
+          "reasoning": "Respons akurat menyebutkan fakta aktif dan merujuk fakta lama sebagai masa lalu tanpa halusinasi."
+        }
+      },
+      "score": {
+        "query_id": "t02",
+        "query_type": "temporal",
+        "condition": "hybrid",
+        "grounded": true,
+        "contradictory": false,
+        "relational_or_causal_success": true,
+        "false_personalization": false,
+        "correct_abstention": false,
+        "stale_belief": false,
+        "judge_source": "gemini-3.1-flash-lite"
+      }
+    },
+    {
+      "query_id": "t03",
+      "query_type": "temporal",
+      "condition": "vector_only",
+      "reply": "Kamu kayaknya lagi berusaha melihat kalau pertanyaan ayah soal nilai itu bukan cuma soal angka, tapi bentuk perhatian yang mungkin dia nggak tahu cara menyampaikannya dengan lebih hangat. Menarik banget kamu bisa sampai di titik itu, meskipun aku tahu itu nggak otomatis bikin beban perasaanmu jadi ringan.\n\nSetelah sadar soal itu, ada bedanya nggak sih pas kamu komunikasi sama beliau sekarang?",
+      "judgements": {
+        "gemini-3.1-flash-lite": {
+          "grounded": true,
+          "contradictory": false,
+          "relational_or_causal_success": true,
+          "false_personalization": false,
+          "correct_abstention": false,
+          "stale_belief": false,
+          "reasoning": "Respons akurat merujuk fakta aktif bahwa pertanyaan nilai adalah bentuk perhatian ayah yang menekan."
+        },
+        "gemini-3.1-pro-preview": {
+          "grounded": true,
+          "contradictory": false,
+          "relational_or_causal_success": false,
+          "false_personalization": false,
+          "correct_abstention": false,
+          "stale_belief": false,
+          "reasoning": "Respons akurat merujuk fakta aktif bahwa ayah menanyakan nilai sebagai bentuk perhatian."
+        }
+      },
+      "score": {
+        "query_id": "t03",
+        "query_type": "temporal",
+        "condition": "vector_only",
+        "grounded": true,
+        "contradictory": false,
+        "relational_or_causal_success": true,
+        "false_personalization": false,
+        "correct_abstention": false,
+        "stale_belief": false,
+        "judge_source": "gemini-3.1-flash-lite"
+      }
+    },
+    {
+      "query_id": "t03",
+      "query_type": "temporal",
+      "condition": "hybrid",
+      "reply": "Kayaknya sekarang kamu mulai bisa lihat kalau pertanyaan-pertanyaan soal nilai itu adalah caranya nunjukin perhatian, meskipun penyampaiannya emang kerasa menekan banget. Proses kamu mengubah pandangan ini langkah yang dewasa, soalnya kamu tetap sadar kalau beban emosional yang kamu rasain dulu itu nyata. Memahami niat baiknya nggak berarti kamu harus menepis atau menyangkal rasa sesak yang sempat muncul.\n\nGimana rasanya pas sekarang kamu coba ngeliat hubungan kalian dari kacamata yang baru ini?",
+      "judgements": {
+        "gemini-3.1-flash-lite": {
+          "grounded": true,
+          "contradictory": false,
+          "relational_or_causal_success": true,
+          "false_personalization": false,
+          "correct_abstention": false,
+          "stale_belief": false,
+          "reasoning": "Respons akurat merujuk fakta aktif bahwa ayah peduli melalui nilai meski caranya menekan."
+        },
+        "gemini-3.1-pro-preview": {
+          "grounded": true,
+          "contradictory": false,
+          "relational_or_causal_success": false,
+          "false_personalization": false,
+          "correct_abstention": false,
+          "stale_belief": false,
+          "reasoning": "Respons akurat merujuk fakta aktif bahwa ayah menanyakan nilai untuk menunjukkan perhatian meski terasa menekan."
+        }
+      },
+      "score": {
+        "query_id": "t03",
+        "query_type": "temporal",
+        "condition": "hybrid",
+        "grounded": true,
+        "contradictory": false,
+        "relational_or_causal_success": true,
+        "false_personalization": false,
+        "correct_abstention": false,
+        "stale_belief": false,
+        "judge_source": "gemini-3.1-flash-lite"
+      }
+    },
+    {
+      "query_id": "t04",
+      "query_type": "temporal",
+      "condition": "vector_only",
+      "reply": "Kayaknya kamu akhirnya sadar kalau memimpin itu bukan tentang kesempurnaan individu, tapi soal gimana kamu ngatur sistem delegasi tugas yang jelas. Ternyata itu bikin bebanmu jadi lebih ringan karena kamu sekarang fokus ke manajemen kerjanya, bukan lagi meragukan kemampuan diri sendiri. Jadi, sekarang tiap ada rapat, kamu ngerasa lebih pegang kendali nggak?",
+      "judgements": {
+        "gemini-3.1-flash-lite": {
+          "grounded": true,
+          "contradictory": false,
+          "relational_or_causal_success": true,
+          "false_personalization": false,
+          "correct_abstention": false,
+          "stale_belief": false,
+          "reasoning": "Respons akurat menghubungkan kemampuan memimpin dengan kejelasan pembagian tugas sesuai fakta aktif pengguna."
+        },
+        "gemini-3.1-pro-preview": {
+          "grounded": true,
+          "contradictory": false,
+          "relational_or_causal_success": false,
+          "false_personalization": true,
+          "correct_abstention": false,
+          "stale_belief": false,
+          "reasoning": "Respons merujuk fakta aktif dengan benar, namun menambahkan detail personal yang dihalusinasi seperti beban ringan dan rapat."
+        }
+      },
+      "score": {
+        "query_id": "t04",
+        "query_type": "temporal",
+        "condition": "vector_only",
+        "grounded": true,
+        "contradictory": false,
+        "relational_or_causal_success": true,
+        "false_personalization": false,
+        "correct_abstention": false,
+        "stale_belief": false,
+        "judge_source": "gemini-3.1-flash-lite"
+      }
+    },
+    {
+      "query_id": "t04",
+      "query_type": "temporal",
+      "condition": "hybrid",
+      "reply": "Kayaknya kamu udah sadar ya kalau kemampuan memimpin itu bukan soal bakat bawaan, tapi lebih ke teknis pembagian tugas yang terstruktur. Gimana rasanya setelah tahu kalau itu justru bikin peranmu di organisasi jadi jauh lebih masuk akal dibanding pas merasa nggak kompeten dulu?",
+      "judgements": {
+        "gemini-3.1-flash-lite": {
+          "grounded": true,
+          "contradictory": false,
+          "relational_or_causal_success": true,
+          "false_personalization": false,
+          "correct_abstention": false,
+          "stale_belief": false,
+          "reasoning": "Chatbot akurat merujuk fakta aktif dan mengaitkan kemampuan memimpin dengan kejelasan pembagian tugas secara tepat."
+        },
+        "gemini-3.1-pro-preview": {
+          "grounded": true,
+          "contradictory": false,
+          "relational_or_causal_success": false,
+          "false_personalization": false,
+          "correct_abstention": false,
+          "stale_belief": false,
+          "reasoning": "Respons akurat merujuk fakta aktif tentang pembagian tugas dan menyebut fakta lama sebagai masa lalu dengan tepat."
+        }
+      },
+      "score": {
+        "query_id": "t04",
+        "query_type": "temporal",
+        "condition": "hybrid",
+        "grounded": true,
+        "contradictory": false,
+        "relational_or_causal_success": true,
+        "false_personalization": false,
+        "correct_abstention": false,
+        "stale_belief": false,
+        "judge_source": "gemini-3.1-flash-lite"
+      }
+    },
+    {
+      "query_id": "t05",
+      "query_type": "temporal",
+      "condition": "vector_only",
+      "reply": "It’s normal to question that, especially since the panic you’ve felt before was so intense. But remember, you’ve been practicing consistently this past week, and you noticed how much calmer you felt during those rehearsals.\n\nThat shift you felt - from total panic to being able to handle it - is real proof of your progress. What do you think is the biggest difference in how you feel now compared to that first time you felt panicked?",
+      "judgements": {
+        "gemini-3.1-flash-lite": {
+          "grounded": true,
+          "contradictory": false,
+          "relational_or_causal_success": true,
+          "false_personalization": false,
+          "correct_abstention": false,
+          "stale_belief": false,
+          "reasoning": "Chatbot akurat merujuk pada kemajuan pengguna dan tidak lagi menganggap presentasi sebagai pemicu panik berat."
+        },
+        "gemini-3.1-pro-preview": {
+          "grounded": true,
+          "contradictory": false,
+          "relational_or_causal_success": false,
+          "false_personalization": true,
+          "correct_abstention": false,
+          "stale_belief": false,
+          "reasoning": "Respons sesuai fakta aktif bahwa latihan mengurangi panik, namun menghalusinasi detail waktu 'this past week'."
+        }
+      },
+      "score": {
+        "query_id": "t05",
+        "query_type": "temporal",
+        "condition": "vector_only",
+        "grounded": true,
+        "contradictory": false,
+        "relational_or_causal_success": true,
+        "false_personalization": false,
+        "correct_abstention": false,
+        "stale_belief": false,
+        "judge_source": "gemini-3.1-flash-lite"
+      }
+    },
+    {
+      "query_id": "t05",
+      "query_type": "temporal",
+      "condition": "hybrid",
+      "reply": "Rasanya wajar kalau kamu masih mempertanyakan itu, apalagi setelah sekian lama panik itu jadi kayak musuh utama tiap ada presentasi. Tapi, kalau lihat progress latihan rutinmu selama seminggu terakhir, kayaknya pola responmu pelan-pelan udah berubah ya. \n\nApa yang paling beda dari rasa tenangmu sekarang dibanding pas dulu masih sering panik?",
+      "judgements": {
+        "gemini-3.1-flash-lite": {
+          "grounded": true,
+          "contradictory": false,
+          "relational_or_causal_success": true,
+          "false_personalization": false,
+          "correct_abstention": false,
+          "stale_belief": false,
+          "reasoning": "Chatbot akurat merujuk pada progres latihan pengguna dan tidak lagi menganggap presentasi sebagai pemicu panik berat."
+        },
+        "gemini-3.1-pro-preview": {
+          "grounded": true,
+          "contradictory": false,
+          "relational_or_causal_success": false,
+          "false_personalization": true,
+          "correct_abstention": false,
+          "stale_belief": false,
+          "reasoning": "Respons sesuai fakta aktif, namun menambahkan detail waktu 'selama seminggu terakhir' yang merupakan halusinasi personalisasi."
+        }
+      },
+      "score": {
+        "query_id": "t05",
+        "query_type": "temporal",
+        "condition": "hybrid",
+        "grounded": true,
+        "contradictory": false,
+        "relational_or_causal_success": true,
+        "false_personalization": false,
+        "correct_abstention": false,
+        "stale_belief": false,
+        "judge_source": "gemini-3.1-flash-lite"
+      }
+    },
+    {
+      "query_id": "t06",
+      "query_type": "temporal",
+      "condition": "vector_only",
+      "reply": "Sebenarnya nggak ada satu cara yang paling benar, tapi kebiasaan kamu mencatat pengeluaran harian itu sudah jadi langkah yang solid banget buat kasih rasa tenang. Kadang kita merasa gagal kalau nggak bisa mengatur semuanya sempurna, padahal kondisi kiriman uang yang telat emang seringkali di luar kontrol kita. Mungkin dibanding fokus ke angka yang harus selalu pas, sekarang lebih ke gimana caranya kamu punya ruang napas saat kondisi lagi nggak pasti. Sejauh ini, apa yang paling bikin kamu merasa terbantu setelah mulai rutin mencatat pengeluaran itu?",
+      "judgements": {
+        "gemini-3.1-flash-lite": {
+          "grounded": true,
+          "contradictory": false,
+          "relational_or_causal_success": true,
+          "false_personalization": false,
+          "correct_abstention": false,
+          "stale_belief": false,
+          "reasoning": "Chatbot akurat merujuk fakta aktif tentang manfaat mencatat pengeluaran untuk mengurangi kecemasan finansial pengguna."
+        },
+        "gemini-3.1-pro-preview": {
+          "grounded": true,
+          "contradictory": false,
+          "relational_or_causal_success": false,
+          "false_personalization": true,
+          "correct_abstention": false,
+          "stale_belief": false,
+          "reasoning": "Respons merujuk fakta aktif, namun berhalusinasi tentang detail personal kiriman uang telat yang tidak ada."
+        }
+      },
+      "score": {
+        "query_id": "t06",
+        "query_type": "temporal",
+        "condition": "vector_only",
+        "grounded": true,
+        "contradictory": false,
+        "relational_or_causal_success": true,
+        "false_personalization": false,
+        "correct_abstention": false,
+        "stale_belief": false,
+        "judge_source": "gemini-3.1-flash-lite"
+      }
+    },
+    {
+      "query_id": "t06",
+      "query_type": "temporal",
+      "condition": "hybrid",
+      "reply": "Mungkin sekarang kamu mulai sadar kalau manajemen uang bukan soal jadi \"sempurna\", tapi soal punya kontrol lewat hal kecil kayak mencatat pengeluaran harian itu. Langkah yang kamu ambil buat rutin nyatet pengeluaran ternyata ngebantu banget ya buat ngeredam kecemasan yang dulu sering muncul. Menurutmu, apa yang bikin proses mencatat itu jadi kerasa lebih efektif dibanding cara-cara yang kamu coba sebelumnya?",
+      "judgements": {
+        "gemini-3.1-flash-lite": {
+          "grounded": true,
+          "contradictory": false,
+          "relational_or_causal_success": true,
+          "false_personalization": true,
+          "correct_abstention": false,
+          "stale_belief": false,
+          "reasoning": "Chatbot mengaitkan pencatatan pengeluaran dengan pengurangan kecemasan, namun mengklaim detail personal yang tidak pernah diceritakan pengguna."
+        },
+        "gemini-3.1-pro-preview": {
+          "grounded": true,
+          "contradictory": false,
+          "relational_or_causal_success": false,
+          "false_personalization": false,
+          "correct_abstention": false,
+          "stale_belief": false,
+          "reasoning": "Respons akurat merujuk fakta aktif tentang mencatat pengeluaran dan tidak menganggap fakta lama masih berlaku."
+        }
+      },
+      "score": {
+        "query_id": "t06",
+        "query_type": "temporal",
+        "condition": "hybrid",
+        "grounded": true,
+        "contradictory": false,
+        "relational_or_causal_success": true,
+        "false_personalization": true,
+        "correct_abstention": false,
+        "stale_belief": false,
+        "judge_source": "gemini-3.1-flash-lite"
+      }
+    },
+    {
+      "query_id": "a01",
+      "query_type": "abstention",
+      "condition": "vector_only",
+      "reply": "Kayaknya kamu belum pernah cerita deh siapa nama hewan peliharaanmu. Emangnya kamu pelihara apa di rumah?",
+      "judgements": {
+        "gemini-3.1-flash-lite": {
+          "grounded": true,
+          "contradictory": false,
+          "relational_or_causal_success": false,
+          "false_personalization": false,
+          "correct_abstention": true,
+          "stale_belief": false,
+          "reasoning": "Chatbot dengan benar menyatakan tidak memiliki informasi tentang hewan peliharaan pengguna karena memang tidak ada fakta tersimpan."
+        },
+        "gemini-3.1-pro-preview": {
+          "grounded": false,
+          "contradictory": false,
+          "relational_or_causal_success": false,
+          "false_personalization": false,
+          "correct_abstention": true,
+          "stale_belief": false,
+          "reasoning": "Chatbot dengan tepat menyatakan bahwa pengguna belum pernah memberi tahu nama hewan peliharaannya."
+        }
+      },
+      "score": {
+        "query_id": "a01",
+        "query_type": "abstention",
+        "condition": "vector_only",
+        "grounded": true,
+        "contradictory": false,
+        "relational_or_causal_success": false,
+        "false_personalization": false,
+        "correct_abstention": true,
+        "stale_belief": false,
+        "judge_source": "gemini-3.1-flash-lite"
+      }
+    },
+    {
+      "query_id": "a01",
+      "query_type": "abstention",
+      "condition": "hybrid",
+      "reply": "Sepertinya kamu belum pernah cerita soal nama hewan peliharaanmu ke aku. Jadi penasaran, emang hewan peliharaan kamu apa?",
+      "judgements": {
+        "gemini-3.1-flash-lite": {
+          "grounded": true,
+          "contradictory": false,
+          "relational_or_causal_success": false,
+          "false_personalization": false,
+          "correct_abstention": true,
+          "stale_belief": false,
+          "reasoning": "Chatbot dengan benar menyatakan tidak memiliki informasi tentang hewan peliharaan pengguna karena memang belum pernah diceritakan."
+        },
+        "gemini-3.1-pro-preview": {
+          "grounded": false,
+          "contradictory": false,
+          "relational_or_causal_success": false,
+          "false_personalization": false,
+          "correct_abstention": true,
+          "stale_belief": false,
+          "reasoning": "Chatbot dengan tepat menyatakan bahwa pengguna belum pernah memberitahu nama hewan peliharaannya."
+        }
+      },
+      "score": {
+        "query_id": "a01",
+        "query_type": "abstention",
+        "condition": "hybrid",
+        "grounded": true,
+        "contradictory": false,
+        "relational_or_causal_success": false,
+        "false_personalization": false,
+        "correct_abstention": true,
+        "stale_belief": false,
+        "judge_source": "gemini-3.1-flash-lite"
+      }
+    },
+    {
+      "query_id": "a02",
+      "query_type": "abstention",
+      "condition": "vector_only",
+      "reply": "Sejujurnya aku belum tahu apa makanan kesukaanmu, soalnya kita belum pernah cerita sampai ke sana. Biasanya apa sih yang jadi menu andalan kamu pas lagi laper banget atau pengen makan enak?",
+      "judgements": {
+        "gemini-3.1-flash-lite": {
+          "grounded": true,
+          "contradictory": false,
+          "relational_or_causal_success": false,
+          "false_personalization": false,
+          "correct_abstention": true,
+          "stale_belief": false,
+          "reasoning": "Chatbot dengan benar mengakui tidak memiliki informasi tentang makanan favorit pengguna dan tidak melakukan halusinasi."
+        },
+        "gemini-3.1-pro-preview": {
+          "grounded": false,
+          "contradictory": false,
+          "relational_or_causal_success": false,
+          "false_personalization": false,
+          "correct_abstention": true,
+          "stale_belief": false,
+          "reasoning": "Chatbot dengan tepat menyatakan belum tahu makanan favorit pengguna karena memang belum pernah diceritakan."
+        }
+      },
+      "score": {
+        "query_id": "a02",
+        "query_type": "abstention",
+        "condition": "vector_only",
+        "grounded": true,
+        "contradictory": false,
+        "relational_or_causal_success": false,
+        "false_personalization": false,
+        "correct_abstention": true,
+        "stale_belief": false,
+        "judge_source": "gemini-3.1-flash-lite"
+      }
+    },
+    {
+      "query_id": "a02",
+      "query_type": "abstention",
+      "condition": "hybrid",
+      "reply": "Waduh, aku belum tahu nih makanan kesukaan kamu apa. Sepertinya kita belum pernah bahas soal itu sebelumnya ya? Boleh kasih tahu nggak, biasanya makanan apa yang selalu bikin kamu semangat kalau lagi capek?",
+      "judgements": {
+        "gemini-3.1-flash-lite": {
+          "grounded": true,
+          "contradictory": false,
+          "relational_or_causal_success": false,
+          "false_personalization": false,
+          "correct_abstention": true,
+          "stale_belief": false,
+          "reasoning": "Chatbot dengan benar mengakui tidak memiliki informasi tentang makanan favorit pengguna dan tidak melakukan halusinasi."
+        },
+        "gemini-3.1-pro-preview": {
+          "grounded": false,
+          "contradictory": false,
+          "relational_or_causal_success": false,
+          "false_personalization": false,
+          "correct_abstention": true,
+          "stale_belief": false,
+          "reasoning": "Chatbot dengan tepat menyatakan belum tahu makanan favorit pengguna karena tidak ada fakta terkait."
+        }
+      },
+      "score": {
+        "query_id": "a02",
+        "query_type": "abstention",
+        "condition": "hybrid",
+        "grounded": true,
+        "contradictory": false,
+        "relational_or_causal_success": false,
+        "false_personalization": false,
+        "correct_abstention": true,
+        "stale_belief": false,
+        "judge_source": "gemini-3.1-flash-lite"
+      }
+    },
+    {
+      "query_id": "a03",
+      "query_type": "abstention",
+      "condition": "vector_only",
+      "reply": "Jujur aku kurang tahu kamu lahir di mana karena kita memang belum pernah ngobrol sampai ke sana. Emangnya ada alasan khusus atau kenangan tertentu yang bikin kamu lagi kepikiran soal kota kelahiran sekarang?",
+      "judgements": {
+        "gemini-3.1-flash-lite": {
+          "grounded": true,
+          "contradictory": false,
+          "relational_or_causal_success": false,
+          "false_personalization": false,
+          "correct_abstention": true,
+          "stale_belief": false,
+          "reasoning": "Chatbot dengan tepat mengakui tidak memiliki informasi tentang kota kelahiran pengguna karena belum pernah diceritakan sebelumnya."
+        },
+        "gemini-3.1-pro-preview": {
+          "grounded": false,
+          "contradictory": false,
+          "relational_or_causal_success": false,
+          "false_personalization": false,
+          "correct_abstention": true,
+          "stale_belief": false,
+          "reasoning": "Chatbot dengan tepat menolak menjawab karena pengguna belum pernah memberitahu kota kelahirannya."
+        }
+      },
+      "score": {
+        "query_id": "a03",
+        "query_type": "abstention",
+        "condition": "vector_only",
+        "grounded": true,
+        "contradictory": false,
+        "relational_or_causal_success": false,
+        "false_personalization": false,
+        "correct_abstention": true,
+        "stale_belief": false,
+        "judge_source": "gemini-3.1-flash-lite"
+      }
+    },
+    {
+      "query_id": "a03",
+      "query_type": "abstention",
+      "condition": "hybrid",
+      "reply": "Aku belum tahu nih kamu lahir di mana, kita belum pernah cerita sampai ke sana. Emangnya itu tempat yang berkesan banget buat kamu atau ada cerita tertentu soal kota kelahiranmu?",
+      "judgements": {
+        "gemini-3.1-flash-lite": {
+          "grounded": true,
+          "contradictory": false,
+          "relational_or_causal_success": false,
+          "false_personalization": false,
+          "correct_abstention": true,
+          "stale_belief": false,
+          "reasoning": "Chatbot dengan tepat mengakui tidak memiliki informasi tentang kota kelahiran pengguna tanpa melakukan halusinasi."
+        },
+        "gemini-3.1-pro-preview": {
+          "grounded": false,
+          "contradictory": false,
+          "relational_or_causal_success": false,
+          "false_personalization": false,
+          "correct_abstention": true,
+          "stale_belief": false,
+          "reasoning": "Chatbot dengan tepat menolak menjawab karena pengguna belum pernah memberitahu kota kelahirannya."
+        }
+      },
+      "score": {
+        "query_id": "a03",
+        "query_type": "abstention",
+        "condition": "hybrid",
+        "grounded": true,
+        "contradictory": false,
+        "relational_or_causal_success": false,
+        "false_personalization": false,
+        "correct_abstention": true,
+        "stale_belief": false,
+        "judge_source": "gemini-3.1-flash-lite"
+      }
+    },
+    {
+      "query_id": "a04",
+      "query_type": "abstention",
+      "condition": "vector_only",
+      "reply": "Aku belum tahu nih, soalnya kita kayaknya belum pernah ngobrolin soal film favoritmu. Emangnya apa sih? Aku jadi penasaran pengen tahu.",
+      "judgements": {
+        "gemini-3.1-flash-lite": {
+          "grounded": true,
+          "contradictory": false,
+          "relational_or_causal_success": false,
+          "false_personalization": false,
+          "correct_abstention": true,
+          "stale_belief": false,
+          "reasoning": "Chatbot dengan benar mengakui tidak memiliki informasi tentang film favorit pengguna karena belum pernah dibahas sebelumnya."
+        },
+        "gemini-3.1-pro-preview": {
+          "grounded": false,
+          "contradictory": false,
+          "relational_or_causal_success": false,
+          "false_personalization": false,
+          "correct_abstention": true,
+          "stale_belief": false,
+          "reasoning": "Chatbot dengan benar menolak menjawab karena pengguna belum pernah memberitahu film favoritnya."
+        }
+      },
+      "score": {
+        "query_id": "a04",
+        "query_type": "abstention",
+        "condition": "vector_only",
+        "grounded": true,
+        "contradictory": false,
+        "relational_or_causal_success": false,
+        "false_personalization": false,
+        "correct_abstention": true,
+        "stale_belief": false,
+        "judge_source": "gemini-3.1-flash-lite"
+      }
+    },
+    {
+      "query_id": "a04",
+      "query_type": "abstention",
+      "condition": "hybrid",
+      "reply": "Sepertinya kita belum pernah ngobrol soal film favorit ya, jadi aku belum tahu nih. Apa film itu yang selama ini bikin kamu terkesan banget, atau mungkin ada film lain yang lagi pengen kamu tonton?",
+      "judgements": {
+        "gemini-3.1-flash-lite": {
+          "grounded": true,
+          "contradictory": false,
+          "relational_or_causal_success": false,
+          "false_personalization": false,
+          "correct_abstention": true,
+          "stale_belief": false,
+          "reasoning": "Chatbot dengan tepat menyatakan tidak memiliki informasi tentang film favorit pengguna karena belum pernah dibahas sebelumnya."
+        },
+        "gemini-3.1-pro-preview": {
+          "grounded": false,
+          "contradictory": false,
+          "relational_or_causal_success": false,
+          "false_personalization": false,
+          "correct_abstention": true,
+          "stale_belief": false,
+          "reasoning": "Chatbot dengan tepat menyatakan belum tahu karena pengguna belum pernah memberitahu film favoritnya."
+        }
+      },
+      "score": {
+        "query_id": "a04",
+        "query_type": "abstention",
+        "condition": "hybrid",
+        "grounded": true,
+        "contradictory": false,
+        "relational_or_causal_success": false,
+        "false_personalization": false,
+        "correct_abstention": true,
+        "stale_belief": false,
+        "judge_source": "gemini-3.1-flash-lite"
+      }
+    },
+    {
+      "query_id": "a05",
+      "query_type": "abstention",
+      "condition": "vector_only",
+      "reply": "Sepertinya kamu belum pernah cerita soal keluarga ke aku, jadi aku nggak tahu jumlahnya berapa. Emang kamu berapa bersaudara?",
+      "judgements": {
+        "gemini-3.1-flash-lite": {
+          "grounded": true,
+          "contradictory": false,
+          "relational_or_causal_success": false,
+          "false_personalization": false,
+          "correct_abstention": true,
+          "stale_belief": false,
+          "reasoning": "Chatbot dengan benar menyatakan tidak memiliki informasi karena pengguna memang belum pernah menceritakan detail tersebut."
+        },
+        "gemini-3.1-pro-preview": {
+          "grounded": false,
+          "contradictory": false,
+          "relational_or_causal_success": false,
+          "false_personalization": false,
+          "correct_abstention": true,
+          "stale_belief": false,
+          "reasoning": "Chatbot dengan benar menolak menjawab karena pengguna belum pernah memberikan informasi tentang jumlah saudaranya."
+        }
+      },
+      "score": {
+        "query_id": "a05",
+        "query_type": "abstention",
+        "condition": "vector_only",
+        "grounded": true,
+        "contradictory": false,
+        "relational_or_causal_success": false,
+        "false_personalization": false,
+        "correct_abstention": true,
+        "stale_belief": false,
+        "judge_source": "gemini-3.1-flash-lite"
+      }
+    },
+    {
+      "query_id": "a05",
+      "query_type": "abstention",
+      "condition": "hybrid",
+      "reply": "Kayaknya kita belum pernah cerita soal keluargamu deh, makanya aku belum tahu nih. Kamu sendiri berapa bersaudara?",
+      "judgements": {
+        "gemini-3.1-flash-lite": {
+          "grounded": true,
+          "contradictory": false,
+          "relational_or_causal_success": false,
+          "false_personalization": false,
+          "correct_abstention": true,
+          "stale_belief": false,
+          "reasoning": "Chatbot dengan tepat mengakui tidak memiliki informasi mengenai keluarga pengguna karena belum pernah diceritakan sebelumnya."
+        },
+        "gemini-3.1-pro-preview": {
+          "grounded": false,
+          "contradictory": false,
+          "relational_or_causal_success": false,
+          "false_personalization": false,
+          "correct_abstention": true,
+          "stale_belief": false,
+          "reasoning": "Chatbot dengan tepat menolak menjawab karena pengguna belum pernah menceritakan jumlah saudaranya."
+        }
+      },
+      "score": {
+        "query_id": "a05",
+        "query_type": "abstention",
+        "condition": "hybrid",
+        "grounded": true,
+        "contradictory": false,
+        "relational_or_causal_success": false,
+        "false_personalization": false,
+        "correct_abstention": true,
+        "stale_belief": false,
+        "judge_source": "gemini-3.1-flash-lite"
+      }
+    },
+    {
+      "query_id": "a06",
+      "query_type": "abstention",
+      "condition": "vector_only",
+      "reply": "Aku malah belum tahu nih kamu pakai laptop merek apa, kayaknya belum pernah cerita ya? Lagi ada masalah sama laptopnya atau cuma penasaran saja?",
+      "judgements": {
+        "gemini-3.1-flash-lite": {
+          "grounded": true,
+          "contradictory": false,
+          "relational_or_causal_success": false,
+          "false_personalization": false,
+          "correct_abstention": true,
+          "stale_belief": false,
+          "reasoning": "Chatbot dengan benar mengakui tidak memiliki informasi tentang laptop pengguna karena memang belum pernah diceritakan sebelumnya."
+        },
+        "gemini-3.1-pro-preview": {
+          "grounded": false,
+          "contradictory": false,
+          "relational_or_causal_success": false,
+          "false_personalization": false,
+          "correct_abstention": true,
+          "stale_belief": false,
+          "reasoning": "Chatbot dengan tepat menyatakan belum tahu karena pengguna memang belum pernah memberitahu merek laptopnya."
+        }
+      },
+      "score": {
+        "query_id": "a06",
+        "query_type": "abstention",
+        "condition": "vector_only",
+        "grounded": true,
+        "contradictory": false,
+        "relational_or_causal_success": false,
+        "false_personalization": false,
+        "correct_abstention": true,
+        "stale_belief": false,
+        "judge_source": "gemini-3.1-flash-lite"
+      }
+    },
+    {
+      "query_id": "a06",
+      "query_type": "abstention",
+      "condition": "hybrid",
+      "reply": "Aku nggak tahu deh laptop apa yang kamu pakai, soalnya kamu belum pernah cerita soal itu ke aku. Laptopmu sekarang lagi ada masalah atau cuma penasaran aja?",
+      "judgements": {
+        "gemini-3.1-flash-lite": {
+          "grounded": true,
+          "contradictory": false,
+          "relational_or_causal_success": false,
+          "false_personalization": false,
+          "correct_abstention": true,
+          "stale_belief": false,
+          "reasoning": "Chatbot dengan tepat mengakui tidak memiliki informasi mengenai laptop pengguna karena belum pernah diceritakan sebelumnya."
+        },
+        "gemini-3.1-pro-preview": {
+          "grounded": false,
+          "contradictory": false,
+          "relational_or_causal_success": false,
+          "false_personalization": false,
+          "correct_abstention": true,
+          "stale_belief": false,
+          "reasoning": "Chatbot dengan tepat menolak menjawab karena pengguna belum pernah memberitahu merek laptopnya."
+        }
+      },
+      "score": {
+        "query_id": "a06",
+        "query_type": "abstention",
+        "condition": "hybrid",
+        "grounded": true,
+        "contradictory": false,
+        "relational_or_causal_success": false,
+        "false_personalization": false,
+        "correct_abstention": true,
+        "stale_belief": false,
+        "judge_source": "gemini-3.1-flash-lite"
+      }
+    }
+  ]
+}

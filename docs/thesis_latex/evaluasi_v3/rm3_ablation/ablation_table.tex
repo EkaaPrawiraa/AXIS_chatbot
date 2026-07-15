@@ -1,0 +1,249 @@
+\begin{table}[!htbp]
+\centering
+\caption{Hasil ablasi menggunakan \textit{paired bootstrap} dan
+\textit{sign test}: kondisi hibrid dibandingkan kondisi vektor saja}
+\label{tab:v2-ablation-result}
+
+{\footnotesize
+\renewcommand{\arraystretch}{1.15}
+
+\begin{tabularx}{\textwidth}{
+|>{\raggedright\arraybackslash}p{1.35cm}
+|>{\raggedright\arraybackslash}p{2.65cm}
+|>{\centering\arraybackslash}p{1.30cm}
+|>{\centering\arraybackslash}p{1.30cm}
+|>{\centering\arraybackslash}p{1.10cm}
+|>{\raggedright\arraybackslash}X|
+}
+\hline
+
+\rowcolor{tableheadgray}
+\textbf{Blok}
+&
+\textbf{Metrik}
+&
+\textbf{Vektor saja}
+&
+\textbf{Hibrid}
+&
+\textbf{$\Delta$}
+&
+\textbf{Uji statistik}
+\\
+\hline
+
+\multicolumn{6}{|l|}{
+\textit{Retrieval}: \textit{paired bootstrap}, $n = 42$ kueri
+}
+\\
+\hline
+
+Retrieval
+&
+P@5
+&
+0,000
+&
+0,052
+&
+0,052
+&
+95\% CI: [0,024; 0,086]
+\\
+\hline
+
+Retrieval
+&
+Recall@5
+&
+0,286
+&
+0,357
+&
+0,071
+&
+95\% CI: [$-0,095$; 0,238]
+\\
+\hline
+
+Retrieval
+&
+MRR
+&
+0,000
+&
+0,190
+&
+0,190
+&
+95\% CI: [0,083; 0,310]
+\\
+\hline
+
+Retrieval
+&
+nDCG@5
+&
+0,286
+&
+0,469
+&
+0,184
+&
+95\% CI: [0,082; 0,295]
+\\
+\hline
+
+\multicolumn{6}{|l|}{
+\textit{Retrieval}: \textit{exact sign test} untuk metrik biner
+}
+\\
+\hline
+
+Retrieval
+&
+Relasional atau kausal
+&
+0,0\%
+&
+29,2\%
+&
+0,292
+&
+$p = 0,0156$
+\\
+\hline
+
+Retrieval
+&
+Keberhasilan abstensi
+&
+28,6\%
+&
+45,2\%
+&
+0,166
+&
+$p = 0,14$
+\\
+\hline
+
+Retrieval
+&
+Kejadian memori usang
+&
+0,0\%
+&
+0,0\%
+&
+0,000
+&
+$p = 1,00$
+\\
+\hline
+
+\multicolumn{6}{|l|}{
+\textit{Penggunaan memori pada jawaban}: \textit{exact sign test},
+$n = 24$ kasus
+}
+\\
+\hline
+
+Jawaban
+&
+Jawaban berdasar memori
+&
+95,8\%
+&
+95,8\%
+&
+0,000
+&
+$p = 1,00$
+\\
+\hline
+
+Jawaban
+&
+Kontradiksi
+&
+4,2\%
+&
+8,3\%
+&
+0,041
+&
+$p = 1,00$
+\\
+\hline
+
+Jawaban
+&
+Relasional atau kausal
+&
+62,5\%
+&
+66,7\%
+&
+0,042
+&
+$p = 1,00$
+\\
+\hline
+
+Jawaban
+&
+Personalisasi tanpa dasar
+&
+29,2\%
+&
+29,2\%
+&
+0,000
+&
+$p = 1,00$
+\\
+\hline
+
+Jawaban
+&
+Keyakinan usang
+&
+8,3\%
+&
+8,3\%
+&
+0,000
+&
+$p = 1,00$
+\\
+\hline
+
+Jawaban
+&
+Abstensi benar
+&
+25,0\%
+&
+25,0\%
+&
+0,000
+&
+$p = 1,00$
+\\
+\hline
+
+\end{tabularx}
+
+\vspace{2pt}
+
+\begin{minipage}{\textwidth}
+\footnotesize
+\textit{Catatan:}
+Nilai $\Delta$ dihitung sebagai nilai kondisi hibrid dikurangi nilai
+kondisi vektor saja. Untuk metrik kesalahan, seperti kontradiksi,
+personalisasi tanpa dasar, dan keyakinan usang, nilai $\Delta$ positif
+menunjukkan peningkatan tingkat kesalahan.
+\end{minipage}
+}
+\end{table}

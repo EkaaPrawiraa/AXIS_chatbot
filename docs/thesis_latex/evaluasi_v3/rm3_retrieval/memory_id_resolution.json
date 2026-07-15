@@ -1,0 +1,242 @@
+{
+  "m01": {
+    "fixture_user": "u01",
+    "real_user_id": "212b6637-f9e8-4b2e-a60d-22010a440e17",
+    "gold_text": "Proposal penelitian ditolak dosen pembimbing pada awal April.",
+    "expected_active": true,
+    "matched_node_id": "b74c7a0e-cc78-41b1-b508-7b867da86b46",
+    "matched_text": "Proposal penelitian ditolak oleh dosen pembimbing (research proposal rejected by thesis advisor)",
+    "matched_active": true,
+    "similarity": 0.6753246753246753
+  },
+  "m02_old": {
+    "fixture_user": "u01",
+    "real_user_id": "212b6637-f9e8-4b2e-a60d-22010a440e17",
+    "gold_text": "Aku tidak layak menjadi mahasiswa di sini.",
+    "expected_active": false,
+    "matched_node_id": "35cb4469-ce93-45cd-8996-82751882e3c0",
+    "matched_text": "proposal penelitian ditolak (research proposal rejection)",
+    "matched_active": true,
+    "similarity": 0.3125
+  },
+  "m03_new": {
+    "fixture_user": "u01",
+    "real_user_id": "212b6637-f9e8-4b2e-a60d-22010a440e17",
+    "gold_text": "Satu penolakan proposal tidak berarti aku gagal sebagai mahasiswa.",
+    "expected_active": true,
+    "matched_node_id": "1d2320f7-5957-4885-a4b4-3cdbf442fab5",
+    "matched_text": "penolakan proposal penelitian (research proposal rejection)",
+    "matched_active": true,
+    "similarity": 0.5245901639344263
+  },
+  "m04_old": {
+    "fixture_user": "u01",
+    "real_user_id": "212b6637-f9e8-4b2e-a60d-22010a440e17",
+    "gold_text": "Aku menghindari bimbingan ketika takut mendapat revisi.",
+    "expected_active": false,
+    "matched_node_id": "cedebe0f-75a9-4e3d-b5a7-05c2709cbada",
+    "matched_text": "menghindari sesi bimbingan dengan dosen pembimbing karena kecemasan terhadap revisi (avoiding guidance sessions due to anxiety of feedback)",
+    "matched_active": true,
+    "similarity": 0.35602094240837695
+  },
+  "m05_new": {
+    "fixture_user": "u01",
+    "real_user_id": "212b6637-f9e8-4b2e-a60d-22010a440e17",
+    "gold_text": "Sekarang aku mengirim perkembangan revisi setiap Jumat pagi.",
+    "expected_active": true,
+    "matched_node_id": "1d2320f7-5957-4885-a4b4-3cdbf442fab5",
+    "matched_text": "penolakan proposal penelitian (research proposal rejection)",
+    "matched_active": true,
+    "similarity": 0.3275862068965517
+  },
+  "m06": {
+    "fixture_user": "u01",
+    "real_user_id": "212b6637-f9e8-4b2e-a60d-22010a440e17",
+    "gold_text": "Pesan dari dosen pembimbing memicu rasa cemas karena mengingatkan pada penolakan proposal.",
+    "expected_active": true,
+    "matched_node_id": "19ce1347-3234-4758-85fe-20db78008dc8",
+    "matched_text": "Menerima pesan dari dosen pembimbing memicu ingatan akan penolakan proposal (receiving message triggers memory of past failure)",
+    "matched_active": true,
+    "similarity": 0.5981308411214953
+  },
+  "m07": {
+    "fixture_user": "u02",
+    "real_user_id": "ebffb915-1b7e-4b05-8f63-6fa7ac619cf2",
+    "gold_text": "Pertengkaran dengan ibu tentang biaya kuliah membuat sulit tidur.",
+    "expected_active": true,
+    "matched_node_id": "f562f8da-f642-4418-b8cf-3a777deceb79",
+    "matched_text": "bertengkar dengan ibu mengenai biaya kuliah (conflict with mother regarding tuition fees)",
+    "matched_active": true,
+    "similarity": 0.5827814569536424
+  },
+  "m08_old": {
+    "fixture_user": "u02",
+    "real_user_id": "ebffb915-1b7e-4b05-8f63-6fa7ac619cf2",
+    "gold_text": "Ayah tidak peduli dan hanya memikirkan nilai.",
+    "expected_active": false,
+    "matched_node_id": "db64198b-bda3-47a6-8f7a-cf3cef0afc05",
+    "matched_text": "merasa ayah hanya berfokus pada performa akademik dibandingkan kesejahteraan emosional",
+    "matched_active": true,
+    "similarity": 0.35384615384615387
+  },
+  "m09_new": {
+    "fixture_user": "u02",
+    "real_user_id": "ebffb915-1b7e-4b05-8f63-6fa7ac619cf2",
+    "gold_text": "Ayah menanyakan nilai sebagai cara menunjukkan kekhawatiran, walau caranya terasa menekan.",
+    "expected_active": true,
+    "matched_node_id": "bd45e172-e430-43ec-acfa-3884c0dbd264",
+    "matched_text": "Menyadari bahwa pertanyaan ayah tentang nilai adalah bentuk kekhawatiran (realizing parent's inquiry is an expression of care)",
+    "matched_active": true,
+    "similarity": 0.44339622641509435
+  },
+  "m10": {
+    "fixture_user": "u02",
+    "real_user_id": "ebffb915-1b7e-4b05-8f63-6fa7ac619cf2",
+    "gold_text": "Biaya praktikum tambahan menjadi pemicu rasa bersalah kepada orang tua.",
+    "expected_active": true,
+    "matched_node_id": "7f0f8e1b-846e-49b6-91ed-694f54f79bb6",
+    "matched_text": "adanya biaya praktikum tambahan yang harus dibayar saat orang tua sedang mengalami kesulitan finansial (additional lab fees during parents' financial hardship)",
+    "matched_active": true,
+    "similarity": 0.37168141592920356
+  },
+  "m11": {
+    "fixture_user": "u03",
+    "real_user_id": "f10949bf-3ef1-439b-a0f0-9c87272d7778",
+    "gold_text": "Rapat organisasi yang sering molor membuat lelah dan ingin menghindar.",
+    "expected_active": true,
+    "matched_node_id": "7ca7b32b-c868-4d77-9306-1b31d064d424",
+    "matched_text": "rapat organisasi yang sering molor (organizational meeting delays)",
+    "matched_active": true,
+    "similarity": 0.706766917293233
+  },
+  "m12_old": {
+    "fixture_user": "u03",
+    "real_user_id": "f10949bf-3ef1-439b-a0f0-9c87272d7778",
+    "gold_text": "Aku tidak mampu memimpin organisasi.",
+    "expected_active": false,
+    "matched_node_id": "cf883639-973a-4a2d-90be-f7118ed77c02",
+    "matched_text": "merasa tidak kompeten dalam memimpin organisasi (feeling incompetent in leadership/impostor syndrome)",
+    "matched_active": true,
+    "similarity": 0.44776119402985076
+  },
+  "m13_new": {
+    "fixture_user": "u03",
+    "real_user_id": "f10949bf-3ef1-439b-a0f0-9c87272d7778",
+    "gold_text": "Aku mampu memimpin ketika pembagian tugas dibuat jelas.",
+    "expected_active": true,
+    "matched_node_id": "3d5bb804-c4c7-4b11-870a-57ee48827a11",
+    "matched_text": "Menyadari bahwa kemampuan memimpin bergantung pada kejelasan pembagian tugas (realizing leadership capability depends on clear task delegation)",
+    "matched_active": true,
+    "similarity": 0.4205128205128205
+  },
+  "m14": {
+    "fixture_user": "u03",
+    "real_user_id": "f10949bf-3ef1-439b-a0f0-9c87272d7778",
+    "gold_text": "Konflik dengan koordinator acara memicu keinginan untuk tidak datang rapat.",
+    "expected_active": true,
+    "matched_node_id": "b534ea15-bcf6-46b3-851b-bec58f20604d",
+    "matched_text": "terjadi konflik dengan koordinator acara di organisasi",
+    "matched_active": true,
+    "similarity": 0.625
+  },
+  "m15": {
+    "fixture_user": "u04",
+    "real_user_id": "900ccc08-ff4d-4563-bc74-fa4d2b50ad91",
+    "gold_text": "Gagal wawancara magang memicu pikiran bahwa semua usaha sia sia.",
+    "expected_active": true,
+    "matched_node_id": "ca98c145-437b-4904-967d-3762a37b4ba7",
+    "matched_text": "gagal wawancara magang (failed internship interview)",
+    "matched_active": true,
+    "similarity": 0.4778761061946903
+  },
+  "m16_new": {
+    "fixture_user": "u04",
+    "real_user_id": "900ccc08-ff4d-4563-bc74-fa4d2b50ad91",
+    "gold_text": "Setelah latihan wawancara, kegagalan magang dipahami sebagai kebutuhan memperbaiki contoh jawaban.",
+    "expected_active": true,
+    "matched_node_id": "832da944-ec42-4e90-9c5a-6a13d1193c1b",
+    "matched_text": "melihat kegagalan magang sebagai kesempatan untuk memperbaiki contoh jawaban wawancara (reframing failure as a learning opportunity)",
+    "matched_active": true,
+    "similarity": 0.5575221238938053
+  },
+  "m17": {
+    "fixture_user": "u04",
+    "real_user_id": "900ccc08-ff4d-4563-bc74-fa4d2b50ad91",
+    "gold_text": "Melihat teman seangkatan sudah bekerja memicu rasa tertinggal menjelang lulus.",
+    "expected_active": true,
+    "matched_node_id": "c3b3bdc6-733f-40a8-82a2-911829d15c06",
+    "matched_text": "Melihat teman seangkatan yang sudah mulai bekerja sementara diri sendiri menjelang lulus",
+    "matched_active": true,
+    "similarity": 0.7515151515151515
+  },
+  "m18": {
+    "fixture_user": "u05",
+    "real_user_id": "01fd3672-fdce-4ed8-bd9d-18e0ed34bd69",
+    "gold_text": "Teman kos pindah dan kamar terasa sepi sehingga lebih sering mengurung diri.",
+    "expected_active": true,
+    "matched_node_id": "a12f8dc4-4e06-46a1-8bd6-87aeede9be3d",
+    "matched_text": "teman kos pindah (roommate moved out)",
+    "matched_active": true,
+    "similarity": 0.45454545454545453
+  },
+  "m19": {
+    "fixture_user": "u05",
+    "real_user_id": "01fd3672-fdce-4ed8-bd9d-18e0ed34bd69",
+    "gold_text": "Teman sekelompok tidak mengerjakan bagian tugas sehingga aku mengambil semua pekerjaan.",
+    "expected_active": true,
+    "matched_node_id": "c5318867-56e1-4221-97d4-084222c1460e",
+    "matched_text": "Teman sekelompok tidak mengerjakan bagian tugasnya dan aku harus mengerjakan semuanya sendiri (group project burden)",
+    "matched_active": true,
+    "similarity": 0.7
+  },
+  "m20_old": {
+    "fixture_user": "u05",
+    "real_user_id": "01fd3672-fdce-4ed8-bd9d-18e0ed34bd69",
+    "gold_text": "Presentasi kelas selalu membuat panik.",
+    "expected_active": false,
+    "matched_node_id": "3fd94872-c88c-460d-8c48-6a40c1f999da",
+    "matched_text": "latihan presentasi kelas beberapa kali minggu ini",
+    "matched_active": true,
+    "similarity": 0.5348837209302325
+  },
+  "m21_new": {
+    "fixture_user": "u05",
+    "real_user_id": "01fd3672-fdce-4ed8-bd9d-18e0ed34bd69",
+    "gold_text": "Setelah beberapa kali latihan, presentasi kelas tidak lagi memicu panik berat.",
+    "expected_active": true,
+    "matched_node_id": "3fd94872-c88c-460d-8c48-6a40c1f999da",
+    "matched_text": "latihan presentasi kelas beberapa kali minggu ini",
+    "matched_active": true,
+    "similarity": 0.5555555555555556
+  },
+  "m22": {
+    "fixture_user": "u06",
+    "real_user_id": "ad5c9038-51c1-4281-9f36-a96413575920",
+    "gold_text": "Keterlambatan kiriman uang bulanan membuat khawatir tidak bisa membayar kos.",
+    "expected_active": true,
+    "matched_node_id": "d632d922-5131-49f4-9a92-f0c3ab86808a",
+    "matched_text": "Keterlambatan kiriman uang bulanan dari orang tua (monthly allowance delay)",
+    "matched_active": true,
+    "similarity": 0.5945945945945946
+  },
+  "m23": {
+    "fixture_user": "u06",
+    "real_user_id": "ad5c9038-51c1-4281-9f36-a96413575920",
+    "gold_text": "Mencatat pengeluaran harian membantu mengurangi kecemasan finansial.",
+    "expected_active": true,
+    "matched_node_id": "708e18a8-f329-47eb-b5b7-469c810aa02b",
+    "matched_text": "Mencatat pengeluaran harian membantu mengurangi kecemasan finansial (daily expense tracking reduces financial anxiety)",
+    "matched_active": true,
+    "similarity": 0.73224043715847
+  },
+  "m24_old": {
+    "fixture_user": "u06",
+    "real_user_id": "ad5c9038-51c1-4281-9f36-a96413575920",
+    "gold_text": "Aku selalu gagal mengatur uang.",
+    "expected_active": false,
+    "matched_node_id": "016de64f-c203-4fd1-9326-015b812b8e30",
+    "matched_text": "Kesulitan mengelola anggaran bulanan (difficulty managing monthly budget)",
+    "matched_active": true,
+    "similarity": 0.27722772277227725
+  }
+}

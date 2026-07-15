@@ -3,13 +3,13 @@
 
 \textbf{Pesan pengguna:} Orang tua di telepon tadi nanya-nanya lagi kapan aku lulus, padahal biaya kuliah udah berat banget buat mereka. Aku jadi ngerasa bersalah tiap kali belum ada progress buat diomongin.
 
-\textbf{Respons AXIS:} Pasti rasanya berat banget ya, Arya, harus dengar pertanyaan itu pas kamu sendiri lagi sadar betul soal pengorbanan mereka. Wajar banget kalau beban biaya itu bikin kamu ngerasa kayak punya utang yang harus segera dibayar dengan kelulusan.
+\textbf{Respons AXIS:} Berat banget ya rasanya dengar pertanyaan itu, apalagi kalau kamu tahu persis gimana perjuangan mereka buat biayain kuliahmu. Wajar kalau kamu jadi ngerasa kayak punya utang progres setiap kali harus angkat telepon dari rumah.
 
-Waktu orang tua nanya soal kelulusan tadi, apa yang paling bikin kamu ngerasa tertekan di momen itu?
+Pas lagi ngerasa kayak gitu, apa yang paling sering muncul di pikiranmu soal harapan mereka ke kamu?
 
-\textbf{Respons \textit{baseline}:} Wajar banget kalau kamu ngerasa terbebani dan bersalah kayak gitu, apalagi karena kamu tahu perjuangan orang tua buat biaya kuliahmu. Pasti berat ya harus menanggung ekspektasi sekaligus rasa khawatir itu sendirian?
+\textbf{Respons \textit{baseline}:} Wajar banget kalau kamu merasa tertekan, apalagi ada rasa sayang dan keinginan buat membalas pengorbanan orang tua. Beban itu memang berat, ya, kalau dipikul sendirian.
 
-Boleh cerita sedikit, bagian mana dari progres kuliahmu yang saat ini terasa paling bikin buntu atau bikin kamu ngerasa *stuck*? Kita obrolin pelan-pelan ya.
+Boleh cerita sedikit, apa yang saat ini bikin progress kamu terasa jalan di tempat? Kadang, dengan menguraikan apa yang sedang menghambat, kita jadi bisa melihat situasi dengan lebih tenang.
 
 \begin{table}[!htbp]
 \centering
@@ -26,24 +26,33 @@ Eksplorasi & gemini-3.1-flash-lite & 2 & 2 \\
 Ketepatan CBT & gemini-3.1-flash-lite & 1 & 1 \\
 Batas non-klinis & gemini-3.1-flash-lite & 2 & 2 \\
 Kesesuaian bahasa & gemini-3.1-flash-lite & 2 & 2 \\
-Groundedness & gemini-3.1-flash-lite & 2 & 1 \\
+Groundedness & gemini-3.1-flash-lite & 1 & 1 \\
+\hline
+Reaksi emosional & gemini-3.1-pro-preview & 2 & 2 \\
+Interpretasi konteks & gemini-3.1-pro-preview & 2 & 1 \\
+Eksplorasi & gemini-3.1-pro-preview & 2 & 1 \\
+Ketepatan CBT & gemini-3.1-pro-preview & 1 & 1 \\
+Batas non-klinis & gemini-3.1-pro-preview & 2 & 2 \\
+Kesesuaian bahasa & gemini-3.1-pro-preview & 2 & 2 \\
+Groundedness & gemini-3.1-pro-preview & 1 & 1 \\
 \hline
 \end{tabularx}
 }
 \end{table}
 
-\textit{gemini-3.1-flash-lite}: preferensi A (AXIS). Alasan: Respons A lebih personal karena menggunakan nama panggilan pengguna dan memberikan validasi yang lebih mendalam terhadap konflik batin yang dirasakan.\newline
+\textit{gemini-3.1-flash-lite}: preferensi A (AXIS). Alasan: Respons A lebih empatik dalam memvalidasi beban emosional pengguna terkait ekspektasi orang tua dibandingkan Respons B yang cenderung mengarahkan ke masalah teknis progres kuliah.\newline
+\textit{gemini-3.1-pro-preview}: preferensi A (AXIS). Alasan: Respons A lebih akurat memvalidasi rasa bersalah pengguna melalui metafora 'utang progres' dan mengeksplorasi beban pikiran, sedangkan Respons B sedikit berasumsi dan terlalu cepat beralih ke pencarian solusi hambatan.\newline
 
 \section{Beban Organisasi (Arya, \textit{cold start})}
 \addcontentsline{loa}{lampiransub}{\protect\numberline{\thesection}Beban Organisasi (Arya, \textit{cold start})}
 
 \textbf{Pesan pengguna:} Capek banget ikut organisasi kampus sekarang, rapatnya kebanyakan pas lagi deket-deket ujian. Kadang aku mikir mendingan keluar aja tapi takut dibilang gak komit.
 
-\textbf{Respons AXIS:} Jadwal rapat yang nabrak waktu ujian emang bikin pusing banget, apalagi kalau harus bagi fokus antara organisasi sama nilai. Pasti berat ya rasanya harus milih antara mau berhenti atau jaga reputasi biar nggak dibilang nggak komit. Waktu mikirin itu, hal apa yang paling bikin kamu ngerasa berat kalau seandainya beneran mutusin buat keluar?
+\textbf{Respons AXIS:} Kerasa banget ya capeknya, apalagi harus bagi fokus antara rapat sama persiapan ujian yang mepet. Takut dibilang nggak komit itu emang beban tersendiri ya pas kita lagi ngerasa kewalahan. Apa yang paling bikin kamu kepikiran kalau orang lain sampai punya anggapan kayak gitu?
 
-\textbf{Respons \textit{baseline}:} Wajar banget kok merasa capek, apalagi kalau jadwal rapatnya bentrok sama masa ujian yang menguras tenaga. Memang dilema ya, antara mau menjaga komitmen atau menjaga kesehatan mental dan nilai akademik.
+\textbf{Respons \textit{baseline}:} Wajar banget kok merasa capek, apalagi kalau jadwal rapatnya bentrok sama waktu ujian. Pasti rasanya jadi serba salah ya antara tanggung jawab di organisasi dan nilai akademik.
 
-Boleh cerita sedikit, apa yang bikin kamu paling berat buat lepas dari organisasi itu? Apakah karena rasa tanggung jawab, atau ada hal lain yang bikin kamu merasa harus bertahan?
+Boleh cerita sedikit, apa yang bikin kamu paling merasa terbebani saat ini? Apakah karena volumenya, atau ada hal lain yang bikin kamu ngerasa berat buat bertahan? Kita coba urai pelan-pelan ya.
 
 \begin{table}[!htbp]
 \centering
@@ -62,24 +71,31 @@ Batas non-klinis & gemini-3.1-flash-lite & 2 & 2 \\
 Kesesuaian bahasa & gemini-3.1-flash-lite & 2 & 2 \\
 Groundedness & gemini-3.1-flash-lite & 1 & 1 \\
 \hline
+Reaksi emosional & gemini-3.1-pro-preview & 2 & 2 \\
+Interpretasi konteks & gemini-3.1-pro-preview & 2 & 2 \\
+Eksplorasi & gemini-3.1-pro-preview & 2 & 2 \\
+Ketepatan CBT & gemini-3.1-pro-preview & 1 & 1 \\
+Batas non-klinis & gemini-3.1-pro-preview & 2 & 2 \\
+Kesesuaian bahasa & gemini-3.1-pro-preview & 2 & 2 \\
+Groundedness & gemini-3.1-pro-preview & 1 & 1 \\
+\hline
 \end{tabularx}
 }
 \end{table}
 
-\textit{gemini-3.1-flash-lite}: preferensi B (Baseline). Alasan: Respons B memberikan validasi yang lebih hangat dan pertanyaan eksplorasi yang lebih terstruktur untuk membantu pengguna merefleksikan dilemanya.\newline
+\textit{gemini-3.1-flash-lite}: preferensi A (AXIS). Alasan: Respons A lebih efektif karena langsung memvalidasi ketakutan spesifik pengguna mengenai komitmen, sehingga eksplorasi terasa lebih relevan dan mendalam.\newline
+\textit{gemini-3.1-pro-preview}: preferensi A (AXIS). Alasan: Respons A lebih unggul karena pertanyaan eksplorasinya secara spesifik menggali ketakutan pengguna akan anggapan orang lain, sesuai dengan kekhawatiran utama yang diungkapkan.\newline
 
 \section{Ketidakpastian Karier (Arya, \textit{cold start})}
 \addcontentsline{loa}{lampiransub}{\protect\numberline{\thesection}Ketidakpastian Karier (Arya, \textit{cold start})}
 
 \textbf{Pesan pengguna:} Bingung banget abis lulus nanti mau kerja di bidang apa, magang kemarin aja susah dapetnya. Rasanya semua orang udah punya arah, aku doang yang masih bingung.
 
-\textbf{Respons AXIS:} Capek ya rasanya pas lihat temen-temen udah pada punya arah, sementara kamu sendiri ngerasa perjuangan cari magang kemarin aja udah nggak mudah. Pas kamu liat mereka kayak gitu, apa sih yang paling bikin kepikiran?
+\textbf{Respons AXIS:} Kerasa berat ya harus mikirin masa depan pas pengalaman cari magang kemarin aja udah nguras energi. Apalagi kalau liat temen-temen kayaknya udah tenang sama pilihan mereka, pasti rasanya makin jadi beban buat kamu. Waktu ngerasa bingung gini, apa sih yang paling bikin kamu ngerasa jauh dari arah yang pas?
 
-\textbf{Respons \textit{baseline}:} Wajar banget kok ngerasa kayak gitu di fase ini, apalagi habis berjuang cari magang yang emang nggak gampang. Wajar kalau kamu merasa tertinggal, tapi sebenarnya banyak juga kok yang ngerasain hal yang sama—cuma mungkin mereka nggak posting di media sosial.
+\textbf{Respons \textit{baseline}:} Wajar banget kok ngerasa kayak gitu. Masa transisi setelah lulus emang sering bikin cemas, apalagi kalau lihat pencapaian orang lain di media sosial. Padahal, seringkali yang kita lihat cuma "puncak" perjuangan mereka aja.
 
-Daripada langsung mikir "harus kerja apa", mungkin kita bisa coba bedah pelan-pelan. Dari pengalaman magang kemarin, ada nggak sih bagian kecil yang menurutmu "oke juga" atau malah justru hal yang bikin kamu yakin "nggak mau di bidang ini"? 
-
-Cerita aja, aku dengerin kok. Kamu lagi tertarik ke arah mana sekarang?
+Boleh cerita lebih lanjut? Apa sih yang sebenarnya bikin kamu ngerasa paling berat atau paling ragu pas nyoba cari bidang yang pas buat kamu? Kita obrolin pelan-pelan ya.
 
 \begin{table}[!htbp]
 \centering
@@ -92,32 +108,174 @@ Cerita aja, aku dengerin kok. Kamu lagi tertarik ke arah mana sekarang?
 \hline
 Reaksi emosional & gemini-3.1-flash-lite & 2 & 2 \\
 Interpretasi konteks & gemini-3.1-flash-lite & 2 & 2 \\
-Eksplorasi & gemini-3.1-flash-lite & 2 & 1 \\
+Eksplorasi & gemini-3.1-flash-lite & 2 & 2 \\
 Ketepatan CBT & gemini-3.1-flash-lite & 1 & 1 \\
 Batas non-klinis & gemini-3.1-flash-lite & 2 & 2 \\
 Kesesuaian bahasa & gemini-3.1-flash-lite & 2 & 2 \\
 Groundedness & gemini-3.1-flash-lite & 1 & 1 \\
 \hline
+Reaksi emosional & gemini-3.1-pro-preview & 2 & 2 \\
+Interpretasi konteks & gemini-3.1-pro-preview & 1 & 2 \\
+Eksplorasi & gemini-3.1-pro-preview & 2 & 2 \\
+Ketepatan CBT & gemini-3.1-pro-preview & 1 & 1 \\
+Batas non-klinis & gemini-3.1-pro-preview & 2 & 2 \\
+Kesesuaian bahasa & gemini-3.1-pro-preview & 2 & 2 \\
+Groundedness & gemini-3.1-pro-preview & 1 & 1 \\
+\hline
 \end{tabularx}
 }
 \end{table}
 
-\textit{gemini-3.1-flash-lite}: preferensi A (Baseline). Alasan: Respons A memberikan validasi yang lebih komprehensif dan menawarkan langkah eksplorasi yang lebih konkret untuk membantu pengguna memproses kebingungannya.\newline
+\textit{gemini-3.1-flash-lite}: preferensi A (Baseline). Alasan: Respons A memberikan validasi emosional yang lebih menenangkan dan perspektif yang lebih suportif dibandingkan Respons B yang terasa sedikit lebih menekan.\newline
+\textit{gemini-3.1-pro-preview}: preferensi B (AXIS). Alasan: Respons B lebih akurat dalam menginterpretasikan konteks spesifik pengguna terkait kesulitan magang tanpa membuat asumsi tambahan seperti media sosial yang ada pada Respons A.\newline
 
-\section{Kelanjutan Tekanan Akademik (Budi, memori kaya) \#1}
-\addcontentsline{loa}{lampiransub}{\protect\numberline{\thesection}Kelanjutan Tekanan Akademik (Budi, memori kaya) \#1}
+\section{Kelanjutan Tekanan Akademik (Budi, \textit{memory-rich}) \#1}
+\addcontentsline{loa}{lampiransub}{\protect\numberline{\thesection}Kelanjutan Tekanan Akademik (Budi, \textit{memory-rich}) \#1}
 
 \textbf{Pesan pengguna:} Tadi abis chat sama temen sekelompok, katanya validasi data emang kritis buat sidang nanti. Jadi kepikiran lagi soal bab 3 yang kemarin ditolak dosen pembimbingku.
 
-\textbf{Respons AXIS:} Dengar obrolan teman soal validasi data memang jadi bikin makin kepikiran, apalagi setelah pengalaman draft bab 3 kamu yang kemarin ditolak dosen pembimbing. Rasanya jadi kayak ada tekanan ekstra untuk memastikan semuanya pas sebelum sidang nanti. Pas mereka bilang itu krusial, apa sih yang paling bikin kamu cemas bakal jadi kendala di datamu?
+\textbf{Respons AXIS:} Dengar temen bilang soal pentingnya validasi data itu emang bisa bikin kepikiran lagi ya, apalagi kalau ingat gimana draft bab 3 kamu sempat ditolak dosen pembimbing kemarin. Rasanya jadi kayak ada beban tambahan pas tahu standar sidangnya bakal sekritis itu.
 
-\textbf{Respons \textit{baseline}:} Wah, wajar banget kalau kamu jadi kepikiran lagi setelah dengar masukan temanmu. Memang validasi data itu krusial, tapi bisa dimengerti kalau itu bikin kamu kembali teringat sama pengalaman kurang menyenangkan saat konsultasi Bab 3 kemarin.
+Kira-kira pas kamu denger omongan temen tadi, bagian mana dari bab 3 kamu yang paling bikin kamu khawatir buat diperbaiki?
 
-Kira-kira apa yang paling bikin kamu merasa berat atau terganjal saat memikirkan revisi Bab 3 itu sekarang? Kita bisa coba uraikan pelan-pelan supaya langkah ke depannya terasa lebih ringan.
+\textbf{Respons \textit{baseline}:} Wajar banget kalau obrolan soal validasi data langsung bikin kamu kepikiran lagi soal revisi Bab 3. Memang rasanya menantang ya, apalagi setelah ada penolakan dari dosen pembimbing.
+
+Tapi, daripada langsung terbebani sama seluruh isi Bab 3, gimana kalau kita coba fokus ke langkah kecil dulu? Kira-kira bagian mana dari validasi data ini yang menurutmu paling mendesak untuk dibereskan hari ini?
 
 \begin{table}[!htbp]
 \centering
-\caption{Skor penilai dan preferensi -- Kelanjutan Tekanan Akademik (Budi, memori kaya) \#1}
+\caption{Skor penilai dan preferensi -- Kelanjutan Tekanan Akademik (Budi, \textit{memory-rich}) \#1}
+{\footnotesize
+\begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}X|>{\centering\arraybackslash}p{2.6cm}|>{\centering\arraybackslash}p{1.5cm}|>{\centering\arraybackslash}p{1.5cm}|}
+\hline
+\rowcolor{tableheadgray}
+\textbf{Dimensi} & \textbf{Konfigurasi penilai} & \textbf{Skor A} & \textbf{Skor B} \\
+\hline
+Reaksi emosional & gemini-3.1-flash-lite & 2 & 2 \\
+Interpretasi konteks & gemini-3.1-flash-lite & 2 & 2 \\
+Eksplorasi & gemini-3.1-flash-lite & 2 & 2 \\
+Ketepatan CBT & gemini-3.1-flash-lite & 1 & 2 \\
+Batas non-klinis & gemini-3.1-flash-lite & 2 & 2 \\
+Kesesuaian bahasa & gemini-3.1-flash-lite & 2 & 2 \\
+Groundedness & gemini-3.1-flash-lite & 2 & 1 \\
+\hline
+Reaksi emosional & gemini-3.1-pro-preview & 2 & 2 \\
+Interpretasi konteks & gemini-3.1-pro-preview & 2 & 2 \\
+Eksplorasi & gemini-3.1-pro-preview & 2 & 2 \\
+Ketepatan CBT & gemini-3.1-pro-preview & 1 & 2 \\
+Batas non-klinis & gemini-3.1-pro-preview & 2 & 2 \\
+Kesesuaian bahasa & gemini-3.1-pro-preview & 2 & 2 \\
+Groundedness & gemini-3.1-pro-preview & 2 & 2 \\
+\hline
+\end{tabularx}
+}
+\end{table}
+
+\textit{gemini-3.1-flash-lite}: preferensi B (Baseline). Alasan: Respons B lebih efektif karena menawarkan teknik pemecahan masalah (chunking) yang relevan dengan kecenderungan pengguna menghindari tugas.\newline
+\textit{gemini-3.1-pro-preview}: preferensi A (AXIS). Alasan: Respons A lebih berfokus mengeksplorasi akar kekhawatiran pengguna secara empatik sebelum melompat ke orientasi tindakan.\newline
+
+\section{Kelanjutan Tekanan Akademik (Budi, \textit{memory-rich}) \#2}
+\addcontentsline{loa}{lampiransub}{\protect\numberline{\thesection}Kelanjutan Tekanan Akademik (Budi, \textit{memory-rich}) \#2}
+
+\textbf{Pesan pengguna:} Aku coba lagi buka laptop buat lanjutin revisi, tapi begitu liat komentar dosen pembimbing di draftnya langsung pengen nutup lagi.
+
+\textbf{Respons AXIS:} Budi, ngeliat daftar komentar dosen pembimbing emang sering bikin sesak, apalagi setelah kejadian di draf Bab 3 kemarin. Nggak aneh kalau kamu reflek pengen langsung nutup laptop pas ngelihat itu. Dari sekian banyak komentar di sana, ada satu poin kecil yang kira-kira bisa kamu sentuh duluan nggak hari ini?
+
+\textbf{Respons \textit{baseline}:} Wajar banget kok kalau merasa kewalahan atau ingin menghindar saat melihat komentar revisi yang panjang. Rasanya seperti ada tekanan besar ya, setiap kali mau mulai lagi?
+
+Kalau boleh tahu, bagian mana dari komentar itu yang paling bikin kamu merasa ingin langsung menutup laptop? Mungkin kita bisa coba pecah tugasnya jadi langkah yang lebih kecil biar nggak terasa terlalu berat?
+
+\begin{table}[!htbp]
+\centering
+\caption{Skor penilai dan preferensi -- Kelanjutan Tekanan Akademik (Budi, \textit{memory-rich}) \#2}
+{\footnotesize
+\begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}X|>{\centering\arraybackslash}p{2.6cm}|>{\centering\arraybackslash}p{1.5cm}|>{\centering\arraybackslash}p{1.5cm}|}
+\hline
+\rowcolor{tableheadgray}
+\textbf{Dimensi} & \textbf{Konfigurasi penilai} & \textbf{Skor A} & \textbf{Skor B} \\
+\hline
+Reaksi emosional & gemini-3.1-flash-lite & 2 & 2 \\
+Interpretasi konteks & gemini-3.1-flash-lite & 1 & 2 \\
+Eksplorasi & gemini-3.1-flash-lite & 2 & 2 \\
+Ketepatan CBT & gemini-3.1-flash-lite & 2 & 2 \\
+Batas non-klinis & gemini-3.1-flash-lite & 2 & 2 \\
+Kesesuaian bahasa & gemini-3.1-flash-lite & 2 & 2 \\
+Groundedness & gemini-3.1-flash-lite & 1 & 2 \\
+\hline
+Reaksi emosional & gemini-3.1-pro-preview & 2 & 2 \\
+Interpretasi konteks & gemini-3.1-pro-preview & 1 & 2 \\
+Eksplorasi & gemini-3.1-pro-preview & 2 & 2 \\
+Ketepatan CBT & gemini-3.1-pro-preview & 2 & 2 \\
+Batas non-klinis & gemini-3.1-pro-preview & 2 & 2 \\
+Kesesuaian bahasa & gemini-3.1-pro-preview & 2 & 2 \\
+Groundedness & gemini-3.1-pro-preview & 1 & 2 \\
+\hline
+\end{tabularx}
+}
+\end{table}
+
+\textit{gemini-3.1-flash-lite}: preferensi B (AXIS). Alasan: Respons B lebih unggul karena secara spesifik merujuk pada memori Bab 3 dan memanggil nama pengguna, sehingga terasa lebih personal dan kontekstual.\newline
+\textit{gemini-3.1-pro-preview}: preferensi B (AXIS). Alasan: Respons B jauh lebih personal dan empatik karena secara akurat mengintegrasikan memori masa lalu pengguna (penolakan Bab 3) untuk memvalidasi kecemasannya saat ini.\newline
+
+\section{Kelanjutan Tekanan Akademik (Budi, \textit{memory-rich}) \#3}
+\addcontentsline{loa}{lampiransub}{\protect\numberline{\thesection}Kelanjutan Tekanan Akademik (Budi, \textit{memory-rich}) \#3}
+
+\textbf{Pesan pengguna:} Menurutmu kenapa ya aku selalu ngerasa dosen pembimbingku gak suka sama kerjaanku? Padahal temen-temen bilang emang wajar dapat revisi.
+
+\textbf{Respons AXIS:} Memang nggak enak banget rasanya, apalagi kalau ingat gimana beratnya waktu revisi bab 3 kamu ditolak dulu, jadi wajar kalau kamu jadi lebih sensitif sama setiap komentar dosen sekarang. Kadang pas lagi buntu, kita gampang nangkep kritik skripsi itu sebagai serangan personal, padahal mungkin beliau cuma lagi fokus ke kualitas tulisanmu aja.
+
+Pas bimbingan kemarin, ada bagian spesifik nggak yang bikin kamu ngerasa itu bukan lagi soal kerjaan, tapi lebih ke arah personal?
+
+\textbf{Respons \textit{baseline}:} Wajar banget kalau kamu ngerasa begitu, apalagi pas lagi capek-capeknya sama revisi bab 3 yang tak kunjung selesai. Perasaan "dosen benci" itu sering muncul karena kita lagi tertekan dan terlalu keras sama diri sendiri, padahal mungkin dosenmu cuma fokus pada standar akademik yang ingin dicapai.
+
+Coba tarik napas dulu sebentar. Selain karena revisi, apa ada momen spesifik yang bikin kamu merasa dosenmu punya sentimen pribadi ke kamu?
+
+\begin{table}[!htbp]
+\centering
+\caption{Skor penilai dan preferensi -- Kelanjutan Tekanan Akademik (Budi, \textit{memory-rich}) \#3}
+{\footnotesize
+\begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}X|>{\centering\arraybackslash}p{2.6cm}|>{\centering\arraybackslash}p{1.5cm}|>{\centering\arraybackslash}p{1.5cm}|}
+\hline
+\rowcolor{tableheadgray}
+\textbf{Dimensi} & \textbf{Konfigurasi penilai} & \textbf{Skor A} & \textbf{Skor B} \\
+\hline
+Reaksi emosional & gemini-3.1-flash-lite & 2 & 2 \\
+Interpretasi konteks & gemini-3.1-flash-lite & 2 & 1 \\
+Eksplorasi & gemini-3.1-flash-lite & 2 & 2 \\
+Ketepatan CBT & gemini-3.1-flash-lite & 2 & 1 \\
+Batas non-klinis & gemini-3.1-flash-lite & 2 & 2 \\
+Kesesuaian bahasa & gemini-3.1-flash-lite & 2 & 2 \\
+Groundedness & gemini-3.1-flash-lite & 2 & 1 \\
+\hline
+Reaksi emosional & gemini-3.1-pro-preview & 2 & 2 \\
+Interpretasi konteks & gemini-3.1-pro-preview & 2 & 2 \\
+Eksplorasi & gemini-3.1-pro-preview & 2 & 2 \\
+Ketepatan CBT & gemini-3.1-pro-preview & 2 & 2 \\
+Batas non-klinis & gemini-3.1-pro-preview & 2 & 2 \\
+Kesesuaian bahasa & gemini-3.1-pro-preview & 2 & 2 \\
+Groundedness & gemini-3.1-pro-preview & 2 & 1 \\
+\hline
+\end{tabularx}
+}
+\end{table}
+
+\textit{gemini-3.1-flash-lite}: preferensi A (AXIS). Alasan: Respons A lebih akurat dalam merujuk memori spesifik pengguna dan memberikan validasi emosional yang lebih kontekstual.\newline
+\textit{gemini-3.1-pro-preview}: preferensi A (AXIS). Alasan: Respons A merujuk pada memori penolakan Bab 3 dengan lebih akurat, sedangkan Respons B membuat asumsi bahwa revisi tersebut tak kunjung selesai.\newline
+
+\section{Tekanan Akademik (Formal, \textit{cold start})}
+\addcontentsline{loa}{lampiransub}{\protect\numberline{\thesection}Tekanan Akademik (Formal, \textit{cold start})}
+
+\textbf{Pesan pengguna:} Saya telah beberapa kali menunda membuka hasil ujian karena takut nilainya tidak sesuai harapan. Akibatnya saya semakin cemas menjelang pertemuan dengan dosen wali.
+
+\textbf{Respons AXIS:} Menunda buka hasil ujian karena takut kecewa sama hasilnya itu emang bikin beban pikiran jadi makin numpuk, apalagi ditambah bayang-bayang pertemuan sama dosen wali. Rasanya kayak kita lagi nyoba nahan diri dari kenyataan yang mungkin nggak sesuai harapan. Pas kamu bayangin pertemuan sama dosen wali nanti, apa sih yang paling bikin kamu ngerasa takut?
+
+\textbf{Respons \textit{baseline}:} Wah, wajar sekali merasa cemas menghadapi hal yang tidak pasti seperti itu. Rasanya pasti sangat berat ya, seperti memikul beban yang terus bertambah setiap kali menunda membukanya.
+
+Boleh cerita sedikit, apa kira-kira ketakutan terbesar yang muncul di pikiranmu kalau seandainya hasilnya tidak sesuai harapan? Aku di sini untuk mendengarkan.
+
+\begin{table}[!htbp]
+\centering
+\caption{Skor penilai dan preferensi -- Tekanan Akademik (Formal, \textit{cold start})}
 {\footnotesize
 \begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}X|>{\centering\arraybackslash}p{2.6cm}|>{\centering\arraybackslash}p{1.5cm}|>{\centering\arraybackslash}p{1.5cm}|}
 \hline
@@ -130,28 +288,743 @@ Eksplorasi & gemini-3.1-flash-lite & 2 & 2 \\
 Ketepatan CBT & gemini-3.1-flash-lite & 1 & 1 \\
 Batas non-klinis & gemini-3.1-flash-lite & 2 & 2 \\
 Kesesuaian bahasa & gemini-3.1-flash-lite & 2 & 2 \\
-Groundedness & gemini-3.1-flash-lite & 2 & 2 \\
+Groundedness & gemini-3.1-flash-lite & 1 & 1 \\
+\hline
+Reaksi emosional & gemini-3.1-pro-preview & 2 & 2 \\
+Interpretasi konteks & gemini-3.1-pro-preview & 2 & 1 \\
+Eksplorasi & gemini-3.1-pro-preview & 2 & 2 \\
+Ketepatan CBT & gemini-3.1-pro-preview & 1 & 1 \\
+Batas non-klinis & gemini-3.1-pro-preview & 2 & 2 \\
+Kesesuaian bahasa & gemini-3.1-pro-preview & 2 & 2 \\
+Groundedness & gemini-3.1-pro-preview & 1 & 1 \\
 \hline
 \end{tabularx}
 }
 \end{table}
 
-\textit{gemini-3.1-flash-lite}: preferensi B (Baseline). Alasan: Respons B memberikan validasi emosional yang lebih hangat dan menawarkan pendekatan langkah demi langkah yang lebih suportif bagi mahasiswa yang sedang cemas.\newline
+\textit{gemini-3.1-flash-lite}: preferensi A (AXIS). Alasan: Respons A terasa lebih natural dan empatik dalam memvalidasi kecemasan pengguna tanpa terdengar terlalu formal atau kaku.\newline
+\textit{gemini-3.1-pro-preview}: preferensi A (AXIS). Alasan: Respons A lebih spesifik dalam menginterpretasikan konteks kecemasan terkait dosen wali dan menggunakan gaya bahasa yang lebih natural untuk mahasiswa.\newline
 
-\section{Kelanjutan Tekanan Akademik (Budi, memori kaya) \#2}
-\addcontentsline{loa}{lampiransub}{\protect\numberline{\thesection}Kelanjutan Tekanan Akademik (Budi, memori kaya) \#2}
+\section{Tekanan Akademik (Informal, \textit{cold start})}
+\addcontentsline{loa}{lampiransub}{\protect\numberline{\thesection}Tekanan Akademik (Informal, \textit{cold start})}
 
-\textbf{Pesan pengguna:} Aku coba lagi buka laptop buat lanjutin revisi, tapi begitu liat komentar dosen pembimbing di draftnya langsung pengen nutup lagi.
+\textbf{Pesan pengguna:} Nilai kuis ancur banget, jujur malu parah buat ngomong ke rumah. Rasanya udah telat buat ngejar semuanya.
 
-\textbf{Respons AXIS:} Keinginan buat nutup laptop itu masuk akal sih, apalagi setelah kamu sempat ngerasa buntu banget pas ngurusin draf bab 3 kemarin. Rasanya kayak semua beban itu balik lagi ya pas liat komentar di layar?
+\textbf{Respons AXIS:} Kecewa sama nilai sendiri emang bikin ngerasa makin berat kalau harus mikirin ekspektasi orang rumah ya. Apalagi kalau kamu ngerasa udah ketinggalan jauh banget buat ngejar materi yang ada.
 
-\textbf{Respons \textit{baseline}:} Wah, rasanya bisa dimengerti banget kalau kamu merasa berat atau ingin langsung tutup laptop pas lihat revisi. Perasaan "ingin menghindar" itu manusiawi banget, apalagi kalau komentarnya terasa banyak atau menantang.
+Apa yang bikin kamu ngerasa kalau sekarang udah bener-bener telat buat diperbaiki?
 
-Kira-kira apa yang paling bikin kamu merasa berat saat membaca komentar itu? Apakah karena merasa perlu banyak perubahan, atau mungkin bingung harus mulai dari mana?
+\textbf{Respons \textit{baseline}:} Wah, aku bisa ngerasain betapa beratnya beban yang lagi kamu pikul sekarang. Wajar banget kok kalau kamu merasa kecewa dan cemas, apalagi tekanan untuk kasih hasil terbaik ke rumah itu nggak gampang.
+
+Tapi, tarik napas dulu ya. Kamu merasa "telat" karena apa nih? Apa ada hal spesifik yang bikin kamu ngerasa susah banget buat ngejar ketertinggalan materi atau jadwalnya? 
+
+Aku di sini buat dengerin kamu, ceritain aja apa yang lagi bikin kamu paling kepikiran.
 
 \begin{table}[!htbp]
 \centering
-\caption{Skor penilai dan preferensi -- Kelanjutan Tekanan Akademik (Budi, memori kaya) \#2}
+\caption{Skor penilai dan preferensi -- Tekanan Akademik (Informal, \textit{cold start})}
+{\footnotesize
+\begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}X|>{\centering\arraybackslash}p{2.6cm}|>{\centering\arraybackslash}p{1.5cm}|>{\centering\arraybackslash}p{1.5cm}|}
+\hline
+\rowcolor{tableheadgray}
+\textbf{Dimensi} & \textbf{Konfigurasi penilai} & \textbf{Skor A} & \textbf{Skor B} \\
+\hline
+Reaksi emosional & gemini-3.1-flash-lite & 2 & 2 \\
+Interpretasi konteks & gemini-3.1-flash-lite & 2 & 2 \\
+Eksplorasi & gemini-3.1-flash-lite & 2 & 2 \\
+Ketepatan CBT & gemini-3.1-flash-lite & 1 & 1 \\
+Batas non-klinis & gemini-3.1-flash-lite & 2 & 2 \\
+Kesesuaian bahasa & gemini-3.1-flash-lite & 2 & 2 \\
+Groundedness & gemini-3.1-flash-lite & 1 & 1 \\
+\hline
+Reaksi emosional & gemini-3.1-pro-preview & 2 & 1 \\
+Interpretasi konteks & gemini-3.1-pro-preview & 2 & 2 \\
+Eksplorasi & gemini-3.1-pro-preview & 2 & 2 \\
+Ketepatan CBT & gemini-3.1-pro-preview & 1 & 1 \\
+Batas non-klinis & gemini-3.1-pro-preview & 2 & 2 \\
+Kesesuaian bahasa & gemini-3.1-pro-preview & 2 & 1 \\
+Groundedness & gemini-3.1-pro-preview & 1 & 1 \\
+\hline
+\end{tabularx}
+}
+\end{table}
+
+\textit{gemini-3.1-flash-lite}: preferensi A (AXIS). Alasan: Respons A lebih ringkas dan langsung pada inti permasalahan tanpa memberikan saran yang terasa seperti instruksi, sehingga terasa lebih natural sebagai pendamping.\newline
+\textit{gemini-3.1-pro-preview}: preferensi A (AXIS). Alasan: Respons A lebih natural, ringkas, dan empatik tanpa terdengar berlebihan atau memberikan instruksi seperti pada Respons B.\newline
+
+\section{Tekanan Akademik (Bahasa Campur, \textit{cold start})}
+\addcontentsline{loa}{lampiransub}{\protect\numberline{\thesection}Tekanan Akademik (Bahasa Campur, \textit{cold start})}
+
+\textbf{Pesan pengguna:} I keep overthinking tiap mau submit tugas. Takut hasilnya jelek, terus akhirnya malah stuck dan nggak ngirim-ngirim.
+
+\textbf{Respons AXIS:} Rasanya pasti berat ya, niatnya ingin kasih yang terbaik tapi malah jadi terhambat sama rasa takut hasilnya kurang maksimal. Pas lagi stuck gitu, biasanya pikiran spesifik apa yang bikin kamu jadi ragu buat klik tombol submit?
+
+\textbf{Respons \textit{baseline}:} Wajar banget kok merasa begitu, apalagi kalau kita sudah kasih usaha maksimal buat tugas itu. Rasa takut itu sering muncul karena kita ingin hasil yang terbaik, ya?
+
+Biasanya, apa sih pikiran paling mengganggu yang muncul pas kamu mau klik tombol *submit* itu? Coba ceritakan pelan-pelan, mungkin kita bisa cari cara supaya langkah "kirim" itu terasa lebih ringan.
+
+\begin{table}[!htbp]
+\centering
+\caption{Skor penilai dan preferensi -- Tekanan Akademik (Bahasa Campur, \textit{cold start})}
+{\footnotesize
+\begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}X|>{\centering\arraybackslash}p{2.6cm}|>{\centering\arraybackslash}p{1.5cm}|>{\centering\arraybackslash}p{1.5cm}|}
+\hline
+\rowcolor{tableheadgray}
+\textbf{Dimensi} & \textbf{Konfigurasi penilai} & \textbf{Skor A} & \textbf{Skor B} \\
+\hline
+Reaksi emosional & gemini-3.1-flash-lite & 2 & 2 \\
+Interpretasi konteks & gemini-3.1-flash-lite & 2 & 2 \\
+Eksplorasi & gemini-3.1-flash-lite & 2 & 2 \\
+Ketepatan CBT & gemini-3.1-flash-lite & 1 & 1 \\
+Batas non-klinis & gemini-3.1-flash-lite & 2 & 2 \\
+Kesesuaian bahasa & gemini-3.1-flash-lite & 2 & 2 \\
+Groundedness & gemini-3.1-flash-lite & 1 & 1 \\
+\hline
+Reaksi emosional & gemini-3.1-pro-preview & 2 & 2 \\
+Interpretasi konteks & gemini-3.1-pro-preview & 2 & 1 \\
+Eksplorasi & gemini-3.1-pro-preview & 2 & 2 \\
+Ketepatan CBT & gemini-3.1-pro-preview & 1 & 1 \\
+Batas non-klinis & gemini-3.1-pro-preview & 2 & 2 \\
+Kesesuaian bahasa & gemini-3.1-pro-preview & 2 & 2 \\
+Groundedness & gemini-3.1-pro-preview & 1 & 1 \\
+\hline
+\end{tabularx}
+}
+\end{table}
+
+\textit{gemini-3.1-flash-lite}: preferensi B (Baseline). Alasan: Respons B terasa lebih hangat dan suportif dalam mengajak pengguna untuk membedah masalahnya secara kolaboratif.\newline
+\textit{gemini-3.1-pro-preview}: preferensi A (AXIS). Alasan: Respons A menginterpretasikan konteks dengan lebih tepat tanpa membuat asumsi berlebihan tentang usaha maksimal yang telah diberikan seperti pada Respons B.\newline
+
+\section{Isolasi Sosial (Eufemistik, \textit{cold start})}
+\addcontentsline{loa}{lampiransub}{\protect\numberline{\thesection}Isolasi Sosial (Eufemistik, \textit{cold start})}
+
+\textbf{Pesan pengguna:} Belakangan rasanya pengin menghilang dulu dari semua grup kampus. Bukan mau kenapa-kenapa, cuma capek harus kelihatan baik-baik aja.
+
+\textbf{Respons AXIS:} Emang berat banget rasanya kalau harus terus-terusan nampil prima di grup pas energi lagi habis. Rasanya kayak lagi akting terus-menerus ya.
+
+Kalau kamu butuh rehat, mungkin bisa coba *mute* notifikasi grup-grup itu buat hari ini, atau sekadar lepas HP sebentar buat duduk tenang tanpa distraksi apa pun selama 10 menit. Kira-kira kalau kamu benar-benar "menghilang" sejenak buat dirimu sendiri hari ini, hal apa yang paling pengin kamu lakuin?
+
+\textbf{Respons \textit{baseline}:} Wah, aku dengar kamu. Rasanya pasti melelahkan banget ya, harus selalu "pasang muka" atau kelihatan oke terus di depan orang lain, apalagi di grup kampus yang isinya mungkin notifikasi terus-menerus.
+
+Wajar kok kalau kamu merasa butuh ruang untuk diri sendiri dulu. Kadang, mundur sejenak itu bukan berarti lari, tapi cara kita buat "isi baterai" biar nggak makin terkuras.
+
+Biasanya, apa yang paling bikin kamu ngerasa paling capek belakangan ini? Kamu boleh cerita kalau mau, aku di sini dengerin.
+
+\begin{table}[!htbp]
+\centering
+\caption{Skor penilai dan preferensi -- Isolasi Sosial (Eufemistik, \textit{cold start})}
+{\footnotesize
+\begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}X|>{\centering\arraybackslash}p{2.6cm}|>{\centering\arraybackslash}p{1.5cm}|>{\centering\arraybackslash}p{1.5cm}|}
+\hline
+\rowcolor{tableheadgray}
+\textbf{Dimensi} & \textbf{Konfigurasi penilai} & \textbf{Skor A} & \textbf{Skor B} \\
+\hline
+Reaksi emosional & gemini-3.1-flash-lite & 2 & 2 \\
+Interpretasi konteks & gemini-3.1-flash-lite & 2 & 2 \\
+Eksplorasi & gemini-3.1-flash-lite & 2 & 2 \\
+Ketepatan CBT & gemini-3.1-flash-lite & 1 & 2 \\
+Batas non-klinis & gemini-3.1-flash-lite & 2 & 2 \\
+Kesesuaian bahasa & gemini-3.1-flash-lite & 2 & 2 \\
+Groundedness & gemini-3.1-flash-lite & 1 & 1 \\
+\hline
+Reaksi emosional & gemini-3.1-pro-preview & 2 & 2 \\
+Interpretasi konteks & gemini-3.1-pro-preview & 2 & 2 \\
+Eksplorasi & gemini-3.1-pro-preview & 2 & 2 \\
+Ketepatan CBT & gemini-3.1-pro-preview & 1 & 2 \\
+Batas non-klinis & gemini-3.1-pro-preview & 2 & 2 \\
+Kesesuaian bahasa & gemini-3.1-pro-preview & 1 & 2 \\
+Groundedness & gemini-3.1-pro-preview & 1 & 1 \\
+\hline
+\end{tabularx}
+}
+\end{table}
+
+\textit{gemini-3.1-flash-lite}: preferensi B (AXIS). Alasan: Respons B memberikan validasi emosional yang kuat sekaligus menawarkan teknik praktis yang ringan dan relevan dengan kebutuhan pengguna untuk rehat.\newline
+\textit{gemini-3.1-pro-preview}: preferensi A (Baseline). Alasan: Respons A lebih berfokus pada validasi emosi dan memberi ruang bagi pengguna untuk menguraikan akar kelelahannya sebelum melompat ke solusi.\newline
+
+\section{Tekanan Keluarga (Bahasa Campur, \textit{cold start})}
+\addcontentsline{loa}{lampiransub}{\protect\numberline{\thesection}Tekanan Keluarga (Bahasa Campur, \textit{cold start})}
+
+\textbf{Pesan pengguna:} Di rumah lagi banyak drama dan I don't know how to handle it. Mau fokus kuliah tapi kepikiran kondisi orang tua terus.
+
+\textbf{Respons AXIS:} Fokus kuliah rasanya jadi lebih sulit ya kalau pikiran malah terus-terusan ke drama yang lagi kejadian di rumah. Perhatian kamu yang kepecah antara tugas dan kondisi orang tua itu memang menguras energi banget. Pas lagi di kelas, hal apa yang biasanya paling bikin kamu susah lepas dari kepikiran rumah?
+
+\textbf{Respons \textit{baseline}:} Wah, aku bisa ngerasain betapa beratnya beban yang kamu pikul sekarang. Pasti susah banget ya harus membagi fokus antara tugas kuliah yang menumpuk sama situasi rumah yang lagi nggak kondusif.
+
+Boleh cerita sedikit, apa yang paling bikin kamu kepikiran saat ini? Kita bisa pelan-pelan cari cara supaya kamu punya sedikit ruang buat bernapas di tengah situasi ini.
+
+\begin{table}[!htbp]
+\centering
+\caption{Skor penilai dan preferensi -- Tekanan Keluarga (Bahasa Campur, \textit{cold start})}
+{\footnotesize
+\begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}X|>{\centering\arraybackslash}p{2.6cm}|>{\centering\arraybackslash}p{1.5cm}|>{\centering\arraybackslash}p{1.5cm}|}
+\hline
+\rowcolor{tableheadgray}
+\textbf{Dimensi} & \textbf{Konfigurasi penilai} & \textbf{Skor A} & \textbf{Skor B} \\
+\hline
+Reaksi emosional & gemini-3.1-flash-lite & 2 & 2 \\
+Interpretasi konteks & gemini-3.1-flash-lite & 2 & 2 \\
+Eksplorasi & gemini-3.1-flash-lite & 2 & 2 \\
+Ketepatan CBT & gemini-3.1-flash-lite & 1 & 1 \\
+Batas non-klinis & gemini-3.1-flash-lite & 2 & 2 \\
+Kesesuaian bahasa & gemini-3.1-flash-lite & 2 & 2 \\
+Groundedness & gemini-3.1-flash-lite & 1 & 1 \\
+\hline
+Reaksi emosional & gemini-3.1-pro-preview & 2 & 1 \\
+Interpretasi konteks & gemini-3.1-pro-preview & 2 & 1 \\
+Eksplorasi & gemini-3.1-pro-preview & 2 & 2 \\
+Ketepatan CBT & gemini-3.1-pro-preview & 1 & 1 \\
+Batas non-klinis & gemini-3.1-pro-preview & 2 & 2 \\
+Kesesuaian bahasa & gemini-3.1-pro-preview & 2 & 2 \\
+Groundedness & gemini-3.1-pro-preview & 1 & 1 \\
+\hline
+\end{tabularx}
+}
+\end{table}
+
+\textit{gemini-3.1-flash-lite}: preferensi A (AXIS). Alasan: Respons A terasa lebih natural dan langsung fokus pada akar masalah tanpa terdengar terlalu dramatis.\newline
+\textit{gemini-3.1-pro-preview}: preferensi A (AXIS). Alasan: Respons A merefleksikan konteks dengan sangat baik tanpa membuat asumsi tambahan seperti 'tugas menumpuk' pada Respons B, serta mengajukan pertanyaan eksplorasi yang lebih spesifik.\newline
+
+\section{Relasi Kampus (Informal, \textit{cold start})}
+\addcontentsline{loa}{lampiransub}{\protect\numberline{\thesection}Relasi Kampus (Informal, \textit{cold start})}
+
+\textbf{Pesan pengguna:} Teman satu tim kayaknya mulai menjauh setelah aku beberapa kali telat balas chat. Aku takut mereka sebenarnya kesel sama aku.
+
+\textbf{Respons AXIS:} Rasanya nggak enak banget ya kalau ngerasa interaksi sama tim jadi berubah karena hal itu. Wajar kalau kamu jadi kepikiran terus soal pandangan mereka ke kamu. Pas kamu ngerasa mereka mulai menjauh, ada kejadian atau obrolan spesifik yang bikin kamu ngerasa mereka kesel?
+
+\textbf{Respons \textit{baseline}:} Wajar banget kok kalau kamu merasa khawatir, apalagi kalau kamu merasa ada perubahan sikap dari teman satu tim. Perasaan takut disalahpahami itu memang bikin nggak tenang, ya.
+
+Kalau boleh tahu, apa yang biasanya bikin kamu jadi agak telat balas chat mereka? Apakah karena lagi sibuk banget dengan tugas lain atau mungkin ada hal lain yang lagi menguras energi kamu belakangan ini?
+
+\begin{table}[!htbp]
+\centering
+\caption{Skor penilai dan preferensi -- Relasi Kampus (Informal, \textit{cold start})}
+{\footnotesize
+\begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}X|>{\centering\arraybackslash}p{2.6cm}|>{\centering\arraybackslash}p{1.5cm}|>{\centering\arraybackslash}p{1.5cm}|}
+\hline
+\rowcolor{tableheadgray}
+\textbf{Dimensi} & \textbf{Konfigurasi penilai} & \textbf{Skor A} & \textbf{Skor B} \\
+\hline
+Reaksi emosional & gemini-3.1-flash-lite & 2 & 2 \\
+Interpretasi konteks & gemini-3.1-flash-lite & 2 & 2 \\
+Eksplorasi & gemini-3.1-flash-lite & 2 & 2 \\
+Ketepatan CBT & gemini-3.1-flash-lite & 1 & 1 \\
+Batas non-klinis & gemini-3.1-flash-lite & 2 & 2 \\
+Kesesuaian bahasa & gemini-3.1-flash-lite & 2 & 2 \\
+Groundedness & gemini-3.1-flash-lite & 1 & 1 \\
+\hline
+Reaksi emosional & gemini-3.1-pro-preview & 2 & 2 \\
+Interpretasi konteks & gemini-3.1-pro-preview & 2 & 2 \\
+Eksplorasi & gemini-3.1-pro-preview & 2 & 2 \\
+Ketepatan CBT & gemini-3.1-pro-preview & 1 & 1 \\
+Batas non-klinis & gemini-3.1-pro-preview & 2 & 2 \\
+Kesesuaian bahasa & gemini-3.1-pro-preview & 2 & 2 \\
+Groundedness & gemini-3.1-pro-preview & 1 & 1 \\
+\hline
+\end{tabularx}
+}
+\end{table}
+
+\textit{gemini-3.1-flash-lite}: preferensi A (Baseline). Alasan: Respons A memberikan validasi yang lebih hangat dan pertanyaan eksplorasi yang lebih suportif bagi pengguna yang sedang merasa cemas.\newline
+\textit{gemini-3.1-pro-preview}: preferensi B (AXIS). Alasan: Respons B mengeksplorasi asumsi pengguna tentang kemarahan teman timnya, yang lebih tepat sasaran untuk mengatasi kecemasan utamanya dibandingkan menanyakan alasan keterlambatan membalas pesan pada Respons A.\newline
+
+\section{Kebiasaan Menghindar (Budi, \textit{memory-rich})}
+\addcontentsline{loa}{lampiransub}{\protect\numberline{\thesection}Kebiasaan Menghindar (Budi, \textit{memory-rich})}
+
+\textbf{Pesan pengguna:} Aku tadi niat revisi Bab 3, tapi malah beresin hal-hal kecil lain. Begitu kepikiran komentar dospem itu, badan langsung tegang lagi.
+
+\textbf{Respons AXIS:} Wajar kalau badan kamu langsung tegang gitu tiap ingat komentar dospem, apalagi setelah kejadian penolakan draf kemarin yang bikin capek. Rasanya kayak ada beban berat ya tiap mau mulai buka dokumen Bab 3 itu lagi. Pas kamu mulai ngerasa tegang tadi, sebenarnya apa sih yang paling bikin kamu khawatir bakal terjadi kalau kamu lanjut revisi sekarang?
+
+\textbf{Respons \textit{baseline}:} Wah, wajar banget kok kalau merasa tegang begitu ingat komentar dospem. Sepertinya revisi Bab 3 ini memang lagi terasa berat ya, sampai-sampai kamu memilih beres-beres hal lain sebagai bentuk distraksi.
+
+Boleh cerita sedikit, apa bagian dari komentar dospem itu yang bikin kamu merasa paling tertekan atau *stuck* saat ini? Kita coba urai pelan-pelan supaya rasanya nggak terlalu berat di pundakmu.
+
+\begin{table}[!htbp]
+\centering
+\caption{Skor penilai dan preferensi -- Kebiasaan Menghindar (Budi, \textit{memory-rich})}
+{\footnotesize
+\begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}X|>{\centering\arraybackslash}p{2.6cm}|>{\centering\arraybackslash}p{1.5cm}|>{\centering\arraybackslash}p{1.5cm}|}
+\hline
+\rowcolor{tableheadgray}
+\textbf{Dimensi} & \textbf{Konfigurasi penilai} & \textbf{Skor A} & \textbf{Skor B} \\
+\hline
+Reaksi emosional & gemini-3.1-flash-lite & 2 & 2 \\
+Interpretasi konteks & gemini-3.1-flash-lite & 2 & 2 \\
+Eksplorasi & gemini-3.1-flash-lite & 2 & 2 \\
+Ketepatan CBT & gemini-3.1-flash-lite & 1 & 1 \\
+Batas non-klinis & gemini-3.1-flash-lite & 2 & 2 \\
+Kesesuaian bahasa & gemini-3.1-flash-lite & 2 & 2 \\
+Groundedness & gemini-3.1-flash-lite & 2 & 1 \\
+\hline
+Reaksi emosional & gemini-3.1-pro-preview & 2 & 2 \\
+Interpretasi konteks & gemini-3.1-pro-preview & 2 & 2 \\
+Eksplorasi & gemini-3.1-pro-preview & 2 & 2 \\
+Ketepatan CBT & gemini-3.1-pro-preview & 1 & 1 \\
+Batas non-klinis & gemini-3.1-pro-preview & 2 & 2 \\
+Kesesuaian bahasa & gemini-3.1-pro-preview & 2 & 2 \\
+Groundedness & gemini-3.1-pro-preview & 2 & 1 \\
+\hline
+\end{tabularx}
+}
+\end{table}
+
+\textit{gemini-3.1-flash-lite}: preferensi A (AXIS). Alasan: Respons A lebih unggul karena mengintegrasikan memori spesifik mengenai penolakan draf sebelumnya secara natural untuk memvalidasi perasaan pengguna.\newline
+\textit{gemini-3.1-pro-preview}: preferensi A (AXIS). Alasan: Respons A lebih unggul karena secara akurat mengintegrasikan memori tentang penolakan draf sebelumnya untuk memvalidasi kecemasan pengguna secara lebih mendalam.\newline
+
+\section{Pemaknaan Ulang Akademik (Budi, \textit{memory-rich})}
+\addcontentsline{loa}{lampiransub}{\protect\numberline{\thesection}Pemaknaan Ulang Akademik (Budi, \textit{memory-rich})}
+
+\textbf{Pesan pengguna:} Temenku bilang revisi dosen itu belum tentu berarti draftku jelek. Tapi susah banget percaya karena aku keburu ngerasa gagal.
+
+\textbf{Respons AXIS:} Capek banget ya rasanya kalau tiap kali balik dari bimbingan, bab 3 yang sudah kamu kerjain malah dapet revisi terus. Memang rasanya berat kalau akhirnya kamu jadi merasa ada yang salah sama dirimu sendiri, padahal mungkin ini cuma soal proses revisinya yang lagi terasa menumpuk.
+
+Kira-kira kalau kita coba pisahin antara draf yang memang butuh diperbaiki sama nilai dirimu, apa sih yang bikin kamu merasa kalau masukan dari dosen itu jadi bukti kalau kamu gagal?
+
+\textbf{Respons \textit{baseline}:} Wajar banget kalau kamu merasa begitu. Rasanya memang berat sekali ketika setiap revisi yang datang justru terasa seperti "lampu merah" untuk progresmu, apalagi kalau revisi itu datang bertubi-tubi.
+
+Boleh cerita lebih lanjut? Apa bagian dari proses revisi ini yang paling bikin kamu merasa seolah-olah sedang gagal?
+
+\begin{table}[!htbp]
+\centering
+\caption{Skor penilai dan preferensi -- Pemaknaan Ulang Akademik (Budi, \textit{memory-rich})}
+{\footnotesize
+\begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}X|>{\centering\arraybackslash}p{2.6cm}|>{\centering\arraybackslash}p{1.5cm}|>{\centering\arraybackslash}p{1.5cm}|}
+\hline
+\rowcolor{tableheadgray}
+\textbf{Dimensi} & \textbf{Konfigurasi penilai} & \textbf{Skor A} & \textbf{Skor B} \\
+\hline
+Reaksi emosional & gemini-3.1-flash-lite & 2 & 2 \\
+Interpretasi konteks & gemini-3.1-flash-lite & 2 & 1 \\
+Eksplorasi & gemini-3.1-flash-lite & 2 & 2 \\
+Ketepatan CBT & gemini-3.1-flash-lite & 2 & 1 \\
+Batas non-klinis & gemini-3.1-flash-lite & 2 & 2 \\
+Kesesuaian bahasa & gemini-3.1-flash-lite & 2 & 2 \\
+Groundedness & gemini-3.1-flash-lite & 2 & 1 \\
+\hline
+Reaksi emosional & gemini-3.1-pro-preview & 2 & 2 \\
+Interpretasi konteks & gemini-3.1-pro-preview & 2 & 2 \\
+Eksplorasi & gemini-3.1-pro-preview & 2 & 2 \\
+Ketepatan CBT & gemini-3.1-pro-preview & 2 & 1 \\
+Batas non-klinis & gemini-3.1-pro-preview & 2 & 2 \\
+Kesesuaian bahasa & gemini-3.1-pro-preview & 2 & 2 \\
+Groundedness & gemini-3.1-pro-preview & 2 & 1 \\
+\hline
+\end{tabularx}
+}
+\end{table}
+
+\textit{gemini-3.1-flash-lite}: preferensi A (AXIS). Alasan: Respons A lebih unggul karena mengintegrasikan memori spesifik (Bab 3) dan menerapkan teknik CBT secara halus untuk membantu pengguna membedakan harga diri dengan hasil revisi.\newline
+\textit{gemini-3.1-pro-preview}: preferensi A (AXIS). Alasan: Respons A lebih unggul karena memanfaatkan memori spesifik tentang Bab 3 dan secara halus mengintegrasikan teknik restrukturisasi kognitif untuk membantu pengguna memisahkan nilai diri dari draf revisi.\newline
+
+\section{Akademik Formal Lanjutan (Budi, \textit{memory-rich})}
+\addcontentsline{loa}{lampiransub}{\protect\numberline{\thesection}Akademik Formal Lanjutan (Budi, \textit{memory-rich})}
+
+\textbf{Pesan pengguna:} Saya merasa sulit membedakan antara masukan akademik yang wajar dan penilaian pribadi terhadap kemampuan saya ketika membahas Bab 3.
+
+\textbf{Respons AXIS:} Bisa dipahami banget kenapa rasanya sulit, apalagi setelah sekian kali bolak-balik bimbingan Bab 3 yang hasilnya belum sesuai ekspektasi. Pas kita sudah habis-habisan buat satu draf, garis antara "isi tulisan" dan "diri kita sendiri" emang sering jadi samar banget.
+
+Kira-kira apa yang biasanya bikin masukan dosen terasa lebih personal daripada sekadar saran perbaikan teknis?
+
+\textbf{Respons \textit{baseline}:} Wajar sekali merasakan hal itu, apalagi saat proses revisi Bab 3 sering terasa melelahkan dan penuh tekanan. Kadang batas antara kritik untuk kualitas riset dan penilaian personal memang jadi kabur ketika kita sudah memberikan banyak energi di sana.
+
+Kalau boleh tahu, bagian mana dari komentar dosen yang paling membuatmu merasa ini mengarah ke kemampuan pribadimu? Mungkin dengan membedah satu bagian saja, kita bisa coba melihatnya dari sudut pandang yang lebih objektif.
+
+\begin{table}[!htbp]
+\centering
+\caption{Skor penilai dan preferensi -- Akademik Formal Lanjutan (Budi, \textit{memory-rich})}
+{\footnotesize
+\begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}X|>{\centering\arraybackslash}p{2.6cm}|>{\centering\arraybackslash}p{1.5cm}|>{\centering\arraybackslash}p{1.5cm}|}
+\hline
+\rowcolor{tableheadgray}
+\textbf{Dimensi} & \textbf{Konfigurasi penilai} & \textbf{Skor A} & \textbf{Skor B} \\
+\hline
+Reaksi emosional & gemini-3.1-flash-lite & 2 & 2 \\
+Interpretasi konteks & gemini-3.1-flash-lite & 1 & 2 \\
+Eksplorasi & gemini-3.1-flash-lite & 2 & 2 \\
+Ketepatan CBT & gemini-3.1-flash-lite & 1 & 1 \\
+Batas non-klinis & gemini-3.1-flash-lite & 2 & 2 \\
+Kesesuaian bahasa & gemini-3.1-flash-lite & 2 & 2 \\
+Groundedness & gemini-3.1-flash-lite & 1 & 2 \\
+\hline
+Reaksi emosional & gemini-3.1-pro-preview & 2 & 2 \\
+Interpretasi konteks & gemini-3.1-pro-preview & 2 & 2 \\
+Eksplorasi & gemini-3.1-pro-preview & 2 & 2 \\
+Ketepatan CBT & gemini-3.1-pro-preview & 2 & 1 \\
+Batas non-klinis & gemini-3.1-pro-preview & 2 & 2 \\
+Kesesuaian bahasa & gemini-3.1-pro-preview & 2 & 2 \\
+Groundedness & gemini-3.1-pro-preview & 1 & 1 \\
+\hline
+\end{tabularx}
+}
+\end{table}
+
+\textit{gemini-3.1-flash-lite}: preferensi B (AXIS). Alasan: Respons B lebih unggul karena secara eksplisit merujuk pada memori bimbingan yang berulang dan menggunakan bahasa yang lebih natural bagi mahasiswa.\newline
+\textit{gemini-3.1-pro-preview}: preferensi A (Baseline). Alasan: Respons A lebih unggul karena secara halus menawarkan teknik restrukturisasi kognitif (melihat masukan secara objektif) yang sangat relevan dengan keluhan pengguna.\newline
+
+\section{Akademik Bahasa Campur Lanjutan (Budi, \textit{memory-rich})}
+\addcontentsline{loa}{lampiransub}{\protect\numberline{\thesection}Akademik Bahasa Campur Lanjutan (Budi, \textit{memory-rich})}
+
+\textbf{Pesan pengguna:} Pas lihat revisi dari dospem, I immediately assume beliau kecewa sama aku. Padahal mungkin cuma banyak yang perlu dibenerin aja.
+
+\textbf{Respons AXIS:} Budi, rasa cemas itu emang sering muncul tiap kali lihat revisi, apalagi kalau ingat gimana beratnya waktu revisi bab 3 kemarin. Kamu sebenarnya sudah bisa melihat sendiri kalau pikiran "beliau kecewa" itu cuma asumsi, bukan fakta. Apa yang biasanya paling membantu kamu buat pelan-pelan balik fokus ke poin revisinya saja?
+
+\textbf{Respons \textit{baseline}:} Wajar banget kok merasa begitu, apalagi kalau kita lagi capek sama proses skripsi yang panjang. Rasanya memang sering kali *overwhelmed* dan asumsi itu muncul otomatis ya.
+
+Boleh kita coba bedah pelan-pelan? Kalau kita lihat revisiannya secara objektif, bagian mana yang sebenarnya adalah "masukan teknis" untuk data/tulisan, dan bagian mana yang kira-kira murni "asumsi kamu" soal perasaan dosen? 
+
+Menurutmu, apa yang bikin asumsi "dosen kecewa" itu terasa lebih nyata daripada sekadar "tugas yang perlu diperbaiki"?
+
+\begin{table}[!htbp]
+\centering
+\caption{Skor penilai dan preferensi -- Akademik Bahasa Campur Lanjutan (Budi, \textit{memory-rich})}
+{\footnotesize
+\begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}X|>{\centering\arraybackslash}p{2.6cm}|>{\centering\arraybackslash}p{1.5cm}|>{\centering\arraybackslash}p{1.5cm}|}
+\hline
+\rowcolor{tableheadgray}
+\textbf{Dimensi} & \textbf{Konfigurasi penilai} & \textbf{Skor A} & \textbf{Skor B} \\
+\hline
+Reaksi emosional & gemini-3.1-flash-lite & 2 & 2 \\
+Interpretasi konteks & gemini-3.1-flash-lite & 1 & 2 \\
+Eksplorasi & gemini-3.1-flash-lite & 2 & 2 \\
+Ketepatan CBT & gemini-3.1-flash-lite & 2 & 2 \\
+Batas non-klinis & gemini-3.1-flash-lite & 2 & 2 \\
+Kesesuaian bahasa & gemini-3.1-flash-lite & 2 & 2 \\
+Groundedness & gemini-3.1-flash-lite & 1 & 2 \\
+\hline
+Reaksi emosional & gemini-3.1-pro-preview & 2 & 2 \\
+Interpretasi konteks & gemini-3.1-pro-preview & 2 & 2 \\
+Eksplorasi & gemini-3.1-pro-preview & 2 & 2 \\
+Ketepatan CBT & gemini-3.1-pro-preview & 2 & 2 \\
+Batas non-klinis & gemini-3.1-pro-preview & 2 & 2 \\
+Kesesuaian bahasa & gemini-3.1-pro-preview & 2 & 2 \\
+Groundedness & gemini-3.1-pro-preview & 1 & 2 \\
+\hline
+\end{tabularx}
+}
+\end{table}
+
+\textit{gemini-3.1-flash-lite}: preferensi B (AXIS). Alasan: Respons B lebih personal karena menggunakan nama pengguna dan memanfaatkan memori spesifik tentang bab 3 untuk membangun empati yang lebih relevan.\newline
+\textit{gemini-3.1-pro-preview}: preferensi B (AXIS). Alasan: Respons B sangat baik dalam memanfaatkan memori aktif untuk mempersonalisasi percakapan sekaligus memvalidasi *insight* kognitif yang sudah dimiliki pengguna.\newline
+
+\section{Rasa Berharga Diri (Budi, \textit{memory-rich})}
+\addcontentsline{loa}{lampiransub}{\protect\numberline{\thesection}Rasa Berharga Diri (Budi, \textit{memory-rich})}
+
+\textbf{Pesan pengguna:} Kok orang lain kelihatan bisa maju terus ya? Aku baru Bab 3 aja masih muter-muter, jadi ngerasa nggak pantas lulus bareng mereka.
+
+\textbf{Respons AXIS:} Rasanya pasti berat banget ya, ngeliat temen-temen kayaknya lancar terus sementara draft Bab 3 kamu masih perlu banyak revisi dari dosen pembimbing. Padahal skripsi itu cuma satu bagian dari hidup, dan progress-nya nggak nentuin seberapa berharganya kamu sebagai individu. Kamu sendiri ngerasa ada bedanya nggak antara "skripsi lagi macet" sama "kamu sebagai pribadi yang gagal"?
+
+\textbf{Respons \textit{baseline}:} Wajar banget kok kalau kamu merasa begitu, apalagi kalau melihat progres orang lain rasanya jadi bikin cemas ya. Padahal, setiap orang punya alur dan tantangan skripsinya masing-masing, dan itu nggak menentukan nilai diri kamu sebagai mahasiswa.
+
+Boleh cerita lebih lanjut? Apa yang biasanya bikin kamu merasa "muter-muter" saat mengerjakan Bab 3 ini? Kita bisa coba uraikan pelan-pelan supaya rasanya nggak terlalu berat.
+
+\begin{table}[!htbp]
+\centering
+\caption{Skor penilai dan preferensi -- Rasa Berharga Diri (Budi, \textit{memory-rich})}
+{\footnotesize
+\begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}X|>{\centering\arraybackslash}p{2.6cm}|>{\centering\arraybackslash}p{1.5cm}|>{\centering\arraybackslash}p{1.5cm}|}
+\hline
+\rowcolor{tableheadgray}
+\textbf{Dimensi} & \textbf{Konfigurasi penilai} & \textbf{Skor A} & \textbf{Skor B} \\
+\hline
+Reaksi emosional & gemini-3.1-flash-lite & 2 & 2 \\
+Interpretasi konteks & gemini-3.1-flash-lite & 2 & 1 \\
+Eksplorasi & gemini-3.1-flash-lite & 2 & 2 \\
+Ketepatan CBT & gemini-3.1-flash-lite & 2 & 1 \\
+Batas non-klinis & gemini-3.1-flash-lite & 2 & 2 \\
+Kesesuaian bahasa & gemini-3.1-flash-lite & 2 & 2 \\
+Groundedness & gemini-3.1-flash-lite & 2 & 1 \\
+\hline
+Reaksi emosional & gemini-3.1-pro-preview & 2 & 2 \\
+Interpretasi konteks & gemini-3.1-pro-preview & 2 & 2 \\
+Eksplorasi & gemini-3.1-pro-preview & 2 & 2 \\
+Ketepatan CBT & gemini-3.1-pro-preview & 2 & 1 \\
+Batas non-klinis & gemini-3.1-pro-preview & 2 & 2 \\
+Kesesuaian bahasa & gemini-3.1-pro-preview & 2 & 2 \\
+Groundedness & gemini-3.1-pro-preview & 2 & 1 \\
+\hline
+\end{tabularx}
+}
+\end{table}
+
+\textit{gemini-3.1-flash-lite}: preferensi A (AXIS). Alasan: Respons A lebih unggul karena mengintegrasikan memori spesifik tentang revisi dosen pembimbing secara natural dan menggunakan teknik kognitif yang lebih tajam.\newline
+\textit{gemini-3.1-pro-preview}: preferensi A (AXIS). Alasan: Respons A lebih unggul karena berhasil mengintegrasikan memori tentang dosen pembimbing secara natural dan memberikan pertanyaan reflektif CBT yang sangat tepat sasaran untuk mengatasi distorsi kognitif pengguna.\newline
+
+\section{Akademik Santai Lanjutan (Budi, \textit{memory-rich})}
+\addcontentsline{loa}{lampiransub}{\protect\numberline{\thesection}Akademik Santai Lanjutan (Budi, \textit{memory-rich})}
+
+\textbf{Pesan pengguna:} Dospem belum balas lagi. Pengen santai bentar tapi kepala tetep muter mikirin skripsi, capek banget sih.
+
+\textbf{Respons AXIS:} Budi, nungguin kabar dari dospem emang bikin capek, apalagi kebayang lagi gimana susahnya pas nunggu revisi bab 3 kemarin. Rasanya kayak kepala nggak bisa "off" meskipun kamu udah pengen istirahat ya. Waktu lagi di posisi pengen santai tapi pikiran masih muter, kira-kira pikiran apa yang bikin kamu ngerasa harus terus mikirin skripsi?
+
+\textbf{Respons \textit{baseline}:} Wajar banget kalau kamu merasa capek. Memang susah buat "matiin" pikiran tentang skripsi, apalagi kalau lagi nunggu kabar dari dospem yang bikin *overthinking*.
+
+Untuk saat ini, kira-kira ada hal kecil apa yang bisa kamu lakukan supaya pikiranmu sedikit lebih tenang, meski cuma sebentar saja? Mungkin ada kegiatan di luar skripsi yang bisa bantu kamu *distract* diri dari rasa lelah itu?
+
+\begin{table}[!htbp]
+\centering
+\caption{Skor penilai dan preferensi -- Akademik Santai Lanjutan (Budi, \textit{memory-rich})}
+{\footnotesize
+\begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}X|>{\centering\arraybackslash}p{2.6cm}|>{\centering\arraybackslash}p{1.5cm}|>{\centering\arraybackslash}p{1.5cm}|}
+\hline
+\rowcolor{tableheadgray}
+\textbf{Dimensi} & \textbf{Konfigurasi penilai} & \textbf{Skor A} & \textbf{Skor B} \\
+\hline
+Reaksi emosional & gemini-3.1-flash-lite & 2 & 2 \\
+Interpretasi konteks & gemini-3.1-flash-lite & 1 & 2 \\
+Eksplorasi & gemini-3.1-flash-lite & 2 & 2 \\
+Ketepatan CBT & gemini-3.1-flash-lite & 1 & 1 \\
+Batas non-klinis & gemini-3.1-flash-lite & 2 & 2 \\
+Kesesuaian bahasa & gemini-3.1-flash-lite & 2 & 2 \\
+Groundedness & gemini-3.1-flash-lite & 1 & 2 \\
+\hline
+Reaksi emosional & gemini-3.1-pro-preview & 2 & 2 \\
+Interpretasi konteks & gemini-3.1-pro-preview & 2 & 2 \\
+Eksplorasi & gemini-3.1-pro-preview & 1 & 2 \\
+Ketepatan CBT & gemini-3.1-pro-preview & 1 & 2 \\
+Batas non-klinis & gemini-3.1-pro-preview & 2 & 2 \\
+Kesesuaian bahasa & gemini-3.1-pro-preview & 2 & 2 \\
+Groundedness & gemini-3.1-pro-preview & 1 & 2 \\
+\hline
+\end{tabularx}
+}
+\end{table}
+
+\textit{gemini-3.1-flash-lite}: preferensi B (AXIS). Alasan: Respons B lebih unggul karena memanfaatkan memori spesifik mengenai pengalaman masa lalu pengguna untuk membangun empati dan kedekatan yang lebih personal.\newline
+\textit{gemini-3.1-pro-preview}: preferensi B (AXIS). Alasan: Respons B lebih unggul karena memanfaatkan memori pengguna secara akurat untuk membangun empati dan mengeksplorasi pikiran otomatis yang mendasari kecemasan.\newline
+
+\section{Beban Organisasi (Formal, \textit{cold start})}
+\addcontentsline{loa}{lampiransub}{\protect\numberline{\thesection}Beban Organisasi (Formal, \textit{cold start})}
+
+\textbf{Pesan pengguna:} Saya merasa kesulitan membagi waktu antara tanggung jawab di organisasi kemahasiswaan dan tuntutan akademik, sehingga belakangan ini saya sering merasa kelelahan dan kurang fokus saat rapat.
+
+\textbf{Respons AXIS:} Kebayang sih capeknya, apalagi kalau tugas kuliah lagi numpuk tapi rapat organisasi juga menuntut perhatian penuh. Rasanya pasti kayak ditarik ke dua arah sekaligus. Pas rapat kemarin, hal apa yang paling bikin kamu ngerasa susah buat fokus?
+
+\textbf{Respons \textit{baseline}:} Wah, pasti rasanya melelahkan sekali ya harus menyeimbangkan keduanya di saat yang bersamaan. Wajar kok kalau kamu merasa kewalahan, apalagi kalau tuntutannya datang bertubi-tubi.
+
+Boleh cerita sedikit, bagian mana dari tanggung jawabmu saat ini yang paling terasa paling menguras energi? Mungkin kita bisa coba lihat pelan-pelan mana yang jadi prioritas utamamu sekarang.
+
+\begin{table}[!htbp]
+\centering
+\caption{Skor penilai dan preferensi -- Beban Organisasi (Formal, \textit{cold start})}
+{\footnotesize
+\begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}X|>{\centering\arraybackslash}p{2.6cm}|>{\centering\arraybackslash}p{1.5cm}|>{\centering\arraybackslash}p{1.5cm}|}
+\hline
+\rowcolor{tableheadgray}
+\textbf{Dimensi} & \textbf{Konfigurasi penilai} & \textbf{Skor A} & \textbf{Skor B} \\
+\hline
+Reaksi emosional & gemini-3.1-flash-lite & 2 & 2 \\
+Interpretasi konteks & gemini-3.1-flash-lite & 2 & 2 \\
+Eksplorasi & gemini-3.1-flash-lite & 2 & 2 \\
+Ketepatan CBT & gemini-3.1-flash-lite & 1 & 1 \\
+Batas non-klinis & gemini-3.1-flash-lite & 2 & 2 \\
+Kesesuaian bahasa & gemini-3.1-flash-lite & 2 & 2 \\
+Groundedness & gemini-3.1-flash-lite & 1 & 1 \\
+\hline
+Reaksi emosional & gemini-3.1-pro-preview & 2 & 2 \\
+Interpretasi konteks & gemini-3.1-pro-preview & 2 & 2 \\
+Eksplorasi & gemini-3.1-pro-preview & 2 & 2 \\
+Ketepatan CBT & gemini-3.1-pro-preview & 1 & 1 \\
+Batas non-klinis & gemini-3.1-pro-preview & 2 & 2 \\
+Kesesuaian bahasa & gemini-3.1-pro-preview & 2 & 2 \\
+Groundedness & gemini-3.1-pro-preview & 1 & 1 \\
+\hline
+\end{tabularx}
+}
+\end{table}
+
+\textit{gemini-3.1-flash-lite}: preferensi setara (Setara). Alasan: Kedua respons menunjukkan empati yang baik dan teknik eksplorasi yang efektif untuk membantu pengguna merefleksikan masalahnya.\newline
+\textit{gemini-3.1-pro-preview}: preferensi B (AXIS). Alasan: Respons B menggunakan gaya bahasa yang lebih natural ala mahasiswa dan memberikan validasi emosi yang sangat pas melalui metafora 'ditarik ke dua arah'.\newline
+
+\section{Tekanan Keluarga (Formal, \textit{cold start})}
+\addcontentsline{loa}{lampiransub}{\protect\numberline{\thesection}Tekanan Keluarga (Formal, \textit{cold start})}
+
+\textbf{Pesan pengguna:} Orang tua saya kembali menanyakan kapan saya akan menyelesaikan studi, padahal beban biaya kuliah sudah cukup memberatkan mereka. Saya merasa bersalah setiap kali belum ada kemajuan yang dapat saya sampaikan.
+
+\textbf{Respons AXIS:} Dengerin kamu cerita gitu, rasanya pasti nggak tenang ya setiap kali ditanya soal target kelulusan, apalagi mikirin biaya yang mereka keluarkan. Kayaknya beban buat cepat selesai jadi makin berlipat karena kamu ngerasa belum ada progres yang bisa dikasih lihat ke mereka. Biasanya kalau lagi ditanya gitu, kamu responnya gimana ke orang tua?
+
+\textbf{Respons \textit{baseline}:} Wah, wajar sekali kalau kamu merasa tertekan dan bersalah. Pasti tidak mudah ya, merasa punya tanggung jawab besar sekaligus dibayangi harapan orang tua di tengah proses kuliah yang memang menantang.
+
+Mungkin kita bisa coba tarik napas sebentar. Sejauh ini, apa hal kecil atau progres apa pun yang sebenarnya sudah berhasil kamu capai, meski mungkin terasa lambat bagi orang lain? 
+
+Kalau kamu berkenan cerita lebih lanjut, beban apa yang paling membuatmu merasa paling berat saat ini? Aku di sini untuk mendengarkan.
+
+\begin{table}[!htbp]
+\centering
+\caption{Skor penilai dan preferensi -- Tekanan Keluarga (Formal, \textit{cold start})}
+{\footnotesize
+\begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}X|>{\centering\arraybackslash}p{2.6cm}|>{\centering\arraybackslash}p{1.5cm}|>{\centering\arraybackslash}p{1.5cm}|}
+\hline
+\rowcolor{tableheadgray}
+\textbf{Dimensi} & \textbf{Konfigurasi penilai} & \textbf{Skor A} & \textbf{Skor B} \\
+\hline
+Reaksi emosional & gemini-3.1-flash-lite & 2 & 2 \\
+Interpretasi konteks & gemini-3.1-flash-lite & 2 & 2 \\
+Eksplorasi & gemini-3.1-flash-lite & 2 & 2 \\
+Ketepatan CBT & gemini-3.1-flash-lite & 2 & 1 \\
+Batas non-klinis & gemini-3.1-flash-lite & 2 & 2 \\
+Kesesuaian bahasa & gemini-3.1-flash-lite & 2 & 2 \\
+Groundedness & gemini-3.1-flash-lite & 1 & 1 \\
+\hline
+Reaksi emosional & gemini-3.1-pro-preview & 2 & 2 \\
+Interpretasi konteks & gemini-3.1-pro-preview & 2 & 2 \\
+Eksplorasi & gemini-3.1-pro-preview & 1 & 2 \\
+Ketepatan CBT & gemini-3.1-pro-preview & 2 & 1 \\
+Batas non-klinis & gemini-3.1-pro-preview & 2 & 2 \\
+Kesesuaian bahasa & gemini-3.1-pro-preview & 2 & 2 \\
+Groundedness & gemini-3.1-pro-preview & 1 & 1 \\
+\hline
+\end{tabularx}
+}
+\end{table}
+
+\textit{gemini-3.1-flash-lite}: preferensi A (Baseline). Alasan: Respons A memberikan validasi emosional yang lebih hangat dan menawarkan teknik relaksasi ringan yang sangat relevan dengan kondisi stres pengguna.\newline
+\textit{gemini-3.1-pro-preview}: preferensi B (AXIS). Alasan: Respons B memberikan pertanyaan eksplorasi tunggal yang sangat relevan dengan situasi tanpa terburu-buru mengarahkan pengguna untuk mencari progres seperti pada Respons A.\newline
+
+\section{Ketidakpastian Karier (Formal, \textit{cold start})}
+\addcontentsline{loa}{lampiransub}{\protect\numberline{\thesection}Ketidakpastian Karier (Formal, \textit{cold start})}
+
+\textbf{Pesan pengguna:} Saya belum memiliki gambaran jelas mengenai arah karier setelah kelulusan nanti, sementara beberapa teman seangkatan sudah mendapatkan kesempatan magang. Hal ini membuat saya cukup cemas.
+
+\textbf{Respons AXIS:} Rasanya pasti nggak tenang ya, apalagi pas lihat temen-temen seangkatan udah mulai dapet tempat magang sementara kita sendiri masih belum punya gambaran jelas. Kayaknya tekanan buat nentuin langkah setelah lulus emang kerasa makin nyata belakangan ini. Pas kamu lihat mereka mulai sibuk magang, hal apa sih yang biasanya paling bikin kamu kepikiran?
+
+\textbf{Respons \textit{baseline}:} Wajar sekali merasa cemas saat melihat teman-teman lain sudah mulai melangkah, apalagi di masa transisi seperti ini. Rasanya seperti ada tekanan untuk segera punya jawaban pasti, ya?
+
+Ingatlah bahwa setiap orang punya *timeline*-nya masing-masing, dan tidak punya gambaran karier saat ini bukan berarti kamu tertinggal. 
+
+Boleh ceritakan, hal apa yang sebenarnya paling membuatmu cemas? Apakah karena merasa belum tahu minatmu, atau ada kekhawatiran spesifik lainnya? Saya di sini untuk mendengarkan.
+
+\begin{table}[!htbp]
+\centering
+\caption{Skor penilai dan preferensi -- Ketidakpastian Karier (Formal, \textit{cold start})}
+{\footnotesize
+\begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}X|>{\centering\arraybackslash}p{2.6cm}|>{\centering\arraybackslash}p{1.5cm}|>{\centering\arraybackslash}p{1.5cm}|}
+\hline
+\rowcolor{tableheadgray}
+\textbf{Dimensi} & \textbf{Konfigurasi penilai} & \textbf{Skor A} & \textbf{Skor B} \\
+\hline
+Reaksi emosional & gemini-3.1-flash-lite & 2 & 2 \\
+Interpretasi konteks & gemini-3.1-flash-lite & 2 & 2 \\
+Eksplorasi & gemini-3.1-flash-lite & 2 & 2 \\
+Ketepatan CBT & gemini-3.1-flash-lite & 1 & 2 \\
+Batas non-klinis & gemini-3.1-flash-lite & 2 & 2 \\
+Kesesuaian bahasa & gemini-3.1-flash-lite & 2 & 2 \\
+Groundedness & gemini-3.1-flash-lite & 1 & 1 \\
+\hline
+Reaksi emosional & gemini-3.1-pro-preview & 2 & 2 \\
+Interpretasi konteks & gemini-3.1-pro-preview & 2 & 2 \\
+Eksplorasi & gemini-3.1-pro-preview & 2 & 2 \\
+Ketepatan CBT & gemini-3.1-pro-preview & 1 & 1 \\
+Batas non-klinis & gemini-3.1-pro-preview & 2 & 2 \\
+Kesesuaian bahasa & gemini-3.1-pro-preview & 2 & 1 \\
+Groundedness & gemini-3.1-pro-preview & 1 & 1 \\
+\hline
+\end{tabularx}
+}
+\end{table}
+
+\textit{gemini-3.1-flash-lite}: preferensi B (Baseline). Alasan: Respons B memberikan validasi yang lebih menenangkan dan menawarkan struktur eksplorasi yang lebih mendalam bagi pengguna.\newline
+\textit{gemini-3.1-pro-preview}: preferensi A (AXIS). Alasan: Respons A menggunakan gaya bahasa yang jauh lebih natural dan empatik layaknya teman sebaya, sedangkan respons B terkesan sedikit kaku dan memberikan nasihat klise.\newline
+
+\section{Beban Organisasi (Bahasa Campur, \textit{cold start})}
+\addcontentsline{loa}{lampiransub}{\protect\numberline{\thesection}Beban Organisasi (Bahasa Campur, \textit{cold start})}
+
+\textbf{Pesan pengguna:} I'm so burnt out sama kegiatan organisasi ini, tiap minggu ada aja meeting dadakan pas lagi banyak deadline kuliah. Rasanya pengen resign tapi takut dianggap ga komit.
+
+\textbf{Respons AXIS:} Emang capek banget ya harus ngadepin meeting dadakan pas deadline kuliah lagi numpuk-numpuknya. Dilema antara pengen resign tapi takut dianggap nggak komit itu pasti bikin perasaan kamu makin keganjal. Pas lagi kepikiran buat resign, apa sih yang paling bikin kamu cemas soal anggapan orang lain nanti?
+
+\textbf{Respons \textit{baseline}:} Waduh, aku bisa ngerasain banget betapa capeknya kamu sekarang. Dikejar *deadline* kuliah sambil harus ngadepin *meeting* dadakan itu emang menguras energi banget, apalagi kalau sampai bikin kamu merasa terbebani.
+
+Wajar banget kok kalau kamu merasa *burnout* di situasi kayak gini. Kalau boleh tahu, apa sih yang bikin kamu paling ngerasa takut buat ngelepas atau ngurangin beban di organisasi itu? Kita coba obrolin pelan-pelan ya.
+
+\begin{table}[!htbp]
+\centering
+\caption{Skor penilai dan preferensi -- Beban Organisasi (Bahasa Campur, \textit{cold start})}
+{\footnotesize
+\begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}X|>{\centering\arraybackslash}p{2.6cm}|>{\centering\arraybackslash}p{1.5cm}|>{\centering\arraybackslash}p{1.5cm}|}
+\hline
+\rowcolor{tableheadgray}
+\textbf{Dimensi} & \textbf{Konfigurasi penilai} & \textbf{Skor A} & \textbf{Skor B} \\
+\hline
+Reaksi emosional & gemini-3.1-flash-lite & 2 & 2 \\
+Interpretasi konteks & gemini-3.1-flash-lite & 2 & 2 \\
+Eksplorasi & gemini-3.1-flash-lite & 2 & 2 \\
+Ketepatan CBT & gemini-3.1-flash-lite & 1 & 1 \\
+Batas non-klinis & gemini-3.1-flash-lite & 2 & 2 \\
+Kesesuaian bahasa & gemini-3.1-flash-lite & 2 & 2 \\
+Groundedness & gemini-3.1-flash-lite & 1 & 1 \\
+\hline
+Reaksi emosional & gemini-3.1-pro-preview & 2 & 2 \\
+Interpretasi konteks & gemini-3.1-pro-preview & 1 & 2 \\
+Eksplorasi & gemini-3.1-pro-preview & 1 & 2 \\
+Ketepatan CBT & gemini-3.1-pro-preview & 1 & 1 \\
+Batas non-klinis & gemini-3.1-pro-preview & 2 & 2 \\
+Kesesuaian bahasa & gemini-3.1-pro-preview & 2 & 2 \\
+Groundedness & gemini-3.1-pro-preview & 1 & 1 \\
+\hline
+\end{tabularx}
+}
+\end{table}
+
+\textit{gemini-3.1-flash-lite}: preferensi A (Baseline). Alasan: Respons A memberikan validasi emosional yang lebih hangat dan suportif dibandingkan Respons B yang terasa sedikit lebih teknis.\newline
+\textit{gemini-3.1-pro-preview}: preferensi B (AXIS). Alasan: Respons B menunjukkan pemahaman konteks yang lebih utuh terkait dilema pengguna dan mengajukan pertanyaan eksplorasi yang lebih spesifik menindaklanjuti kekhawatiran akan anggapan orang lain.\newline
+
+\section{Ketidakpastian Karier (Bahasa Campur, \textit{cold start})}
+\addcontentsline{loa}{lampiransub}{\protect\numberline{\thesection}Ketidakpastian Karier (Bahasa Campur, \textit{cold start})}
+
+\textbf{Pesan pengguna:} Semua orang udah keliatan punya plan abis wisuda, sedangkan aku masih struggling nentuin mau apply kerja apa. It's so stressful mikirin masa depan sendirian.
+
+\textbf{Respons AXIS:} Kayaknya kerasa berat banget ya tekanannya, apalagi pas ngelihat temen-temen udah punya arah sementara kamu masih ngerasa di posisi yang abu-abu. Emang susah sih harus cari jalan sendiri di tengah ketidakpastian kayak gitu. Pas lagi ngebayangin masa depan, pikiran kayak gimana yang paling sering muncul di kepala kamu?
+
+\textbf{Respons \textit{baseline}:} Wajar banget kok ngerasa *overwhelmed* dan cemas pas ngeliat orang lain kayaknya udah punya "garis finish" masing-masing. Tekanan buat tahu segalanya setelah wisuda itu emang berat banget.
+
+Kamu nggak sendirian kok dalam hal ini, banyak juga mahasiswa yang ngerasain hal yang sama. Kalau boleh tahu, apa sih yang bikin kamu paling bingung pas mau mulai cari kerja? Kita bisa coba breakdown pelan-pelan kalau kamu mau cerita.
+
+\begin{table}[!htbp]
+\centering
+\caption{Skor penilai dan preferensi -- Ketidakpastian Karier (Bahasa Campur, \textit{cold start})}
+{\footnotesize
+\begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}X|>{\centering\arraybackslash}p{2.6cm}|>{\centering\arraybackslash}p{1.5cm}|>{\centering\arraybackslash}p{1.5cm}|}
+\hline
+\rowcolor{tableheadgray}
+\textbf{Dimensi} & \textbf{Konfigurasi penilai} & \textbf{Skor A} & \textbf{Skor B} \\
+\hline
+Reaksi emosional & gemini-3.1-flash-lite & 2 & 2 \\
+Interpretasi konteks & gemini-3.1-flash-lite & 2 & 2 \\
+Eksplorasi & gemini-3.1-flash-lite & 2 & 2 \\
+Ketepatan CBT & gemini-3.1-flash-lite & 1 & 1 \\
+Batas non-klinis & gemini-3.1-flash-lite & 2 & 2 \\
+Kesesuaian bahasa & gemini-3.1-flash-lite & 2 & 2 \\
+Groundedness & gemini-3.1-flash-lite & 1 & 1 \\
+\hline
+Reaksi emosional & gemini-3.1-pro-preview & 2 & 2 \\
+Interpretasi konteks & gemini-3.1-pro-preview & 2 & 2 \\
+Eksplorasi & gemini-3.1-pro-preview & 2 & 2 \\
+Ketepatan CBT & gemini-3.1-pro-preview & 2 & 2 \\
+Batas non-klinis & gemini-3.1-pro-preview & 2 & 2 \\
+Kesesuaian bahasa & gemini-3.1-pro-preview & 2 & 2 \\
+Groundedness & gemini-3.1-pro-preview & 1 & 1 \\
+\hline
+\end{tabularx}
+}
+\end{table}
+
+\textit{gemini-3.1-flash-lite}: preferensi B (Baseline). Alasan: Respons B memberikan validasi yang lebih hangat dan menawarkan bantuan konkret untuk membedah masalah pengguna secara kolaboratif.\newline
+\textit{gemini-3.1-pro-preview}: preferensi A (AXIS). Alasan: Respons A terasa lebih empatik dan natural dalam mengeksplorasi pikiran otomatis pengguna tanpa bergantung pada pernyataan klise.\newline
+
+\section{Rasa Berharga Diri (Bahasa Campur, \textit{memory-rich})}
+\addcontentsline{loa}{lampiransub}{\protect\numberline{\thesection}Rasa Berharga Diri (Bahasa Campur, \textit{memory-rich})}
+
+\textbf{Pesan pengguna:} Every time liat progress temen seangkatan, I just feel so behind. Aku masih muter-muter di Bab 3 sementara mereka udah mau sidang.
+
+\textbf{Respons AXIS:} Emang berat banget rasanya pas liat orang lain udah mau sidang, apalagi kamu sendiri masih harus bolak-balik revisi Bab 3 gara-gara dosen pembimbing belum cocok sama draf kamu. Rasanya seolah-olah kamu yang gagal, padahal mungkin hambatan ini lebih ke arah ketidakcocokan ekspektasi sama dosen, bukan berarti kamu nggak mampu.
+
+\textbf{Respons \textit{baseline}:} Wajar banget kok kalau kamu merasa begitu, apalagi kalau melihat teman-teman lain selangkah lebih maju. Rasanya pasti bikin cemas dan jadi kepikiran terus ya, apalagi kalau kamu merasa proses revisinya nggak kunjung selesai?
+
+Boleh cerita lebih lanjut, apa sih yang bikin kamu merasa paling berat pas ngerjain Bab 3 ini? Apakah ada kendala di teknis penulisannya atau mungkin ada hal lain yang lagi bikin motivasimu turun?
+
+\begin{table}[!htbp]
+\centering
+\caption{Skor penilai dan preferensi -- Rasa Berharga Diri (Bahasa Campur, \textit{memory-rich})}
 {\footnotesize
 \begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}X|>{\centering\arraybackslash}p{2.6cm}|>{\centering\arraybackslash}p{1.5cm}|>{\centering\arraybackslash}p{1.5cm}|}
 \hline
@@ -166,464 +1039,17 @@ Batas non-klinis & gemini-3.1-flash-lite & 2 & 2 \\
 Kesesuaian bahasa & gemini-3.1-flash-lite & 2 & 2 \\
 Groundedness & gemini-3.1-flash-lite & 1 & 2 \\
 \hline
-\end{tabularx}
-}
-\end{table}
-
-\textit{gemini-3.1-flash-lite}: preferensi A (Baseline). Alasan: Respons A lebih baik karena memberikan ruang eksplorasi bagi pengguna untuk mengurai masalahnya, sementara Respons B terasa sedikit membatasi percakapan.\newline
-
-\section{Kelanjutan Tekanan Akademik (Budi, memori kaya) \#3}
-\addcontentsline{loa}{lampiransub}{\protect\numberline{\thesection}Kelanjutan Tekanan Akademik (Budi, memori kaya) \#3}
-
-\textbf{Pesan pengguna:} Menurutmu kenapa ya aku selalu ngerasa dosen pembimbingku gak suka sama kerjaanku? Padahal temen-temen bilang emang wajar dapat revisi.
-
-\textbf{Respons AXIS:} Dengar cerita kamu soal revisi bab 3 kemarin, wajar banget kok kalau perasaan itu muncul lagi sekarang. Pas lagi buntu dan harus bolak-balik revisi, pikiran kita emang gampang banget lompat ke arah yang paling bikin cemas.
-
-Seringkali, karena kita udah naruh energi dan waktu yang banyak banget ke skripsi itu, kritik dari dosen jadi kerasa kayak serangan personal, padahal mungkin beliau cuma lagi fokus ke kualitas drafnya aja. Kira-kira kalau revisian kemarin dilihat sebagai "alat bantu" buat ngeberesin skripsi, bukan sebagai nilai dirimu, apa yang berubah dari perasaan kamu pas baca komen beliau?
-
-\textbf{Respons \textit{baseline}:} Wajar banget kok kalau kamu merasa cemas, apalagi proses bimbingan skripsi dan revisi bab 3 yang tak kunjung selesai itu memang menguras energi dan pikiran.
-
-Seringkali, saat kita sudah terlalu lelah dengan revisi yang terus-menerus, otak kita cenderung menyimpulkan hal yang negatif tentang diri sendiri atau hubungan kita dengan dosen. Padahal, mungkin itu adalah cara dosen memastikan kualitas skripsimu.
-
-Kalau boleh tahu, apa sih yang bikin kamu merasa dosenmu punya penilaian pribadi ke kamu? Apa ada kejadian spesifik yang bikin perasaan itu muncul?
-
-\begin{table}[!htbp]
-\centering
-\caption{Skor penilai dan preferensi -- Kelanjutan Tekanan Akademik (Budi, memori kaya) \#3}
-{\footnotesize
-\begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}X|>{\centering\arraybackslash}p{2.6cm}|>{\centering\arraybackslash}p{1.5cm}|>{\centering\arraybackslash}p{1.5cm}|}
-\hline
-\rowcolor{tableheadgray}
-\textbf{Dimensi} & \textbf{Konfigurasi penilai} & \textbf{Skor A} & \textbf{Skor B} \\
-\hline
-Reaksi emosional & gemini-3.1-flash-lite & 2 & 2 \\
-Interpretasi konteks & gemini-3.1-flash-lite & 2 & 1 \\
-Eksplorasi & gemini-3.1-flash-lite & 2 & 2 \\
-Ketepatan CBT & gemini-3.1-flash-lite & 2 & 1 \\
-Batas non-klinis & gemini-3.1-flash-lite & 2 & 2 \\
-Kesesuaian bahasa & gemini-3.1-flash-lite & 2 & 2 \\
-Groundedness & gemini-3.1-flash-lite & 2 & 1 \\
+Reaksi emosional & gemini-3.1-pro-preview & 2 & 1 \\
+Interpretasi konteks & gemini-3.1-pro-preview & 2 & 2 \\
+Eksplorasi & gemini-3.1-pro-preview & 2 & 0 \\
+Ketepatan CBT & gemini-3.1-pro-preview & 1 & 1 \\
+Batas non-klinis & gemini-3.1-pro-preview & 2 & 2 \\
+Kesesuaian bahasa & gemini-3.1-pro-preview & 2 & 2 \\
+Groundedness & gemini-3.1-pro-preview & 1 & 2 \\
 \hline
 \end{tabularx}
 }
 \end{table}
 
-\textit{gemini-3.1-flash-lite}: preferensi A (AXIS). Alasan: Respons A lebih unggul karena secara spesifik merujuk pada memori bab 3 dan menawarkan teknik kognitif yang relevan dengan kecemasan pengguna.\newline
-
-\section{rm1\_academic\_formal}
-\addcontentsline{loa}{lampiransub}{\protect\numberline{\thesection}rm1\_academic\_formal}
-
-\textbf{Pesan pengguna:} Saya telah beberapa kali menunda membuka hasil ujian karena takut nilainya tidak sesuai harapan. Akibatnya saya semakin cemas menjelang pertemuan dengan dosen wali.
-
-\textbf{Respons AXIS:} Nunda buka hasil nilai itu emang bikin pikiran nggak tenang, apalagi kebayang pertemuan sama dosen wali yang makin dekat. Rasanya kayak ada beban yang makin numpuk tiap hari kamu tahan-tahan gitu ya?
-
-\textbf{Respons \textit{baseline}:} Wajar sekali merasa cemas akan hal yang belum pasti, apalagi kalau kita sudah menaruh banyak harapan dan usaha. Rasa takut itu sering kali muncul karena kita ingin menjaga diri dari kekecewaan, ya.
-
-Kira-kira, apa hal terburuk yang terbayang di pikiranmu jika ternyata nilainya memang tidak sesuai harapan? Dan apakah menurutmu membicarakan hal ini lebih awal dengan dosen wali bisa membantu meringankan bebanmu?
-
-\begin{table}[!htbp]
-\centering
-\caption{Skor penilai dan preferensi -- rm1\_academic\_formal}
-{\footnotesize
-\begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}X|>{\centering\arraybackslash}p{2.6cm}|>{\centering\arraybackslash}p{1.5cm}|>{\centering\arraybackslash}p{1.5cm}|}
-\hline
-\rowcolor{tableheadgray}
-\textbf{Dimensi} & \textbf{Konfigurasi penilai} & \textbf{Skor A} & \textbf{Skor B} \\
-\hline
-Reaksi emosional & gemini-3.1-flash-lite & 2 & 2 \\
-Interpretasi konteks & gemini-3.1-flash-lite & 2 & 2 \\
-Eksplorasi & gemini-3.1-flash-lite & 1 & 2 \\
-Ketepatan CBT & gemini-3.1-flash-lite & 1 & 2 \\
-Batas non-klinis & gemini-3.1-flash-lite & 2 & 2 \\
-Kesesuaian bahasa & gemini-3.1-flash-lite & 2 & 2 \\
-Groundedness & gemini-3.1-flash-lite & 1 & 1 \\
-\hline
-\end{tabularx}
-}
-\end{table}
-
-\textit{gemini-3.1-flash-lite}: preferensi B (Baseline). Alasan: Respons B lebih efektif dalam memfasilitasi refleksi diri melalui pertanyaan eksplorasi yang terstruktur dan suportif.\newline
-
-\section{rm1\_academic\_informal}
-\addcontentsline{loa}{lampiransub}{\protect\numberline{\thesection}rm1\_academic\_informal}
-
-\textbf{Pesan pengguna:} Nilai kuis ancur banget, jujur malu parah buat ngomong ke rumah. Rasanya udah telat buat ngejar semuanya.
-
-\textbf{Respons AXIS:} Denger nilai kuis yang di bawah ekspektasi itu pasti bikin lo panik, apalagi ngebayangin harus jujur ke rumah nanti. Rasa takut ngerasa "terlambat" itu emang sering banget muncul pas lagi dapet tekanan kayak gini. Kira-kira apa yang paling bikin lo khawatir kalau nanti cerita ke mereka?
-
-\textbf{Respons \textit{baseline}:} Wajar banget kalau kamu merasa terpukul dan takut buat cerita ke rumah, apalagi kalau kamu sudah berusaha keras. Rasanya pasti berat banget ya, seperti jalan di depan sudah tertutup.
-
-Tapi, coba tarik napas dulu pelan-pelan. Satu kuis ini tidak mendefinisikan seluruh masa depan atau kemampuan kamu sebagai mahasiswa. 
-
-Kalau boleh tahu, apa sih yang bikin kamu merasa kalau semuanya sudah terlambat buat dikejar sekarang? Kita coba urai pelan-pelan ya, supaya bebannya nggak terasa menumpuk sendirian.
-
-\begin{table}[!htbp]
-\centering
-\caption{Skor penilai dan preferensi -- rm1\_academic\_informal}
-{\footnotesize
-\begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}X|>{\centering\arraybackslash}p{2.6cm}|>{\centering\arraybackslash}p{1.5cm}|>{\centering\arraybackslash}p{1.5cm}|}
-\hline
-\rowcolor{tableheadgray}
-\textbf{Dimensi} & \textbf{Konfigurasi penilai} & \textbf{Skor A} & \textbf{Skor B} \\
-\hline
-Reaksi emosional & gemini-3.1-flash-lite & 2 & 2 \\
-Interpretasi konteks & gemini-3.1-flash-lite & 2 & 2 \\
-Eksplorasi & gemini-3.1-flash-lite & 2 & 2 \\
-Ketepatan CBT & gemini-3.1-flash-lite & 2 & 1 \\
-Batas non-klinis & gemini-3.1-flash-lite & 2 & 2 \\
-Kesesuaian bahasa & gemini-3.1-flash-lite & 2 & 2 \\
-Groundedness & gemini-3.1-flash-lite & 1 & 1 \\
-\hline
-\end{tabularx}
-}
-\end{table}
-
-\textit{gemini-3.1-flash-lite}: preferensi A (Baseline). Alasan: Respons A memberikan validasi emosional yang lebih mendalam dan teknik penenangan yang tepat tanpa terkesan menggurui.\newline
-
-\section{rm1\_academic\_code\_mixing}
-\addcontentsline{loa}{lampiransub}{\protect\numberline{\thesection}rm1\_academic\_code\_mixing}
-
-\textbf{Pesan pengguna:} I keep overthinking tiap mau submit tugas. Takut hasilnya jelek, terus akhirnya malah stuck dan nggak ngirim-ngirim.
-
-\textbf{Respons AXIS:} Nggak kebayang sih rasanya stuck pas udah mau submit tugas gitu, Arya. Rasa takut hasilnya kurang memuaskan itu emang bikin capek pikiran banget ya. Waktu lagi stuck gitu, biasanya apa sih yang paling bikin kamu takut terjadi kalau tugasnya akhirnya dikirim?
-
-\textbf{Respons \textit{baseline}:} Wajar banget kok merasa begitu, apalagi kalau kita sudah berusaha maksimal dan pengen hasilnya yang terbaik. Rasanya kayak ada tekanan besar ya pas tombol *submit* itu sudah di depan mata?
-
-Biasanya, apa sih pikiran yang paling bikin kamu takut pas mau *submit* tugas itu? Apakah karena ekspektasi diri sendiri yang terlalu tinggi atau ada rasa cemas kalau nanti hasilnya dinilai orang lain? 
-
-Coba tarik napas pelan dulu, kita ngobrol santai ya.
-
-\begin{table}[!htbp]
-\centering
-\caption{Skor penilai dan preferensi -- rm1\_academic\_code\_mixing}
-{\footnotesize
-\begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}X|>{\centering\arraybackslash}p{2.6cm}|>{\centering\arraybackslash}p{1.5cm}|>{\centering\arraybackslash}p{1.5cm}|}
-\hline
-\rowcolor{tableheadgray}
-\textbf{Dimensi} & \textbf{Konfigurasi penilai} & \textbf{Skor A} & \textbf{Skor B} \\
-\hline
-Reaksi emosional & gemini-3.1-flash-lite & 2 & 2 \\
-Interpretasi konteks & gemini-3.1-flash-lite & 2 & 2 \\
-Eksplorasi & gemini-3.1-flash-lite & 2 & 2 \\
-Ketepatan CBT & gemini-3.1-flash-lite & 2 & 1 \\
-Batas non-klinis & gemini-3.1-flash-lite & 2 & 2 \\
-Kesesuaian bahasa & gemini-3.1-flash-lite & 2 & 2 \\
-Groundedness & gemini-3.1-flash-lite & 1 & 2 \\
-\hline
-\end{tabularx}
-}
-\end{table}
-
-\textit{gemini-3.1-flash-lite}: preferensi B (AXIS). Alasan: Respons B terasa lebih personal dan natural karena menggunakan nama pengguna serta langsung fokus pada eksplorasi masalah tanpa memberikan saran teknik yang mungkin belum dibutuhkan.\newline
-
-\section{rm1\_social\_euphemistic}
-\addcontentsline{loa}{lampiransub}{\protect\numberline{\thesection}rm1\_social\_euphemistic}
-
-\textbf{Pesan pengguna:} Belakangan rasanya pengin menghilang dulu dari semua grup kampus. Bukan mau kenapa-kenapa, cuma capek harus kelihatan baik-baik aja.
-
-\textbf{Respons AXIS:} Emang kerasa banget ya capeknya, apalagi kalau harus nahan diri terus biar kelihatan baik-baik aja di depan banyak orang. 
-
-Kalau kamu lagi butuh jeda, mungkin coba matiin notif grup-grup itu buat satu jam ke depan, atau sekadar cari spot sepi buat duduk tenang tanpa ngapa-ngapain sebentar?
-
-\textbf{Respons \textit{baseline}:} Aku dengar kamu, dan rasanya wajar banget kalau kamu merasa lelah harus terus "pasang topeng" di depan orang lain. Terkadang, menekan tombol *pause* dari kebisingan grup kampus itu memang cara kita buat bernapas sebentar.
-
-Kalau boleh tahu, apa sih yang bikin rasanya paling capek akhir-akhir ini? Apakah karena ekspektasi di sana, atau memang lagi butuh waktu buat diri sendiri saja?
-
-\begin{table}[!htbp]
-\centering
-\caption{Skor penilai dan preferensi -- rm1\_social\_euphemistic}
-{\footnotesize
-\begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}X|>{\centering\arraybackslash}p{2.6cm}|>{\centering\arraybackslash}p{1.5cm}|>{\centering\arraybackslash}p{1.5cm}|}
-\hline
-\rowcolor{tableheadgray}
-\textbf{Dimensi} & \textbf{Konfigurasi penilai} & \textbf{Skor A} & \textbf{Skor B} \\
-\hline
-Reaksi emosional & gemini-3.1-flash-lite & 2 & 2 \\
-Interpretasi konteks & gemini-3.1-flash-lite & 2 & 2 \\
-Eksplorasi & gemini-3.1-flash-lite & 1 & 2 \\
-Ketepatan CBT & gemini-3.1-flash-lite & 2 & 1 \\
-Batas non-klinis & gemini-3.1-flash-lite & 2 & 2 \\
-Kesesuaian bahasa & gemini-3.1-flash-lite & 2 & 2 \\
-Groundedness & gemini-3.1-flash-lite & 1 & 1 \\
-\hline
-\end{tabularx}
-}
-\end{table}
-
-\textit{gemini-3.1-flash-lite}: preferensi B (Baseline). Alasan: Respons B lebih unggul karena memberikan ruang eksplorasi yang lebih dalam untuk memahami akar masalah pengguna daripada sekadar memberikan saran praktis.\newline
-
-\section{rm1\_family\_code\_mixing}
-\addcontentsline{loa}{lampiransub}{\protect\numberline{\thesection}rm1\_family\_code\_mixing}
-
-\textbf{Pesan pengguna:} Di rumah lagi banyak drama dan I don't know how to handle it. Mau fokus kuliah tapi kepikiran kondisi orang tua terus.
-
-\textbf{Respons AXIS:} Arya, kebayang capeknya harus bagi fokus antara drama di rumah sama kewajiban kuliah yang nggak bisa ditinggal. Pas lagi berusaha belajar di kampus, hal apa yang paling sering bikin pikiran kamu akhirnya lari lagi ke kondisi orang tua?
-
-\textbf{Respons \textit{baseline}:} Wah, aku bisa ngerasain betapa beratnya beban yang kamu pikul sekarang. Pasti susah banget ya harus membagi fokus antara tugas kuliah yang menumpuk dengan suasana rumah yang lagi nggak kondusif. Wajar banget kalau pikiranmu jadi terpecah dan merasa kewalahan.
-
-Biasanya, apa sih hal yang paling bikin kamu ngerasa paling "terbebani" atau cemas setiap kali mulai ngerjain tugas kuliah? Cerita aja kalau mau ada yang dikeluarin.
-
-\begin{table}[!htbp]
-\centering
-\caption{Skor penilai dan preferensi -- rm1\_family\_code\_mixing}
-{\footnotesize
-\begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}X|>{\centering\arraybackslash}p{2.6cm}|>{\centering\arraybackslash}p{1.5cm}|>{\centering\arraybackslash}p{1.5cm}|}
-\hline
-\rowcolor{tableheadgray}
-\textbf{Dimensi} & \textbf{Konfigurasi penilai} & \textbf{Skor A} & \textbf{Skor B} \\
-\hline
-Reaksi emosional & gemini-3.1-flash-lite & 2 & 2 \\
-Interpretasi konteks & gemini-3.1-flash-lite & 2 & 2 \\
-Eksplorasi & gemini-3.1-flash-lite & 2 & 2 \\
-Ketepatan CBT & gemini-3.1-flash-lite & 1 & 1 \\
-Batas non-klinis & gemini-3.1-flash-lite & 2 & 2 \\
-Kesesuaian bahasa & gemini-3.1-flash-lite & 2 & 2 \\
-Groundedness & gemini-3.1-flash-lite & 1 & 2 \\
-\hline
-\end{tabularx}
-}
-\end{table}
-
-\textit{gemini-3.1-flash-lite}: preferensi B (AXIS). Alasan: Respons B lebih personal dan efektif karena menggunakan nama panggilan pengguna serta langsung memvalidasi konteks dengan lebih ringkas.\newline
-
-\section{rm1\_campus\_relationship}
-\addcontentsline{loa}{lampiransub}{\protect\numberline{\thesection}rm1\_campus\_relationship}
-
-\textbf{Pesan pengguna:} Teman satu tim kayaknya mulai menjauh setelah aku beberapa kali telat balas chat. Aku takut mereka sebenarnya kesel sama aku.
-
-\textbf{Respons AXIS:} Rasanya nggak tenang ya kalau ngerasa situasi sama teman tim jadi renggang gara-gara chat yang telat dibalas. Ketakutan kalau mereka beneran kesel itu pasti bikin kamu jadi makin was-was tiap mau mulai interaksi. Waktu ngerasa mereka menjauh, hal apa sih yang paling bikin kamu mikir kalau mereka beneran kesel sama kamu?
-
-\textbf{Respons \textit{baseline}:} Wajar sekali kalau kamu merasa cemas atau takut akan anggapan teman-temanmu. Rasa takut seperti ini sering muncul karena kita peduli dengan hubungan kerja sama di tim.
-
-Kira-kira apa yang membuatmu merasa mereka menjauh? Apakah ada kejadian spesifik yang membuatmu merasa begitu, atau mungkin kamu hanya merasa suasana di antara kalian jadi agak berbeda belakangan ini?
-
-\begin{table}[!htbp]
-\centering
-\caption{Skor penilai dan preferensi -- rm1\_campus\_relationship}
-{\footnotesize
-\begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}X|>{\centering\arraybackslash}p{2.6cm}|>{\centering\arraybackslash}p{1.5cm}|>{\centering\arraybackslash}p{1.5cm}|}
-\hline
-\rowcolor{tableheadgray}
-\textbf{Dimensi} & \textbf{Konfigurasi penilai} & \textbf{Skor A} & \textbf{Skor B} \\
-\hline
-Reaksi emosional & gemini-3.1-flash-lite & 2 & 2 \\
-Interpretasi konteks & gemini-3.1-flash-lite & 2 & 2 \\
-Eksplorasi & gemini-3.1-flash-lite & 2 & 2 \\
-Ketepatan CBT & gemini-3.1-flash-lite & 1 & 1 \\
-Batas non-klinis & gemini-3.1-flash-lite & 2 & 2 \\
-Kesesuaian bahasa & gemini-3.1-flash-lite & 2 & 2 \\
-Groundedness & gemini-3.1-flash-lite & 1 & 1 \\
-\hline
-\end{tabularx}
-}
-\end{table}
-
-\textit{gemini-3.1-flash-lite}: preferensi B (AXIS). Alasan: Respons B menggunakan bahasa yang lebih natural dan akrab bagi mahasiswa, sehingga terasa lebih hangat sebagai teman pendamping.\newline
-
-\section{rm1\_budi\_avoidance\_memory}
-\addcontentsline{loa}{lampiransub}{\protect\numberline{\thesection}rm1\_budi\_avoidance\_memory}
-
-\textbf{Pesan pengguna:} Aku tadi niat revisi Bab 3, tapi malah beresin hal-hal kecil lain. Begitu kepikiran komentar dospem itu, badan langsung tegang lagi.
-
-\textbf{Respons AXIS:} Wajar banget kalau badan langsung tegang gitu, apalagi setelah pengalaman penolakan draf kemarin yang bikin proses bimbingan ini jadi terasa berat. Nggak heran kalau kamu akhirnya pilih ngerjain hal-hal kecil dulu buat menghindari rasa nggak enak itu. Pas lagi ngerasa tegang itu, apa yang sebenarnya paling mengganggu pikiran kamu?
-
-\textbf{Respons \textit{baseline}:} Wajar sekali merasa tegang begitu teringat komentar dosen, apalagi kalau revisi Bab 3 ini sudah terasa cukup berat buatmu. Kadang, membereskan hal-hal kecil itu jadi cara kita untuk mengalihkan rasa cemas sejenak, ya?
-
-Sekarang, gimana rasanya kalau kita coba tarik napas panjang dulu sebentar? Kira-kira, apa satu hal kecil saja yang bisa kamu lakukan hari ini untuk Bab 3, supaya beban "revisi" itu terasa sedikit lebih ringan di pikiranmu?
-
-\begin{table}[!htbp]
-\centering
-\caption{Skor penilai dan preferensi -- rm1\_budi\_avoidance\_memory}
-{\footnotesize
-\begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}X|>{\centering\arraybackslash}p{2.6cm}|>{\centering\arraybackslash}p{1.5cm}|>{\centering\arraybackslash}p{1.5cm}|}
-\hline
-\rowcolor{tableheadgray}
-\textbf{Dimensi} & \textbf{Konfigurasi penilai} & \textbf{Skor A} & \textbf{Skor B} \\
-\hline
-Reaksi emosional & gemini-3.1-flash-lite & 2 & 2 \\
-Interpretasi konteks & gemini-3.1-flash-lite & 2 & 2 \\
-Eksplorasi & gemini-3.1-flash-lite & 2 & 2 \\
-Ketepatan CBT & gemini-3.1-flash-lite & 2 & 1 \\
-Batas non-klinis & gemini-3.1-flash-lite & 2 & 2 \\
-Kesesuaian bahasa & gemini-3.1-flash-lite & 2 & 2 \\
-Groundedness & gemini-3.1-flash-lite & 1 & 2 \\
-\hline
-\end{tabularx}
-}
-\end{table}
-
-\textit{gemini-3.1-flash-lite}: preferensi B (AXIS). Alasan: Respons B lebih unggul karena menunjukkan groundedness yang kuat dengan merujuk pada memori penolakan draf sebelumnya secara spesifik.\newline
-
-\section{rm1\_budi\_reframe\_memory}
-\addcontentsline{loa}{lampiransub}{\protect\numberline{\thesection}rm1\_budi\_reframe\_memory}
-
-\textbf{Pesan pengguna:} Temenku bilang revisi dosen itu belum tentu berarti draftku jelek. Tapi susah banget percaya karena aku keburu ngerasa gagal.
-
-\textbf{Respons AXIS:} Wajar banget rasanya capek dan ngerasa gagal setelah berkali-kali dapet revisi bab 3 yang belum juga beres. Memang susah buat ngelihat itu cuma sebagai "proses" pas emosinya lagi kecampur sama rasa kecewa. 
-
-Kira-kira, kalau kita coba pisahin antara draft yang emang perlu diperbaiki sama nilai dirimu sebagai mahasiswa, apa ada kemungkinan lain yang bisa kita lihat dari revisi dosen itu selain sebagai tanda kegagalan?
-
-\textbf{Respons \textit{baseline}:} Wajar sekali merasa begitu, apalagi kalau proses revisinya terasa panjang dan menguras energi. Perasaan "gagal" itu sering muncul karena kita sudah mencurahkan banyak waktu dan usaha di sana, jadi revisi seolah-olah menjadi penilaian atas diri kita secara keseluruhan.
-
-Boleh cerita lebih lanjut? Apa bagian dari proses revisi ini yang paling membuatmu merasa paling tertekan akhir-akhir ini? Kita bisa coba uraikan pelan-pelan supaya beban pikirannya sedikit berkurang.
-
-\begin{table}[!htbp]
-\centering
-\caption{Skor penilai dan preferensi -- rm1\_budi\_reframe\_memory}
-{\footnotesize
-\begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}X|>{\centering\arraybackslash}p{2.6cm}|>{\centering\arraybackslash}p{1.5cm}|>{\centering\arraybackslash}p{1.5cm}|}
-\hline
-\rowcolor{tableheadgray}
-\textbf{Dimensi} & \textbf{Konfigurasi penilai} & \textbf{Skor A} & \textbf{Skor B} \\
-\hline
-Reaksi emosional & gemini-3.1-flash-lite & 2 & 2 \\
-Interpretasi konteks & gemini-3.1-flash-lite & 2 & 1 \\
-Eksplorasi & gemini-3.1-flash-lite & 2 & 2 \\
-Ketepatan CBT & gemini-3.1-flash-lite & 2 & 1 \\
-Batas non-klinis & gemini-3.1-flash-lite & 2 & 2 \\
-Kesesuaian bahasa & gemini-3.1-flash-lite & 2 & 2 \\
-Groundedness & gemini-3.1-flash-lite & 2 & 1 \\
-\hline
-\end{tabularx}
-}
-\end{table}
-
-\textit{gemini-3.1-flash-lite}: preferensi A (AXIS). Alasan: Respons A lebih unggul karena secara spesifik merujuk pada memori bab 3 dan menerapkan teknik kognitif yang relevan dengan kondisi pengguna.\newline
-
-\section{rm1\_budi\_formal\_memory}
-\addcontentsline{loa}{lampiransub}{\protect\numberline{\thesection}rm1\_budi\_formal\_memory}
-
-\textbf{Pesan pengguna:} Saya merasa sulit membedakan antara masukan akademik yang wajar dan penilaian pribadi terhadap kemampuan saya ketika membahas Bab 3.
-
-\textbf{Respons AXIS:} Rasanya emang berat banget pas lagi buntu sama draf Bab 3, apalagi kalau revisi dari dosen pembimbing terus-terusan datang dan rasanya kayak bukan cuma tulisannya yang dikritik. Pas dosenmu ngasih masukan, apa ada kata-kata tertentu yang bikin kamu ngerasa itu bukan lagi soal akademis, tapi lebih ke penilaian diri kamu?
-
-\textbf{Respons \textit{baseline}:} Wajar sekali merasa seperti itu, apalagi saat proses revisi Bab 3 sering terasa sangat menguras energi. Seringkali, saking lelahnya dengan revisi yang belum disetujui, komentar dosen pembimbing jadi terasa lebih personal daripada yang sebenarnya dimaksudkan.
-
-Kalau boleh tahu, bagian mana dari komentar mereka yang paling membuatmu merasa itu adalah penilaian pribadi, bukan sekadar masukan teknis? Mungkin kita bisa coba bedah bersama supaya beban di pikiranmu sedikit berkurang.
-
-\begin{table}[!htbp]
-\centering
-\caption{Skor penilai dan preferensi -- rm1\_budi\_formal\_memory}
-{\footnotesize
-\begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}X|>{\centering\arraybackslash}p{2.6cm}|>{\centering\arraybackslash}p{1.5cm}|>{\centering\arraybackslash}p{1.5cm}|}
-\hline
-\rowcolor{tableheadgray}
-\textbf{Dimensi} & \textbf{Konfigurasi penilai} & \textbf{Skor A} & \textbf{Skor B} \\
-\hline
-Reaksi emosional & gemini-3.1-flash-lite & 2 & 2 \\
-Interpretasi konteks & gemini-3.1-flash-lite & 2 & 2 \\
-Eksplorasi & gemini-3.1-flash-lite & 2 & 2 \\
-Ketepatan CBT & gemini-3.1-flash-lite & 1 & 1 \\
-Batas non-klinis & gemini-3.1-flash-lite & 2 & 2 \\
-Kesesuaian bahasa & gemini-3.1-flash-lite & 2 & 2 \\
-Groundedness & gemini-3.1-flash-lite & 2 & 1 \\
-\hline
-\end{tabularx}
-}
-\end{table}
-
-\textit{gemini-3.1-flash-lite}: preferensi A (Baseline). Alasan: Respons A lebih baik karena secara eksplisit merujuk pada memori penolakan Bab 3 yang relevan, memberikan validasi yang lebih kuat dan kontekstual bagi pengguna.\newline
-
-\section{rm1\_budi\_code\_mixing\_memory}
-\addcontentsline{loa}{lampiransub}{\protect\numberline{\thesection}rm1\_budi\_code\_mixing\_memory}
-
-\textbf{Pesan pengguna:} Pas lihat revisi dari dospem, I immediately assume beliau kecewa sama aku. Padahal mungkin cuma banyak yang perlu dibenerin aja.
-
-\textbf{Respons AXIS:} Budi, sadar kalau itu mungkin cuma revisi teknis aja itu langkah besar lho. Kayaknya pengalaman ditolak bab 3 kemarin emang bikin kamu jadi lebih sensitif pas lihat catatan dospem sekarang ya. Waktu pertama kali buka file revisinya, bagian mana yang paling bikin kamu langsung mikir beliau kecewa?
-
-\textbf{Respons \textit{baseline}:} Wajar banget kok merasa begitu, apalagi kalau kita sudah menaruh banyak energi di skripsi ini. Perasaan "kecewa" itu seringkali jadi asumsi pertama kita pas lihat komentar revisi.
-
-Boleh kita coba bedah pelan-pelan? Kalau kita lihat catatan dari dospem itu sebagai "fakta" (apa yang tertulis) versus "asumsi" (apa yang kamu tafsirkan), menurutmu bagian mana yang memang harus diperbaiki, dan bagian mana yang sebenarnya adalah interpretasi perasaanmu saja?
-
-\begin{table}[!htbp]
-\centering
-\caption{Skor penilai dan preferensi -- rm1\_budi\_code\_mixing\_memory}
-{\footnotesize
-\begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}X|>{\centering\arraybackslash}p{2.6cm}|>{\centering\arraybackslash}p{1.5cm}|>{\centering\arraybackslash}p{1.5cm}|}
-\hline
-\rowcolor{tableheadgray}
-\textbf{Dimensi} & \textbf{Konfigurasi penilai} & \textbf{Skor A} & \textbf{Skor B} \\
-\hline
-Reaksi emosional & gemini-3.1-flash-lite & 2 & 2 \\
-Interpretasi konteks & gemini-3.1-flash-lite & 2 & 1 \\
-Eksplorasi & gemini-3.1-flash-lite & 2 & 2 \\
-Ketepatan CBT & gemini-3.1-flash-lite & 1 & 2 \\
-Batas non-klinis & gemini-3.1-flash-lite & 2 & 2 \\
-Kesesuaian bahasa & gemini-3.1-flash-lite & 2 & 2 \\
-Groundedness & gemini-3.1-flash-lite & 2 & 1 \\
-\hline
-\end{tabularx}
-}
-\end{table}
-
-\textit{gemini-3.1-flash-lite}: preferensi A (AXIS). Alasan: Respons A lebih unggul karena mengintegrasikan memori spesifik pengguna secara natural dan memberikan validasi emosional yang lebih personal.\newline
-
-\section{rm1\_budi\_self\_worth\_memory}
-\addcontentsline{loa}{lampiransub}{\protect\numberline{\thesection}rm1\_budi\_self\_worth\_memory}
-
-\textbf{Pesan pengguna:} Kok orang lain kelihatan bisa maju terus ya? Aku baru Bab 3 aja masih muter-muter, jadi ngerasa nggak pantas lulus bareng mereka.
-
-\textbf{Respons AXIS:} Rasanya emang berat ya kalau lihat temen-temen udah pada lanjut terus, apalagi pas kamu masih ngerasa jalan di tempat di Bab 3. Apalagi aku inget kamu sempat bilang konsultasi sama dosen pembimbing soal bab itu berkali-kali ngerasa buntu banget. Padahal progres skripsi itu tiap orang beda-beda kecepatannya, dan itu nggak jadi penentu nilai kamu sebagai pribadi. Apa yang biasanya paling bikin kamu ngerasa cemas pas lagi bandingin diri sama mereka?
-
-\textbf{Respons \textit{baseline}:} Wajar banget kok kalau kamu merasa begitu, apalagi kalau melihat progres orang lain yang seolah lebih cepat. Rasanya pasti berat ya, apalagi kalau revisi Bab 3 yang sekarang lagi kamu jalani terasa seperti jalan di tempat.
-
-Ingat ya, setiap orang punya "garis start" dan tantangan yang berbeda-beda, jadi jangan membandingkan prosesmu dengan pencapaian orang lain. Kamu sudah sampai di titik ini saja sebenarnya sudah hebat.
-
-Boleh aku tahu, apa sih yang bikin revisi Bab 3 ini terasa paling sulit buat kamu jalani akhir-akhir ini? Mungkin dengan cerita pelan-pelan, beban di pikiranmu bisa sedikit berkurang.
-
-\begin{table}[!htbp]
-\centering
-\caption{Skor penilai dan preferensi -- rm1\_budi\_self\_worth\_memory}
-{\footnotesize
-\begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}X|>{\centering\arraybackslash}p{2.6cm}|>{\centering\arraybackslash}p{1.5cm}|>{\centering\arraybackslash}p{1.5cm}|}
-\hline
-\rowcolor{tableheadgray}
-\textbf{Dimensi} & \textbf{Konfigurasi penilai} & \textbf{Skor A} & \textbf{Skor B} \\
-\hline
-Reaksi emosional & gemini-3.1-flash-lite & 2 & 2 \\
-Interpretasi konteks & gemini-3.1-flash-lite & 1 & 2 \\
-Eksplorasi & gemini-3.1-flash-lite & 2 & 2 \\
-Ketepatan CBT & gemini-3.1-flash-lite & 1 & 1 \\
-Batas non-klinis & gemini-3.1-flash-lite & 2 & 2 \\
-Kesesuaian bahasa & gemini-3.1-flash-lite & 2 & 2 \\
-Groundedness & gemini-3.1-flash-lite & 1 & 2 \\
-\hline
-\end{tabularx}
-}
-\end{table}
-
-\textit{gemini-3.1-flash-lite}: preferensi B (AXIS). Alasan: Respons B lebih unggul karena secara spesifik merujuk pada memori pengguna mengenai kesulitan bimbingan, sehingga terasa lebih personal dan suportif.\newline
-
-\section{rm1\_budi\_casual\_memory}
-\addcontentsline{loa}{lampiransub}{\protect\numberline{\thesection}rm1\_budi\_casual\_memory}
-
-\textbf{Pesan pengguna:} Dospem belum balas lagi. Pengen santai bentar tapi kepala tetep muter mikirin skripsi, capek banget sih.
-
-\textbf{Respons AXIS:} Budi, wajar banget kalau rasanya capek, apalagi setelah kejadian draft bab 3 kamu ditolak kemarin, pikiran jadi susah buat lepas dari skripsi ya. Rasanya kayak mesin yang nggak bisa berhenti muter meskipun badan sudah minta istirahat. Pas pikiran lagi kenceng-kencengnya gitu, biasanya apa sih yang paling bikin kamu takut kalau belum diurusin sekarang?
-
-\textbf{Respons \textit{baseline}:} Wajar banget kok kamu merasa capek. Memang susah buat bener-bener "off" kalau pikiran masih nempel terus di skripsi, apalagi pas lagi nunggu respon dari dosen.
-
-Sekarang, apa yang biasanya bikin kamu ngerasa agak lebih tenang atau sedikit berkurang bebannya pas lagi *overthinking* kayak gini? Kita ngobrol pelan-pelan ya.
-
-\begin{table}[!htbp]
-\centering
-\caption{Skor penilai dan preferensi -- rm1\_budi\_casual\_memory}
-{\footnotesize
-\begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}X|>{\centering\arraybackslash}p{2.6cm}|>{\centering\arraybackslash}p{1.5cm}|>{\centering\arraybackslash}p{1.5cm}|}
-\hline
-\rowcolor{tableheadgray}
-\textbf{Dimensi} & \textbf{Konfigurasi penilai} & \textbf{Skor A} & \textbf{Skor B} \\
-\hline
-Reaksi emosional & gemini-3.1-flash-lite & 2 & 2 \\
-Interpretasi konteks & gemini-3.1-flash-lite & 1 & 2 \\
-Eksplorasi & gemini-3.1-flash-lite & 2 & 2 \\
-Ketepatan CBT & gemini-3.1-flash-lite & 1 & 1 \\
-Batas non-klinis & gemini-3.1-flash-lite & 2 & 2 \\
-Kesesuaian bahasa & gemini-3.1-flash-lite & 2 & 2 \\
-Groundedness & gemini-3.1-flash-lite & 1 & 2 \\
-\hline
-\end{tabularx}
-}
-\end{table}
-
-\textit{gemini-3.1-flash-lite}: preferensi B (AXIS). Alasan: Respons B lebih unggul karena memanfaatkan memori spesifik mengenai penolakan bab 3 untuk membangun empati yang lebih personal dan mendalam.\newline
+\textit{gemini-3.1-flash-lite}: preferensi A (Baseline). Alasan: Respons A lebih baik karena membuka ruang dialog melalui eksplorasi, sementara Respons B cenderung memberikan interpretasi sepihak yang berisiko mendikte perasaan pengguna.\newline
+\textit{gemini-3.1-pro-preview}: preferensi A (Baseline). Alasan: Respons A lebih baik karena memvalidasi perasaan pengguna dan memberikan ruang eksplorasi yang baik, sedangkan Respons B cenderung membuat asumsi berlebihan dan menutup percakapan tanpa pertanyaan lanjutan.\newline

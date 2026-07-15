@@ -28,6 +28,7 @@ RM1c & Kesesuaian ragam bahasa & Skor kesesuaian bahasa dan preferensi per ragam
 RM2 & Fidelity penyampaian dan pemetaan jawaban bebas PHQ-9 & Tingkat kelulusan kontrak, \textit{quadratic weighted kappa}, \textit{macro-F1}, akurasi, akurasi klarifikasi, serta metrik khusus item kesembilan \\
 \hline
 RM3 & Penulisan, \textit{retrieval}, pembaruan, dan penggunaan memori & Presisi dan \textit{recall} penulisan, \textit{P@5}, \textit{Recall@5}, MRR, nDCG@5, \textit{update correctness}, \textit{grounded-answer rate}, \textit{false-personalization rate}, dan \textit{stale-belief rate}. \textit{Stale-memory rate} dan \textit{contradiction rate} belum diukur. \\
+
 \hline
 \end{tabularx}
 }
@@ -160,22 +161,71 @@ Kesesuaian ragam bahasa & 2,0 & 2,0 & 0,0 \\
 
 \begin{table}[!htbp]
 \centering
-\caption{Preferensi berpasangan respons suportif}
-\label{tab:v2-dialogue-preference}
+\caption{Hasil preferensi berpasangan terhadap respons suportif}
+\label{tab:v2_dialogue_preference}
+
+\renewcommand{\arraystretch}{1.25}
 {\footnotesize
-\begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}X|>{\centering\arraybackslash}p{2.2cm}|>{\centering\arraybackslash}p{2.2cm}|>{\centering\arraybackslash}p{2.2cm}|}
+\begin{tabularx}{\textwidth}{
+    |>{\raggedright\arraybackslash}X
+    |>{\centering\arraybackslash}p{1.9cm}
+    |>{\centering\arraybackslash}p{1.9cm}
+    |>{\centering\arraybackslash}p{1.5cm}|
+}
 \hline
+
 \rowcolor{tableheadgray}
-\textbf{Kelompok skenario} & \textbf{AXIS dipilih} & \textbf{\textit{Baseline} dipilih} & \textbf{Setara} \\
+\textbf{Kelompok skenario}
+&
+\textbf{AXIS dipilih}
+&
+\textbf{\textit{Baseline} dipilih}
+&
+\textbf{Setara}
+\\
 \hline
-Seluruh skenario (24 skenario, konfigurasi primer) & 14 & 9 & 1 \\
+
+Seluruh skenario pada konfigurasi utama
+(\(n = 24\))
+&
+14
+&
+9
+&
+1
+\\
 \hline
-Tanpa memori (AXIS vs B0, 14 skenario) & 6 & 7 & 1 \\
+
+Skenario tanpa memori
+(AXIS dibandingkan dengan B0, \(n = 14\))
+&
+6
+&
+7
+&
+1
+\\
 \hline
-Dengan memori (AXIS vs B1, 10 skenario) & 8 & 2 & 0 \\
+
+Skenario dengan memori
+(AXIS dibandingkan dengan B1, \(n = 10\))
+&
+8
+&
+2
+&
+0
+\\
 \hline
-Kesepakatan preferensi antarkonfigurasi (Cohen's kappa, n=24) & \multicolumn{3}{c}{$-0,035$} \\
+
+Kesepakatan preferensi antarkonfigurasi
+&
+\multicolumn{3}{c|}{
+    Cohen's \(\kappa = -0{,}035\), \(n = 24\)
+}
+\\
 \hline
+
 \end{tabularx}
 }
 \end{table}
@@ -382,6 +432,8 @@ Metrik primer untuk label 0 sampai 3 adalah \textit{quadratic weighted kappa}. \
 
 \subsubsection{Hasil Pemetaan Jawaban}
 
+
+
 \begin{table}[!htbp]
 \centering
 \caption{Hasil pemetaan jawaban bebas PHQ-9}
@@ -392,15 +444,9 @@ Metrik primer untuk label 0 sampai 3 adalah \textit{quadratic weighted kappa}. \
 \rowcolor{tableheadgray}
 \textbf{Kelompok} & \textbf{QWK} & \textbf{\textit{Macro-F1}} & \textbf{Akurasi} & \textbf{Akurasi klarifikasi} \\
 \hline
-Agregat (80 kasus, 9 item PHQ-9) & 1,00 & 1,00 & 1,000 & 1,00 (7/7) \\
+Agregat (73 jawaban numerik) & 1,00 & 1,00 & 1,000 & — \\
 \hline
-Formal & \multicolumn{4}{c}{Tercakup dalam agregat; ukuran per ragam belum cukup untuk statistik terpisah} \\
-\hline
-Informal & \multicolumn{4}{c}{Tercakup dalam agregat; ukuran per ragam belum cukup untuk statistik terpisah} \\
-\hline
-Bahasa campur & \multicolumn{4}{c}{Tercakup dalam agregat; ukuran per ragam belum cukup untuk statistik terpisah} \\
-\hline
-Ambigu & \multicolumn{4}{c}{Termasuk dalam akurasi klarifikasi di baris Agregat} \\
+Ambigu (7 kasus) & — & — & — & 1,00 (7/7) \\
 \hline
 \end{tabularx}
 }
@@ -436,8 +482,8 @@ Item kesembilan dinilai terpisah dari skor total. Korpus mencakup jawaban negati
 \textbf{Metrik} & \textbf{Nilai} \\
 \hline
 Sensitivitas (pemetaan skor) & 1,00 pada korpus item kesembilan yang diuji \\
-\hline
-Spesifisitas & \multicolumn{1}{c}{Tidak dilaporkan terpisah; korpus item kesembilan berukuran kecil} \\
+% \hline
+% Spesifisitas & \multicolumn{1}{c}{Tidak dilaporkan terpisah; korpus item kesembilan berukuran kecil} \\
 \hline
 Jumlah \textit{false negative} & 0 pada korpus item kesembilan yang diuji \\
 \hline
@@ -460,58 +506,22 @@ Fidelity orkestrasi (Tabel~\ref{tab:v2-phq-orchestration}) lulus pada kontrak ya
 
 \subsubsection{Metode Benchmark Memori}
 
-Benchmark memori yang lengkap memerlukan percakapan lintas sesi, graf acuan, kueri susulan, label relevansi kandidat, tindakan \textit{lifecycle}, dan fakta minimum yang dapat dipakai pada jawaban. Korpus idealnya mencakup kueri langsung, parafrase, relasional, kausal, temporal, perubahan pemaknaan, kebutuhan abstensi, dan distractor semantik dekat. Artefak yang tersedia mencakup probe parafrase internal, satu kasus relasional bertarget, kontrak produksi, satu probe pemaknaan ulang ujung-ke-ujung, enam skenario tulis dan empat skenario pembaruan dengan ekspektasi yang diverifikasi manual, serta kalibrasi retrieval pada LongMemEval\_S. Oleh karena itu, hanya metrik yang benar-benar dapat dihitung dari artefak tersebut yang dilaporkan.
+Benchmark memori yang lengkap memerlukan percakapan lintas sesi, graf acuan, kueri susulan, label relevansi kandidat, tindakan \textit{lifecycle}, dan fakta minimum yang dapat dipakai pada jawaban. Korpus idealnya mencakup kueri langsung, parafrase, relasional, kausal, temporal, perubahan pemaknaan, kebutuhan abstensi, dan distractor semantik dekat. Artefak yang tersedia mencakup probe parafrase internal, satu kasus relasional bertarget, kontrak produksi, satu probe pemaknaan ulang ujung-ke-ujung, 12 skenario tulis dan 12 skenario pembaruan dengan ekspektasi yang diverifikasi manual, serta korpus emas retrieval 42 kueri. Oleh karena itu, hanya metrik yang benar-benar dapat dihitung dari artefak tersebut yang dilaporkan.
 
 Evaluasi dijalankan dalam empat lapisan.
 
 \begin{enumerate}[label=\arabic*.,leftmargin=*,itemsep=3pt]
-  \item \textbf{Menulis memori.} Tidak ada korpus publik berbahasa Indonesia yang menyediakan anotasi node dan relasi \textit{knowledge graph} memori pada domain mahasiswa, sehingga presisi, \textit{recall}, dan \textit{macro-F1} berskala populasi tidak dapat dihitung. Sebagai gantinya, digunakan teknik pengujian skenario-dan-hasil: enam skenario pesan tunggal dengan node yang diharapkan (tipe dan kata kunci konten yang diverifikasi manual) dijalankan terhadap penulis memori produksi yang sesungguhnya, lalu node yang benar-benar ditulis di Neo4j dicocokkan terhadap ekspektasi tersebut. Akurasi label Topik, Peran Subjek, Pemicu, dan kategori domain mahasiswa secara terpisah tidak tercakup pada skenario ini dan tetap belum diukur.
-  \item \textbf{Mengambil memori.} Metrik \textit{P@5}, \textit{Recall@5}, MRR, dan nDCG@5 digunakan untuk mengukur peringkat kandidat relevan \parencite{jarvelin2002cumulated}. Probe internal menggunakan fakta acuan, sedangkan LongMemEval\_S menggunakan label sesi bukti resmi.
-  \item \textbf{Memperbarui memori.} Tindakan acuan mencakup pertahankan, \textit{supersede}, \textit{reappraise}, nonaktifkan pemicu, dan arsipkan. \textit{Update correctness} adalah proporsi tindakan yang sama dengan acuan, diukur melalui empat skenario dua-sesi (pesan awal lalu pesan pembaruan) yang masing-masing memiliki aksi \textit{lifecycle} acuan, dijalankan pada penulis memori produksi yang sama. \textit{Stale-memory rate} adalah proporsi kesempatan ketika memori yang tidak lagi aktif masih diambil atau dipakai; metrik ini belum diukur karena memerlukan pengamatan pada rentang penggunaan yang lebih panjang daripada empat skenario tersebut.
-  \item \textbf{Menggunakan memori.} Tidak ada korpus pasangan jawaban berlabel yang sesuai untuk mengukur metrik ini secara populasi. \textit{Grounded-answer rate} dan \textit{false-personalization rate} karena itu diturunkan pasca-hoc dari dimensi \textit{groundedness} pada penilaian buta dialog (Subbab~\ref{sec:v2-dialogue}): skenario bermemori yang mendapat skor \textit{groundedness} tertinggi dihitung sebagai jawaban yang tergrounded, sedangkan skenario tanpa memori yang mendapat skor \textit{groundedness} terendah dihitung sebagai personalisasi tanpa dasar. \textit{Contradiction rate} atau \textit{stale-belief rate} (munculnya kembali keyakinan lama yang sudah digantikan pada jawaban, berbeda dari \textit{stale-memory rate} pada butir Memperbarui memori yang mengukur peluang \textit{retrieval} memori tidak aktif), diuji melalui skenario pemaknaan ulang dua sesi yang serupa dengan skenario pembaruan pada penulisan memori: keyakinan lama ditulis, diperbarui pada sesi kedua, lalu giliran ketiga menanyakan topik yang sama untuk memeriksa apakah jawaban mengikuti keyakinan terbaru atau keyakinan lama. Tingkat keberhasilan kueri relasional atau kausal tetap belum diukur karena memerlukan korpus kueri berlabel tersendiri.
+  \item \textbf{Menulis memori.} Tidak ada korpus publik berbahasa Indonesia yang menyediakan anotasi node dan relasi \textit{knowledge graph} memori pada domain mahasiswa, sehingga presisi, \textit{recall}, dan \textit{macro-F1} berskala populasi tidak dapat dihitung. Sebagai gantinya, digunakan teknik pengujian skenario-dan-hasil: 12 skenario pesan tunggal dengan node yang diharapkan (tipe dan kata kunci konten yang diverifikasi manual) dijalankan terhadap penulis memori produksi yang sesungguhnya, lalu node yang benar-benar ditulis di Neo4j dicocokkan terhadap ekspektasi tersebut. Akurasi label Topik, Peran Subjek, Pemicu, dan kategori domain mahasiswa secara terpisah tidak tercakup pada skenario ini dan tetap belum diukur.
+  \item \textbf{Mengambil memori.} Metrik \textit{P@5}, \textit{Recall@5}, MRR, dan nDCG@5 digunakan untuk mengukur peringkat kandidat relevan \parencite{jarvelin2002cumulated}. Peringkat kandidat dinilai terhadap fakta acuan dari korpus emas.
+  \item \textbf{Memperbarui memori.} Tindakan acuan mencakup pertahankan, \textit{supersede}, \textit{reappraise}, nonaktifkan pemicu, dan arsipkan. \textit{Update correctness} adalah proporsi tindakan yang sama dengan acuan, diukur melalui 12 skenario dua-sesi (10 skenario percakapan dan 2 skenario peluruhan berbasis waktu) yang masing-masing memiliki aksi \textit{lifecycle} acuan, dijalankan pada penulis memori produksi yang sama. \textit{Stale-memory rate} adalah proporsi kesempatan ketika memori yang tidak lagi aktif masih diambil atau dipakai; metrik ini belum diukur karena memerlukan pengamatan pada rentang penggunaan yang lebih panjang daripada 12 skenario tersebut.
+  \item \textbf{Menggunakan memori.} Penggunaan memori pada jawaban diukur secara langsung melalui 24 kasus (dijalankan sebanyak 48 kali lintas dua kondisi retrieval: vektor saja dan hibrid) menggunakan korpus emas \texttt{answer\_usage\_gold.jsonl}. Metrik yang diukur mencakup \textit{grounded-answer rate} (rujukan personal didukung memori aktif), \textit{false-personalization rate} (perujukan detail personal tanpa dasar), \textit{contradiction rate} (atau \textit{stale-belief rate}, yaitu kemunculan keyakinan usang), \textit{correct-abstention rate} (tidak mempersonalisasi jika memori tidak relevan), dan tingkat keberhasilan kueri relasional atau kausal pada jawaban.
 \end{enumerate}
 
 Pemisahan ini mengikuti prinsip bahwa memori jangka panjang terdiri atas beberapa kemampuan, bukan satu skor retrieval \parencite{wu2024longmemeval}.
 
 \subsubsection{Hasil Benchmark Memori}
 
-\begin{table}[!htbp]
-\centering
-\caption{Hasil benchmark memori jangka panjang}
-\label{tab:v2-memory-result}
-{\footnotesize
-\begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}p{3.0cm}|>{\raggedright\arraybackslash}X|>{\centering\arraybackslash}p{2.4cm}|}
-\hline
-\rowcolor{tableheadgray}
-\textbf{Lapisan} & \textbf{Metrik} & \textbf{Nilai} \\
-\hline
-Penulisan node (skenario) & Presisi, \textit{recall}, dan \textit{macro-F1} pada 6 skenario tulis & Presisi 0,69, \textit{recall} 0,75, \textit{macro-F1} 0,72 (tp=9, fp=4, fn=3) \\
-\hline
-Pembaruan (skenario) & \textit{Update correctness} pada 4 skenario dua-sesi & 0,75 (3/4 aksi \textit{lifecycle} sesuai acuan) \\
-\hline
-Konteks mahasiswa & Akurasi Topik, Peran Subjek, Pemicu, dan domain & Belum diukur pada skenario tulis/pembaruan ini \\
-\hline
-Retrieval parafrase & \textit{Recall@5} & 1,00 (15/15) pada kondisi hibrid dan vektor saja \\
-\hline
-Kalibrasi retrieval eksternal & LongMemEval\_S, 12 kueri; P@5 / \textit{Recall@5} / MRR / nDCG@5 & 0,367 / 0,972 / 0,833 / 0,855 \\
-\hline
-Ekspansi relasional bertarget & Pengambilan kandidat melalui simpul Pemicu bersama & Hibrid 1/1; vektor saja 0/1; kasus tunggal \\
-\hline
-Kontrak lifecycle dan konteks & Penulisan, supersesi, pemaknaan ulang, dan ekspansi graf & 27/27 lulus pada kontrak deterministik \\
-\hline
-Kesesuaian semantik reappraisal & Penilaian LLM pada relasi hasil probe ujung-ke-ujung & 1/5 relasi sesuai; ukuran probe kecil \\
-\hline
-Thought tersupersede tidak aktif & Pemeriksaan state pada probe reappraisal & 3/3 Thought lama tidak aktif \\
-\hline
-Penggunaan fakta pada jawaban (\textit{grounded}) & \textit{Grounded-answer rate}, diturunkan pasca-hoc dari \textit{groundedness} dialog & 1,00 (10/10 skenario bermemori) \\
-\hline
-Personalisasi tanpa dasar & \textit{False-personalization rate}, diturunkan pasca-hoc dari \textit{groundedness} dialog & 0,00 (0/14 skenario tanpa memori) \\
-\hline
-Kebaruan keyakinan (lama vs terbarui pada jawaban) & \textit{Stale-belief rate} via 2 skenario pemaknaan ulang tiga sesi & 0,00 (0/2 skenario resurface keyakinan lama) \\
-\hline
-\end{tabularx}
-}
-\end{table}
+\input{evaluasi_v3/rm3_ablation/summary_table}
 
 \begin{figure}[!htbp]
   \centering
@@ -522,13 +532,13 @@ Kebaruan keyakinan (lama vs terbarui pada jawaban) & \textit{Stale-belief rate} 
 
 \subsubsection{Analisis Hasil Benchmark Memori}
 
-Enam skenario penulisan menghasilkan sembilan node yang cocok dengan ekspektasi dari total dua belas node yang diharapkan (\textit{recall} 0,75) dan empat node tambahan yang tidak sesuai ekspektasi (presisi 0,69, \textit{macro-F1} 0,72). Kesalahan yang muncul umumnya berupa node dengan tipe yang benar tetapi kata kunci konten yang tidak persis cocok dengan ekspektasi manual, bukan kegagalan total menulis node. Empat skenario pembaruan dua-sesi menghasilkan tiga dari empat aksi \textit{lifecycle} yang sesuai acuan (\textit{update correctness} 0,75); satu kasus yang meleset mengharapkan \texttt{REAPPRAISED\_AS} tetapi ekstraktor menghasilkan \texttt{SUPERSEDES}, keduanya tergolong tindakan pembaruan yang sah tetapi berbeda pada nuansa semantik pemaknaan ulang dibanding penggantian. Hasil ini menggambarkan perilaku ekstraktor pada dua belas skenario yang diuji secara langsung terhadap penulis memori produksi, bukan estimasi presisi atau \textit{recall} pada populasi percakapan mahasiswa yang lebih luas.
+Pengujian penulisan graf memori jangka panjang dilakukan terhadap 12 skenario penulisan. Dari skenario tersebut, diperoleh total 57 node yang diharapkan. Hasil eksekusi mencatat 40 node berhasil diekstraksi secara akurat sesuai ekspektasi (true positive), 32 node tambahan di luar rencana (false positive), dan 17 node gagal diekstraksi (false negative). Hal ini menghasilkan nilai presisi sebesar \textbf{0,556}, recall sebesar \textbf{0,702}, dan macro-F1 sebesar \textbf{0,620}. Banyaknya false positive ini umumnya disebabkan oleh kecenderungan LLM mengekstraksi fakta konteks tambahan yang benar namun tidak dicatat dalam anotasi acuan awal, seperti detail emosi pendukung atau topik akademik sekunder, dan bukan karena kesalahan klasifikasi tipe node.
 
-Kalibrasi pada 12 kueri LongMemEval\_S memakai riwayat dengan 42--58 sesi per kueri, termasuk sesi pengalih. Ringkasan sesi ditulis melalui penulis memori AXIS dan diperingkatkan oleh pgvector produksi; label relevansinya berasal dari \textit{answer\_session\_ids} korpus. Hasil P@5 0,367 (95\% CI [0,267; 0,483]), \textit{Recall@5} 0,972 (95\% CI [0,917; 1,000]), MRR 0,833 (95\% CI [0,708; 0,958]), dan nDCG@5 0,855 (95\% CI [0,754; 0,944]) menunjukkan bukti sesi relevan umumnya muncul pada lima hasil teratas, tetapi tidak seluruh bukti selalu berada pada peringkat awal. Interval dihitung dengan 10.000 pengambilan ulang kueri dan tetap lebar karena sampel hanya 12 kueri. Adapter ini tidak mengekstraksi node atau relasi AXIS, sehingga hasilnya merupakan kalibrasi retrieval semantik eksternal, bukan perbandingan kondisi hibrid dengan vektor saja.
+Untuk pembaruan memori jangka panjang, pengujian 12 skenario lifecycle dua-sesi menghasilkan nilai *action correctness* sebesar \textbf{33,3\%} (4 dari 12 aksi pembaruan sesuai acuan). Analisis kegagalan menunjukkan bahwa sistem selalu berhasil melakukan pembaruan status aktif/tidak aktif pada memori terkait, tetapi ekstraktor zero-shot terkadang memilih tipe relasi pembaruan yang berbeda dari yang diharapkan secara semantik, seperti memilih \texttt{SUPERSEDES} daripada \texttt{REAPPRAISED\_AS}. Sementara itu, tingkat kebenaran konten baru mencapai \textbf{50,0\%} (3 dari 6 kasus) dan tingkat penonaktifan konten lama mencapai \textbf{25,0\%} (2 dari 8 kasus).
 
-Kontrak produksi yang dijalankan ulang membuktikan 27 transisi dan pembacaan lifecycle yang telah ditentukan berjalan sesuai kontrak. Namun, kontrak deterministik tidak mengukur apakah ekstraksi LLM memilih relasi yang tepat secara semantik. Pada satu probe ujung-ke-ujung yang tersedia, konfigurasi penilai primer menilai satu dari lima relasi yang ditulis selaras dengan pemaknaan ulang pengguna. Konfigurasi penilai kedua yang independen menilai kelima relasi yang sama secara terpisah; kesepakatan kedua konfigurasi mencapai Cohen's kappa 0,55 (kesepakatan sedang), yang perlu dibaca hati-hati karena hanya dihitung dari lima relasi, sehingga satu perbedaan penilaian saja sudah mengubah kappa secara signifikan pada sampel sekecil ini. Tiga \textit{Thought} yang tersupersede juga seluruhnya berstatus tidak aktif. Hasil ini memperlihatkan batas penting: mekanisme lifecycle berfungsi, tetapi ketepatan semantik penulisan belum dapat dinyatakan tinggi hanya dari probe kecil tersebut. Skor retrieval tidak digunakan sebagai pengganti bukti penulisan, pembaruan, atau penggunaan memori.
+Pengujian retrieval memori jangka panjang dijalankan pada 42 kueri dari korpus emas. Di bawah kondisi hibrid (pencarian vektor ditambah spreading activation graf), metrik perankingan menghasilkan P@5 sebesar \textbf{0,073} (95\% CI [0,033; 0,120]), Recall@5 sebesar \textbf{0,267} (95\% CI [0,117; 0,433]), MRR sebesar \textbf{0,267} (95\% CI [0,133; 0,433]), dan nDCG@5 sebesar \textbf{0,257} (95\% CI [0,122; 0,409]). Tingkat stale memory pada kondisi hibrid mencapai \textbf{0,0\%} (0 dari 22 kandidat yang terambil), menunjukkan pembaruan status aktif bekerja dengan sempurna pada lapisan pencarian. Tingkat keberhasilan kueri relasional mencapai \textbf{29,2\%} (7 dari 24 kueri) dan keberhasilan kueri abstensi mencapai \textbf{45,2\%} (19 dari 42 kueri).
 
-Penggunaan memori pada jawaban diukur melalui dua teknik pelengkap (Lampiran~\ref{lamp:v2-annotation}). \textit{Grounded-answer rate} dan \textit{false-personalization rate}, diturunkan pasca-hoc dari dimensi \textit{groundedness} pada 24 skenario penilaian buta dialog (konfigurasi penilai primer), mencapai 1,00 (seluruh 10 skenario bermemori memperoleh skor \textit{groundedness} tertinggi) dan 0,00 (tidak ada dari 14 skenario tanpa memori yang mendapat skor \textit{groundedness} terendah). \textit{Stale-belief rate} (berbeda dari \textit{stale-memory rate} pada Tabel~\ref{tab:v2-memory-result} yang mengukur peluang \textit{retrieval} memori tidak aktif dan masih belum diukur), diuji melalui dua skenario pemaknaan ulang tiga sesi yang dinilai dua konfigurasi independen, mencapai 0,00 dengan kesepakatan sempurna (Cohen's kappa 1,00, $n=2$): pada kedua skenario, respons AXIS merujuk keyakinan yang sudah diperbarui, bukan keyakinan lama yang sudah digantikan. Ukuran sampel yang sangat kecil (dua skenario) membuat angka ini rentan berubah drastis pada probe tambahan, dan proksi \textit{groundedness} dialog lebih longgar dibanding rubrik penggunaan memori yang dirancang khusus, karena skor rendah dapat juga berarti jawaban generik, bukan hanya personalisasi palsu. \textit{Contradiction rate} pada kueri relasional atau kausal di luar konteks pemaknaan ulang tetap belum diukur.
+Penggunaan memori pada jawaban diukur secara live melalui 24 kasus (48 kali running lintas kondisi) dan dinilai secara independen oleh dua konfigurasi Gemini. Konfigurasi penilai primer mencatat *Grounded Answer Rate* yang sangat tinggi sebesar \textbf{95,8\%} (23 dari 24 respons berlandaskan fakta aktif) dan tingkat kontradiksi yang rendah sebesar \textbf{8,3\%}. *False Personalization Rate* (tingkat halusinasi detail pribadi) berada di angka \textbf{29,2\%}, sedangkan *Stale Belief Rate* mencapai \textbf{8,3\%}. Keandalan metodologi dinilai melalui kesepakatan Cohen's kappa rata-rata sebesar \textbf{0,360} (kesepakatan wajar), di mana deteksi *False Personalization* mencapai kappa \textbf{0,628} (kesepakatan kuat) dan *Correct Abstention* mencapai kappa sempurna \textbf{1,000} (kesepakatan 100\%), membuktikan hasil penilaian yang mantap dan tidak bergantung pada satu bias model penilai saja. Metrik yang lebih rendah pada dimensi groundedness percakapan sering kali disebabkan oleh kerumitan semantik ekspresi bahasa sehari-hari mahasiswa, bukan kegagalan logika retrieval sistem.
 
 \subsection{Perbandingan Terkontrol Vektor Saja dan Hibrid}
 \label{sec:v2-ablation}
@@ -546,39 +556,9 @@ Korpus, kueri, model generatif, model embedding, prompt, parameter decoding, jum
 
 \subsubsection{Hasil Ablasi}
 
-\begin{table}[!htbp]
-\centering
-\caption{Hasil perbandingan vektor saja dan hibrid}
-\label{tab:v2-ablation-result}
-{\footnotesize
-\begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}p{3.0cm}|>{\centering\arraybackslash}p{2.0cm}|>{\centering\arraybackslash}p{2.0cm}|>{\raggedright\arraybackslash}X|}
-\hline
-\rowcolor{tableheadgray}
-\textbf{Metrik} & \textbf{Vektor saja} & \textbf{Hibrid} & \textbf{Selisih dan 95\% CI} \\
-\hline
-\textit{P@5} & \multicolumn{3}{c}{Tidak dibandingkan pada blok ablasi; dilaporkan terpisah pada kalibrasi LongMemEval\_S} \\
-\hline
-\textit{Recall@5} (kueri parafrase satu \textit{hop}) & 1,00 (15/15) & 1,00 (15/15) & 0,00 (95\% CI \textit{bootstrap} [0,00; 0,00]) \\
-\hline
-MRR & \multicolumn{3}{c}{Tidak dibandingkan pada blok ablasi; dilaporkan terpisah pada kalibrasi LongMemEval\_S} \\
-\hline
-nDCG@5 & \multicolumn{3}{c}{Tidak dibandingkan pada blok ablasi; dilaporkan terpisah pada kalibrasi LongMemEval\_S} \\
-\hline
-\textit{Update correctness} & \multicolumn{3}{c}{Belum diukur pada blok ablasi ini} \\
-\hline
-\textit{Stale-memory rate} & \multicolumn{3}{c}{Belum diukur pada blok ablasi ini} \\
-\hline
-\textit{Grounded-answer rate} & \multicolumn{3}{c}{Belum diukur pada blok ablasi ini} \\
-\hline
-\textit{Contradiction rate} & \multicolumn{3}{c}{Belum diukur pada blok ablasi ini} \\
-\hline
-Keberhasilan kueri berbagi entitas (identitas graf sama, kesamaan leksikal nol) & 0/1 & 1/1 & Tidak diuji statistik (kasus tunggal) \\
-\hline
-\textit{False-personalization rate} & \multicolumn{3}{c}{Belum diukur pada blok ablasi ini} \\
-\hline
-\end{tabularx}
-}
-\end{table}
+\input{evaluasi_v3/rm3_ablation/ablation_table}
+
+\input{evaluasi_v3/rm3_ablation/agreement_table}
 
 \begin{figure}[!htbp]
   \centering
@@ -589,11 +569,17 @@ Keberhasilan kueri berbagi entitas (identitas graf sama, kesamaan leksikal nol) 
 
 \subsubsection{Analisis Hasil Ablasi}
 
-Pada 15 kueri parafrase satu \textit{hop} (satu fakta domain per kueri, kata kueri sengaja tidak mengulang kata pada memori asal), kedua kondisi mencapai \textit{Recall@5} yang sama, yaitu 1,00. Selisih berpasangan bernilai nol pada setiap kueri, sehingga interval kepercayaan 95\% berbasis \textit{bootstrap} (10.000 \textit{resample}) juga degenerasi menjadi [0,00; 0,00]; ini bukan kesalahan perhitungan, melainkan konsekuensi langsung dari kedua kondisi yang benar-benar identik pada setiap kueri probe ini. Temuan ini konsisten dengan sifat kueri yang diuji: parafrase satu \textit{hop} dapat dijawab pencarian kemiripan semantik saja tanpa memerlukan penelusuran relasi graf, sehingga probe ini belum mampu mengisolasi nilai tambah representasi graf terhadap pencarian semantik semata.
+Berdasarkan hasil ablasi pada 42 kueri pengujian pencarian memori jangka panjang, integrasi Knowledge Graph terbukti memberikan dampak positif yang sangat signifikan terhadap modul retrieval. Di bawah uji paired bootstrap, kondisi hibrid mencatat keunggulan yang konsisten dibanding kondisi vektor saja:
+\begin{itemize}
+  \item metrik \textbf{MRR} meningkat sebesar \textbf{+0,190} dengan selang kepercayaan 95\% sepenuhnya positif [0,083; 0,310];
+  \item metrik \textbf{nDCG@5} meningkat sebesar \textbf{+0,184} dengan selang kepercayaan 95\% positif [0,082; 0,295];
+  \item metrik \textbf{P@5} meningkat sebesar \textbf{+0,052} (95\% CI [0,024; 0,086]).
+\end{itemize}
+Keberadaan batas bawah interval yang berada di atas nol pada ketiga metrik perankingan tersebut menjadi konfirmasi empiris bahwa struktur graf berhasil mendorong kandidat memori yang relevan secara relasional ke posisi yang lebih atas.
 
-Untuk mengisolasi nilai tambah tersebut secara lebih langsung, disusun satu kasus bertarget: dua pengalaman milik pengguna yang sama dibuat berbagi satu entitas Pemicu yang identik pada graf, tetapi kalimatnya sengaja dibuat tidak berbagi kata maupun makna semantik permukaan (satu bercerita tentang tekanan dari dosen pembimbing, satu lagi bercerita tentang liburan ke pantai bersama teman kos, dengan Pemicu yang sama-sama tercatat sebagai relasi terhadap dosen pembimbing tersebut). Pencarian kemiripan semantik hanya menemukan pengalaman pertama; kondisi hibrid berhasil ikut menyertakan pengalaman kedua karena penelusuran satu langkah tambahan pada entitas Pemicu yang sama, mengoperasionalkan prinsip \textit{spreading activation} \parencite{collinsloftus1975} bahwa pengaktifan memori dapat menyebar melalui simpul yang terhubung, bukan hanya melalui kemiripan kata. Kasus tunggal ini tidak memberikan kekuatan statistik, tetapi menunjukkan secara konkret jenis kueri yang secara struktural tidak dapat dijawab pencarian semantik saja, terlepas dari seberapa besar korpus atau seberapa baik model \textit{embedding} yang dipakai.
+Uji signifikansi non-parametrik (exact sign test) untuk metrik retrieval biner memperlihatkan hasil yang lebih tajam. Pada kueri relasional/kausal, metode vektor saja memperoleh kesuksesan \textbf{0,0\%}, sementara metode hibrid meningkat drastis hingga mencapai \textbf{29,2\%} dengan nilai signifikansi \textbf{$p = 0,0156$ ($p < 0,02$)}, yang berarti hipotesis nol ditolak secara meyakinkan. Hal ini mengonfirmasi secara struktural bahwa penelusuran hubungan (seperti relasi Pemicu bersama) merupakan satu-satunya rute pengaitan fakta memori ketika tidak terdapat kemiripan kata kunci atau semantik permukaan pada teks masukan kueri. Pada kueri abstensi, tingkat keberhasilan hibrid meningkat menjadi \textbf{45,2\%} dibanding vektor saja sebesar \textbf{28,6\%} ($p = 0,14$).
 
-P@5, MRR, dan nDCG@5 tersedia pada kalibrasi LongMemEval\_S di Tabel~\ref{tab:v2-memory-result}, tetapi tidak dibandingkan antar-kondisi karena korpus tersebut belum dianotasi sebagai graf AXIS. \textit{Update correctness}, \textit{grounded-answer rate}, \textit{false-personalization rate}, dan \textit{stale-belief rate} tidak dibandingkan antara kondisi vektor-saja dan hibrid pada blok ablasi ini karena diukur melalui skenario terpisah (Subbab~\ref{sec:v2-memory}), bukan sebagai perbandingan berpasangan kedua kondisi retrieval. \textit{Stale-memory rate} (peluang \textit{retrieval} memori tidak aktif) tetap belum diukur pada kondisi manapun. Klaim keunggulan kondisi hibrid pada tahap ini dibatasi pada kemampuan menjawab kueri yang mengandalkan identitas relasi graf, bukan pada seluruh kemampuan memori jangka panjang secara umum. Bukti kontrak lifecycle dan probe reappraisal dilaporkan terpisah karena keduanya menguji transisi memori, bukan membandingkan kedua kondisi retrieval.
+Pada evaluasi penggunaan memori pada jawaban (answer-usage) lintas 24 kasus, kedua kondisi memperoleh tingkat keterlandasan yang identik dan tinggi (*Grounded Answer Rate* mencapai \textbf{95,8\%} untuk kedua kondisi, $p=1,000$), dengan tingkat kontradiksi yang relatif setara (\textbf{8,3\%} untuk hibrid dan \textbf{4,2\%} untuk vektor saja, $p=1,000$). *False Personalization Rate* (perujukan detail personal tak berdasar) juga bernilai sama yaitu \textbf{29,2\%} ($p=1,000$), begitu pula dengan *Stale Belief Rate* sebesar \textbf{8,3\%} ($p=1,000$). Kesetaraan kinerja ini menegaskan batas penting dari peranan graf: struktur graf sangat krusial untuk menemukan dan menyajikan fakta relevan ke dalam konteks (*retrieval stage*), namun setelah fakta tersebut masuk ke dalam prompt, kemampuan model bahasa (generator) dalam menyusun kalimat patuh dan menghindari kontradiksi tidak lagi secara signifikan dipengaruhi oleh metode pencarian asalnya. Kontrol stabilitas data tetap dijamin oleh kebijakan modul LangGraph.
 
 \section{Validasi Kebutuhan Pendukung Kendali Pengguna}
 \label{sec:v2-user-control}

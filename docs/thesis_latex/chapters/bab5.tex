@@ -43,21 +43,24 @@ Hasil ini mendukung kesetiaan orkestrasi dan pemetaan jawaban bebas pada korpus
 uji, tetapi belum membuktikan validitas psikometrik maupun manfaat klinis dari
 sistem.
 
-\item Arsitektur memori hibrid memungkinkan sistem menyimpan konteks secara
+    \item Arsitektur memori hibrid memungkinkan sistem menyimpan konteks secara
 relasional dan menemukannya melalui pencarian semantik. Sebanyak 47 kontrak
-memori inti dan 27 kontrak \textit{lifecycle} serta konteks lulus. Pada 15
-kueri parafrase satu \textit{hop}, kondisi hibrid dan vektor saja memperoleh
-\textit{Recall@5} yang sama, yaitu 1,00. Pada satu kueri yang membutuhkan
-identitas relasi graf, kondisi hibrid menemukan pengalaman terkait yang tidak
-ditemukan oleh kondisi vektor saja.
+memori lulus, mencakup penyaringan, penulisan, pembaruan, arsip, dan pengecualian
+data administratif. Pada 42 kueri pengujian retrieval dari tujuh tipe, kondisi
+hibrid menghasilkan P@5 0,073, \textit{Recall@5} 0,267, MRR 0,267, dan nDCG@5
+0,257. Di bawah uji \textit{paired bootstrap}, kondisi hibrid mengungguli kondisi
+vektor saja: MRR meningkat +0,190 (95\% CI [0,083; 0,310]) dan kueri
+relasional/kausal berhasil 29,2\% berbanding 0,0\% ($p = 0,0156$).
 
-Pengujian skenario dan hasil terhadap penulis memori produksi menghasilkan
-presisi 0,69, \textit{recall} 0,75, dan \textit{update correctness} 0,75.
-Penggunaan memori pada jawaban mencapai \textit{grounded-answer rate} 1,00,
-\textit{false-personalization rate} 0,00, dan \textit{stale-belief rate} 0,00
-pada proksi berukuran kecil. Temuan ini menunjukkan nilai graf pada kasus
-relasional tertentu dan dukungan awal bagi pengelolaan siklus hidup memori,
-tetapi tidak membuktikan keunggulan umum terhadap pencarian semantik.
+Pengujian penulisan graf pada 12 skenario menghasilkan presisi 0,556,
+\textit{recall} 0,702, dan F1 0,620. Pembaruan \textit{lifecycle} pada 12
+skenario menghasilkan \textit{action correctness} 33,3\%. Penggunaan memori pada
+jawaban diukur secara langsung melalui 24 kasus pada dua kondisi retrieval:
+\textit{grounded-answer rate} mencapai 95,8\%, \textit{false-personalization rate}
+29,2\%, dan \textit{stale-belief rate} 8,3\%. Temuan retrieval menunjukkan
+keunggulan terukur dari integrasi \textit{knowledge graph} pada kasus relasional,
+tetapi performa penggunaan memori pada jawaban tidak berbeda secara signifikan
+antara kondisi hibrid dan vektor saja setelah fakta masuk ke konteks.
 
 \end{enumerate}
 
@@ -78,7 +81,7 @@ Evaluasi pada laporan ini masih memiliki beberapa keterbatasan, yaitu:
     
     \item Penilaian respons terbuka menggunakan \textit{LLM-as-judge}, diperiksa dengan dua konfigurasi model independen untuk benchmark keselamatan, pemetaan jawaban bebas PHQ-9, penilaian buta respons suportif dan ragam bahasa (RM1a/RM1c pada korpus yang diperluas dari 18 menjadi 24 skenario), dan probe pemaknaan ulang memori. Kesepakatan Cohen's kappa berkisar 0,40 hingga 0,96 untuk RM1b, RM2, dan RM3, tetapi hanya $-0,035$ untuk preferensi keseluruhan RM1a/RM1c, jauh di bawah kesepakatan acak yang diharapkan; hasil preferensi pada blok ini karena itu dibaca sebagai keluaran satu konfigurasi penilai, bukan kesimpulan yang stabil antarpenilai. Metode ini membantu menerapkan rubrik secara konsisten, tetapi tidak menggantikan penilaian pengguna atau ahli. Ukuran korpus dialog, keselamatan, dan jawaban bebas PHQ-9 juga masih terbatas. Sembilan pesan berisiko yang luput pada \textit{benchmark} keselamatan menunjukkan bahwa deteksi eufemisme belum memadai untuk digeneralisasi.
 
-    \item Kalibrasi retrieval eksternal sudah menghitung \textit{P@5}, MRR, dan nDCG@5 pada LongMemEval\_S, tetapi korpus tersebut belum menyediakan anotasi graf AXIS maupun pasangan jawaban berlabel. \textit{Update correctness} dan presisi/\textit{recall} penulisan node sudah diukur melalui sepuluh skenario tulis dan pembaruan yang diverifikasi manual, tetapi ukurannya kecil sehingga tidak dapat menjadi estimasi populasi. \textit{Grounded-answer rate} (1,00) dan \textit{false-personalization rate} (0,00), diukur pasca-hoc dari dimensi \textit{groundedness} pada penilaian buta dialog, dan \textit{stale-belief rate} (0,00), diukur melalui dua skenario pemaknaan ulang tiga sesi, tetap merupakan proksi skenario berukuran sangat kecil, bukan estimasi populasi dari korpus pasangan jawaban berlabel. \textit{Stale-memory rate} (peluang \textit{retrieval} memori tidak aktif, berbeda dari \textit{stale-belief rate} di atas) dan \textit{contradiction rate} pada kueri relasional atau kausal di luar konteks pemaknaan ulang tetap belum diukur sama sekali. Probe pemaknaan ulang juga hanya terdiri atas lima relasi sehingga tidak dapat menjadi estimasi populasi.
+    \item Kalibrasi retrieval sudah menghitung \textit{P@5}, MRR, dan nDCG@5 pada 42 kueri emas internal dari tujuh tipe, tetapi ukurannya masih terbatas. Presisi, \textit{recall}, dan F1 penulisan node sudah diukur melalui 12 skenario tulis yang diverifikasi manual, dan \textit{action correctness} pembaruan \textit{lifecycle} diukur melalui 12 skenario dua-sesi, tetapi ukurannya kecil sehingga tidak dapat menjadi estimasi populasi. \textit{Grounded-answer rate} (95,8\%) dan \textit{false-personalization rate} (29,2\%) sudah diukur secara langsung melalui penilaian \textit{LLM-as-judge} buta pada 24 kasus dengan dua kondisi retrieval, tetapi tetap dibatasi oleh ukuran korpus dan bias model penilai. \textit{Stale-belief rate} pada konteks pemaknaan ulang diukur melalui dua skenario dan menghasilkan 0,0\%; \textit{stale-belief rate} pada 24 kasus \textit{answer-usage} mencapai 8,3\%. \textit{Stale-memory rate} (peluang \textit{retrieval} memori tidak aktif, berbeda dari \textit{stale-belief rate}) tetap belum diukur secara sistematis karena memerlukan pengamatan pada rentang penggunaan yang lebih panjang.
     
     \item Pengujian pengguna nyata belum dilaksanakan. Dengan demikian, pengalaman subjektif mahasiswa, pemahaman terhadap kendali data, dan kemudahan antarmuka belum memiliki bukti empiris dari partisipan. Sistem ini juga bukan alat diagnosis dan tidak dievaluasi sebagai intervensi klinis.
 \end{enumerate}
@@ -93,5 +96,5 @@ Berdasarkan keterbatasan evaluasi, pengembangan lanjutan diprioritaskan pada hal
 
 \item Korpus penilaian buta dialog untuk ragam formal dan bahasa campur mulai diperluas pada laporan ini (Subbab~\ref{sec:v2-language}); perluasan lanjutan serta peninjauan korpus keselamatan dan eufemisme dengan rubrik yang sama tetap diperlukan. Pesan risiko yang belum tertangkap perlu dianalisis untuk memperbaiki aturan dan penilaian risiko. Penilaian respons juga sebaiknya melibatkan penilai manusia dalam skala yang memadai agar keselarasan \textit{LLM-as-judge} dapat diperiksa secara langsung.
 
-\item Pada memori, skenario tulis dan pembaruan pada laporan ini masih berukuran kecil (sepuluh skenario) dan sebaiknya diperluas jumlah serta variasi domainnya, idealnya disertai penyusunan korpus standar emas yang memuat fakta, relasi, konflik, pembaruan, dan kueri relevansi berjenjang bila sumber daya memungkinkan. Teknik skenario-dan-hasil serupa mulai dirintis pada laporan ini untuk \textit{grounded-answer rate}, \textit{false-personalization rate}, dan \textit{stale-belief rate}, tetapi masih terbatas pada proksi dari dimensi \textit{groundedness} penilaian dialog dan dua skenario pemaknaan ulang; perluasan ke korpus pasangan jawaban berlabel yang sebenarnya tetap diperlukan untuk estimasi populasi, dan \textit{stale-memory rate} (peluang \textit{retrieval} memori tidak aktif) masih perlu dirancang dari awal. Korpus atau perluasan skenario tersebut memungkinkan pengukuran \textit{retrieval} dan \textit{lifecycle} secara lebih lengkap, termasuk pengujian hibrid dan vektor-saja pada urutan kueri yang identik. Pemantauan sinkronisasi antara penyimpanan graf dan vektor, serta pengujian penggunaan jangka panjang, juga perlu dilakukan sebelum sistem digunakan lebih luas.
+\item Pada memori, skenario tulis dan pembaruan pada laporan ini masih berukuran kecil (12 skenario tulis dan 12 skenario pembaruan) dan sebaiknya diperluas jumlah serta variasi domainnya, idealnya disertai penyusunan \textit{Gold Standard Corpus} yang memuat fakta, relasi, konflik, pembaruan, dan kueri relevansi berjenjang bila sumber daya memungkinkan. Evaluasi penggunaan memori pada jawaban (\textit{answer-usage}) sudah dilakukan secara langsung pada 24 kasus, tetapi perluasan ke korpus pasangan jawaban berlabel yang lebih besar tetap diperlukan untuk estimasi populasi, dan \textit{stale-memory rate} (peluang \textit{retrieval} memori tidak aktif) masih perlu dirancang dari awal. Pemantauan sinkronisasi antara penyimpanan graf dan vektor, serta pengujian penggunaan jangka panjang, juga perlu dilakukan sebelum sistem digunakan lebih luas.
 \end{enumerate}

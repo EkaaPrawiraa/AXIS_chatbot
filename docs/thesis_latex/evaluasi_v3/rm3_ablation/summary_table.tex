@@ -1,0 +1,349 @@
+\begin{center}
+
+{\footnotesize
+\renewcommand{\arraystretch}{1.15}
+\setlength{\tabcolsep}{4pt}
+
+\begin{longtable}{
+|>{\raggedright\arraybackslash}p{8.80cm}
+|>{\centering\arraybackslash}p{2.80cm}
+|>{\centering\arraybackslash}p{2.00cm}|
+}
+
+\caption{Ringkasan evaluasi RM3 pada penulisan graf, pembaruan
+\textit{lifecycle}, retrieval, dan penggunaan memori pada jawaban}
+\label{tab:v2-memory-result}
+\\
+\hline
+
+\rowcolor{tableheadgray}
+\textbf{Metrik}
+&
+\textbf{Kondisi}
+&
+\textbf{Nilai}
+\\
+\hline
+\endfirsthead
+
+\multicolumn{3}{c}{
+\textit{Lanjutan Tabel \ref{tab:v2-memory-result}}
+}
+\\
+\hline
+
+\rowcolor{tableheadgray}
+\textbf{Metrik}
+&
+\textbf{Kondisi}
+&
+\textbf{Nilai}
+\\
+\hline
+\endhead
+
+\hline
+\multicolumn{3}{r}{
+\textit{Bersambung ke halaman berikutnya}
+}
+\\
+\endfoot
+
+\hline
+\endlastfoot
+
+\multicolumn{3}{|l|}{
+\textit{Penulisan graf}, $n = 12$ skenario
+}
+\\
+\hline
+
+F1 node
+&
+Tidak berlaku
+&
+0,620
+\\
+\hline
+
+Presisi node
+&
+Tidak berlaku
+&
+0,556
+\\
+\hline
+
+Recall node
+&
+Tidak berlaku
+&
+0,702
+\\
+\hline
+
+F1 relasi
+&
+Tidak berlaku
+&
+0,361
+\\
+\hline
+
+Akurasi label \texttt{subject\_role}
+&
+Tidak berlaku
+&
+85,7\%
+\\
+\hline
+
+Akurasi label \texttt{trigger\_category}
+&
+Tidak berlaku
+&
+100,0\%
+\\
+\hline
+
+\multicolumn{3}{|l|}{
+\textit{Pembaruan lifecycle}, $n = 12$ skenario
+}
+\\
+\hline
+
+Ketepatan tindakan pembaruan
+&
+Tidak berlaku
+&
+33,3\%
+\\
+\hline
+
+Ketepatan konten baru
+&
+Tidak berlaku
+&
+50,0\%
+\\
+\hline
+
+Konten lama berhasil dinonaktifkan
+&
+Tidak berlaku
+&
+25,0\%
+\\
+\hline
+
+\multicolumn{3}{|l|}{
+\textit{Retrieval}, $n = 42$ kueri pada dua kondisi
+}
+\\
+\hline
+
+P@5
+&
+Hibrid
+&
+0,073
+\\
+\hline
+
+P@5
+&
+Vektor saja
+&
+0,000
+\\
+\hline
+
+Recall@5
+&
+Hibrid
+&
+0,267
+\\
+\hline
+
+Recall@5
+&
+Vektor saja
+&
+0,000
+\\
+\hline
+
+MRR
+&
+Hibrid
+&
+0,267
+\\
+\hline
+
+MRR
+&
+Vektor saja
+&
+0,000
+\\
+\hline
+
+nDCG@5
+&
+Hibrid
+&
+0,257
+\\
+\hline
+
+nDCG@5
+&
+Vektor saja
+&
+0,000
+\\
+\hline
+
+Tingkat memori usang
+&
+Hibrid
+&
+0,0\%
+\\
+\hline
+
+Keberhasilan kueri relasional atau kausal
+&
+Hibrid
+&
+29,2\%
+\\
+\hline
+
+Keberhasilan abstensi
+&
+Hibrid
+&
+45,2\%
+\\
+\hline
+
+\multicolumn{3}{|l|}{
+\textit{Penggunaan memori pada jawaban},
+$n = 24$ kasus pada dua kondisi
+}
+\\
+\hline
+
+Jawaban berdasar memori
+&
+Hibrid
+&
+95,8\%
+\\
+\hline
+
+Jawaban berdasar memori
+&
+Vektor saja
+&
+95,8\%
+\\
+\hline
+
+Tingkat kontradiksi
+&
+Hibrid
+&
+8,3\%
+\\
+\hline
+
+Tingkat kontradiksi
+&
+Vektor saja
+&
+4,2\%
+\\
+\hline
+
+Keberhasilan relasional atau kausal
+&
+Hibrid
+&
+66,7\%
+\\
+\hline
+
+Keberhasilan relasional atau kausal
+&
+Vektor saja
+&
+62,5\%
+\\
+\hline
+
+Personalisasi tanpa dasar
+&
+Hibrid
+&
+29,2\%
+\\
+\hline
+
+Personalisasi tanpa dasar
+&
+Vektor saja
+&
+29,2\%
+\\
+\hline
+
+Tingkat keyakinan usang
+&
+Hibrid
+&
+8,3\%
+\\
+\hline
+
+Tingkat keyakinan usang
+&
+Vektor saja
+&
+8,3\%
+\\
+\hline
+
+Abstensi benar
+&
+Hibrid
+&
+25,0\%
+\\
+\hline
+
+Abstensi benar
+&
+Vektor saja
+&
+25,0\%
+\\
+\hline
+
+\end{longtable}
+
+\begin{minipage}{\textwidth}
+\footnotesize
+\textit{Catatan:}
+Kondisi tidak berlaku digunakan pada blok evaluasi yang tidak
+membandingkan retrieval hibrid dengan retrieval vektor saja.
+Nilai yang lebih tinggi menunjukkan hasil yang lebih baik, kecuali
+untuk tingkat kontradiksi, tingkat memori usang, personalisasi tanpa
+dasar, dan tingkat keyakinan usang.
+\end{minipage}
+}
+
+\end{center}

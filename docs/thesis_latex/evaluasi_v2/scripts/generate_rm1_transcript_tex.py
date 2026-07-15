@@ -12,7 +12,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[4]
-EVAL_DIR = ROOT / "docs" / "thesis_latex" / "evaluasi_v2"
+EVAL_DIR = ROOT / "docs" / "thesis_latex" / "evaluasi_v3"
 OUT_PATH = ROOT / "docs" / "thesis_latex" / "chapters" / "generated_rm1_transcript.tex"
 
 DIMENSION_LABELS = {
@@ -29,9 +29,27 @@ SCENARIO_TITLES = {
     "rm1_family": "Tekanan Keluarga (Arya, \\textit{cold start})",
     "rm1_organizational": "Beban Organisasi (Arya, \\textit{cold start})",
     "rm1_career": "Ketidakpastian Karier (Arya, \\textit{cold start})",
-    "rm1_academic_memory_1": "Kelanjutan Tekanan Akademik (Budi, memori kaya) \\#1",
-    "rm1_academic_memory_2": "Kelanjutan Tekanan Akademik (Budi, memori kaya) \\#2",
-    "rm1_academic_memory_3": "Kelanjutan Tekanan Akademik (Budi, memori kaya) \\#3",
+    "rm1_academic_memory_1": "Kelanjutan Tekanan Akademik (Budi, \\textit{memory-rich}) \\#1",
+    "rm1_academic_memory_2": "Kelanjutan Tekanan Akademik (Budi, \\textit{memory-rich}) \\#2",
+    "rm1_academic_memory_3": "Kelanjutan Tekanan Akademik (Budi, \\textit{memory-rich}) \\#3",
+    "rm1_academic_formal": "Tekanan Akademik (Formal, \\textit{cold start})",
+    "rm1_academic_informal": "Tekanan Akademik (Informal, \\textit{cold start})",
+    "rm1_academic_code_mixing": "Tekanan Akademik (Bahasa Campur, \\textit{cold start})",
+    "rm1_social_euphemistic": "Isolasi Sosial (Eufemistik, \\textit{cold start})",
+    "rm1_family_code_mixing": "Tekanan Keluarga (Bahasa Campur, \\textit{cold start})",
+    "rm1_campus_relationship": "Relasi Kampus (Informal, \\textit{cold start})",
+    "rm1_budi_avoidance_memory": "Kebiasaan Menghindar (Budi, \\textit{memory-rich})",
+    "rm1_budi_reframe_memory": "Pemaknaan Ulang Akademik (Budi, \\textit{memory-rich})",
+    "rm1_budi_formal_memory": "Akademik Formal Lanjutan (Budi, \\textit{memory-rich})",
+    "rm1_budi_code_mixing_memory": "Akademik Bahasa Campur Lanjutan (Budi, \\textit{memory-rich})",
+    "rm1_budi_self_worth_memory": "Rasa Berharga Diri (Budi, \\textit{memory-rich})",
+    "rm1_budi_casual_memory": "Akademik Santai Lanjutan (Budi, \\textit{memory-rich})",
+    "rm1_organizational_formal": "Beban Organisasi (Formal, \\textit{cold start})",
+    "rm1_family_formal": "Tekanan Keluarga (Formal, \\textit{cold start})",
+    "rm1_career_formal": "Ketidakpastian Karier (Formal, \\textit{cold start})",
+    "rm1_organizational_code_mixing": "Beban Organisasi (Bahasa Campur, \\textit{cold start})",
+    "rm1_career_code_mixing": "Ketidakpastian Karier (Bahasa Campur, \\textit{cold start})",
+    "rm1_budi_self_worth_code_mixing": "Rasa Berharga Diri (Bahasa Campur, \\textit{memory-rich})",
 }
 
 _LATEX_SPECIAL = {
@@ -53,7 +71,7 @@ def esc(text: str) -> str:
 
 
 def main() -> None:
-    data = json.loads((EVAL_DIR / "rm1_dialogue" / "raw_results_expanded.json").read_text(encoding="utf-8"))
+    data = json.loads((EVAL_DIR / "rm1_language" / "raw_results_v3.json").read_text(encoding="utf-8"))
 
     lines: list[str] = []
     for scenario in data:

@@ -1,0 +1,143 @@
+{
+  "summary": {
+    "n_scenarios": 12,
+    "n_valid": 12,
+    "action_correct": {
+      "rate": 0.3333333333333333,
+      "correct": 4,
+      "total": 12,
+      "ci95": [
+        0.08333333333333333,
+        0.5833333333333334
+      ]
+    },
+    "new_content_correct": {
+      "rate": 0.5,
+      "correct": 3,
+      "total": 6
+    },
+    "old_content_inactive_correct": {
+      "rate": 0.25,
+      "correct": 2,
+      "total": 8
+    }
+  },
+  "case_scores": [
+    {
+      "scenario_id": "lc01_supersede_advisor_belief",
+      "expected_action": "supersede_thought",
+      "observed_action": "reappraise_experience",
+      "action_correct": false,
+      "new_content_correct": false,
+      "old_content_inactive_correct": false,
+      "observed_new_text": "mendapat klarifikasi langsung dari dosen pembimbing bahwa revisi itu wajar dan dia memberikan dukungan penuh (clarification from thesis advisor, receiving support)",
+      "observed_old_text": "mendapat banyak revisi saat proses bimbingan skripsi (receiving many revisions during thesis supervision)"
+    },
+    {
+      "scenario_id": "lc02_supersede_organization_belief",
+      "expected_action": "supersede_thought",
+      "observed_action": "supersede_thought",
+      "action_correct": true,
+      "new_content_correct": true,
+      "old_content_inactive_correct": false,
+      "observed_new_text": "ternyata aku cukup kompeten megang tanggung jawab di organisasi, nggak seburuk yang aku kira dulu",
+      "observed_old_text": "Aku yakin bakal gagal terus kalau pegang tanggung jawab di organisasi ini, aku nggak cocok jadi pengurus (impostor syndrome, self-doubt)"
+    },
+    {
+      "scenario_id": "lc03_reappraise_father_experience",
+      "expected_action": "reappraise_experience",
+      "observed_action": "supersede_thought",
+      "action_correct": false,
+      "new_content_correct": false,
+      "old_content_inactive_correct": true,
+      "observed_new_text": "ayah bertanya nilai kuliah karena perhatian dan ingin tahu perkembanganku, bukan karena tidak percaya (father is caring and interested, not mistrusting)",
+      "observed_old_text": "ayah nggak percaya sama aku (father does not trust me)"
+    },
+    {
+      "scenario_id": "lc04_reappraise_thesis_rejection",
+      "expected_action": "reappraise_experience",
+      "observed_action": "supersede_thought",
+      "action_correct": false,
+      "new_content_correct": true,
+      "old_content_inactive_correct": false,
+      "observed_new_text": "penolakan proposal adalah masukan untuk perbaikan metodologi (constructive feedback on methodology)",
+      "observed_old_text": "aku emang nggak becus riset (I am incompetent at research)"
+    },
+    {
+      "scenario_id": "lc05_replace_procrastination_behavior",
+      "expected_action": "replace_behavior",
+      "observed_action": "replace_behavior",
+      "action_correct": true,
+      "new_content_correct": true,
+      "old_content_inactive_correct": true,
+      "observed_new_text": "mulai mencicil pengerjaan revisi skripsi setiap pagi (consistent study habit)",
+      "observed_old_text": "menunda ngerjain revisi sampai deadline"
+    },
+    {
+      "scenario_id": "lc06_replace_avoidance_behavior",
+      "expected_action": "replace_behavior",
+      "observed_action": "reappraise_experience",
+      "action_correct": false,
+      "new_content_correct": false,
+      "old_content_inactive_correct": false,
+      "observed_new_text": "mendapatkan revisi dari dospem",
+      "observed_old_text": "menerima komentar revisi dari dospem (receiving thesis revision comments)"
+    },
+    {
+      "scenario_id": "lc07_disable_presentation_trigger",
+      "expected_action": "disable_trigger",
+      "observed_action": "supersede_thought",
+      "action_correct": false,
+      "new_content_correct": null,
+      "old_content_inactive_correct": false,
+      "observed_new_text": "Presentasi di depan kelas udah nggak bikin panik lagi, aku ngerasa biasa aja",
+      "observed_old_text": "Presentasi di depan kelas selalu bikin aku panik banget (performance anxiety, fear of evaluation)"
+    },
+    {
+      "scenario_id": "lc08_disable_father_trigger",
+      "expected_action": "disable_trigger",
+      "observed_action": "supersede_thought",
+      "action_correct": false,
+      "new_content_correct": null,
+      "old_content_inactive_correct": false,
+      "observed_new_text": "pertanyaan ayah soal nilai tidak perlu ditakuti lagi (father's questions about grades are no longer frightening)",
+      "observed_old_text": "kalau ditanya nilai, pasti bakal dimarahin (fear of being scolded)"
+    },
+    {
+      "scenario_id": "lc09_retain_family_conflict",
+      "expected_action": "retain",
+      "observed_action": "reappraise_experience",
+      "action_correct": false,
+      "new_content_correct": null,
+      "old_content_inactive_correct": null,
+      "observed_new_text": "pertengkaran dengan ibu mengenai biaya kuliah masih berlanjut (ongoing argument about tuition fees)",
+      "observed_old_text": "pertengkaran dengan ibu mengenai biaya kuliah (argument about tuition fees)"
+    },
+    {
+      "scenario_id": "lc10_retain_organization_fatigue",
+      "expected_action": "retain",
+      "observed_action": "reappraise_experience",
+      "action_correct": false,
+      "new_content_correct": null,
+      "old_content_inactive_correct": null,
+      "observed_new_text": "Rapat organisasi yang melelahkan (organizational meeting causing exhaustion)",
+      "observed_old_text": "Rapat organisasi yang melelahkan (organizational meeting causing exhaustion)"
+    },
+    {
+      "scenario_id": "lc11_archive_decay_old_memory",
+      "expected_action": "archive",
+      "observed_action": "archive",
+      "action_correct": true,
+      "new_content_correct": null,
+      "old_content_inactive_correct": null
+    },
+    {
+      "scenario_id": "lc12_archive_decay_old_memory_2",
+      "expected_action": "archive",
+      "observed_action": "archive",
+      "action_correct": true,
+      "new_content_correct": null,
+      "old_content_inactive_correct": null
+    }
+  ]
+}
