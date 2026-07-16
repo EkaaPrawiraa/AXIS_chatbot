@@ -30,7 +30,7 @@ class LLMSpec:
         """prompt_ref after applying any name-specific runtime override
         (mirrors build_llm()'s name-specific kwargs pattern below)."""
         if self.name == "response_generator" and _response_pipeline_version() == "v3":
-            return "nodes/response_generator_v3"
+            return "nodes/response_generator_v4"
         return self.prompt_ref
 
     @property
