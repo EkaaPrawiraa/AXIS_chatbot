@@ -1,4 +1,4 @@
-"""mod pg_vector"""
+"""buat ngambil data"""
 
 from __future__ import annotations
 

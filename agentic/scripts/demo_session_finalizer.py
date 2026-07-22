@@ -1,4 +1,4 @@
-"""cd Downloads"""
+"""dlz"""
 
 from __future__ import annotations
 
@@ -95,7 +95,7 @@ async def main() -> None:
         print("❌ Cannot connect to Postgres. Check PG_* env vars.")
         sys.exit(1)
 
-    # ngambil ses
+    # ambil data
     sessions = await fetch_sessions(pool, USER_ID)
     if not sessions:
         print(f"❌ No sessions found for user {USER_ID}")
@@ -113,7 +113,7 @@ async def main() -> None:
               f"kg_processed={s['kg_processed']}")
     print()
 
-    # ambil pesan
+    # ngambil pesan
     all_session_messages: dict[str, list[dict]] = {}
     for s in sessions:
         sid = s["session_id"]
@@ -151,7 +151,7 @@ async def main() -> None:
         print(f"  [{msg['turn_index']:>3}] {role_label}: {content_preview}")
     print()
 
-    # extract kg
+    # ngambil kg
     print(f"\n{'='*80}")
     print("  RUNNING KG EXTRACTOR (same prompt as session finalizer)")
     print(f"{'='*80}\n")
@@ -355,7 +355,7 @@ def _aggregate_facts(all_extracted: list[dict]) -> dict:
 
 
 def _print_comparison(agg: dict, summary: str, all_extracted: list[dict]) -> None:
-    """print kg vs. vector-only"""
+    """print kg vs. vec"""
 
     print("  ┌─────────────────────────────────────────────────────────────────┐")
     print("  │              VECTOR/SEMANTIC SEARCH ONLY                        │")
@@ -399,7 +399,7 @@ def _print_comparison(agg: dict, summary: str, all_extracted: list[dict]) -> Non
     print(f"  └─────────────────────────────────────────────────────────────────┘")
     print()
 
-    # show ex
+    # ngelapkan
     if agg.get("all_thoughts"):
         print("  🔍 EXAMPLE: Cognitive Distortion Tracking (KG-only capability)")
         print("  ─────────────────────────────────────────────────────────────")

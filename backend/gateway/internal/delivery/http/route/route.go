@@ -9,7 +9,7 @@ import (
 	"github.com/EkaaPrawiraa/companionshipchatbot/shared/pkg/middleware"
 )
 
-// all mounts, limits.
+// all mnt, lmt.
 func Register(
 	mux *http.ServeMux,
 	health *gatewayHandler.HealthHandler,

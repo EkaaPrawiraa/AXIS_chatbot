@@ -1,12 +1,8 @@
-"""Task 4: candidate discovery in build_context() is pgvector-primary by
-design (Neo4j Community has no native vector index, confirmed with the
-user) -- Neo4j traversal only ever decorated nodes vector search already
-picked, never discovered new ones. This verifies the bounded graph-native
-expansion step: given the vector-selected seed Experience, one real graph
-hop to a sibling Experience sharing the SAME Trigger node surfaces a memory
-that shares zero words/embedding similarity with the seed -- the concrete,
-reproducible demonstration that graph traversal finds what a pure
-semantic-search baseline structurally cannot (Collins & Loftus 1975,
+"""Task 4: candidate discovery in build_context() is pgvector-primary by design (Neo4j Community
+has no native vector index); Neo4j traversal only decorated nodes vector search already found.
+This verifies the bounded graph-native expansion step: a real graph hop from the vector-selected
+seed to a sibling sharing the same Trigger surfaces a memory with zero embedding similarity to the
+seed -- what a pure semantic-search baseline structurally cannot find (Collins & Loftus 1975,
 spreading activation)."""
 
 import pytest
@@ -63,9 +59,7 @@ async def test_sibling_experience_via_shared_trigger_surfaces_via_graph_expansio
         return []
 
     async def _fake_search_experience(*args, **kwargs):
-        # Only the seed is "found" by vector search -- the sibling shares
-        # zero words/topic with it and is never returned here, simulating
-        # exactly the case a semantic-search-only baseline would miss.
+        # Only the seed is "found" by vector search; the sibling shares no words/topic and is never returned here -- simulates a semantic-only baseline's miss
         return [
             SearchHit(
                 neo4j_node_id=seed_id,
@@ -86,8 +80,7 @@ async def test_sibling_experience_via_shared_trigger_surfaces_via_graph_expansio
 
     assert ctx.focused_recall is not None
     assert "nunggu balesan chat dospem dari kemarin" in ctx.focused_recall
-    # The sibling never matched the query semantically or lexically --
-    # it only surfaces because it shares the same Trigger node identity.
+    # The sibling never matched the query semantically or lexically -- it only surfaces via shared Trigger node identity
     assert "liburan kemarin ke pantai" in ctx.focused_recall
 
     expansion_candidates = [
@@ -104,8 +97,7 @@ async def test_no_expansion_when_no_shared_trigger_or_subject(
     test_namespace,
     monkeypatch,
 ):
-    """Guards against over-eager expansion: an unrelated experience with no
-    shared Trigger/Subject must never be pulled in."""
+    """Guards against over-eager expansion: an unrelated experience with no shared Trigger/Subject must never be pulled in."""
     from agentic.memory.context_builder import build_context
     from agentic.memory.pg_vector import SearchHit
 

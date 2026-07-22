@@ -65,7 +65,7 @@ def _recency_score(created_at_iso: str | None) -> float:
 
 
 def compute_relation_richness(hydrated: dict[str, Any] | None) -> float:
-    """return score kg dims"""
+    """ngk hitung skor"""
     if not hydrated:
         return 0.0
     score = 0.0
@@ -83,5 +83,5 @@ def compute_relation_richness(hydrated: dict[str, Any] | None) -> float:
 
 
 def candidate_recency_score(c: Candidate) -> float:
-    """buat scoring"""
+    """buat scoringini"""
     return _recency_score(c.created_at_iso)

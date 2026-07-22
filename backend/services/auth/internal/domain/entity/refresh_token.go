@@ -2,7 +2,7 @@ package entity
 
 import "time"
 
-// refreshToken: hash SHA-256, tokenPlaintext: client-only, not stored.
+// buat nyimpen refreshToken, skip tokenPlaintext.
 type RefreshToken struct {
 	ID        string
 	UserID    string

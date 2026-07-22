@@ -46,7 +46,7 @@ class CorpusEntry:
 
 
 def _coerce_entry(raw: dict) -> CorpusEntry | None:
-    """buat jsonl2corpusentry"""
+    """buat jsonl2corpus"""
     term = raw.get("term")
     if not isinstance(term, str) or not term.strip():
         return None
@@ -64,7 +64,7 @@ def _coerce_entry(raw: dict) -> CorpusEntry | None:
 
 @dataclass
 class LinguisticCorpus:
-    """single_word: tokenize multi_word: lexicon"""
+    """tokenize multi: lexicon"""
 
     entries: tuple[CorpusEntry, ...] = field(default_factory=tuple)
     _single_word: dict[str, CorpusEntry] = field(default_factory=dict, repr=False)
@@ -103,7 +103,7 @@ class LinguisticCorpus:
     # ambil data
 
     def matches(self, text: str) -> list[CorpusEntry]:
-        """get corpus entries in text"""
+        """get corpus entries"""
         if not text:
             return []
         lowered = text.lower()
@@ -131,7 +131,7 @@ _corpus_cache: dict[str, LinguisticCorpus] = {}
 
 
 def load_corpus(path: Path) -> LinguisticCorpus:
-    """load cache"""
+    """load_cache"""
     abs_path = str(path.resolve())
     cached = _corpus_cache.get(abs_path)
     if cached is not None:

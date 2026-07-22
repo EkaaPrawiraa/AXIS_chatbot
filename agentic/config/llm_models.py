@@ -1,4 +1,4 @@
-"""lang graph"""
+"""lang "graph"""
 
 from __future__ import annotations
 
@@ -14,7 +14,7 @@ LLMProvider = Literal["openai", "gemini", "local"]
 
 @dataclass(frozen=True)
 class LLMSpec:
-    """buat ngambil data"""
+    """ambil data"""
 
     name: str
     model: str
@@ -27,15 +27,14 @@ class LLMSpec:
 
     @property
     def resolved_prompt_ref(self) -> str:
-        """prompt_ref after applying any name-specific runtime override
-        (mirrors build_llm()'s name-specific kwargs pattern below)."""
+        """prompt_ref: after override"""
         if self.name == "response_generator" and _response_pipeline_version() == "v3":
             return "nodes/response_generator_v4"
         return self.prompt_ref
 
     @property
     def system_prompt(self) -> str:
-        """lazy resolve prompt yaml"""
+        """lazy resolve yaml"""
         from agentic.prompts import load_prompt
 
         return load_prompt(self.resolved_prompt_ref)
@@ -162,7 +161,7 @@ def llm_provider() -> LLMProvider:
 
 
 def resolve_llm_model(model: str, *, spec_name: str | None = None) -> str:
-    """get model ids"""
+    """get "model ids"""
     provider = llm_provider()
     requested = (model or "").strip()
     if requested.startswith("models/gemini-"):
@@ -214,12 +213,7 @@ RESPONSE_GENERATOR = LLMSpec(
     extra_kwargs={"streaming": True},
 )
 
-# v3 pipeline only (AXIS_RESPONSE_PIPELINE_VERSION=v3): silent reasoning pass
-# that builds a psychological model of the user before response_generator
-# writes a reply. Temperature above 0 because it needs interpretive
-# inference (not a closed classification like the CBT/PHQ-9 judges), but
-# well below response_generator's 1 because grounding matters more here
-# than voice variety.
+# silent reasoning pass with interpretive inference
 UNDERSTANDING_SYNTHESIS = LLMSpec(
     name="understanding_synthesis",
     model=_DEFAULT_CHEAP,
@@ -295,7 +289,7 @@ KG_EXTRACTOR = LLMSpec(
 )
 
 
-# rewrite + helpers
+# rewrite+helpers
 
 
 GUARDRAIL_REWRITE = LLMSpec(
@@ -371,7 +365,7 @@ SPEECH_ADAPTER_V3 = LLMSpec(
 )
 
 
-# skip klo error
+# skip error
 SPEECH_ADAPTER_GEMINI_TAGS = LLMSpec(
     name="speech_adapter_gemini_tags",
     model=_DEFAULT_CHEAP,
@@ -396,7 +390,7 @@ CRISIS_EMPATHY = LLMSpec(
 
 
 def build_llm(spec: LLMSpec) -> Any:
-    """import cheap_import pass_reasoning_effort forward_temperature"""
+    """cheap_import"""
     provider = llm_provider()
     model = resolve_llm_model(spec.model, spec_name=spec.name)
 

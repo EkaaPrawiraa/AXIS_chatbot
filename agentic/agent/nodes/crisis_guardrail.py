@@ -1,4 +1,4 @@
-"""init state" "layer 3" "pipeline" "safety"""
+"""init state "layer 3" "pipeline" "safety"""
 
 from __future__ import annotations
 
@@ -81,39 +81,15 @@ _STOPWORDS = frozenset(
         "kayaknya", "mungkin", "semua", "semuanya", "kok", "gitu", "ya",
         "nya", "the", "a", "an", "to", "i", "me", "my", "and", "just",
         "it", "all",
-        # "lain" ("other/different") is generic on its own -- e.g. "contoh
-        # lain", "cara lain" -- and only becomes diagnostic for the phrase
-        # "jadi beban buat orang lain" when paired with "orang"/"beban".
-        # Without this, any message mentioning "jadi" (a common discourse
-        # marker, "so...") and "lain" anywhere coincidentally clears the
-        # containment threshold against that phrase; confirmed false
-        # positive on "kemarin aku nyari contoh skripsi lain" (2026-07-13).
+        # generic on its own; only diagnostic for "jadi beban buat orang lain" when paired with "orang"/"beban" (2026-07-13 false positive)
         "lain",
-        # "orang" ("person/people") is just as generic as "lain" above and
-        # trips the same phrase on its own -- confirmed false positive on
-        # "makin pusing lihat postingan orang lain yang udah pada wisuda"
-        # (2026-07-13), where "orang"+"lain" alone hit containment with
-        # zero burden/hopelessness content actually present.
+        # generic on its own; same phrase as "lain" above, false positive on "postingan orang lain yang udah wisuda" (2026-07-13)
         "orang",
-        # "besok" ("tomorrow") is generic on its own -- e.g. "coba lagi
-        # besok" -- and only becomes diagnostic for "tidak usah bangun
-        # lagi besok" when paired with "bangun". Confirmed false positive
-        # on "Nanti coba lagi besok, tapi tetep aja nggak nemu" (2026-07-13),
-        # where "besok" alone (with the already-stopworded "lagi") hit
-        # containment without "bangun" being present at all.
+        # generic on its own; only diagnostic for "tidak usah bangun lagi besok" when paired with "bangun" (2026-07-13 false positive)
         "besok",
     }
 )
-# NOTE: "baik" was tried as a stopword addition here (same rationale as
-# "lain"/"orang"/"besok" above -- it's the coincidental match behind a
-# false positive on "pembimbingku baik banget, malah dia yang nyuruh aku
-# istirahat", 2026-07-13) but reverted: it broke recall on a genuine
-# adversarial positive, "aku ngerasa kosong banget, kayaknya lebih baik
-# aku nggak usah lahir aja", which depends on "baik" to clear containment
-# for "dunia lebih baik tanpa aku". Disclosed, accepted residual limitation
-# rather than a fix -- same category as the pre-existing "aku ingin pergi
-# selamanya" false-positive case already documented in
-# docs/thesis_review/adversarial-crisis-benchmark-2026-07-13.md.
+# "baik" stopwording was tried and reverted: fixes one false positive but breaks a genuine adversarial positive (2026-07-13)
 
 
 def _tokenize(text: str) -> set[str]:
@@ -125,12 +101,7 @@ def _content_tokens(tokens: set[str]) -> set[str]:
 
 
 def _containment(phrase_tokens: set[str], message_tokens: set[str]) -> float:
-    """Fraction of the phrase's own tokens found in the message.
-
-    Asymmetric by design: unlike Dice/Jaccard, this is not diluted by
-    message length, so a short canonical phrase can still match when it
-    is paraphrased inside a much longer real conversational sentence.
-    """
+    """short phrase, long match"""
     if not phrase_tokens:
         return 0.0
     return len(phrase_tokens & message_tokens) / len(phrase_tokens)
@@ -143,31 +114,11 @@ _NEGATION_ADA_RE = re.compile(
 
 
 def _phrase_needs_negation_ada(phrase_tokens: set[str]) -> bool:
-    """True for phrases built on a "tidak ada" (there-is-no) construction,
-    e.g. "tidak ada harapan lagi". "ada" alone is unigram-identical whether
-    the speaker means "there is no X" or "there still IS X" ("masih ada
-    harapan") -- token overlap can't tell those apart, so for these phrases
-    specifically, require the negation to actually sit next to "ada" in the
-    message, not just appear anywhere in it. Confirmed false positive on
-    "Kayaknya masih ada harapan sih... nggak yakin juga bakal kelar tepat
-    waktu" (2026-07-13): "nggak" was present but attached to "yakin", not
-    "ada" -- a plain unigram check for "any negation word present" would
-    have missed this and still misfired."""
+    """ada, negasi harus ada di depan, nggak bisa muncul di tengah."""
     return "ada" in phrase_tokens and any(m in phrase_tokens for m in _NEGATION_MARKERS)
 
 
-# A phrase whose own content-token footprint (after stopword stripping) is
-# down to a single word is too weak to trust at the normal containment
-# threshold -- that one leftover word is often polysemous (e.g. "beban" means
-# burden-of-stress in "beban pikiran"/"beban tugas", completely ordinary,
-# as well as interpersonal burden in "beban buat orang lain"). Confirmed
-# false positive on "...makin nambah beban pikiran" (2026-07-13): stripping
-# "orang"/"lain" as generic connectors (see _STOPWORDS below) left "jadi
-# beban buat orang lain" needing only "beban" to satisfy the content-overlap
-# gate, well below what's needed to distinguish the two senses. Requiring
-# more overall token overlap for these weak phrases restores that margin
-# without reintroducing the "orang"/"lain" false positives the stopword
-# additions were meant to fix.
+# single leftover content word (e.g. "beban") is too weak/polysemous to trust alone (2026-07-13)
 _WEAK_PHRASE_CONTENT_SIZE: int = 2
 _WEAK_PHRASE_THRESHOLD: float = 0.6
 
@@ -182,7 +133,7 @@ class PreGenDecision:
 def evaluate_pregen(
     message: str, rules: PreGenRules | None = None
 ) -> PreGenDecision:
-    """Tokenize, score containment per phrase, flag on ratio + content-word gate."""
+    """tokenize, score, flag, ratio, content-word."""
     rules = rules or load_pregen_rules()
     if not message.strip():
         return PreGenDecision(crisis=False, similarity=0.0, matched_phrase=None)
@@ -233,7 +184,7 @@ _PHQ9_ACTIVE_PHASES = frozenset(
 
 
 def _phq9_is_active(state: ConversationState) -> bool:
-    """crisis defer"""
+    """defer crisis"""
     phq9 = state.get("phq9_state") or {}
     phase = phq9.get("phase", "idle")
     return phase in _PHQ9_ACTIVE_PHASES
@@ -248,7 +199,7 @@ class _Tier1Keywords:
     patterns_en: tuple[re.Pattern[str], ...]
 
     def matches(self, text: str) -> bool:
-        """check for tier 1 keyword in text"""
+        """check tier 1 keyword"""
         lowered = text.lower()
         return any(
             pat.search(lowered) is not None
@@ -270,7 +221,7 @@ def _compile_kw(kw: str) -> re.Pattern[str]:
 
 
 def _load_tier1_keywords(*, force_reload: bool = False) -> _Tier1Keywords:
-    """load from guardrails/input_validation.yaml"""
+    """load guardrails/input_validation.yaml"""
     global _TIER1_CACHE
     if _TIER1_CACHE is not None and not force_reload:
         return _TIER1_CACHE
@@ -298,7 +249,7 @@ def _classify_crisis_tier(
     state: ConversationState,
     tier1_kws: _Tier1Keywords,
 ) -> str:
-    """or "2"""
+    """skip 2"""
     phq9 = state.get("phq9_state") or {}
     if phq9.get("route_to_crisis_after"):
         return "2"
@@ -334,7 +285,7 @@ async def crisis_guardrail_node(
     audit: GuardrailLogger | None = None,
     rules: PreGenRules | None = None,
 ) -> ConversationState:
-    """check crisis, defer PHQ-9"""
+    """check, defer, PHQ-9"""
     audit = audit or NullGuardrailLogger()
     started = time.perf_counter()
 
@@ -398,7 +349,7 @@ async def crisis_triage_node(
     audit: GuardrailLogger | None = None,
     tier1_kws: _Tier1Keywords | None = None,
 ) -> ConversationState:
-    """reads, classifies, writes, routes"""
+    """r,c,w,r"""
     audit = audit or NullGuardrailLogger()
     kws = tier1_kws or _load_tier1_keywords()
     tier = _classify_crisis_tier(state, kws)
@@ -422,7 +373,7 @@ async def crisis_triage_node(
 
 
 def route_after_crisis_triage(state: ConversationState) -> str:
-    """tier 1: crisis tier 2: empathy"""
+    """crisis, empathy"""
     if state.get("crisis_tier") == "1":
         return trace_route(
             state,
@@ -444,7 +395,7 @@ def route_after_crisis_triage(state: ConversationState) -> str:
 
 
 def _render_hotline_context(resources: CrisisResources | None = None) -> str:
-    """buat nyimpen contact"""
+    """buat nyimpan contact"""
     try:
         cat = resources or load_crisis_resources()
     except Exception:
@@ -462,7 +413,7 @@ def render_resource_block(
     resources: CrisisResources | None = None,
     state: ConversationState | None = None,
 ) -> str:
-    """build llm res"""
+    """buat res"""
     lines = (resources or load_crisis_resources()).selected_lines(state)
     return f"Kontak bantuan dari sistem yang bisa kamu hubungi:\n\n{lines}"
 
@@ -474,7 +425,7 @@ async def crisis_empathy_node(
     audit: GuardrailLogger | None = None,
     resources: CrisisResources | None = None,
 ) -> ConversationState:
-    """llm_spec="CRISIS_EMPATHY" llm = llm.partial()"""
+    """llm_spec="CRISIS_EMPATHY" llm.partial()"""
     audit = audit or NullGuardrailLogger()
     started = time.perf_counter()
 
@@ -491,7 +442,7 @@ async def crisis_empathy_node(
 
     from agentic.config.llm_models import CRISIS_EMPATHY
 
-    # pass `hotline_list` as `context`
+    # `hotline_list` ke `context`
     resource_ctx = _render_hotline_context(resources)
     system_prompt = CRISIS_EMPATHY.system_prompt
     if resource_ctx:
@@ -514,7 +465,7 @@ async def crisis_empathy_node(
             exc,
         )
         increment("crisis_guardrail_events_total", tier="2", route="empathy_fallback")
-        # fallback to tier 1
+        # fallback tier 1
         state["final_response"] = render_crisis_response(resources, state=state)
         _clear_handled_phq9_crisis_route(state)
         state["crisis_escalated"] = True  # type: ignore[typeddict-unknown-key]
@@ -885,7 +836,7 @@ __all__ = [
     "load_crisis_resources",
     "render_crisis_response",
     "crisis_escalation_node",
-    # tier 2
+    # tier2
     "render_resource_block",
     "crisis_empathy_node",
 ]

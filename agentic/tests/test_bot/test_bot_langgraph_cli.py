@@ -160,13 +160,13 @@ async def _ensure_user_exists(
     preferred_language: str,
     display_name: str = "CLI User",
 ) -> None:
-    """buat user placeholder"""
+    """buat placeholder"""
     if not user_id:
         return
 
     # avoid collisions, unique, deterministic
     email = f"cli+{user_id}@local.test"
-    # `trim` `null` `char`
+    # trim null char
     password_hash = "x" * 60
 
     try:
@@ -196,7 +196,7 @@ async def _ensure_user_exists(
 
 
 def _wrap_context_builder():
-    """bridge node"""
+    """bridge nod"""
     async def _bridge(*, user_id, session_id, query, language):
         try:
             from agentic.memory.context_builder import build_context
@@ -336,7 +336,7 @@ def _short_state(state: dict[str, Any]) -> str:
 
 
 def _wrap_audio_bytes(path: Path) -> tuple[Any, str]:
-    """mime type"""
+    """mime"""
     suffix = path.suffix.lower().lstrip(".")
     mime = {
         "mp3": "audio/mpeg",
@@ -351,7 +351,7 @@ def _wrap_audio_bytes(path: Path) -> tuple[Any, str]:
 
 
 async def _consume_audio_blob(blob: Any) -> bytes:
-    """drain gen"""
+    """drain gen, skip error"""
     if isinstance(blob, (bytes, bytearray)):
         return bytes(blob)
     chunks: list[bytes] = []
@@ -378,7 +378,7 @@ def _save_audio(audio_bytes: bytes, *, suffix: str = ".mp3") -> Path:
 
 
 def _open_with_player(path: Path) -> bool:
-    """open system."""
+    """open system"""
     if sys.platform == "darwin":
         cmd = ["afplay", str(path)]
     elif sys.platform.startswith("linux"):
@@ -400,7 +400,7 @@ def _open_with_player(path: Path) -> bool:
 
 
 async def _main() -> int:
-    # set cli_user_id
+    # set cli
     user_id = os.getenv("CLI_USER_ID", "11111111-1111-1111-1111-111111111111")
     session_id = str(uuid.uuid4())
 
@@ -426,7 +426,7 @@ async def _main() -> int:
             build_llm,
         )
 
-        # prov creds
+        # get creds
         response_llm = build_llm(RESPONSE_GENERATOR)
         phq9_judge_llm = build_llm(PHQ9_JUDGE)
         feedback_llm = build_llm(PHQ9_FEEDBACK)
@@ -588,7 +588,7 @@ async def _main() -> int:
                 print("  unknown command. /help for list")
                 continue
 
-        # init state build graph invoke graph
+        # init state
         turn_state = dict(state)
         if not (turn_state.get("voice_state") or {}).get("audio_input"):
             turn_state["current_message"] = user_text
@@ -605,7 +605,7 @@ async def _main() -> int:
 
         state.update(new_state)
 
-        # buat nyimpen audio_input
+        # buat nyimpan audio_input
         if state.get("voice_state"):
             voice = dict(state["voice_state"])
             voice["audio_input"] = None

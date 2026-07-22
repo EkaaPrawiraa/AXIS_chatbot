@@ -124,9 +124,7 @@ async def test_focused_recall_includes_rehydrated_experience(
     assert "Subjects:" in ctx.focused_recall
     assert "Triggers:" in ctx.focused_recall
     assert "deadline pressure" in ctx.focused_recall
-    # Emotion/Thought/Behavior render as one paired "Emotion chains:" segment
-    # (not three independent flat lists) so the Thought/Behavior stay
-    # attributed to the Emotion that actually produced them.
+    # segarkan emosi, tetapkan pikiran, lakukan tindakan.
     assert "Emotion chains:" in ctx.focused_recall
     assert "anxious" in ctx.focused_recall
     assert "I am going to fail" in ctx.focused_recall

@@ -1,4 +1,4 @@
-"""end2end tests"""
+"""skip end2end"""
 
 from __future__ import annotations
 
@@ -56,7 +56,7 @@ async def _run(
     )
 
 
-# skip klo error
+# skip error
 
 
 class TestOfferPhases:
@@ -130,7 +130,7 @@ class TestItemByItem:
     async def test_text_answer_uses_llm_scorer(
         self, fake_repo, scorer_llm_factory
     ) -> None:
-        # nggunin lmscore
+        # init lmscore
         state = _bootstrap_state(
             phase="in_progress", user_message="iya, hampir setiap hari banget"
         )
@@ -192,7 +192,7 @@ class TestFinalize:
             )
 
         phq9 = state["phq9_state"]
-        # 9 == 1, safety, phase ends, routes to session_end.
+        # safety, phase ends, routes.
         assert phq9["phase"] == "deferred_crisis"
         assert phq9["last_total"] == NUM_ITEMS  # all answered with 1
         assert phq9["last_severity"] == "mild"

@@ -59,7 +59,7 @@ NodeFn = Callable[[ConversationState], Awaitable[ConversationState]]
 
 
 async def _load_profile_context(user_id: str) -> dict[str, Any] | None:
-    """load"""
+    """load()"""
     try:
         from agentic.memory.pg_vector.client import get_pool  # noqa: PLC0415
 
@@ -142,7 +142,7 @@ async def _turn_init_node(state: ConversationState) -> ConversationState:
         if profile_context:
             state["profile_context"] = profile_context
 
-    # sync into db
+    # db sync
     if (state.get("session_turn") or 0) == 0:
         if user_id:
             try:
@@ -181,7 +181,7 @@ def route_entry(state: ConversationState) -> str:
 
 
 def route_after_input_guardrail(state: ConversationState) -> str:
-    """guardrail"""
+    """guard guard guard"""
     verdict = state.get("input_guardrail") or {}
     decision = verdict.get("decision")
     reason = verdict.get("reason", "")
@@ -220,7 +220,7 @@ def route_after_input_guardrail(state: ConversationState) -> str:
 
 
 def route_after_output_finalized(state: ConversationState) -> str:
-    """req payload"""
+    """get payload"""
     voice = state.get("voice_state") or {}
     if voice.get("output_modality") in ("voice", "both"):
         return trace_route(
@@ -498,10 +498,7 @@ def build_graph(
     g.add_node("phq9_check", audited_node("phq9_check", phq9_check_wrapped))
     g.add_node("crisis_guardrail", audited_node("crisis_guardrail", crisis_guard_wrapped))
     g.add_node("memory_retrieval", audited_node("memory_retrieval", memory_wrapped))
-    # v3 pipeline only (AXIS_RESPONSE_PIPELINE_VERSION=v3): node is not even
-    # added to the graph on v2, so v2 pays zero extra latency/cost for it --
-    # this keeps a v2-vs-v3 comparison an honest whole-pipeline comparison,
-    # not a partial mix.
+    # `skip v2`
     response_pipeline_version = os.getenv("AXIS_RESPONSE_PIPELINE_VERSION", "v2").strip().lower()
     if response_pipeline_version == "v3":
         g.add_node(
@@ -512,7 +509,7 @@ def build_graph(
     g.add_node("phq9_delivery", audited_node("phq9_delivery", phq9_delivery_wrapped))
     g.add_node("response_generator", audited_node("response_generator", response_wrapped))
     g.add_node("output_guardrail", audited_node("output_guardrail", output_guard_wrapped))
-    # converge
+    # conver
     g.add_node("crisis_triage", audited_node("crisis_triage", crisis_triage_wrapped))
     g.add_node("crisis_escalation", audited_node("crisis_escalation", crisis_escalation_wrapped))
     g.add_node("crisis_empathy", audited_node("crisis_empathy", crisis_empathy_wrapped))

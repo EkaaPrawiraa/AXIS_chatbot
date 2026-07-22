@@ -12,7 +12,7 @@ import (
 	"github.com/redis/go-redis/v9"
 )
 
-// buat nyimpen config
+// buat nyimpan config
 type RateLimitConfig struct {
 	MaxTurnsPerHour        int
 	MaxMessagesPerDay      int
@@ -30,14 +30,14 @@ func DefaultRateLimitConfig() RateLimitConfig {
 	}
 }
 
-// limit redis
+// skip klo redis
 type RateLimiter struct {
 	rdb    *redis.Client
 	cfg    RateLimitConfig
 	prefix string // key namespace prefix, default "rl"
 }
 
-// rate lim.
+// limit rate
 func NewRateLimiter(rdb *redis.Client, cfg RateLimitConfig) *RateLimiter {
 	return &RateLimiter{
 		rdb:    rdb,
@@ -46,7 +46,7 @@ func NewRateLimiter(rdb *redis.Client, cfg RateLimitConfig) *RateLimiter {
 	}
 }
 
-// turn limit, fail open, redis errors
+// redis err, fail open, turn limit
 func (rl *RateLimiter) TurnLimit(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodPost {
@@ -98,7 +98,7 @@ func (rl *RateLimiter) TurnLimit(next http.Handler) http.Handler {
 	})
 }
 
-// skip on err
+// skip klo error
 func (rl *RateLimiter) SessionLimit(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodPost {
@@ -163,7 +163,7 @@ func (rl *RateLimiter) AuthLimit(next http.Handler) http.Handler {
 	})
 }
 
-// checkLimit, ttl, EXPIRE.
+// check, ttl, EXPIRE.
 func (rl *RateLimiter) checkLimit(
 	ctx context.Context,
 	redisKey string,
@@ -192,7 +192,7 @@ func (rl *RateLimiter) clientKey(r *http.Request) string {
 	if strings.HasPrefix(auth, "Bearer ") {
 		token := strings.TrimPrefix(auth, "Bearer ")
 		if len(token) > 8 {
-			// skip klo nggak pake id
+			// skip klo error
 			if len(token) > 32 {
 				token = token[:32]
 			}
@@ -200,7 +200,7 @@ func (rl *RateLimiter) clientKey(r *http.Request) string {
 		}
 	}
 
-	// `skip fallback`
+	// skip
 	ip, _, err := net.SplitHostPort(r.RemoteAddr)
 	if err != nil {
 		ip = r.RemoteAddr

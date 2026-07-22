@@ -1,9 +1,4 @@
-"""Regression: _rehydrate_memory aggregates over ALL experiences under one
-Memory/Session. The old query matched Trigger/Emotion/Thought/Behavior for
-every experience in one flat OPTIONAL MATCH chain, so two different
-experiences' emotions/thoughts/behaviors could bucket-mix together. Fixed
-by isolating the emotion/thought/behavior traversal into its own UNWIND
-pass, grouped per emotion, mirroring the _rehydrate_experience fix."""
+"""isolated emotions"""
 
 import pytest
 

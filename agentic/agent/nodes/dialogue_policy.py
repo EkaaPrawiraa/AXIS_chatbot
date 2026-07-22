@@ -1,4 +1,4 @@
-"""set pol"""
+"""set pol=1"""
 
 from __future__ import annotations
 
@@ -82,7 +82,7 @@ async def dialogue_policy_node(
             cbt_state.get("decline_streak", 0)
         ) + 1
 
-    # buat nyimpan decline tracking
+    # buat nyimpan
     state["cbt_state"] = cbt_state  # type: ignore[typeddict-item]
 
     if judge_llm is not None:
@@ -90,7 +90,7 @@ async def dialogue_policy_node(
     else:
         decision = route(state)
 
-    # stop cycling, fall back to plain validation, cooldown.
+    # stop, fall, plain, cooldown.
     if (
         int(cbt_state.get("decline_streak", 0)) >= DECLINE_STREAK_SUPPRESS_THRESHOLD
         and decision.technique not in (CBTTechnique.NONE, CBTTechnique.VALIDATE)
@@ -102,22 +102,22 @@ async def dialogue_policy_node(
             payload={"suppressed_technique": decision.technique.value},
         )
 
-    # reset on next turn
+    # reset
     if decision.reason == "opt_out_cooldown":
         if not new_decline:
             cbt_state["declined_last_offer"] = False
-        # keep flag True, keep looping, cooldown.
+        # keep flag, loop, cooldown.
     elif decision.reason == "decline_streak_suppressed":
-        # leave streak, suppress keep holding.
+        # leave, sup, keep, hold.
         pass
     elif not new_decline and decision.technique in (
         CBTTechnique.NONE,
         CBTTechnique.VALIDATE,
     ):
-        # clears streak, reset on diff tech.
+        # reset streak, diff tech.
         cbt_state["decline_streak"] = 0
 
-    # driving, a.
+    # driving
     if decision.technique is CBTTechnique.THOUGHT_RECORD:
         decision = await _advance_thought_record(
             state=state,
@@ -140,11 +140,7 @@ async def dialogue_policy_node(
         # keep last_offered
         pass
 
-    # Track how long the conversation has stayed in pure validate/none mode
-    # without a real technique, so the judge (route_with_llm) can lean
-    # toward a more Socratic/directive pick instead of validating forever
-    # (mirrors a therapist becoming more assertive when passive listening
-    # alone is not surfacing the automatic thought).
+    # track pure validate/none time
     if decision.technique in (CBTTechnique.NONE, CBTTechnique.VALIDATE):
         cbt_state["turns_since_technique"] = int(
             cbt_state.get("turns_since_technique", 0)

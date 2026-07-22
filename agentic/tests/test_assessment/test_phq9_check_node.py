@@ -141,7 +141,7 @@ class TestTier2:
     async def test_event_cluster_with_high_distress_count(
         self, fake_repo
     ) -> None:
-        # limit admin tier 1 for 14 days
+        # limit admin 1 14 hari
         fake_repo.state.last = LastPHQ9Snapshot(
             administered_at=datetime.now(timezone.utc) - timedelta(days=5),
             total_score=8,
@@ -179,7 +179,7 @@ class TestTier2:
         assert phq9["phase"] == "offer_pending"
         assert phq9["tier"] == "event"
 
-    # remov 2026-05: helper depen'd on per-turn emo' pad.
+    # remov 2026-05, helper, per-turn, emo' pad.
 
     @pytest.mark.asyncio
     async def test_event_acute_distress_suppresses(self, fake_repo) -> None:
@@ -189,7 +189,7 @@ class TestTier2:
             severity=PHQ9Severity.MINIMAL,
             item_scores=(0,) * 9,
         )
-        # pad gone; rely on kg
+        # pad, kg, rely.
         fake_repo.state.distress = DistressSnapshot(
             high_distress_session_count_7d=3,
             avg_emotion_valence_7d=-0.8,

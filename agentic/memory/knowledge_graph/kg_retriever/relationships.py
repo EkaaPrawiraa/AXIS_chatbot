@@ -1,4 +1,4 @@
-"""init edge sets"""
+"""init sets"""
 
 from __future__ import annotations
 
@@ -100,7 +100,7 @@ async def link_emotion_to_thought(
     confidence:  float = 0.80,
     source_message_id: str | None = None,
 ) -> None:
-    """on"""
+    """skip"""
     await get_client().execute_write(
         """
         MATCH (em:Emotion {id: $emo_id})
@@ -131,7 +131,7 @@ async def link_emotion_to_thought(
     )
 
 
-# feelings
+# feels
 
 async def link_thought_emotion_association(
     thought_id:  str,
@@ -141,7 +141,7 @@ async def link_thought_emotion_association(
     confidence:  float = 0.80,
     source_message_id: str | None = None,
 ) -> None:
-    """emoticon loop"""
+    """loop loop loop loop loop"""
     await get_client().execute_write(
         """
         MATCH (th:Thought {id: $th_id})
@@ -295,7 +295,7 @@ async def link_to_topic(
     confidence:    float = 0.75,
     source_message_id: str | None = None,
 ) -> None:
-    """skip, db, init, req"""
+    """skip klo db, init, req"""
     if source_label not in ("Experience", "Emotion", "Thought"):
         raise ValueError(
             f"source_label must be 'Experience', 'Emotion', or 'Thought', got {source_label!r}"
@@ -331,7 +331,6 @@ async def link_to_topic(
     )
 
 
-# `check`
 
 async def link_user_recurring_theme(
     user_id:    str,
@@ -376,7 +375,7 @@ async def link_user_recurring_theme(
     )
 
 
-# memori: memori
+# memori
 
 async def link_session_to_memory(
     session_id:  str,
@@ -384,7 +383,7 @@ async def link_session_to_memory(
     confidence:  float = 1.0,
     source_message_id: str | None = None,
 ) -> None:
-    """backfill, cross, mem"""
+    """back, cross, mem"""
     await get_client().execute_write(
         """
         MATCH (s:Session {id: $session_id})
@@ -408,7 +407,7 @@ async def link_session_to_memory(
 
 # maint bi-temp
 
-# `validate_edge_types`
+# `check type`
 _INVALIDATABLE_EDGES: frozenset[str] = frozenset({
     # skip
     "TRIGGERED_BY",
@@ -452,7 +451,7 @@ async def invalidate_edge(
             f"edge_type {edge_type!r} not in invalidation allow-list"
         )
 
-    # `limit to id`
+    # `limit`
     for arg_name, value in (("src_label", src_label), ("dst_label", dst_label)):
         if not value.isidentifier():
             raise ValueError(f"{arg_name} {value!r} is not a valid Neo4j label")

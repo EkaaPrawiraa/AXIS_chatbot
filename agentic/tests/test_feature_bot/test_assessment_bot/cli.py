@@ -1,4 +1,4 @@
-"""buat buat buat"""
+"""buat"""
 
 from __future__ import annotations
 
@@ -41,7 +41,7 @@ class _DistressSnapshot:
 
 
 class InMemoryAssessmentRepository:
-    """`tambah ke list`"""
+    """buat nyimpen list"""
 
     def __init__(self) -> None:
         self.last: _LastPhq9 | None = None
@@ -101,7 +101,7 @@ class FakeLLM:
 
     async def ainvoke(self, messages: list[Any]) -> _FakeAIMessage:
         self.calls.append(messages)
-        # [sys,hum]
+        # skip
         human = None
         for m in reversed(messages):
             if m.__class__.__name__ == "HumanMessage" or getattr(m, "type", None) == "human":
@@ -128,10 +128,10 @@ def _extract_user_answer_from_prompt(prompt: str) -> str:
 def build_fake_scorer_llm() -> FakeLLM:
     def respond(user_prompt: str) -> str:
         answer = _extract_user_answer_from_prompt(user_prompt).lower()
-        # tambahkan log
+        # log dielo
         if "ambig" in answer:
             return json.dumps({"score": 1, "confidence": 0.3})
-        # heur, multilingual
+        # heur multilingual
         if "hampir setiap" in answer or "nearly every" in answer:
             return json.dumps({"score": 3, "confidence": 0.95})
         if "lebih dari setengah" in answer or "more than half" in answer:
@@ -190,7 +190,7 @@ def build_phq9_metadata(state: ConversationState) -> dict[str, Any] | None:
         payload["progress"] = {"current": item_id, "total": NUM_ITEMS}
         return payload
 
-    # chat mode
+    # chat 2
     payload["active"] = False
     payload["progress"] = {"current": NUM_ITEMS, "total": NUM_ITEMS}
     return payload
@@ -214,7 +214,7 @@ def _print_assistant(state: ConversationState) -> None:
 
 
 async def _step(state: ConversationState, *, repo: Any, scorer_llm: Any, feedback_llm: Any) -> ConversationState:
-    # `skip`
+    # skip
     state = await phq9_check_node(state, repo=repo)
 
     # eng & route
@@ -222,7 +222,7 @@ async def _step(state: ConversationState, *, repo: Any, scorer_llm: Any, feedbac
     if phq9.get("phase") in ("offer_pending", "offered", "in_progress", "awaiting_clar"):
         state = await phq9_delivery_node(state, repo=repo, scorer_llm=scorer_llm, feedback_llm=feedback_llm)
 
-    # buat nyimpan ke db
+    # buat di db
     if state.get("response_draft"):
         state["messages"].append({"role": "assistant", "content": state["response_draft"]})
 
@@ -237,7 +237,7 @@ def _bootstrap_state(*, args: argparse.Namespace) -> ConversationState:
         language_pref=lang_pref,
     )
 
-    # start nggak cepet?
+    # skip init
     if args.bootstrap_phase and args.bootstrap_phase != "idle":
         phq9 = empty_phq9_state()
         phq9["phase"] = args.bootstrap_phase  # type: ignore[assignment]

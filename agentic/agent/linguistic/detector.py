@@ -1,4 +1,4 @@
-"""buat nyimpen config"""
+"""buat nyimpan config"""
 
 from __future__ import annotations
 
@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 
 
 
-# gap" "label" "en_ratio" "mixed
+# buat nyimpen en_ratio
 LANGUAGE_GAP_THRESHOLD: float = 0.15
 
 # skip fallback
@@ -38,7 +38,7 @@ _EN_SIGNAL_WORDS: frozenset[str] = frozenset({
     "study", "studying", "studied", "lab", "presentation", "project",
     "group", "team", "class", "course", "syllabus", "submission",
     "submit", "submitted", "graduate", "internship", "scholarship",
-    # tanyin
+    # tanyinini
     "stress", "stressed", "stressful", "anxious", "anxiety",
     "depression", "depressed", "burnout", "overwhelmed", "exhausted",
     "tired", "panic", "panicking", "worry", "worried",
@@ -64,7 +64,7 @@ _TOKEN_RE = re.compile(r"[A-Za-z0-9]+(?:[-'][A-Za-z0-9]+)*", flags=re.UNICODE)
 
 @dataclass(frozen=True)
 class LinguisticSignals:
-    """detect_linguistic_signals()"""
+    """detect_linguistic"""
 
     language: str                           # "id" | "en" | "mixed"
     language_signal: str                    # human-readable summary
@@ -77,7 +77,7 @@ class LinguisticSignals:
     total_tokens: int
 
     def to_dict(self) -> dict:
-        """st, st, st, st"""
+        """st"""
         return {
             "language": self.language,
             "language_signal": self.language_signal,
@@ -126,13 +126,13 @@ def _classify_language(
     hits: list[CorpusEntry],
     fallback: str,
 ) -> tuple[str, int, int, str]:
-    """ret lang, id, en, signal."""
+    """ret lang, id, en, sig"""
     if not tokens:
         return fallback or "id", 0, 0, "no_tokens"
 
     token_set = set(tokens)
 
-    # hit hits' 'id mix' 'token token
+    # hit hits' 'token token
     id_count = sum(1 for h in hits if h.language in ("id", "mix"))
     id_count += sum(1 for t in token_set if t in _ID_FUNCTION_WORDS)
 
@@ -153,7 +153,7 @@ def _classify_language(
         return "en", id_count, en_count, f"en_dominant({en_ratio:.2f})"
     if en_ratio == id_ratio == 0.00:
         return "en", id_count, en_count, f"en_dominant({en_ratio:.2f})"
-    # lang
+    # langini
     return (
         "mixed",
         id_count,
@@ -168,7 +168,7 @@ def detect_linguistic_signals(
     *,
     language_fallback: str = "id",
 ) -> LinguisticSignals:
-    """run corpus + heuristic"""
+    """run corpus"""
     if not text or not text.strip():
         return EMPTY_SIGNALS
 

@@ -40,14 +40,14 @@ class VoiceTurnRequest(BaseModel):
         return self
 
     def decoded_audio_input(self) -> bytes | str | None:
-        """ret bytes, url, or None."""
+        """ret, url, or None."""
         if self.audio_input_base64:
             return base64.b64decode(self.audio_input_base64)
         return self.audio_input_url
 
 
 class ChatTurnRequest(BaseModel):
-    """backend-authorized"""
+    """auth'ng"""
 
     model_config = ConfigDict(extra="forbid")
 
@@ -88,7 +88,7 @@ class ChatTurnRequest(BaseModel):
 
 
 class VoiceTurnResponse(BaseModel):
-    """ambil grafik"""
+    """ngambil grafik"""
 
     transcript: str | None = None
     transcript_confidence: float | None = None
@@ -98,7 +98,7 @@ class VoiceTurnResponse(BaseModel):
     voice_provider_id: str | None = None
     speech_response: str | None = None
     speech_response_tags: str | None = None
-    # `mode` only.
+    # mode 1 2 3
     tts_model: str | None = None
     tts_provider: str | None = None
     tts_streaming: bool | None = None
@@ -109,7 +109,7 @@ class VoiceTurnResponse(BaseModel):
 
 
 class SynthesizeSpeechRequest(BaseModel):
-    """skip chat msg"""
+    """skip msg"""
 
     text: str
     voice_id: str | None = None
@@ -148,7 +148,7 @@ class TranscribeSpeechResponse(BaseModel):
 
 
 class ChatTurnResponse(BaseModel):
-    """grafik ngambil."""
+    """ngambil grafik"""
 
     user_id: str
     session_id: str

@@ -7,7 +7,7 @@ from typing import Any, List, Literal, Optional, TypedDict
 
 
 OutputModality = Literal["text", "voice", "both"]
-# skip, gemini, tiers, shorter.
+# skip tier, shorter tier.
 TTSModelChoice = Literal[
     "v2_5_turbo",
     "v3",
@@ -32,7 +32,7 @@ class VoiceState(TypedDict, total=False):
     transcript_language: Optional[str]    # detected by STT
     transcript_segments: Optional[list]   # optional STT word/segment detail
 
-    # ekstrak
+    # ekstrak data
     output_modality: OutputModality
     voice_id: Optional[str]               # selected voice id (catalog key)
     voice_provider_id: Optional[str]      # provider-specific id (ElevenLabs)
@@ -104,7 +104,7 @@ class PHQ9SessionState(TypedDict, total=False):
 
 
 class ProfileContext(TypedDict, total=False):
-    """buat nyimpen profile"""
+    """buat nyimpan profile"""
 
     display_name: Optional[str]
     preferred_language: Optional[str]
@@ -138,7 +138,7 @@ class ConversationState(TypedDict, total=False):
     input_guardrail: Optional[dict]  # Layer 2 verdict ({decision, reason, matched})
     crisis_escalated: bool           # True when crisis_escalation_node already wrote final_response
 
-    # memgen
+    # gen
     kg_context: Optional[str]
     url_context: Optional[str]  # Gemini url_context tool output, gemini-provider only
     retrieval_context: Optional[dict]   # structured bucket view (Phase 1/2 ranking)
@@ -154,11 +154,10 @@ class ConversationState(TypedDict, total=False):
     # init state
     voice_state: Optional[VoiceState]
 
-    # assess.
     phq9_state: Optional[PHQ9SessionState]
     phq9_declined_note: Optional[bool]   # True when user just declined PHQ offer this turn
 
-    # confess" "space" "PHQ-9" "gate" "bypassed" "voice" "mode" "crisis" "guardrail" "flag" "active
+    # Confession Space: no-long-term-memory, PHQ-9-gate-bypassed voice mode; crisis guardrail stays fully active regardless
     confession_mode: bool
     graph_trace: Optional[dict]
 

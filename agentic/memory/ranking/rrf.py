@@ -1,4 +1,4 @@
-"""fuse lists"""
+"""fuse 2 3"""
 
 from __future__ import annotations
 
@@ -10,7 +10,7 @@ def rrf_fuse(
     *,
     k: int = RRF_K,
 ) -> dict[str, float]:
-    """accumulate_scores"""
+    """acc_scores"""
     scores: dict[str, float] = {}
     for ranked_list in ranked_lists:
         for rank, candidate_id in enumerate(ranked_list, start=1):

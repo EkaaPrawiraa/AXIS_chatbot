@@ -1,4 +1,4 @@
-// purge
+// purge all data
 package memory
 
 import (

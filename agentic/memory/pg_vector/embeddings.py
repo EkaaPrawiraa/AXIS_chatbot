@@ -1,4 +1,4 @@
-"""wrap"""
+"""skip klo error"""
 
 from __future__ import annotations
 
@@ -41,7 +41,7 @@ _online_disabled: bool = False
 
 
 def _try_get_openai_client():
-    """lazy-load None if unavailable."""
+    """lazy-load None if not avail."""
     global _openai_client, _online_disabled
     if _online_disabled:
         return None
@@ -64,7 +64,7 @@ def _try_get_openai_client():
 
 
 def _try_get_gemini_client():
-    """load None lazy"""
+    """load None"""
     global _gemini_client, _online_disabled
     if _online_disabled:
         return None
@@ -247,7 +247,7 @@ def _embed_offline(text: str) -> list[float]:
 
 
 async def embed_text(text: str) -> list[float]:
-    """[emb] * EMBED_DIM"""
+    """emb dim"""
     if not text or not text.strip():
         return [0.0] * EMBED_DIM
 
@@ -258,5 +258,5 @@ async def embed_text(text: str) -> list[float]:
 
 
 async def embed_many(texts: Iterable[str]) -> list[list[float]]:
-    """wrp batch embeds"""
+    """wrp bacte"""
     return [await embed_text(t) for t in texts]

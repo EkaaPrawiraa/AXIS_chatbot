@@ -1,4 +1,4 @@
-"""retrieve."""
+"""ngambil"""
 
 from __future__ import annotations
 

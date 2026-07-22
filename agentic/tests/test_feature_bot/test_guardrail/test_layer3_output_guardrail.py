@@ -1,4 +1,4 @@
-"""rewrited comment: "skip regex"""
+"""skip regex"""
 
 from __future__ import annotations
 

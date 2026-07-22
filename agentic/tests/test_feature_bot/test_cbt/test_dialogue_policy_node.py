@@ -27,7 +27,7 @@ class TestDecisionWiring:
 
     @pytest.mark.asyncio
     async def test_casual_message_wires_to_none(self, audit) -> None:
-        """none"""
+        """skip klo error"""
         state = _state_with_message("halo, hari ini gimana")
         out = await dialogue_policy_node(state, audit=audit)
         assert out["cbt_node_active"] == "none"
@@ -40,7 +40,7 @@ class TestDecisionWiring:
         assert out["cbt_node_active"] == "reframe"
         assert out["cbt_state"]["last_offered"] == "reframe"
 
-    # rm 2026-05: emotion_pad 2026-05: emotion_detection 2026-05: LLM judge
+    # rm 2026-05
 
     @pytest.mark.asyncio
     async def test_safety_flag_blocks(self, audit) -> None:
@@ -120,7 +120,7 @@ class TestDeclineStreakSuppression:
     async def test_streak_at_threshold_suppresses_new_technique(
         self, audit
     ) -> None:
-        """validate instead"""
+        """validasi aja"""
         state = _state_with_message("aku payah banget jadi orang")
         state["cbt_state"] = {  # type: ignore[typeddict-item]
             "last_offered": "reframe",
@@ -163,7 +163,7 @@ class TestThoughtRecordCrisisReset:
     async def test_thought_record_does_not_silently_resume_after_crisis(
         self, audit
     ) -> None:
-        """skip crisis-flagged"""
+        """skip crisis"""
         state = _state_with_message("apapun")
         state["safety_flag"] = "crisis"  # type: ignore[typeddict-item]
         state["cbt_state"] = {  # type: ignore[typeddict-item]
@@ -203,7 +203,7 @@ class TestThoughtRecordDriven:
         out = await dialogue_policy_node(state, audit=audit)
         first_step = out["cbt_directive"]["payload"]["step"]
 
-        # answer
+        # answ
         out["current_message"] = "aku pasti gagal final besok"
         out2 = await dialogue_policy_node(out, audit=audit)
         second_step = out2["cbt_directive"]["payload"]["step"]

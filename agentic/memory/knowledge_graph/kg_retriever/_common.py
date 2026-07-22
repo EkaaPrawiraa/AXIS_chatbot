@@ -25,6 +25,6 @@ def validate_label(label: str) -> str:
     return label
 
 
-# filter edges, deactivate nodes, MATCH WHERE
+# filter, deactivate, MATCH WHERE
 ALIVE_EDGE_FILTER = "r.t_invalid IS NULL"
 ALIVE_NODE_FILTER = "coalesce(n.active, true) = true"

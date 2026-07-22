@@ -220,7 +220,7 @@ func (c *Client) do(ctx context.Context, method string, path string, in any, out
 	return nil
 }
 
-// ```go response.FromError ```
+// `ngambil error`
 func agenticError(resp *http.Response) error {
 	var body struct {
 		Detail string `json:"detail"`

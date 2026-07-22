@@ -1,4 +1,4 @@
-"""synth_speech"""
+"""sksng_speech"""
 from __future__ import annotations
 
 import pytest
@@ -56,7 +56,7 @@ class TestSynthesizeSpeechGeminiVoiceCharacter:
         assert response.tts_provider == "gemini_tts"
         assert response.audio_output_base64 is not None
         assert response.voice_error is None
-        # gemini:skip
+        # skip
         assert openai_tts.calls == []
         assert gemini_tts.calls
 

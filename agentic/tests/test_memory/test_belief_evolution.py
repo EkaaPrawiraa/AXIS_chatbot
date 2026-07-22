@@ -1,10 +1,4 @@
-"""SUPERSEDES (Thought), REAPPRAISED_AS (Experience), REPLACED_BY (Behavior)
-are written by kg_algorithm/supersession.py and kg_algorithm/lifecycle.py
-but were never read anywhere -- confirmed via grep before this change. This
-verifies _fetch_belief_evolution surfaces all three lifecycle edge types
-(mind the direction asymmetry: SUPERSEDES points new->old, the other two
-point old->new) and that the sensitivity gate excludes trauma-tier pairs
-from this always-on ambient signal."""
+"""supercedes, reappears, replaced"""
 
 import pytest
 

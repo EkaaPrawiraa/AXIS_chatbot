@@ -40,7 +40,7 @@ class TestLegitimateContentStillAllowed:
         assert updates["description"] == "Aku ngerasa capek banget minggu ini karena tugas kuliah numpuk."
 
     def test_crisis_related_content_is_not_blocked_here(self) -> None:
-        """buat nyimpan history Krisis"""
+        """buat nyimpan hist"""
         cfg = _cfg("experience")
         updates = _sanitize_updates(
             cfg, {"description": "Waktu itu aku sempat kepikiran ingin bunuh diri, tapi sekarang sudah lebih baik."},

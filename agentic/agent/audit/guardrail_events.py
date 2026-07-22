@@ -65,7 +65,7 @@ class GuardrailEvent:
         )
 
 
-# log impl
+# log
 
 
 class GuardrailLogger(Protocol):
@@ -86,7 +86,7 @@ class NullGuardrailLogger:
 
 
 class PostgresGuardrailLogger:
-    """writes asyncpg log skips db never waits _pending_tasks keep prevent gc"""
+    """log skip db never wait _pending_tasks keep prevent gc"""
 
     def __init__(self, pg_pool: Any) -> None:
         self._pool = pg_pool
@@ -100,12 +100,12 @@ class PostgresGuardrailLogger:
         task.add_done_callback(self._pending_tasks.discard)
 
     async def _insert(self, event: GuardrailEvent) -> None:
-        """`set session_id`"""
+        """set sid"""
         try:
             await self._insert_row(event.session_id, event)
         except Exception as exc:
             exc_str = str(exc)
-            # `skip error`
+            # skip error
             is_fk_error = (
                 "ForeignKeyViolation" in type(exc).__name__
                 or "foreign key constraint" in exc_str.lower()
@@ -136,7 +136,7 @@ class PostgresGuardrailLogger:
     async def _insert_row(
         self, session_id: str | None, event: GuardrailEvent
     ) -> None:
-        """exec insert"""
+        """exec"""
         async with self._pool.acquire() as conn:
             await conn.execute(
                 """

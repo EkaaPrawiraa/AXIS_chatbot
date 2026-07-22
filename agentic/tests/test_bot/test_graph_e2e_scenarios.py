@@ -1,4 +1,4 @@
-"""ujikore, buat skenarionya"""
+"""skenar, buat."""
 
 from __future__ import annotations
 
@@ -23,7 +23,7 @@ class _FakeAIMessage:
 
 @dataclass
 class ScriptedLLM:
-    """skip balasan awal, lanjut ke selanjutnya."""
+    """skip 1st reply, continue."""
 
     script: list[str] = field(default_factory=list)
     default: str = "Aku di sini menemanimu."
@@ -38,7 +38,7 @@ class ScriptedLLM:
 
 @dataclass
 class FakeAssessmentRepo:
-    """ngambil data, init state"""
+    """ambil data, init state"""
 
     progress: dict[str, Any] | None = None
 
@@ -46,7 +46,7 @@ class FakeAssessmentRepo:
         return None
 
     async def get_conversation_count(self, user_id: str) -> int:
-        # skip WARMUP_CONVERSATIONS
+        # skip W
         return 2
 
     async def get_pending_retry(self, user_id: str) -> Any:
@@ -111,7 +111,7 @@ class FakeSTTProvider:
 
 @dataclass
 class FakeTTSProvider:
-    """ini cocok buat ElevenLabsTTS & OpenAITTS"""
+    """ini cocok 123"""
 
     async def synthesize(self, **kwargs: Any) -> Any:
         from agentic.agent.nodes.text_to_speech import TTSResult
@@ -124,7 +124,7 @@ class FakeTTSProvider:
         )
 
 
-# buat ngambil data
+# ambil data
 
 
 def _build_test_graph(
@@ -169,7 +169,7 @@ def _build_test_graph(
 
 
 async def _run_and_trace(graph: Any, state: dict) -> tuple[list[str], dict]:
-    """jalankan .astream() & rekam node exec"""
+    """buat nyimpen exec & skip astream"""
     visited: list[str] = []
     final_state = dict(state)
     async for event in graph.astream(state, stream_mode="updates"):
@@ -189,7 +189,7 @@ def _base_state(**overrides: Any) -> dict:
     return state
 
 
-# `chat text normal`
+# `chat ngb`
 
 
 @pytest.mark.asyncio
@@ -260,7 +260,7 @@ async def test_s2_off_scope_request_skips_llm_entirely() -> None:
     assert final["final_response"]
 
 
-# skip penolakan
+# skip penjualan
 
 
 @pytest.mark.asyncio
@@ -313,7 +313,7 @@ async def test_s4_explicit_crisis_keyword_routes_to_tier1_escalation() -> None:
 @pytest.mark.asyncio
 async def test_s5_implicit_distress_semantic_layer_routes_to_tier2_empathy() -> None:
     graph, _ = _build_test_graph()
-    # token match" via Jaccard.
+    # match" via Jaccard.
     state = _base_state(
         current_message="gak ada harapan lagi buat aku rasanya",
     )
@@ -327,7 +327,7 @@ async def test_s5_implicit_distress_semantic_layer_routes_to_tier2_empathy() -> 
     assert final["final_response"]
 
 
-# S6 - PHQ-9 ditaw, jawab, lanjut.
+# lanjut, ngambil, buat
 
 
 @pytest.mark.asyncio
@@ -359,7 +359,7 @@ async def test_s6_phq9_offered_and_answered() -> None:
     assert final["final_response"]
 
 
-# skip PHQ-9 duplikat
+# skip duplikat PHQ-9
 
 
 @pytest.mark.asyncio
@@ -391,7 +391,7 @@ async def test_s7_phq9_declined_short_circuits_to_response_generator() -> None:
     assert final["final_response"]
 
 
-# integrate into crisis triage, tier 2
+# integrate tier 2
 
 
 @pytest.mark.asyncio
@@ -427,7 +427,7 @@ async def test_s8_phq9_item9_positive_integrates_with_crisis_triage_tier2() -> N
     assert final["final_response"]
 
 
-# masuk suara + keluar suara
+# masuk suar, keluar suar
 
 
 @pytest.mark.asyncio

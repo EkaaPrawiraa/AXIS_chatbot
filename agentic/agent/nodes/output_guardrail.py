@@ -89,7 +89,7 @@ def _parse_yaml_tail(text: str) -> dict[str, Any]:
             return data
     except yaml.YAMLError:
         pass
-    # diagnostic_patterns
+    # diagnose pat
     marker = "DIAGNOSTIC_PATTERNS:"
     idx = text.find(marker)
     if idx == -1:
@@ -127,7 +127,7 @@ def find_violations(
 
 
 
-# re-use fallback msg
+# ngisikan msg fallback
 try:  # pragma: no cover - import behavior depends on environment
     from langchain_core.messages import (  # type: ignore[import-not-found]
         HumanMessage as _HumanMessage,
@@ -251,7 +251,7 @@ async def output_guardrail_node(
 
     violations = find_violations(draft, rules=rules)
     if not violations:
-        # audit pass rate.
+        # audit, pass, rate
         elapsed_ms = int((time.perf_counter() - started) * 1000)
         state["final_response"] = draft
         await audit.log(

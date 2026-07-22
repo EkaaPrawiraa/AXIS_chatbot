@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 
 async def write_emotion(inp: EmotionInput) -> str:
-    """write node link, id, bi-temporal, user, props"""
+    """write node, id, bi-temp, user, props"""
     _require(inp.label,       "label")
     _require(inp.source_text, "source_text")
     _require(inp.user_id,     "user_id")

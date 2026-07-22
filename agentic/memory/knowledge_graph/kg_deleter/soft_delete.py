@@ -16,7 +16,7 @@ async def invalidate_message(
     *,
     reason: str = "user_deleted_message",
 ) -> dict[str, Any]:
-    """`delete KG fact`  `report dict`"""
+    """`delete` `report`"""
     if not message_id:
         raise ValueError("message_id is required")
 
@@ -48,7 +48,7 @@ async def invalidate_message(
     )
     edges_touched: int = phase1[0]["edges_touched"] if phase1 else 0
 
-    # deactivate, scope, phase 1, return primary.
+    # deactivate, scope, phase 1, return p.
     deactivated_rows: list[dict[str, Any]] = []
     if touched_node_ids:
         deactivated_rows = await client.execute_write(

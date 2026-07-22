@@ -1,4 +1,4 @@
-"""kgw hlp"""
+"""help"""
 
 from __future__ import annotations
 
@@ -28,7 +28,7 @@ def _new_id() -> str:
 
 
 def _require(value: Any, field_name: str) -> Any:
-    """`check null`"""
+    """`check`"""
     if value is None or (isinstance(value, str) and not value.strip()):
         raise ValueError(f"Required field '{field_name}' is None or empty")
     return value

@@ -1,4 +1,4 @@
-"""mem decay"""
+"""memd"""
 
 from __future__ import annotations
 

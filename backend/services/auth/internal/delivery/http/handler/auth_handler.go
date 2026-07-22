@@ -125,7 +125,7 @@ type refreshRequest struct {
 	RefreshToken string `json:"refreshToken"`
 }
 
-// refresh.
+// refreshdb
 func (h *AuthHandler) Refresh(w http.ResponseWriter, r *http.Request) {
 	refreshToken := ""
 	if c, err := r.Cookie(refreshCookieName); err == nil {
@@ -146,7 +146,7 @@ func (h *AuthHandler) Refresh(w http.ResponseWriter, r *http.Request) {
 	response.OK(w, out)
 }
 
-// logout, delete token, clean cookies.
+// logout, delete, clean.
 func (h *AuthHandler) Logout(w http.ResponseWriter, r *http.Request) {
 	input := usecase.LogoutInput{UserID: requestUserID(r, "")}
 	if c, err := r.Cookie(refreshCookieName); err == nil {

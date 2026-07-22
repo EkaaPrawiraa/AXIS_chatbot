@@ -61,7 +61,7 @@ def _build_phq9_metadata(state: ConversationState) -> dict[str, Any] | None:
         payload["progress"] = {"current": item_id, "total": NUM_ITEMS}
         return payload
 
-    # chat ngga chip
+    # skip ngga chip
     payload["active"] = False
     payload["progress"] = {"current": NUM_ITEMS, "total": NUM_ITEMS}
     return payload
@@ -109,7 +109,7 @@ def _append_messages(state: ConversationState) -> bool:
 
 
 async def _persist_thought_record(state: ConversationState) -> None:
-    """# ops w/o cbt # ops w/o user_id # ops w/o session_id # ops w/ write failure"""
+    """ops w/o cbt ops w/o user_id ops w/o session_id ops w/ write fail"""
     cbt_state = state.get("cbt_state") or {}
     thought_record = cbt_state.get("thought_record")
     if not thought_record:
@@ -145,13 +145,13 @@ async def session_end_node(
     activity_repo: SessionActivityRepository | None = None,
     audit: GuardrailLogger | None = None,
 ) -> ConversationState:
-    """update, persist, record."""
+    """buat nyimpen."""
     audit = audit or NullGuardrailLogger()
 
     ai_replied = _append_messages(state)
     state["session_turn"] = int(state.get("session_turn") or 0) + 1
 
-    # buat nyimpen CBT record
+    # buat CBT record ngambil
     await _persist_thought_record(state)
 
     # skip error

@@ -179,7 +179,7 @@ def fake_openai_tts() -> FakeOpenAITTS:
 
 @pytest.fixture
 def fake_gemini_tts() -> FakeGeminiTTS:
-    """fake_openai_tts"""
+    """fake_tts"""
     return FakeGeminiTTS(error="gemini not configured for this test")
 
 
@@ -208,7 +208,7 @@ class FakeAdapterLLM:
             raise RuntimeError("simulated adapter failure")
         if self.reply is not None:
             return _FakeAIMessage(self.reply)
-        # aku
+        # init state
         user_text = ""
         for m in messages:
             cls = m.__class__.__name__

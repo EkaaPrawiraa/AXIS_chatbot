@@ -1,10 +1,4 @@
-"""Task 2b: ThoughtRecord (kg_writer/thought_record_writer.py) and
-Assessment/PHQ-9 history are real signal for understanding_synthesis's
-reasoning, but must never reach response_generator -- v2 or v3 -- because
-that is the layer whose output the user actually sees. The isolation is
-architectural (this data never gets written into state["kg_context"] at
-all), not just a prompt instruction, so the most important tests here are
-negative: kg_context must never carry this content."""
+"""`neg tests`"""
 
 from __future__ import annotations
 
@@ -61,11 +55,7 @@ async def test_thought_record_never_appears_in_shared_kg_context(
     test_namespace,
     monkeypatch,
 ):
-    """The core architectural guarantee: even though a ThoughtRecord node
-    exists for this user, build_context() (which feeds BOTH response_
-    generator and, via kg_context, understanding_synthesis) must never
-    surface it -- that data only reaches understanding_synthesis through
-    the separate, private build_synthesis_only_context channel."""
+    """skip klo error"""
     from agentic.memory.context_builder import build_context
 
     user_id = test_namespace["user_id"]
@@ -158,8 +148,7 @@ def test_synthesis_only_context_empty_when_no_history(monkeypatch) -> None:
 
 
 def test_synthesize_understanding_includes_private_context_in_prompt(monkeypatch) -> None:
-    """The private context must actually reach the LLM call, not just
-    exist as a formatted string nobody uses."""
+    """private context" must reach LLM, not just exist."""
     from agentic.agent.nodes import understanding_synthesis as mod
 
     async def _fake_synthesis_context(user_id):

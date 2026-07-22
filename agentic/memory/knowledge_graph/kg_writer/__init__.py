@@ -61,7 +61,7 @@ from agentic.memory.knowledge_graph.kg_algorithm.lifecycle import (
     replace_behavior,
 )
 
-# del_mod
+# del
 from agentic.memory.knowledge_graph.kg_deleter.soft_delete  import invalidate_message
 from agentic.memory.knowledge_graph.kg_deleter.hard_delete  import purge_message, purge_user
 from agentic.memory.knowledge_graph.kg_modifier.update_node import update_node_property
@@ -107,7 +107,7 @@ __all__ = [
     "link_user_recurring_theme",
     # maint bi-temp
     "invalidate_edge",
-    # exported
+    # export
     "supersede_thought",
     "run_memory_decay",
     "deactivate_trigger",

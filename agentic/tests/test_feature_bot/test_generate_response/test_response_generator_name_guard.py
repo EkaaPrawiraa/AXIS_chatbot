@@ -1,6 +1,6 @@
-"""regression: LLM self-counting name usage across the system prompt proved
-unreliable on real scripted-persona runs (2026-07-12), so the guard is
-computed deterministically from conversation history instead."""
+"""regression: LLM self-counting name usage in the system prompt proved unreliable on real
+scripted-persona runs (2026-07-12), so the guard is computed deterministically from
+conversation history instead."""
 
 from __future__ import annotations
 
@@ -76,10 +76,7 @@ def test_case_insensitive_match() -> None:
 
 
 def test_seed_display_name_with_evaluasi_is_rejected() -> None:
-    # Real bug found via a real 2-session/20-turn run (2026-07-13): the
-    # evaluation harness's seed display name "Budi Evaluasi" passed the old
-    # filter and leaked into 3-5 of 20 real turns, because the banned-parts
-    # list had no "eval"/"evaluasi" entry.
+    # Real bug via a real 2-session/20-turn run (2026-07-13): seed display name "Budi Evaluasi" leaked into 3-5/20 turns because the banned-parts list had no "eval"/"evaluasi" entry
     assert not _looks_like_human_display_name("Budi Evaluasi")
     state = _state(
         display_name="Budi Evaluasi",
@@ -107,10 +104,7 @@ def test_no_question_guard_below_streak_threshold() -> None:
 
 
 def test_question_guard_fires_on_three_in_a_row() -> None:
-    # Real finding via a real 2-session/20-turn run (2026-07-13): a
-    # prompt-only cap on question-endings did not change behavior (19/20,
-    # then 18/20 turns still ended in '?'), so this is computed in code
-    # instead, mirroring _recent_name_usage_note's approach.
+    # Real finding (2026-07-13): a prompt-only cap on question endings did not hold (19/20, then 18/20 still ended in '?'), so this is computed in code instead
     state = _q_state(["oke?", "gimana?", "terus?"])
     note = _question_ending_note(state)
     assert "last 3" in note
@@ -123,11 +117,7 @@ def test_question_guard_does_not_fire_when_streak_broken() -> None:
 
 
 def test_question_guard_exempts_reframe() -> None:
-    # Real bug found via a real 20-turn run (2026-07-13): the router picked
-    # reframe on the exact turn the streak guard also fired, and the model
-    # dropped reframe.yaml's mandatory Socratic question to comply with the
-    # guard -- silently defeating the technique that turn. The guard must
-    # not fire when the technique's own question is the technique.
+    # Real bug (2026-07-13): router picked reframe on the same turn the streak guard fired, and the model dropped reframe.yaml's mandatory Socratic question to comply -- guard must not fire when the technique's own question IS the technique
     state = _q_state(["oke?", "gimana?", "terus?"])
     state["cbt_node_active"] = "reframe"
     assert _question_ending_note(state) == ""
@@ -140,9 +130,7 @@ def test_question_guard_exempts_thought_record() -> None:
 
 
 def test_question_guard_still_fires_for_validate() -> None:
-    # validate is the common case (4 of 5 guard-triggered turns in the same
-    # 20-turn run) and its question is a style default, not the technique's
-    # core mechanism, so the guard should still apply normally.
+    # validate is the common case (4/5 guard-triggered turns in the same run) and its question is a style default, not the technique's core mechanism, so the guard should still apply
     state = _q_state(["oke?", "gimana?", "terus?"])
     state["cbt_node_active"] = "validate"
     note = _question_ending_note(state)
@@ -155,9 +143,7 @@ def test_no_opener_guard_below_streak_threshold() -> None:
 
 
 def test_opener_guard_fires_on_three_in_a_row() -> None:
-    # Real finding via a real 20-turn run (2026-07-13): 12 of 19 AXIS turns
-    # opened with "Jadi..."/"Oh, jadi..." to paraphrase the user back,
-    # which read as templated despite the technique itself being valid.
+    # Real finding (2026-07-13): 12/19 AXIS turns opened with "Jadi.../Oh, jadi..." to paraphrase the user back, reading as templated
     state = _q_state(
         [
             "Jadi revisian dosen itu ya yang bikin susah tidur.",
@@ -182,8 +168,7 @@ def test_opener_guard_does_not_fire_when_openers_vary() -> None:
 
 
 def test_opener_guard_is_word_agnostic() -> None:
-    # Deliberately not "jadi"/"oh" specific -- any repeated opener word
-    # across the streak should trip the guard, not just the one found.
+    # Deliberately not "jadi"/"oh"-specific -- any repeated opener word across the streak should trip the guard
     state = _q_state(
         [
             "Duh, kedengarannya berat banget ya.",
@@ -220,8 +205,7 @@ def test_no_memory_guard_when_insufficient_data() -> None:
 
 
 def test_no_memory_guard_when_focus_too_thin() -> None:
-    # Only one distinctive keyword ("capek") -- below the 2-keyword floor,
-    # not specific enough to reliably signal an actual repeat.
+    # Only one distinctive keyword ("capek") -- below the 2-keyword floor, not specific enough to signal a real repeat
     state = _mem_state(
         understanding={"grounding_experience": "capek", "active_pattern": None},
         assistant_turns=["Kayaknya capek banget ya belakangan ini."],
@@ -241,9 +225,7 @@ def test_no_memory_guard_when_no_overlap_with_recent_turns() -> None:
 
 
 def test_memory_guard_fires_on_grounding_experience_overlap() -> None:
-    # Real risk once v3 dropped its 1-callback cap: the same
-    # grounding_experience keeps getting surfaced turn after turn because
-    # the underlying retrieved memory does not change between turns.
+    # Real risk once v3 dropped its 1-callback cap: the same grounding_experience keeps resurfacing because the underlying retrieved memory doesn't change turn to turn
     state = _mem_state(
         understanding={
             "grounding_experience": "dimarahi dosen pembimbing skripsi Pak Agung waktu bimbingan",
@@ -269,8 +251,7 @@ def test_memory_guard_fires_on_active_pattern_overlap() -> None:
 
 
 def test_memory_guard_respects_lookback_window() -> None:
-    # Overlap only in the 3rd-most-recent assistant turn; lookback is 2, so
-    # this should not fire -- an old callback naturally ages out.
+    # Overlap only in the 3rd-most-recent assistant turn; lookback is 2, so this should not fire -- an old callback naturally ages out
     state = _mem_state(
         understanding={
             "grounding_experience": "dimarahi dosen pembimbing skripsi Pak Agung waktu bimbingan",

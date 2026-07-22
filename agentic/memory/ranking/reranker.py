@@ -1,4 +1,4 @@
-"""skip klo error"""
+"""skip error"""
 
 from __future__ import annotations
 
@@ -6,7 +6,7 @@ from typing import Any
 
 from agentic.memory.ranking.candidate import Candidate, candidate_recency_score
 
-# init w
+# skip klo error
 _W_RRF   = 0.50
 _W_IMP   = 0.15
 _W_RICH  = 0.15
@@ -27,7 +27,7 @@ def graph_rerank(
     w_rec:  float = _W_REC,
     w_safe: float = _W_SAFE,
 ) -> list[Candidate]:
-    """aply_wgt_gph_rerank mut_score srt_by_fin_score"""
+    """srt_by_fin_score"""
     max_rrf = max(rrf_scores.values(), default=1.0)
     if max_rrf == 0.0:
         max_rrf = 1.0
@@ -65,7 +65,7 @@ def mmr_select(
     top_n: int = 8,
     lambda_: float = MMR_LAMBDA,
 ) -> list[Candidate]:
-    """select top_n"""
+    """ngambil top_n"""
     selected: list[Candidate] = []
     remaining = list(ranked_candidates)
 

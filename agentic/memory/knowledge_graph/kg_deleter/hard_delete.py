@@ -11,16 +11,16 @@ from agentic.memory.knowledge_graph.kg_deleter._common import DERIVED_LABELS
 logger = logging.getLogger(__name__)
 
 
-# delete
+# delete it
 
 async def purge_message(message_id: str) -> dict[str, Any]:
-    """hard_delete_every()"""
+    """hard_del()"""
     if not message_id:
         raise ValueError("message_id is required")
 
     client = get_client()
 
-    # buat list
+    # buat list ngosел
     candidates = await client.execute_read(
         """
         MATCH (src)-[r]->(dst)
@@ -32,7 +32,7 @@ async def purge_message(message_id: str) -> dict[str, Any]:
     )
     candidate_ids = [row["id"] for row in candidates]
 
-    # for e in edges:     e['source_messages'] = [m for m in e['source_messages'] if m != msg_id]
+    # `del e['source_messages']`
     edge_report = await client.execute_write(
         """
         MATCH (src)-[r]->(dst)
@@ -87,10 +87,10 @@ async def purge_message(message_id: str) -> dict[str, Any]:
     return report
 
 
-# delete_session
+# del sess
 
 async def purge_session(session_id: str) -> dict[str, Any]:
-    """hard delete, preserve node."""
+    """hard_del, preserve_node."""
     if not session_id:
         raise ValueError("session_id is required")
 
@@ -169,7 +169,7 @@ async def purge_session(session_id: str) -> dict[str, Any]:
 
 
 async def purge_user_memory(user_id: str) -> dict[str, int]:
-    """hard-delete mem graph, preserve User node."""
+    """hard-delete, preserve, User."""
     if not user_id:
         raise ValueError("user_id is required")
 
@@ -246,7 +246,7 @@ async def purge_user_memory(user_id: str) -> dict[str, int]:
 
 
 async def purge_user(user_id: str) -> dict[str, int]:
-    """hard-del"""
+    """del-hard"""
     if not user_id:
         raise ValueError("user_id is required")
 

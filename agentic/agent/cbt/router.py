@@ -64,7 +64,7 @@ PSYCHOED_CUES: tuple[re.Pattern[str], ...] = (
     re.compile(r"apa (sih |itu )?(yang dimaksud|maksudnya)\b", re.IGNORECASE),
     re.compile(r"\b(jelasin|definisi|apa beda)\b", re.IGNORECASE),
     re.compile(r"\bwhat (does|is|are) (this|that|cbt|ema|distortion)\b", re.IGNORECASE),
-    # cek
+    # cek semua
     re.compile(r"\b(gak|ga|tidak)\s+paham\s+(kenapa|mengapa)\b", re.IGNORECASE),
     # skip error
     re.compile(r"\bkenapa\b.{0,20}\b(aku|gue|gw|saya)\b.{0,20}\btiba-tiba\b", re.IGNORECASE | re.DOTALL),
@@ -84,7 +84,7 @@ REFRAME_REQUEST_CUES_EN: tuple[str, ...] = (
 )
 
 
-# block_ctb
+# block
 SAFETY_TECHNIQUE_BLOCKLIST: frozenset[str] = frozenset(
     {"crisis", "escalate"}
 )
@@ -151,7 +151,7 @@ def _is_topic_shift(lower_msg: str) -> bool:
 
 
 def _is_continuation_message(msg: str, lower_msg: str) -> bool:
-    # skip init state req payload db conn init state skip klo error db conn skip klo error init state skip klo error skip klo error skip klo error skip klo error skip klo error skip klo error skip
+    # skip init state req payload db conn init state skip klo error skip klo error skip klo error skip klo error skip klo error skip klo error skip klo error skip
     if not msg:
         return False
     stripped = msg.strip()
@@ -170,7 +170,7 @@ def _extract_active_distortion_names_from_kg_context(kg_context: str) -> list[st
     start = lowered.find(header)
     if start == -1:
         return []
-    # next section
+    # section selanjutnya
     after = kg_context[start + len(header) :]
     end_idx = after.find("\n[")
     section = after if end_idx == -1 else after[:end_idx]
@@ -232,7 +232,7 @@ def extract_signals(state: dict[str, Any]) -> CBTSignals:
     distortion = detect_distortion_in_text(msg)
     distortion_from_context = False
 
-    # `skip`
+    # skip
     linguistic_signals = state.get("linguistic_signals") or {}
     has_distress_term = bool(linguistic_signals.get("distress_terms"))
     has_emotional_content = (
@@ -273,7 +273,7 @@ def extract_signals(state: dict[str, Any]) -> CBTSignals:
 
 
 def _rule_grounding_followup_check(state: dict[str, Any]) -> CBTDecision | None:
-    """the turn right after grounding, revisit a distortion left unaddressed"""
+    """turn right, revisit, unaddressed"""
     cbt_state = state.get("cbt_state") or {}
     last_directive = cbt_state.get("last_directive") or {}
     if last_directive.get("technique") != CBTTechnique.GROUNDING.value:
@@ -286,7 +286,7 @@ def _rule_grounding_followup_check(state: dict[str, Any]) -> CBTDecision | None:
 
     s = extract_signals(state)
     if not s.has_emotional_content:
-        # user moved on (topic shift, closing remark); do not force a reframe
+        # skip
         return None
 
     return CBTDecision(
@@ -297,15 +297,12 @@ def _rule_grounding_followup_check(state: dict[str, Any]) -> CBTDecision | None:
     )
 
 
-# turns of pure validate/none before treating an unresolved distortion as stalled
+# skip distortion
 STALLED_VALIDATION_TURNS_THRESHOLD: int = 3
 
 
 def _rule_stalled_validation_followup_check(state: dict[str, Any]) -> CBTDecision | None:
-    """after several turns of pure validate/none, revisit a distortion left unaddressed
-    (same escalation shape as _rule_grounding_followup_check, but for a validation
-    loop instead of a grounding turn -- passive listening alone should not run forever
-    once a distortion is already on record and the user is still emotionally engaged)"""
+    """`skip`"""
     cbt_state = state.get("cbt_state") or {}
     if int(cbt_state.get("turns_since_technique", 0)) < STALLED_VALIDATION_TURNS_THRESHOLD:
         return None
@@ -325,7 +322,7 @@ def _rule_stalled_validation_followup_check(state: dict[str, Any]) -> CBTDecisio
     msg = (state.get("current_message") or "").strip()
     lower = msg.lower()
     if _is_topic_shift(lower):
-        # user explicitly moved on; do not force a reframe onto a new topic
+        # skip reframe
         return None
 
     s = extract_signals(state)
@@ -341,12 +338,12 @@ def _rule_stalled_validation_followup_check(state: dict[str, Any]) -> CBTDecisio
 
 
 def _rule_safety_check(state: dict[str, Any]) -> CBTDecision | None:
-    """returns CBTDecision"""
+    """ret CBTDecisions"""
     safety_flag = state.get("safety_flag")
     if safety_flag in SAFETY_TECHNIQUE_BLOCKLIST:
         cbt_state = state.get("cbt_state")
         if isinstance(cbt_state, dict) and cbt_state.get("thought_record_active"):
-            # skip crisis, init after, reinit on end.
+            # skip crisis, init, reinit on end.
             cbt_state["thought_record_active"] = False
             cbt_state["thought_record"] = None
         return CBTDecision(
@@ -377,7 +374,7 @@ def _rule_safety_check(state: dict[str, Any]) -> CBTDecision | None:
 
 
 def route(state: dict[str, Any]) -> CBTDecision:
-    """pilih teknik, sync."""
+    """pilih, sync."""
     blocked = _rule_safety_check(state)
     if blocked is not None:
         return blocked
@@ -442,7 +439,7 @@ def route(state: dict[str, Any]) -> CBTDecision:
         )
 
     if s.self_criticism:
-        # skip klo error
+        # skip error
         if last_offered == CBTTechnique.SELF_COMPASSION.value:
             return _maybe_offer(
                 CBTTechnique.THOUGHT_RECORD,
@@ -505,13 +502,13 @@ def _maybe_offer(
 # skip fallback
 
 
-# treat as advisory, defer to sync rule.
+# advisory, defer.
 JUDGE_CONFIDENCE_THRESHOLD: float = 0.6
 
-# get stricter bar
+# set stricter bar
 GROUNDING_CONFIDENCE_THRESHOLD: float = 0.7
 
-# skip if < 3 turns
+# skip if < 3
 CBT_MIN_TURN_BEFORE_OFFER: int = 3
 
 
@@ -571,7 +568,7 @@ async def route_with_llm(
     judge_llm: Any | None,
     confidence_threshold: float = JUDGE_CONFIDENCE_THRESHOLD,
 ) -> CBTDecision:
-    """safety first, then judge, then sync."""
+    """safety, then judge, then sync."""
     blocked = _rule_safety_check(state)
     if blocked is not None:
         return blocked

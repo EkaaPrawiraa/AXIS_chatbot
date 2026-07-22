@@ -1,4 +1,4 @@
-"""skip eval script"""
+"""skip eval"""
 
 from __future__ import annotations
 
@@ -13,7 +13,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 from dotenv import load_dotenv
 load_dotenv(os.path.join(os.path.dirname(__file__), "..", ".env"))
 
-# init clients
+# init clnts
 from agentic.memory.neo4j_client import init_client, get_client
 from agentic.memory.pg_vector.client import get_pool
 from agentic.memory.pg_vector import embed_text
@@ -166,7 +166,7 @@ def render_md(all_results: dict) -> str:
         "",
     ]
 
-    # buat summary
+    # summarize
     lines.append("| User | Query | Focused Count | Avg Richness | Avg Final Score | Chain Dims |")
     lines.append("|------|-------|:---:|:---:|:---:|---|")
     for user_key, user_data in all_results.items():

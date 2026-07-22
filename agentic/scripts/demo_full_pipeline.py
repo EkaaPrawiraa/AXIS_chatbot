@@ -46,7 +46,7 @@ def _json_default(v: Any) -> str:
 
 
 async def fetch_kg_signals_raw(user_id: str) -> dict[str, Any]:
-    """ngambil data"""
+    """ambil data"""
     from agentic.memory.neo4j_client import get_client
 
     result: dict[str, Any] = {}
@@ -81,7 +81,7 @@ async def fetch_kg_signals_raw(user_id: str) -> dict[str, Any]:
     except Exception as e:
         result["salient_memories"] = f"ERROR: {e}"
 
-    # buat nyimpen config
+    # buat nyimpan config
     try:
         records = await get_client().execute_read(
             """
@@ -104,7 +104,7 @@ async def fetch_kg_signals_raw(user_id: str) -> dict[str, Any]:
     except Exception as e:
         result["important_subjects"] = f"ERROR: {e}"
 
-    # emotions 6: last 7 days
+    # emotions 6 lama 7 hari
     try:
         records = await get_client().execute_read(
             """
@@ -228,7 +228,7 @@ async def fetch_pgvector_data(user_id: str) -> dict[str, Any]:
                     f"SELECT count(*)::int FROM {table} WHERE user_id = $1::uuid AND active = TRUE",
                     user_id,
                 )
-                # get content
+                # get it
                 samples = await conn.fetch(
                     f"SELECT content, neo4j_node_id FROM {table} WHERE user_id = $1::uuid AND active = TRUE LIMIT 3",
                     user_id,
@@ -271,7 +271,7 @@ async def main() -> None:
     await init_client()
 
     try:
-        # `ambil kg`
+        # ambil, kg, gak, error, skip, ngambil, config, init, state, db, conn, req, payload, skip, error, ngambil, gak, skip, ngambil, skip, ngambil, skip, ngambil, skip, ngambil, skip,
         print(f"\n{'='*80}")
         print(f"  PHASE 1: RAW KG SIGNALS FROM NEO4J (user={USER_ID[:12]}…)")
         print(f"{'='*80}\n")
@@ -279,7 +279,7 @@ async def main() -> None:
         kg_raw = await fetch_kg_signals_raw(USER_ID)
         print(json.dumps(kg_raw, ensure_ascii=False, indent=2, default=_json_default))
 
-        # `ngubah ke array`
+        # `ubah ke array`
         print(f"\n{'='*80}")
         print(f"  PHASE 2: PGVECTOR EMBEDDING TABLES")
         print(f"{'='*80}\n")
@@ -303,7 +303,7 @@ async def main() -> None:
                 context_blocks[query] = block
                 print(f"\n{block}\n")
 
-                # ngitung
+                # itungini
                 stats = {
                     "recency_summaries": len(ctx.recency_summaries),
                     "semantic_memories": len(ctx.semantic_memories),

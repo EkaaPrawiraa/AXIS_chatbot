@@ -101,7 +101,7 @@ class TestTTSProviderOrdering:
 
 
 class TestSelectTTSStyle:
-    """select_tts_style"""
+    """select"""
 
     def test_crisis_safety_flag_is_empathetic(self) -> None:
         state = empty_conversation_state(user_id="u", session_id="s")
@@ -188,7 +188,7 @@ class TestGeminiTierResolution:
 
 
 class TestResolveGeminiVoiceEntry:
-    """check_voice_id"""
+    """check"""
 
     def test_raw_voice_id_from_picker_is_used_as_is(self) -> None:
         catalog = load_voice_catalog(force_reload=True)
@@ -214,7 +214,7 @@ class TestResolveGeminiVoiceEntry:
         assert resolved.id == "Puck"  # gemini-3.1-flash-tts's default (female) voice
 
     def test_foreign_provider_voice_id_falls_back_to_tier_default(self) -> None:
-        """falls in fallback"""
+        """fallback"""
         catalog = load_voice_catalog(force_reload=True)
         voice_entry = catalog.get("alloy", language="id")
         assert voice_entry.persona == "user-selected"
@@ -224,7 +224,7 @@ class TestResolveGeminiVoiceEntry:
 
 
 class TestGeminiTierGetsDirectorNotesAndTags:
-    """check runs hands to client"""
+    """check hands to client"""
 
     @pytest.mark.asyncio
     async def test_director_notes_reflect_the_resolved_character(

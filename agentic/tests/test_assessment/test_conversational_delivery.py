@@ -61,7 +61,7 @@ class TestPromptBuilders:
         assert "4" in ack
 
 
-# free-scor
+# free-scoring
 
 
 class TestScoreTextResponse:

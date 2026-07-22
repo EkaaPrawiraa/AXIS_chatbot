@@ -1,4 +1,4 @@
-"""retry once on gmx's empty resp"""
+"""retry 1 gmx"""
 
 from __future__ import annotations
 

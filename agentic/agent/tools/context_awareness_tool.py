@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 
 
 def _local_now() -> datetime:
-    # skip tzlocal. Use pytz or datetime directly.
+    # skip tzlocal. Use pytz or datetime. directly.
     return datetime.now().astimezone()
 
 
@@ -62,7 +62,7 @@ _openai_disabled: bool = False
 
 
 def _try_get_openai_client():
-    """lazy-load None if unavailable."""
+    """lazy-load None if not avail."""
     global _openai_client, _openai_disabled
     if _openai_disabled:
         return None
@@ -102,7 +102,7 @@ def _as_dict(obj: Any) -> dict[str, Any] | None:
 
 
 def _normalize_openai_web_results(payload: Any) -> list[dict[str, Any]]:
-    """best-effort norm OpenAI"""
+    """best-effort"""
     results: list[dict[str, Any]] = []
     if payload is None:
         return results
@@ -134,7 +134,7 @@ def _normalize_openai_web_results(payload: Any) -> list[dict[str, Any]]:
 
 
 def _extract_json_from_text(text: str) -> dict[str, Any] | None:
-    """extract json"""
+    """extract-json"""
     if not text:
         return None
 
@@ -179,7 +179,7 @@ def _extract_markdown_links(text: str, max_results: int) -> list[dict[str, Any]]
             continue
         seen.add(url)
 
-        # ngambil link
+        # get link
         start = text.rfind("\n", 0, match.start())
         end = text.find("\n", match.end())
         line = text[(start + 1 if start != -1 else 0) : (end if end != -1 else len(text))].strip()
@@ -202,7 +202,7 @@ _gemini_disabled: bool = False
 
 
 def _try_get_gemini_client():
-    """load client"""
+    """load_clt"""
     global _gemini_client, _gemini_disabled
     if _gemini_disabled:
         return None
@@ -281,7 +281,7 @@ def _gemini_web_search(query: str, max_results: int) -> dict[str, Any]:
 
 
 def _openai_web_search(query: str, max_results: int) -> dict[str, Any]:
-    """web-search"""
+    """search web"""
     client = _try_get_openai_client()
     if client is None:
         return {
@@ -340,13 +340,13 @@ def _openai_web_search(query: str, max_results: int) -> dict[str, Any]:
 
 @tool("web_search")
 def web_search(query: str, max_results: int = 5) -> dict[str, Any]:
-    """search web, return normalized results"""
+    """search web, return results"""
     if not query or not query.strip():
         return {"query": query, "results": [], "error": "empty query"}
 
     max_results = max(1, min(int(max_results), 10))
 
-    # skip klo quota
+    # skip quota
     from agentic.config.llm_models import llm_provider
 
     if llm_provider() == "openai":
@@ -400,7 +400,7 @@ def _parse_time_token(token: str) -> tuple[int, int] | None:
             return hour, minute
         return None
 
-    # `jam`
+    # `skip`
     m = re.fullmatch(r"(?P<h>\d{1,2})(?::(?P<m>\d{2}))?\s*(?P<ap>am|pm)", t)
     if not m:
         return None
@@ -476,7 +476,7 @@ def resolve_relative_time(text: str, timezone: str | None = None) -> dict[str, A
         candidate_date = (m_time.group("date") or "").strip()
         candidate_time = (m_time.group("time") or "").strip()
         parsed = _parse_time_token(candidate_time)
-        # tokenize clean
+        # tokenize clean tokenize clean
         if parsed is not None and candidate_date:
             normalized = candidate_date
             time_token = candidate_time
@@ -590,7 +590,7 @@ class _SafeMath(ast.NodeVisitor):
 
 @tool("calculate_math")
 def calculate_math(expression: str) -> dict[str, Any]:
-    """safe_eval"""
+    """safe_eval()"""
     if not expression or not expression.strip():
         return {"expression": expression, "error": "empty expression"}
 

@@ -1,4 +1,4 @@
-"""buat register"""
+"""buat registerini"""
 
 from __future__ import annotations
 
@@ -15,14 +15,14 @@ logger = logging.getLogger(__name__)
 async def validation_error_handler(
     request: Request, exc: RequestValidationError
 ) -> JSONResponse:
-    """validasi body, error"""
+    """validasi, error"""
     logger.warning(
         "validation error req_id=%s path=%s errors=%s",
         getattr(request.state, "request_id", "-"),
         request.url.path,
         exc.errors(),
     )
-    # log errors "go backend
+    # log "go backend
     return JSONResponse(
         status_code=422,
         content={"detail": exc.errors()},
@@ -32,7 +32,7 @@ async def validation_error_handler(
 async def value_error_handler(
     request: Request, exc: ValueError
 ) -> JSONResponse:
-    """parse data"""
+    """parse"""
     logger.warning(
         "bad request req_id=%s path=%s: %s",
         getattr(request.state, "request_id", "-"),

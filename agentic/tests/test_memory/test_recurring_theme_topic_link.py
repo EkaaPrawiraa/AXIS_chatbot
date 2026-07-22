@@ -1,9 +1,4 @@
-"""RELATED_TO_TOPIC (Experience/Thought -> Topic) is written by the
-finalizer (kg_extractor extracts a topic per fact, kg_writer links it) but
-was never read -- only the separate HAS_RECURRING_THEME (User -> Topic) edge
-was, so a recurring theme surfaced as a bare label with no link back to the
-concrete experience that produced it. This verifies _fetch_themes now
-cross-references back to source experiences."""
+"""fetch_themes cross-references back to src expts."""
 
 import pytest
 

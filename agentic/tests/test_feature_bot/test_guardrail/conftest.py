@@ -17,7 +17,7 @@ from agentic.agent.audit.guardrail_events import (
 
 
 class RecordingAuditLogger(NullGuardrailLogger):
-    """buat nyimpen events"""
+    """buat nyimpan"""
 
     def __init__(self) -> None:
         super().__init__()
@@ -37,7 +37,7 @@ class _FakeAIMessage:
 
 @dataclass
 class FakeRewriteLLM:
-    """`set fallback`"""
+    """`skip fallback`"""
 
     replies: list[str] = field(default_factory=list)
     default: str = "Aku dengar kamu. Mari kita lanjut bicara pelan-pelan."
@@ -76,7 +76,7 @@ def clean_rewrite_llm() -> FakeRewriteLLM:
 
 @pytest.fixture
 def stubborn_rewrite_llm() -> FakeRewriteLLM:
-    """loop exhaust"""
+    """loop eksis"""
     return FakeRewriteLLM(
         replies=[
             "Kamu mengalami depresi sedang.",

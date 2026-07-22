@@ -1,4 +1,4 @@
-"""write layer"""
+"""write l/:"""
 
 from __future__ import annotations
 
@@ -44,13 +44,13 @@ pytestmark = [pytest.mark.asyncio, neo4j_required]
 
 
 def _iso(hours_ago: int = 0) -> str:
-    """buat helper"""
+    """buat helper()"""
     from datetime import datetime, timedelta, timezone
     return (datetime.now(timezone.utc) - timedelta(hours=hours_ago)).isoformat()
 
 
 def _emb(dim: int = 1536, base: float = 0.01) -> list[float]:
-    """cos, 1536-dim, embd, prod."""
+    """cos, 1536, embd, prod."""
     return [base + (i % 7) * 1e-4 for i in range(dim)]
 
 
@@ -286,7 +286,7 @@ class TestThoughtWriter:
             session_id=test_namespace["session_id"],
             embedding=emb,
         ))
-        # flip ver reset
+        # reset
         await neo4j_client.execute_write(
             "MATCH (th:Thought {id: $id}) SET th.challenged = true",
             {"id": first_id},
@@ -518,7 +518,7 @@ class TestRelationshipBuilders:
         await link_user_recurring_theme(
             test_namespace["user_id"], seed_topic, sid,
         )
-        # bump times_reinforced
+        # bump t.
         await link_user_recurring_theme(
             test_namespace["user_id"], seed_topic, sid,
         )
@@ -573,7 +573,7 @@ class TestRelationshipBuilders:
             )
 
 
-# sup, invalid
+# sup
 
 class TestSupersessionAndInvalidation:
     async def test_supersede_thought_preserves_old_and_creates_new(
@@ -671,7 +671,7 @@ class TestSupersessionAndInvalidation:
             )
 
 
-# flush
+# flush()
 
 class TestDecayAndIdleFlush:
     async def test_memory_decay_halves_and_archives(
@@ -683,7 +683,7 @@ class TestDecayAndIdleFlush:
             user_id=test_namespace["user_id"],
             session_id=test_namespace["session_id"],
         ))
-        # skip klo error
+        # skip error
         await neo4j_client.execute_write(
             """
             MATCH (m:Memory {id: $id})

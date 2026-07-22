@@ -1,4 +1,4 @@
-"""cosine_search_k_top_k_top_k_top_k_top_k_top_k_top_k_top_k_top_k_top_k_top_k_top_k_top_k_top_k_top_k_top_k_top_k_top_k_top_k_top_k_top_k_top_k_top_k_top_k_top_k_top_k_top_k_top_k_top_k"""
+"""cosine_search_k_top_k"""
 
 from __future__ import annotations
 
@@ -38,7 +38,7 @@ async def _search(
     importance_weighted_rank: bool = False,
     touch_last_accessed: bool = False,
 ) -> list[SearchHit]:
-    """ngk ngambil data"""
+    """ambil data"""
     require_str(user_id,  "user_id")
     require_vector(embedding, EMBED_DIM)
     if top_k <= 0:
@@ -112,7 +112,7 @@ async def search_memory(
     min_similarity: float | None = 0.5,
     min_importance: float | None = 0.5,
 ) -> list[SearchHit]:
-    """skip koreksi"""
+    """skip check"""
     return await _search(
         "Memory",
         user_id=user_id,

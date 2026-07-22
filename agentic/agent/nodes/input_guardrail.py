@@ -1,4 +1,4 @@
-"""2nd layer inp"""
+"""2nd inp"""
 
 from __future__ import annotations
 
@@ -43,21 +43,21 @@ class InputDecision:
 
 @dataclass(frozen=True)
 class InputRules:
-    # compile now
+    # compile
     crisis_keywords_id: tuple[re.Pattern[str], ...]
     crisis_keywords_en: tuple[re.Pattern[str], ...]
     jailbreak_patterns: tuple[re.Pattern[str], ...]
     off_scope_patterns: tuple[re.Pattern[str], ...]
 
 
-# char
+# char*
 _LETTER = r"[A-Za-zÀ-ɏḀ-ỿ]"
 _BOUND_PRE = rf"(?<!{_LETTER})"
 _BOUND_POST = rf"(?!{_LETTER})"
 
 
 def _compile_keyword(kw: str) -> re.Pattern[str]:
-    """compile crisis"""
+    """skip compile"""
     return re.compile(
         _BOUND_PRE + re.escape(kw.lower()) + _BOUND_POST,
         re.IGNORECASE,
@@ -68,7 +68,7 @@ _RULES_CACHE: InputRules | None = None
 
 
 def load_input_rules(*, force_reload: bool = False) -> InputRules:
-    """parse yaml"""
+    """parse"""
     global _RULES_CACHE
     if _RULES_CACHE is not None and not force_reload:
         return _RULES_CACHE
@@ -113,7 +113,7 @@ def load_input_rules(*, force_reload: bool = False) -> InputRules:
 
 
 def evaluate_input(message: str, rules: InputRules | None = None) -> InputDecision:
-    """eval, crs, jail, allow"""
+    """eval, jail, allow"""
     rules = rules or load_input_rules()
     if not message:
         return InputDecision(decision="allow", reason="empty_message")

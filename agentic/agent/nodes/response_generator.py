@@ -1,4 +1,4 @@
-"""res ngirim"""
+"""ngirim"""
 
 from __future__ import annotations
 
@@ -229,12 +229,7 @@ def _profile_context_block(state: ConversationState) -> str:
 
 
 def _understanding_synthesis_block(state: ConversationState) -> str:
-    """v3 pipeline only: format the understanding_synthesis node's output
-    as a context block for response_generator_v3's prompt. Absent/empty on
-    v2 (node never runs), and deliberately absent whenever insufficient_data
-    is true -- that is exactly the cold-start case where the prompt's own
-    fallback instructions (ask, don't assume) should take over instead of
-    handing the model a mostly-null block to interpret."""
+    """`format output`"""
     understanding = state.get("user_understanding")
     if not isinstance(understanding, dict) or understanding.get("insufficient_data"):
         return ""
@@ -284,10 +279,7 @@ _SECTION_SEP = "\n\n" + "=" * 50 + "\n\n"
 
 
 def _recent_name_usage_note(state: ConversationState) -> str:
-    """deterministic guard: LLM self-counting name usage across a long system
-    prompt is unreliable in practice (verified via real scripted-persona runs
-    on 2026-07-12 -- name still appeared in 4 consecutive turns despite an
-    explicit prompt-only cap), so compute it in code instead"""
+    """# compute name usage in code"""
     profile = state.get("profile_context") or {}
     display_name = str(profile.get("display_name") or "").strip() if isinstance(profile, dict) else ""
     if not display_name or not _looks_like_human_display_name(display_name):
@@ -319,27 +311,14 @@ def _recent_name_usage_note(state: ConversationState) -> str:
 
 _QUESTION_ENDING_STREAK_THRESHOLD: int = 3
 
-# Techniques whose overlay makes the closing question the technique's core
-# mechanism, not a stylistic default (reframe.yaml: "ask ONE open Socratic
-# question" is the whole point of the technique; thought_record echoes a
-# deterministic step question verbatim). Found via a real 20-turn run on
-# 2026-07-13: the streak guard fired on the exact turn the router picked
-# reframe, and the model dropped the required Socratic question entirely to
-# comply with the guard, silently defeating the technique that turn.
+# overlay core, not style
 _QUESTION_MANDATORY_TECHNIQUES: frozenset[str] = frozenset(
     {CBTTechnique.REFRAME.value, CBTTechnique.THOUGHT_RECORD.value}
 )
 
 
 def _question_ending_note(state: ConversationState) -> str:
-    """Same deterministic-guard approach as _recent_name_usage_note above,
-    applied to a second pattern found unreliable when left to prompt-only
-    self-counting: verified via real 2-session/20-turn runs on 2026-07-13,
-    19-18 of 20 turns still ended in '?' despite an explicit prompt cap on
-    consecutive question-endings. Computing the actual streak from real
-    history and stating it as a concrete fact ("your last N responses did
-    X") is the part a model can reliably act on; asking it to track a
-    running count across a long system prompt is not."""
+    """skip cap"""
     if state.get("cbt_node_active") in _QUESTION_MANDATORY_TECHNIQUES:
         return ""
 
@@ -374,14 +353,7 @@ _OPENER_LOOKBACK_WORDS: int = 2
 
 
 def _repetitive_opener_note(state: ConversationState) -> str:
-    """Same deterministic-guard approach as _question_ending_note above,
-    applied to a third pattern found via a real 20-turn run on 2026-07-13:
-    12 of 19 AXIS turns opened with some form of "Jadi..."/"Oh, jadi..." to
-    paraphrase the user back before continuing. The technique itself
-    (reflective paraphrase) is fine; reusing the same lead-in word turn
-    after turn is what reads as templated. Deliberately word-agnostic (no
-    hardcoded "jadi"/"oh" list) so this generalizes to whatever opener the
-    model happens to overuse, not just the one caught in this run."""
+    """refl paraphrase" "opened" "user" "template" "overused" "model"""
     history = state.get("messages") or []
     recent_assistant_turns = [
         (m.get("content") or "").strip()
@@ -433,15 +405,7 @@ def _memory_keyword_set(text: str) -> set[str]:
 
 
 def _memory_repetition_note(state: ConversationState) -> str:
-    """Same deterministic-guard approach as the three guards above, applied
-    to memory-callback repetition now that response_generator_v3.yaml no
-    longer caps callbacks at 1-per-response (2026-07-14): once the surface
-    cap is gone, the thing that actually needs bounding is naming the same
-    grounding_experience/active_pattern turn after turn, not the count of
-    callbacks. Detected via lexical overlap against recent assistant turns,
-    same signal source as _repetitive_opener_note, because named entities
-    and domain nouns (e.g. "Agung", "skripsi") survive the prompt's own
-    paraphrase-don't-quote rule even when the surrounding sentence doesn't."""
+    """skip guard"""
     understanding = state.get("user_understanding")
     if not isinstance(understanding, dict) or understanding.get("insufficient_data"):
         return ""
@@ -499,7 +463,7 @@ def _build_messages(state: ConversationState) -> list[Any]:
             "reply, after one short acknowledgement):\n\n" + bot_prompt
         )
 
-    # overlay di belakang
+    # overlay belakang
     kg_context = (state.get("kg_context") or "").strip()
     if kg_context and not bot_prompt:
         parts.append(kg_context)
@@ -569,7 +533,7 @@ def _build_messages(state: ConversationState) -> list[Any]:
         except Exception as exc:  # pragma: no cover
             logger.warning("confession_mode overlay load failed: %s", exc)
 
-    # buat nyimpen
+    # buat nyimpan
     signals = state.get("linguistic_signals") or {}
     detected = (
         signals.get("language")
@@ -721,12 +685,7 @@ def _safe_usage_metadata(response: Any) -> dict[str, Any]:
 
 
 def _visible_ai_text(response: Any) -> str:
-    """Extract only user-visible text from provider responses.
-
-    Gemini can return content blocks containing internal ``thinking`` when
-    include_thoughts is enabled during local audits. Those blocks must never be
-    copied into the chat reply.
-    """
+    """extract user text"""
 
     content = getattr(response, "content", "")
     if isinstance(content, str):

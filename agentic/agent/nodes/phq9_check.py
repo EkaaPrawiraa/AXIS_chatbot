@@ -1,4 +1,4 @@
-"""`trigger phq-9`"""
+"""`trigger`"""
 
 from __future__ import annotations
 
@@ -108,7 +108,7 @@ async def phq9_check_node(
     user_id = state["user_id"]
     session_id = state.get("session_id") or ""
 
-    # db reload
+    # reload db
     try:
         persisted = await repo.load_phq9_progress(
             user_id=user_id,
@@ -161,7 +161,7 @@ async def phq9_check_node(
             if persisted_phase != "offer_pending":
                 return state
 
-    # arm gen" "warm-up" "phase" "trigger" "subgraph
+    # If offer_pending already, arm the response generator's directive once warm-up turns are met; this is the only state this trigger node touches while phase is already engaged, everything else is owned by the subgraph
     if phq9.get("phase") == "offer_pending":
         from agentic.agent.phq9.subgraph import WARMUP_TURNS_BEFORE_OFFER
 
@@ -176,12 +176,12 @@ async def phq9_check_node(
         state["phq9_state"] = phq9
         return state
 
-    # buat nyimpen config
+    # buat nyimpan config
     language = state.get("resolved_language") or _resolve_language_for_state(state)
     state["resolved_language"] = language
     phq9["language"] = language
 
-    # skip 14-day gate skip warm-up skip default accept
+    # skip 14-day, 14-day, accept
     user_msg = (state.get("current_message") or "").strip()
     if _is_user_request(user_msg):
         logger.info(
@@ -222,13 +222,13 @@ async def phq9_check_node(
     if onboarding is not None:
         phq9 = onboarding
 
-    # `t1`
+    # `skip`
     if phq9.get("phase") == "idle":
         tier1 = await _evaluate_tier1(state, repo, phq9)
         if tier1 is not None:
             phq9 = tier1
 
-    # hitung tier 2 jika tier 1 gagal.
+    # hitung 2 jika 1 gagal.
     if phq9.get("phase") == "idle":
         tier2 = await _evaluate_tier2(state, repo, phq9)
         if tier2 is not None:
@@ -243,7 +243,7 @@ async def phq9_check_node(
             phq9=phq9,
         )
 
-    # audit: log dec.
+    # Audit trail: log every non-trivial clinical decision made here
     phase = phq9.get("phase") or "idle"
     reason = phq9.get("reason") or ""
     if phase == "offer_pending":
@@ -270,7 +270,7 @@ async def phq9_check_node(
     return state
 
 
-# check every 14 days
+# check every 14d
 
 
 async def _evaluate_onboarding(
@@ -278,7 +278,7 @@ async def _evaluate_onboarding(
     repo: AssessmentRepository,
     phq9: PHQ9SessionState,
 ) -> PHQ9SessionState | None:
-    """Offer PHQ-9 once a new user has enough turns in the same session."""
+    """offer phq-9 once new user has enough turns in same session."""
     profile = state.get("profile_context") or {}
     if bool(profile.get("onboarding_complete")):
         return None
@@ -323,7 +323,7 @@ async def _evaluate_tier1(
     if last is not None and days_since(last.administered_at) < SCHEDULED_INTERVAL_DAYS:
         return None
 
-    # rapport
+    # rap.
     if last is None:
         convo_count = await repo.get_conversation_count(user_id)
         if convo_count < WARMUP_CONVERSATIONS_BEFORE_FIRST_OFFER:
@@ -383,7 +383,7 @@ async def _evaluate_tier2(
     repo: AssessmentRepository,
     phq9: PHQ9SessionState,
 ) -> PHQ9SessionState | None:
-    """find distress, flag end."""
+    """find, flag."""
     user_id = state["user_id"]
     last = await repo.get_last_phq9(user_id)
     if last is not None and days_since(last.administered_at) < RETRY_DAYS_FOR_DISTRESS:
@@ -436,14 +436,14 @@ def _acute_distress(
 
 
 def _recently_worsened(last: Any) -> bool:
-    """``worse``"""
+    """terlarang"""
     if last is None:
         return False
     delta = getattr(last, "delta_from_prev", None)
     if delta is not None:
-        # positive delta means score went up (worsened).
+        # positive delta means score up.
         return delta >= WORSENING_DELTA_THRESHOLD
-    # `run 14-day gate`
+    # `gate 14`
     return False
 
 

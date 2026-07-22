@@ -51,7 +51,7 @@ from agentic.agent.state import (
 )
 from agentic.agent.audit.guardrail_events import GuardrailEvent, GuardrailLogger
 
-# mod.import.
+# skip
 from agentic.memory import neo4j_client as nc
 from agentic.memory.context_builder import build_context
 
@@ -71,10 +71,10 @@ from agentic.memory.knowledge_graph.kg_retriever import (
     link_experience_to_trigger,
     link_thought_emotion_association,
     link_to_behavior,
-    # find source
+    # ngambil data
     facts_for_message,
     nodes_for_message,
-    # pintar2 nge-read
+    # ngambil data
     read_behavior,
     read_emotion,
     read_experience,
@@ -95,7 +95,7 @@ from agentic.memory.knowledge_graph.kg_writer import (
 from agentic.memory.knowledge_graph.kg_modifier import update_node_property
 from agentic.memory.knowledge_graph.kg_algorithm import run_memory_decay, supersede_thought
 
-# purge pgvector
+# purge
 from agentic.memory.cross_store_sync import (
     invalidate_message_full,
     purge_message_full,
@@ -103,7 +103,7 @@ from agentic.memory.cross_store_sync import (
     sweep_unsynced,
 )
 
-# pgvec - embedder only. Cosine & dedup transparent.
+# pgvec - embedder only. Cosine & dedup.
 from agentic.memory.pg_vector import embed_text
 
 
@@ -115,7 +115,7 @@ logger = logging.getLogger("test_bot")
 
 
 class StdoutGuardrailLogger:
-    """log d/t"""
+    """log "d/t"""
 
     def __init__(
         self,
@@ -250,7 +250,7 @@ async def _ainvoke_with_tools(llm: Any, messages: list[Any], *, max_hops: int = 
                 except Exception as exc:
                     result = {"error": f"tool failed: {exc}"}
 
-            # skip klo error
+            # skip error
             if name == "web_search" and isinstance(result, dict):
                 rows = result.get("results")
                 if isinstance(rows, list):
@@ -274,7 +274,7 @@ async def _ainvoke_with_tools(llm: Any, messages: list[Any], *, max_hops: int = 
         last.additional_kwargs = dict(getattr(last, "additional_kwargs", {}) or {})
         last.additional_kwargs["web_search_urls"] = web_urls
         return last
-    # wrap rtrnk.
+    # wrap
     msg = AIMessage(content=str(getattr(last, "content", last)))
     msg.additional_kwargs = dict(getattr(msg, "additional_kwargs", {}) or {})
     msg.additional_kwargs["web_search_urls"] = web_urls
@@ -411,7 +411,7 @@ def _make_groq_llm() -> _GroqChatAdapter:
 
 
 def _make_llm():
-    """ambil client"""
+    """ambil cli"""
     provider = (os.getenv("LLM_PROVIDER") or "").strip().lower()
     print(provider)
 
@@ -493,7 +493,7 @@ class TurnRecord:
 
 
 class TurnLog:
-    """mbungkus, akses /"""
+    """`ngbuka`"""
 
     def __init__(self, capacity: int = 50) -> None:
         self._records: list[TurnRecord] = []
@@ -514,7 +514,7 @@ class TurnLog:
         return None
 
     def resolve(self, ref: str) -> str | None:
-        """msg_id"""
+        """msg"""
         ref = ref.strip()
         if not ref:
             return None
@@ -529,7 +529,7 @@ class TurnLog:
 
 
 
-# update_node validate_input
+# validate_input
 _READABLE_LABELS: dict[str, Callable[[str], Awaitable[Any]]] = {
     "Behavior":   read_behavior,
     "Emotion":    read_emotion,
@@ -546,7 +546,7 @@ def _now_iso() -> str:
 
 
 async def _safe_embed(text: str | None) -> list[float] | None:
-    """skip on fail."""
+    """skip klo error"""
     if not text or not text.strip():
         return None
     try:
@@ -577,7 +577,7 @@ def _trim_for_trace(value: Any) -> Any:
 
 
 def _embedding_marker(embedding: list[float] | None) -> str:
-    """write to db"""
+    """db write"""
     if embedding is None:
         return "Neo4j only"
     return f"Neo4j + pgvector (dim={len(embedding)})"
@@ -589,7 +589,7 @@ def _log_kg_write(
     *,
     embedding: list[float] | None = None,
 ) -> None:
-    """log writer payload"""
+    """log ngentos payload"""
     trace.info(
         "[KG WRITE] %-10s | %s | payload=%s",
         label,
@@ -690,7 +690,7 @@ async def apply_kg_block(
             "source_message_id": message_id,
         }
         _log_kg_write("Emotion", emo_payload, embedding=None)
-        # ignore [unexpected-keyword]
+        # skip [unexpected-keyword]
         ids["emotion"] = await write_emotion(EmotionInput(**emo_payload))
         _log_kg_write_result("Emotion", ids["emotion"])
 
@@ -761,7 +761,7 @@ async def apply_kg_block(
         ids["subject"] = await write_person(PersonInput(**per_payload))
         _log_kg_write_result("Subject", ids["subject"])
 
-    # wire edges, use src, trace, see.
+    # wire, src, trace, see.
     if ids["experience"] and ids["trigger"]:
         _log_kg_edge("Experience", ids["experience"], "TRIGGERED_BY",
                      "Trigger", ids["trigger"])
@@ -891,10 +891,10 @@ def _format_search(result: dict[str, Any]) -> str:
     return "\n".join(out)
 
 
-# `skip`
+# skip
 
 def _parse_value(raw: str) -> Any:
-    """update json str."""
+    """update str."""
     try:
         return json.loads(raw)
     except json.JSONDecodeError:
@@ -967,7 +967,7 @@ async def cmd_snapshot(user_id: str) -> str:
     )
 
 
-# buat ngequery db
+# query db
 
 def cmd_history(log: TurnLog, n: int = 10) -> str:
     records = log.latest(n)
@@ -1037,7 +1037,7 @@ async def cmd_purge(log: TurnLog, ref: str) -> str:
 
 
 async def cmd_sweep() -> str:
-    """skip stuck nodes"""
+    """skip nodes"""
     counters = await sweep_unsynced()
     return f"  sweep_unsynced() -> {json.dumps(counters)}"
 
@@ -1072,7 +1072,7 @@ async def cmd_supersede(
     return f"  supersede_thought({old_thought_id}) -> new Thought {new_id}"
 
 
-# buat summary
+# summarize
 
 _SUMMARY_SYSTEM_PROMPT = (
     "You write factual session summaries for a long-term memory store. "
@@ -1084,7 +1084,7 @@ _SUMMARY_SYSTEM_PROMPT = (
 
 
 async def _summarize_history(llm: Any, history: list[Any]) -> str:
-    """compress into 1 par", "mention subj/exps/emos", "fallback on err"""
+    """skip err, fallback"""
     if not history:
         return "Session had no user messages."
 
@@ -1206,7 +1206,7 @@ async def dispatch_command(line: str, ctx: BotContext) -> bool:
         print(cmd_history(ctx.log, n))
         return False
 
-    # skip klo error
+    # skip error
     if cmd == "/flush":
         async def session_flush(_uid: str, _sid: str) -> None:
             # skip idle
@@ -1242,7 +1242,7 @@ async def dispatch_command(line: str, ctx: BotContext) -> bool:
         print(await cmd_sweep())
         return False
 
-    # buat hitung
+    # hitung()
     if cmd == "/facts":
         if not args:
             print("  usage: /facts <#turn|message_id>")
@@ -1307,7 +1307,7 @@ async def dispatch_command(line: str, ctx: BotContext) -> bool:
 
     # shut.
     if cmd == "/end":
-        # summarize user's compress in mem semantic retrieval
+        # summarize, mem, compress, semantic, retrieval
         if args:
             summary = " ".join(args)
         else:
@@ -1378,7 +1378,7 @@ async def chat_loop(user_id: str, session_id: str) -> None:
         turn_index += 1
         message_id = f"msg-{uuid.uuid4()}"
 
-        # build_context()
+        # build_ctx()
         query_embedding = await _safe_embed(line)
         _log_pg_read(line, query_embedding)
 
@@ -1530,7 +1530,7 @@ async def chat_loop_nodes(
         _reset_turn_transients(state)
         state["current_message"] = line
 
-        # run focused node
+        # run fnc focused
         try:
             state = await memory_retrieval_node(state, audit=audit)
             state = await dialogue_policy_node(state, audit=audit)
@@ -1575,7 +1575,7 @@ async def chat_loop_nodes(
 
 
 async def _bootstrap_user_and_session(user_id: str | None) -> tuple[str, str]:
-    """user, ok := db.Get("user").(map[string]interface{}) if ok {     user["id"].(string) }  session, ok := db.Get("session").(map[string]interface{}) if ok {     session["id"].(string) }"""
+    """db.Get("user").(map[string]interface{}) db.Get("session").(map[string]interface{})"""
     client = nc.get_client()
     user_id    = user_id or str(uuid.uuid4())
     session_id = str(uuid.uuid4())
@@ -1643,7 +1643,7 @@ async def main(argv: list[str]) -> int:
         else:
             await chat_loop(user_id, session_id)
     finally:
-        # end_at, last_act
+        # end, last, act
         await nc.get_client().execute_write(
             """
             MATCH (s:Session {id: $sid})

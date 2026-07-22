@@ -32,7 +32,7 @@ async def phq9_delivery_node(
     clarification_llm: Any | None = None,
     audit: GuardrailLogger | None = None,
 ) -> ConversationState:
-    """delegasi ke subgraph phq-9. tetapkan untuk kompabilitas kelewatan, gunakan scorer_llm jika tidak diberikan."""
+    """delegasi, subgraph, kelewatan, scorer_llm, tidak diberikan."""
     audit = audit or NullGuardrailLogger()
     return await phq9_subgraph_node(
         state,

@@ -1,4 +1,4 @@
-"""tts_model constrained to TTSModelChoice"""
+"""constrain tts_model"""
 from __future__ import annotations
 
 from agentic.gateway.model.chat import VoiceTurnResponse

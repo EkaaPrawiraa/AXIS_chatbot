@@ -19,7 +19,7 @@ class _FakeAIMessage:
 
 
 class _FakeClient:
-    """`min cli`"""
+    """`skip cli`"""
 
     def __init__(self):
         self.bound_tools = None

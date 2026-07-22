@@ -1,4 +1,4 @@
-"""tts.script"""
+"""script"""
 
 from __future__ import annotations
 
@@ -91,7 +91,7 @@ async def speech_adapter_node(
     llm_v25: Any | None = None,
     llm_v3: Any | None = None,
 ) -> ConversationState:
-    """buat nyimpen speech_response set tts_model"""
+    """buat nyimpan set tts_model"""
     audit = audit or NullGuardrailLogger()
     voice = dict(state.get("voice_state") or empty_voice_state())
 
@@ -146,7 +146,7 @@ async def speech_adapter_node(
 
     if mode == "v3":
         voice["speech_response_tags"] = adapted
-        # skip encryption
+        # skip enc
         voice["speech_response"] = _strip_v3_tags(adapted)
     else:
         voice["speech_response"] = adapted
@@ -173,7 +173,7 @@ async def speech_adapter_node(
     return state
 
 
-# tag_scrub
+# tag_scrub()
 
 
 import re

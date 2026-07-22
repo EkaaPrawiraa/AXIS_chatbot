@@ -14,7 +14,7 @@ from agentic.gateway.service.chat_graph import ChatGraphService
 
 @pytest.fixture(autouse=True)
 def _clear_provider_env(monkeypatch):
-    """build_stt, build_tts_providers, env_vars, clean slate, branch."""
+    """build_stt, build_tts, env_vars, clean, branch."""
     for name in (
         "OPENAI_API_KEY", "GOOGLE_API_KEY", "GEMINI_API_KEY",
         "LLM_PROVIDER", "ELEVENLABS_API_KEY",

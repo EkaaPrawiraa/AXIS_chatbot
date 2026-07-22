@@ -1,15 +1,15 @@
-"""for writer in kg_writer:     writer.input_dataclass()"""
+"""`for writer in kg_writer: writer.input_dataclass()`"""
 
 from __future__ import annotations
 
 from dataclasses import dataclass
 
 
-# feels
+# feel
 
 @dataclass
 class EmotionInput:
-    """emotions discrete"""
+    """discrete"""
     label:        str              # e.g. "anxious", "sad", "grateful"
     intensity:    float            # [0, 1] strength of the felt emotion
     valence:      float            # [-1, 1] pleasure-displeasure axis
@@ -38,7 +38,7 @@ class ThoughtInput:
     source_message_id: str | None = None
 
 
-# buat ngambil data
+# ambil data
 
 @dataclass
 class TriggerInput:
@@ -76,7 +76,7 @@ class BehaviorInput:
 
 @dataclass
 class ExperienceInput:
-    """cos_sim embedding"""
+    """cos_sim"""
     description:   str
     occurred_at:   str                 # ISO datetime string
     extracted_at:  str                 # ISO datetime string
@@ -90,7 +90,7 @@ class ExperienceInput:
     source_message_id: str | None = None
 
 
-# skip klo error
+# skip error
 
 @dataclass
 class SubjectInput:
@@ -109,7 +109,7 @@ class SubjectInput:
 PersonInput = SubjectInput  # backward compat alias
 
 
-# post-session
+# post-sessions
 
 @dataclass
 class MemoryInput:
@@ -127,10 +127,10 @@ class MemoryInput:
 
 @dataclass
 class TopicInput:
-    """merge"""
+    """merge it"""
     name:       str           # e.g. "academic-stress", "relationship-conflict"
     category:   str           # "academic"|"social"|"family"|"career"|"health"|
-                              # financial"|"identity"|"mental_health"|"other
+                              # "financial"|"identity"|"mental_health"|"other"
     sentiment:  float         # [-1, 1] average sentiment in the turn
     user_id:    str
     session_id: str

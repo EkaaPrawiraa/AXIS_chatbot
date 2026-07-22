@@ -1,4 +1,4 @@
-"""scoring"""
+"""score"""
 
 from __future__ import annotations
 
@@ -152,7 +152,7 @@ class PHQ9Result:
 
     @property
     def item9_flagged(self) -> bool:
-        """ngapain ngga"""
+        """buat nyimpen config"""
         return self.item9_score >= 1
 
 
@@ -208,7 +208,7 @@ def get_items(language: str) -> tuple[str, ...]:
 
 
 def get_option_labels(language: str) -> tuple[str, ...]:
-    """ret lbls 0..3"""
+    """ret 0..3"""
     return (
         OPTION_LABELS_ID
         if _normalize_lang(language) == "id"
@@ -238,7 +238,7 @@ _ID_HINT_TOKENS: frozenset[str] = frozenset(
 
 
 def detect_language_lightweight(text: str) -> str:
-    """en" ng"""
+    """db"""
     if not text or not text.strip():
         return DEFAULT_LANGUAGE
     tokens = set(re.findall(r"[a-zA-ZÀ-ÿ]+", text.lower()))
@@ -266,20 +266,20 @@ def resolve_language(
 
 
 def item_text(item_id: int, language: str) -> str:
-    """ngambil data 1"""
+    """ambil 1"""
     if not 1 <= item_id <= NUM_ITEMS:
         raise ValueError(f"item_id must be in [1, {NUM_ITEMS}]")
     return get_items(language)[item_id - 1]
 
 
 def options_with_scores(language: str) -> tuple[tuple[int, str], ...]:
-    """(return (0 label0) (1 label1) ...))"""
+    """buat ngambil semua data"""
     labels = get_option_labels(language)
     return tuple((i, labels[i]) for i in range(4))
 
 
 def to_storage_payload(result: PHQ9Result) -> Mapping[str, object]:
-    """serialize to table"""
+    """serialize, table"""
     return {
         "user_id": result.user_id,
         "session_id": result.session_id,

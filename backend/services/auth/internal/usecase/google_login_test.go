@@ -168,7 +168,7 @@ func TestGoogleLogin_ExistingGoogleID_LogsInDirectly(t *testing.T) {
 }
 
 func TestGoogleLogin_ExistingEmailWithoutGoogleID_RejectedNotAutoLinked(t *testing.T) {
-	// reject-link
+	// reject
 	t.Setenv("JWT_SECRET", "test-secret")
 	t.Setenv("GOOGLE_CLIENT_ID", "test-client-id.apps.googleusercontent.com")
 

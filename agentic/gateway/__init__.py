@@ -1,1 +1,1 @@
-"""skip agentic runtime"""
+"""skip ag runtime"""

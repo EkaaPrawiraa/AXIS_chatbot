@@ -1,4 +1,4 @@
-"""judge PHQ-9."""
+"""judge 9."""
 
 from __future__ import annotations
 
@@ -63,13 +63,13 @@ class JudgeOutcome:
         return self.action in (JudgeAction.ADVANCE, JudgeAction.BACK)
 
 
-# scoring
+# score
 
 
-# accept_score
+# accept
 RULE_CONFIDENCE_THRESHOLD: float = 0.90
 
-# map ini
+# ini map
 _OPTION_MAP_ID: dict[str, int] = {
     # skip 0
     "tidak sama sekali": 0,
@@ -83,7 +83,7 @@ _OPTION_MAP_ID: dict[str, int] = {
     "ga pernah": 0,
     "tidak pernah": 0,
     "belum pernah": 0,
-    # buat nyimpen score
+    # buat nyimpan score
     "beberapa hari": 1,
     "beberapa": 1,
     "kadang": 1,
@@ -92,14 +92,14 @@ _OPTION_MAP_ID: dict[str, int] = {
     "jarang": 1,
     "terkadang": 1,
     "kadang-kadang": 1,
-    # ngambil score 2 lama
+    # ambil score 2 lama
     "lebih dari setengah hari": 2,
     "lebih dari setengah": 2,
     "sering": 2,
     "cukup sering": 2,
     "lumayan sering": 2,
     "hampir sering": 2,
-    # setiap hari
+    # setiap 1 hari
     "hampir setiap hari": 3,
     "hampir setiap saat": 3,
     "setiap hari": 3,
@@ -110,7 +110,7 @@ _OPTION_MAP_ID: dict[str, int] = {
     "tiap hari": 3,
 }
 
-# map ini
+# ini map
 _OPTION_MAP_EN: dict[str, int] = {
     # skip 0
     "not at all": 0,
@@ -121,7 +121,7 @@ _OPTION_MAP_EN: dict[str, int] = {
     "nah": 0,
     "none": 0,
     "zero": 0,
-    # score
+    # scoreler
     "several days": 1,
     "some days": 1,
     "sometimes": 1,
@@ -130,7 +130,7 @@ _OPTION_MAP_EN: dict[str, int] = {
     "a couple of days": 1,
     "here and there": 1,
     "once in a while": 1,
-    # buat nyimpen score 2
+    # buat nyimpan score 2
     "more than half the days": 2,
     "more than half": 2,
     "often": 2,
@@ -170,7 +170,7 @@ def _rule_based_score(reply: str, language: str) -> tuple[int | None, float]:
     if m:
         return int(m.group(1)), 1.0
 
-    # `ubah ke huruf kecil, hapus tanda baca, rapikan`
+    # `ubah rapikan`
     normalized = _PUNCT_TAIL_RE.sub("", stripped.lower()).strip()
     normalized = _MULTI_SPACE_RE.sub(" ", normalized)
 
@@ -194,7 +194,7 @@ def _rule_based_score(reply: str, language: str) -> tuple[int | None, float]:
 
 
 def _is_direct_option_reply(reply: str, language: str) -> bool:
-    """true_phq9_opt"""
+    """opt"""
     if not reply:
         return False
     stripped = reply.strip()
@@ -248,7 +248,7 @@ async def judge_item_response(
     recent_context: str = "",
     llm: Any | None = None,
 ) -> JudgeOutcome:
-    """score" + "LLM" + "routing"""
+    """score"LLM"routing"""
     client = llm if llm is not None else build_llm(PHQ9_JUDGE)
 
     rule_score, rule_confidence = _rule_based_score(user_reply, language)

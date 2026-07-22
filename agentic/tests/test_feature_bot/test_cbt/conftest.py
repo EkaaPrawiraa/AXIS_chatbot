@@ -11,7 +11,7 @@ from agentic.agent.audit.guardrail_events import (
 
 
 class RecordingAuditLogger(NullGuardrailLogger):
-    """guardrail events"""
+    """buat nyimpen"""
 
     def by_type(self, event_type: str) -> list[GuardrailEvent]:
         return [e for e in self.events if e.event_type == event_type]

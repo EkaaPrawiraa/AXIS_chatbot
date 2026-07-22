@@ -35,7 +35,7 @@ async def facts_for_message(message_id: str) -> list[dict[str, Any]]:
 
 
 async def nodes_for_message(message_id: str) -> list[dict[str, Any]]:
-    """get node details"""
+    """get nod details"""
     if not message_id:
         raise ValueError("message_id is required")
 

@@ -102,7 +102,7 @@ class TestDistortion:
                 }
             },
         ))
-        # skip klo error
+        # skip error
         assert d.technique is CBTTechnique.NONE
 
 
@@ -129,7 +129,7 @@ class TestSelfCompassion:
         d = route(_state(
             current_message="aku payah banget jadi orang",
         ))
-        # payah wins
+        # pay wins
         assert d.technique in (
             CBTTechnique.SELF_COMPASSION,
             CBTTechnique.REFRAME,
@@ -144,7 +144,7 @@ class TestPsychoeducation:
 
 class TestDefault:
     def test_casual_greeting_is_none_not_validate(self) -> None:
-        """skip klo error"""
+        """skip error"""
         d = route(_state(current_message="halo, hari ini gimana"))
         assert d.technique is CBTTechnique.NONE
         assert d.reason == "casual_no_emotional_content"
@@ -164,7 +164,7 @@ class TestDefault:
 
 
 class TestJudgeRouting:
-    """warm-up, turn, gate, confidence."""
+    """warm, turn, gate, conf."""
 
     @staticmethod
     def _stub_outcome(
@@ -182,7 +182,7 @@ class TestJudgeRouting:
     async def test_grounding_blocked_before_warmup_turns_even_at_high_confidence(
         self, monkeypatch: pytest.MonkeyPatch
     ) -> None:
-        """regression: high-conf call for GROUNDING must wait CBT_MIN_TURN_BEFORE_OFFER."""
+        """wait CBT_MIN_TURN_BEFORE_OFFER"""
         async def fake_judge(state, *, llm=None):
             return self._stub_outcome(CBTTechnique.GROUNDING, confidence=0.95)
 
@@ -213,7 +213,7 @@ class TestJudgeRouting:
     async def test_grounding_at_weak_confidence_falls_back_to_rules(
         self, monkeypatch: pytest.MonkeyPatch
     ) -> None:
-        """clear old 0.4, dont clear new 0.7."""
+        """clear 0.4, dont clear 0.7."""
         async def fake_judge(state, *, llm=None):
             return self._stub_outcome(CBTTechnique.GROUNDING, confidence=0.5)
 
@@ -241,7 +241,7 @@ class TestOptOutCooldown:
 
 
 class TestGroundingFollowup:
-    """turn right after grounding should revisit a distortion left unaddressed (Lampiran N.3 finding)"""
+    """turn right, revisit, distortion"""
 
     def _grounding_last_directive(self, distortion: str | None = "catastrophizing") -> dict[str, Any]:
         payload: dict[str, Any] = {}
@@ -298,7 +298,7 @@ class TestGroundingFollowup:
         first = route(state)
         assert first.reason == "grounding_followup_distortion"
 
-        # simulate dialogue_policy_node committing the new directive, then a 2nd turn
+        # commits directive.
         next_state = _state(
             current_message="iya masih mikirin itu terus",
             cbt_state={"last_directive": {
@@ -315,7 +315,7 @@ class TestGroundingFollowup:
     async def test_followup_takes_priority_over_llm_judge(
         self, monkeypatch: pytest.MonkeyPatch
     ) -> None:
-        """followup must fire even if the judge would suggest something else"""
+        """followup must fire"""
         async def fake_judge(state, *, llm=None):
             return JudgeOutcome(
                 technique=CBTTechnique.VALIDATE,

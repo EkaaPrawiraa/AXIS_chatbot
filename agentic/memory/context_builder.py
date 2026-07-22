@@ -38,10 +38,7 @@ PEOPLE_EXPERIENCE_CAP = SUBJECTS_EXPERIENCE_CAP
 # expands graph
 FOCUSED_TOP_K:         int   = 5
 FOCUSED_FLOOR:         float = 0.4
-# Above this similarity, a candidate is trusted on embedding match alone and
-# skips the anchor-term keyword filter below -- otherwise a vague referential
-# follow-up ("coba jelasin dong maksudnya") shares no literal keyword with the
-# stored memory and gets discarded despite a strong semantic match.
+# skip filter, keep match, discard diff.
 FOCUSED_HIGH_CONFIDENCE: float = 0.75
 FOCUSED_CHAR_BUDGET:   int   = 1600
 FOCUSED_PEOPLE_CAP:    int   = 5
@@ -50,19 +47,16 @@ FOCUSED_EMOTION_CAP:   int   = 5
 FOCUSED_THOUGHT_CAP:   int   = 5
 FOCUSED_BEHAVIOR_CAP:  int   = 5
 
-# lifecycle history signal (Task 2): ambient, always-on -- not gated by
-# this turn's vector search -- so kept deliberately small.
+# lk hist signal (Task 2): amb, always-on -- not gated by this turn's vs -- so kept small.
 BELIEF_EVOLUTION_CAP: int   = 3
 
-# graph-native expansion (Task 4): bounded so it augments the vector-ranked
-# results rather than drowning them out -- pgvector still decides the seed,
-# this only adds siblings vector similarity structurally cannot reach.
+# bq: bounded, augments, pgvector, seed, struct, siblings, similarity, struct, aug, drown, pgvector, struct, struct, struct, struct, struct, struct, struct, struct, struct, struct, struct, struct, struct, struct, struct, struct,
 GRAPH_EXPANSION_CAP: int   = 2
 
 # skip no signals, run pgvector, full pipeline
 RETRIEVAL_MODE: str = os.getenv("RETRIEVAL_MODE", "full")
 
-# tier, policy, III.5.5
+# tier, policy, III.5
 SENSITIVITY_IMPORTANCE_PERSONAL  = 0.5
 SENSITIVITY_IMPORTANCE_SENSITIVE = 0.7
 SENSITIVITY_IMPORTANCE_TRAUMA    = 0.8
@@ -138,12 +132,12 @@ _CLARIFICATION_RE = re.compile(
 
 
 def _is_back_reference(query_text: str | None) -> bool:
-    """true prior"""
+    """prior=true"""
     return bool(_BACK_REFERENCE_RE.search(query_text or ""))
 
 
 def _is_clarification_request(query_text: str | None) -> bool:
-    """true when user asks."""
+    """true when user asks"""
     text = (query_text or "").strip()
     if not text or _is_generic_memory_query(text):
         return False
@@ -230,7 +224,7 @@ def _query_terms(query_text: str | None) -> list[str]:
 
 
 def _is_generic_memory_query(query_text: str | None) -> bool:
-    """memori aja"""
+    """memori"""
     text = (query_text or "").strip().lower()
     if not text:
         return False
@@ -343,10 +337,7 @@ def _apply_sensitivity_redaction(
         redacted["subjects"] = []
         # keep triggers & emotions
         redacted["behaviors"] = []
-        # Surgical, not blanket: emotion_chains keeps each label (the
-        # existing "keep emotions" policy above) but strips its nested
-        # thought/behavior detail -- a blanket emotion_chains=[] would
-        # silently hide emotion labels this tier deliberately preserves.
+        # `surgical, not blanket`
         if redacted.get("emotion_chains"):
             redacted["emotion_chains"] = [
                 {**chain, "thoughts": [], "behaviors": []}
@@ -358,17 +349,7 @@ def _apply_sensitivity_redaction(
 
 
 async def _rehydrate_experience(user_id: str, exp_id: str) -> dict[str, Any] | None:
-    """get exp view w/ sensitivity tier policy.
-
-    Emotions are grouped with their OWN Thought/Behavior descendants (the
-    schema's only real pairing -- Trigger has no direct edge to Emotion, so
-    triggers stay an honest flat co-occurring list) instead of bucket-
-    collecting every node type into independent lists. The old flat
-    collect(DISTINCT ...) approach cross-joined parallel triggers/emotions
-    before rendering, so _render_causal_chain's "Triggers: A, B -> Emotions:
-    X, Y" text looked like one causal chain even when trigger A actually had
-    nothing to do with emotion Y.
-    """
+    """get exp view w/ sensitivity tier policy."""
     records = await get_client().execute_read(
         """
         MATCH (u:User {id: $user_id})-[:EXPERIENCED]->(e:Experience {id: $exp_id})
@@ -441,12 +422,7 @@ async def _rehydrate_experience(user_id: str, exp_id: str) -> dict[str, Any] | N
 
 
 def _add_flat_compat_fields(rec: dict[str, Any]) -> None:
-    """Derive the old flat emotions/thoughts/behaviors lists (deduplicated
-    union across emotion_chains) so existing consumers that only check
-    truthiness -- compute_relation_richness (agentic/memory/ranking/candidate.py)
-    and _rehydrate_memory's PHQ-noise filter -- keep working unchanged. These
-    consumers never relied on trigger-to-emotion pairing, only on "is there
-    any data here", so a flat union loses nothing they use."""
+    """dedup, keep working"""
     chains = rec.get("emotion_chains") or []
     emotions: list[str] = []
     thoughts: list[dict[str, Any]] = []
@@ -475,13 +451,7 @@ def _add_flat_compat_fields(rec: dict[str, Any]) -> None:
 
 
 async def _rehydrate_memory(user_id: str, mem_id: str) -> dict[str, Any] | None:
-    """summarize bounded view w/sensitivity tier policy.
-
-    Subjects/triggers stay a flat DISTINCT-collected list across all
-    experiences under this memory (harmless -- nothing downstream pairs them
-    with anything else). Emotions are isolated into their own UNWIND pass so
-    each emotion keeps only its own Thought/Behavior descendants, instead of
-    every experience's emotions/thoughts/behaviors bucket-mixing together."""
+    """summarize, flat, DISTINCT, UNWIND, harmless, bucket-mixing"""
     records = await get_client().execute_read(
         """
         MATCH (u:User {id: $user_id})-[:HAS_MEMORY]->(m:Memory {id: $mem_id})
@@ -629,14 +599,7 @@ async def _fetch_graph_expansion(
     *,
     cap: int = GRAPH_EXPANSION_CAP,
 ) -> list[str]:
-    """Spreading activation (Collins & Loftus 1975): given the seed
-    Experience pgvector already found, take one real graph hop to sibling
-    experiences that share the SAME Trigger/Subject node identity -- not
-    text similarity. This is the one place discovery goes beyond
-    "decorate whatever the vector search already picked" into genuinely
-    finding memories a semantic-similarity-only system cannot reach
-    (worded completely differently, same underlying trigger/relationship).
-    pgvector remains the entry point; this only widens from it."""
+    """# seed # pgvector # sibling # same trigger/subject # semantic-similarity # entry point # widens"""
     if not seed_exp_id:
         return []
     rows = await get_client().execute_read(
@@ -679,8 +642,7 @@ def _render_thoughts(thoughts: list[Any]) -> list[str]:
 def _render_behaviors(behaviors: list[Any]) -> list[str]:
     rendered: list[str] = []
     seen: set[str] = set()
-    # Most significant first, so a capped list keeps the behaviors worth
-    # mentioning rather than an arbitrary collect() order.
+    # most significant first, capped list, behaviors, worth mentioning.
     ordered = sorted(
         (b for b in behaviors if isinstance(b, dict)),
         key=lambda b: b.get("significance") if isinstance(b.get("significance"), (int, float)) else -1.0,
@@ -713,13 +675,7 @@ def _render_causal_chain(
     triggers: list[str],
     emotion_chains: list[dict[str, Any]],
 ) -> str:
-    """Render each Emotion's own Thought/Behavior sub-chain separately,
-    reflecting the KG relation names (TRIGGERED_EMOTION, ACTIVATED_THOUGHT,
-    LED_TO_BEHAVIOR) instead of bucket-collecting every node type into one
-    flat list. Triggers have no Trigger->Emotion edge in the schema to pair
-    against, so they render as shared co-occurring context, never fused
-    into one false arrow when there's more than one trigger or emotion.
-    """
+    """Render, reflect, skip, flat, no arrow."""
     segments: list[str] = []
     if triggers:
         segments.append("Triggers: " + ", ".join(t for t in triggers if t))
@@ -791,7 +747,7 @@ def _format_focused_recall(items: list[dict[str, Any]], *, char_budget: int = FO
                 lines.append(f"  - {header}: {summary}")
             else:
                 lines.append(f"  - {header}")
-            # show only content
+            # show content
             experiences = [e for e in (it.get("experiences") or []) if e]
             if experiences:
                 lines.append("      * Experiences: " + "; ".join(experiences))
@@ -831,7 +787,7 @@ class RetrievedContext:
     recurring_triggers:   list[dict[str, Any]] = field(default_factory=list)
     recurring_themes:     list[dict[str, Any]] = field(default_factory=list)
     belief_evolution:     list[dict[str, Any]] = field(default_factory=list)
-    # audit3 / access
+    # audit3
     retrieval_context_dict: dict[str, Any] = field(default_factory=dict)
 
     def as_prompt_block(self) -> str:
@@ -948,7 +904,7 @@ class RetrievedContext:
 
     @property
     def important_people(self) -> list[dict[str, Any]]:
-        """`set "important_subjects"`"""
+        """set subj"""
         return self.important_subjects
 
     @important_people.setter
@@ -977,10 +933,10 @@ async def _fetch_recency(user_id: str) -> list[str]:
     return _without_phq_noise_strings([r["summary"] for r in records])
 
 
-# 2: pgvector
+# pgvectorize
 
 async def _touch_neo4j_access(node_ids: list[str]) -> None:
-    """bump stats, fail ok"""
+    """bump ok"""
     if not node_ids:
         return
     try:
@@ -1013,7 +969,7 @@ async def _fetch_semantic(
             min_similarity=SEMANTIC_FLOOR,
         )
     else:
-        # reapply SEMANTIC_FLOOR/TOP_K, sig identical, sort by search_memory.
+        # reapply, sig, identical, sort.
         hits = [h for h in prefetched_hits if h.similarity >= SEMANTIC_FLOOR][:SEMANTIC_TOP_K]
     if not hits:
         return []
@@ -1023,10 +979,10 @@ async def _fetch_semantic(
     return [h.content for h in filtered_hits]
 
 
-# cosine_exp
+# cos_exp
 
 async def _touch_neo4j_experience_access(node_ids: list[str]) -> None:
-    """bump last_accessed, access_count, decay, job, stale, failures"""
+    """bump, access, decay, job, stale, fail"""
     if not node_ids:
         return
     try:
@@ -1050,7 +1006,7 @@ async def _fetch_semantic_experiences(
     *,
     prefetched_hits: list[SearchHit] | None = None,
 ) -> list[str]:
-    """cosine_sim top-K exp descriptions prefetched_hits reuse pgvector probe"""
+    """prefetch reuse probe top-K exp descriptions cosine_sim pgvector probe top-K exp descriptions cosine_sim pgvector probe top-K exp descriptions cosine_sim pgvector probe top-K exp descriptions cosine_sim pgvector probe top-K exp descriptions cosine_sim pgvector probe top-K exp descriptions cosine_sim pgvector probe top-K"""
     if prefetched_hits is None:
         hits: list[SearchHit] = await search_experience(
             user_id,
@@ -1073,7 +1029,7 @@ async def _fetch_semantic_experiences(
 # traverse neo4j
 
 async def _fetch_subjects(user_id: str) -> list[dict[str, Any]]:
-    """``rank``"""
+    """sort"""
     rows = await get_client().execute_read(
         """
         MATCH (u:User {id: $user_id})-[r:HAS_SUBJECT|HAS_RELATIONSHIP_WITH]->(p)
@@ -1113,14 +1069,14 @@ async def _fetch_subjects(user_id: str) -> list[dict[str, Any]]:
     return out
 
 
-# alias for bc
+# alias for 'bc
 _fetch_people = _fetch_subjects
 
 
 # cek sali?
 
 async def _fetch_salient(user_id: str, emotion_label: str | None) -> list[str]:
-    """top_nodes = [node for node in nodes if node['importance'] > 0.5]"""
+    """`filter nodes by importance`"""
     del emotion_label  # reserved for downstream affective re-ranker
     records = await get_client().execute_read(
         """
@@ -1142,7 +1098,7 @@ async def _fetch_salient(user_id: str, emotion_label: str | None) -> list[str]:
     return _without_phq_noise_strings([r["summary"] for r in records])
 
 
-# reads (emotions)
+# emotin
 
 async def _fetch_active_emotions(user_id: str) -> list[dict[str, Any]]:
     """ambil data"""
@@ -1202,11 +1158,7 @@ async def _fetch_recurring_triggers(user_id: str) -> list[dict[str, Any]]:
 
 
 async def _fetch_themes(user_id: str) -> list[dict[str, Any]]:
-    """top5 themes ranked, cross-referenced back to the Experience/Thought
-    that actually produced them via RELATED_TO_TOPIC -- written by the
-    finalizer since kg_extractor extracts it, but never read before this,
-    so recurring themes surfaced as a bare label with no link back to what
-    concretely produced them."""
+    """`top5 themes, cross-referenced`"""
     return await get_client().execute_read(
         """
         MATCH (u:User {id: $user_id})-[r:HAS_RECURRING_THEME]->(top:Topic)
@@ -1230,20 +1182,7 @@ async def _fetch_themes(user_id: str) -> list[dict[str, Any]]:
 
 
 async def _fetch_belief_evolution(user_id: str, *, limit: int = BELIEF_EVOLUTION_CAP) -> list[dict[str, Any]]:
-    """Surface the SUPERSEDES (Thought)/REAPPRAISED_AS (Experience)/
-    REPLACED_BY (Behavior) lifecycle edges -- written by
-    kg_algorithm/supersession.py and kg_algorithm/lifecycle.py, never read
-    anywhere before this. Note the direction asymmetry: SUPERSEDES points
-    new->old, REAPPRAISED_AS/REPLACED_BY point old->new.
-
-    This is an ambient, always-on signal (like recurring triggers/themes),
-    not gated to this turn's vector search, so it uses a stricter
-    sensitivity gate than per-item focused recall: both sides of a pair
-    must be normal/public/personal, excluding sensitive/trauma entirely --
-    resurfacing a traumatic old belief on an unrelated turn is a materially
-    different risk than surfacing it only when focused recall already
-    judged it relevant to what the user is discussing right now.
-    """
+    """# lifecycle edges"""
     client = get_client()
     thought_rows, exp_rows, behavior_rows = await asyncio.gather(
         client.execute_read(
@@ -1295,7 +1234,7 @@ def _build_retrieval_context_dict(
     query_text: str | None,
     generic_memory_query: bool,
 ) -> dict[str, Any]:
-    """buat nyimpen dict"""
+    """buat nyimpan dict"""
     focused: list[dict[str, Any]] = [c.to_dict() for c in ranked_candidates]
 
     # skip dup ids
@@ -1368,7 +1307,7 @@ async def build_context(
     query_text: str | None = None,
 ) -> RetrievedContext:
     """run ret"""
-    # expand subgraph, gate: non-trivial, generic.
+    # expand subgraph, gate: non-triv, gen.
     deepening_back_ref    = _is_back_reference(query_text)
     deepening_clarif      = _is_clarification_request(query_text)
     dynamic_deepening     = deepening_back_ref or deepening_clarif
@@ -1412,7 +1351,7 @@ async def build_context(
             semantic_experiences=_sem_exp,
         )
 
-    # `skip probe`
+    # skip probe
     pooled_top_k = max(SEMANTIC_TOP_K, effective_focused_top_k) + 2
     pooled_floor = min(SEMANTIC_FLOOR, FOCUSED_FLOOR)
     pooled_mem_hits: list[SearchHit] = []
@@ -1490,7 +1429,7 @@ async def build_context(
             mem_hits = [h for h in pooled_mem_hits if h.similarity >= FOCUSED_FLOOR]
             exp_hits = [h for h in pooled_exp_hits if h.similarity >= FOCUSED_FLOOR]
 
-            # `rf`
+            # rf
             mem_ranked = [h.neo4j_node_id for h in mem_hits]
             exp_ranked = [h.neo4j_node_id for h in exp_hits]
             rrf_scores = rrf_fuse([mem_ranked, exp_ranked])
@@ -1503,7 +1442,7 @@ async def build_context(
                 if h.neo4j_node_id not in hit_lookup:
                     hit_lookup[h.neo4j_node_id] = ("Experience", h)
 
-            # dup, cap
+            # dup cap
             picked_ids: list[str] = []
             seen_ids: set[str] = set()
             for nid in sorted(rrf_scores, key=rrf_scores.__getitem__, reverse=True):
@@ -1557,7 +1496,7 @@ async def build_context(
                             hydrated=rec,
                         ))
 
-            # rere rank graf
+            # rere rank graf, skip error
             if ranking_candidates:
                 ranking_candidates = graph_rerank(ranking_candidates, rrf_scores)
 
@@ -1567,7 +1506,7 @@ async def build_context(
                 )
                 _ranked_candidates = final_selected
 
-                # ord 2 1
+                # ord 2 1 ord 2 1
                 selected_id_set = {c.id for c in final_selected}
                 id_to_hydrated: dict[str, dict[str, Any]] = {
                     h.get("neo4j_node_id", ""): h for h in hydrated
@@ -1645,7 +1584,7 @@ async def build_context(
                 hydrated = await _fetch_keyword_experiences(user_id, query_text)
                 if hydrated:
                     ctx.focused_recall = _format_focused_recall(hydrated, char_budget=effective_focused_budget)
-                    # fallbacks go through graph reranker
+                    # falt go thru graph reranker
                     kb_candidates: list[Candidate] = []
                     for h in hydrated:
                         d = (h.get("description") or "").strip()

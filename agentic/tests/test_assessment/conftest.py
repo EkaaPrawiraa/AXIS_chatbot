@@ -116,7 +116,7 @@ class _FakeAIMessage:
 
 
 class FakeLLM:
-    """script responder"""
+    """respon"""
 
     def __init__(
         self,
@@ -158,7 +158,7 @@ def scorer_llm_factory():
         import re as _re
 
         def respond(user_prompt: str) -> str:
-            # match user only
+            # match user
             m = _re.search(
                 r'User answer:\s*"""\s*(.*?)\s*"""',
                 user_prompt,

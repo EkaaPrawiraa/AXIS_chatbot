@@ -15,7 +15,7 @@ type Neo4jConfig struct {
 	Username string
 	Password string
 
-	// skip klo settings
+	// skip settings
 	MaxConnectionPoolSize        int           // default: 50
 	ConnectionAcquisitionTimeout time.Duration // default: 60s
 	MaxTransactionRetryTime      time.Duration // default: 30s
@@ -33,7 +33,7 @@ func DefaultNeo4jConfig() Neo4jConfig {
 	}
 }
 
-// crea driver, verif. conn.
+// init driver, verif. conn.
 func NewNeo4jDriver(cfg Neo4jConfig) (neo4j.DriverWithContext, error) {
 	driver, err := neo4j.NewDriverWithContext(
 		cfg.URI,
@@ -48,7 +48,7 @@ func NewNeo4jDriver(cfg Neo4jConfig) (neo4j.DriverWithContext, error) {
 		return nil, fmt.Errorf("neo4j: failed to create driver: %w", err)
 	}
 
-	// verify conn
+	// db conn
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
@@ -60,7 +60,7 @@ func NewNeo4jDriver(cfg Neo4jConfig) (neo4j.DriverWithContext, error) {
 	return driver, nil
 }
 
-// skip klo error
+// skip error
 func NewNeo4jSession(
 	ctx context.Context,
 	driver neo4j.DriverWithContext,

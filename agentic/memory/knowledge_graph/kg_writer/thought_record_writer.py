@@ -1,4 +1,4 @@
-"""persists"""
+"""persis"""
 
 from __future__ import annotations
 
@@ -22,7 +22,7 @@ async def write_thought_record(
     session_id: str,
     thought_record: dict[str, Any],
 ) -> str | None:
-    """persist to db"""
+    """db persist"""
     if not thought_record:
         return None
 

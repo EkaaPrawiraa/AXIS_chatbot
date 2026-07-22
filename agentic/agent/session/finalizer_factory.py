@@ -1,4 +1,4 @@
-"""buat nyimpen"""
+"""buat nyimpan"""
 
 from __future__ import annotations
 
@@ -149,9 +149,7 @@ def _count_fact_items(fact: Mapping[str, Any]) -> dict[str, int]:
 
 
 def _safe_iso_datetime(value: Any, *, fallback: str) -> str:
-    """extractor sometimes returns a non-ISO placeholder (e.g. 'UNKNOWN') instead
-    of an approximate date; Neo4j's datetime() rejects that outright, so validate
-    before it ever reaches Cypher rather than losing the whole node to a write error"""
+    """validate before write"""
     if isinstance(value, str) and value.strip():
         try:
             datetime.fromisoformat(value.strip().replace("Z", "+00:00"))
@@ -367,7 +365,7 @@ def make_history_loader() -> HistoryLoader:
 
 
 def make_session_metadata_loader() -> SessionMetadataLoaderFn:
-    """load sess. safely."""
+    """load safely."""
 
     async def _meta_loader(
         *, session_id: str, user_id: str,
@@ -462,7 +460,7 @@ def make_user_context_loader() -> UserContextLoaderFn:
 
 
 def make_summarizer() -> SummarizerFn:
-    """build summary fn"""
+    """buat fn buat sumbu"""
 
     async def _summarizer(
         *,
@@ -653,7 +651,7 @@ def make_kg_writer() -> KGWriterFn:
     """write mem, extract kg, safe rel"""
 
     async def _ensure_kg_anchors(user_id: str, session_id: str) -> None:
-        """ensure anchors" before "writes"""
+        """anchor" before "writes"""
         from agentic.memory.knowledge_graph.kg_writer import ensure_user_node
         from agentic.memory.neo4j_client import get_client
         from agentic.memory.pg_vector.client import get_pool
@@ -801,7 +799,7 @@ def make_kg_writer() -> KGWriterFn:
                     user_id, session_id, exc,
                 )
 
-            # sum onto node.
+            # sum node
             try:
                 from agentic.memory.neo4j_client import get_client as _gc
                 await _gc().execute_write(
@@ -854,7 +852,7 @@ def make_kg_writer() -> KGWriterFn:
                     old_thought_id = _clean_optional_str(
                         item.get("supersedes_thought_id")
                     )
-                    # supersede if not flagged.
+                    # sup if not flagged.
                     if not old_thought_id and emb is not None:
                         try:
                             from agentic.memory.pg_vector import search_thought

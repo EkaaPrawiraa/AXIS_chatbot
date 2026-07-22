@@ -1,4 +1,4 @@
-"""Per-turn LangGraph trace capture and persistence."""
+"""capture & persist trace"""
 
 from __future__ import annotations
 
@@ -80,7 +80,7 @@ def _retrieval_summary(value: Mapping[str, Any] | None) -> dict[str, Any] | None
 
 
 def graph_snapshot(state: ConversationState) -> dict[str, Any]:
-    """Return a compact state summary suitable for audit logs."""
+    """ret state summary"""
     input_guardrail = state.get("input_guardrail") or None
     cbt_state = state.get("cbt_state") or {}
     voice = state.get("voice_state") or {}
@@ -200,7 +200,7 @@ def finalize_trace(state: ConversationState) -> dict[str, Any]:
 
 
 async def persist_graph_audit(state: ConversationState) -> None:
-    """Persist graph trace for normal, stored chat messages only."""
+    """buat nyimpan trace"""
     if state.get("confession_mode"):
         return
     message_id = state.get("current_message_id")

@@ -1,4 +1,4 @@
-"""backends"""
+"""back"""
 
 from __future__ import annotations
 
@@ -45,7 +45,7 @@ MERGE_THRESHOLD:  float = 0.85
 REVIEW_THRESHOLD: float = 0.65
 
 
-# `buat nyimpen`
+# buat nyimpan
 
 _LABEL_CONFIG: dict[str, dict[str, Any]] = {
     "Memory": {
@@ -111,7 +111,7 @@ async def sync_embedding_to_pgvector(
         raise ValueError(f"label {label!r} is not embeddable")
 
     if embedding is None:
-        # `no vec; node stays sync=false`
+        # `no vec; node sync=false`
         return False
 
     upsert = _upserter_for(label)
@@ -176,7 +176,7 @@ async def invalidate_message_full(
     *,
     reason: str = "user_deleted_message",
 ) -> dict[str, int]:
-    """archive, rows"""
+    """ar, rw"""
     kg_report = await _kg_invalidate_message(message_id, reason=reason)
 
     archived = 0
@@ -194,10 +194,10 @@ async def invalidate_message_full(
     }
 
 
-# hard_del 3
+# del 3
 
 async def purge_message_full(message_id: str) -> dict[str, int]:
-    """purge"""
+    """purge all data"""
     kg_report = await _kg_purge_message(message_id)
 
     purged = 0
@@ -221,7 +221,7 @@ async def purge_session_full(
     *,
     message_ids: Iterable[str] | None = None,
 ) -> dict[str, Any]:
-    """purge, rm facts, mirror nodes, pgvector."""
+    """purge rm facts mirror nodes pgvector"""
     message_reports = []
     for message_id in message_ids or []:
         if not message_id:
@@ -263,7 +263,7 @@ async def purge_user_memory_full(user_id: str) -> dict[str, Any]:
 
 
 async def purge_user_full(user_id: str) -> dict[str, Any]:
-    """_user&drop_rows"""
+    """drop_rows"""
     kg_report = await _kg_purge_user(user_id)
     pg_deleted = await _pg_purge_user(user_id)
     return {
@@ -282,7 +282,7 @@ async def _read_unsynced_batch(
     *,
     batch_size: int,
 ) -> list[dict[str, Any]]:
-    """ngk aktif"""
+    """aktif"""
     cfg            = _LABEL_CONFIG[label]
     content_fld    = cfg["content_field"]
     importance_fld = cfg["importance_field"]
@@ -417,7 +417,7 @@ async def sweep_until_drained(
     max_passes: int = 10,
     label_filter: Iterable[str] | None = None,
 ) -> dict[str, dict[str, int]]:
-    """sweep untill max"""
+    """sweep until max"""
     cumulative: dict[str, dict[str, int]] = {}
     for _ in range(max(1, int(max_passes))):
         pass_report = await sweep_unsynced(
@@ -438,7 +438,7 @@ async def sweep_until_drained(
 
 
 __all__ = [
-    # dedup thres.
+    # dedup 1000
     "MERGE_THRESHOLD",
     "REVIEW_THRESHOLD",
     # skip

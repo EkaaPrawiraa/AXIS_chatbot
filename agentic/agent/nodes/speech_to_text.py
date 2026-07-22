@@ -1,4 +1,4 @@
-"""init stt"""
+"""init state"""
 
 from __future__ import annotations
 
@@ -66,7 +66,7 @@ def _extension_for_mime(mime: str | None) -> str:
 
 
 def _openai_audio_file(audio: Any, mime: str | None) -> Any:
-    """wrap w/ filename"""
+    """wrap w/ fnname"""
     if isinstance(audio, bytes):
         file = BytesIO(audio)
         file.name = f"voice-input.{_extension_for_mime(mime)}"
@@ -99,7 +99,7 @@ class STTProvider(Protocol):
 
 
 class OpenAITranscriptionProvider:
-    """skip klo audio"""
+    """skip audio"""
 
     def __init__(
         self,
@@ -137,7 +137,7 @@ class OpenAITranscriptionProvider:
         language = getattr(response, "language", None)
         segments = getattr(response, "segments", None)
 
-        # best-effort conf
+        # best eff conf
         confidence: float | None = None
         if segments:
             try:
@@ -165,7 +165,7 @@ class OpenAITranscriptionProvider:
 
 
 class GeminiTranscriptionProvider:
-    """fallback using gmx's audio model"""
+    """fai gmx audio model"""
 
     def __init__(
         self,
@@ -215,7 +215,7 @@ class GeminiTranscriptionProvider:
 
 
 def _default_stt_providers() -> tuple[STTProvider, STTProvider]:
-    """primary/fallback pair, ordered by LLM_PROVIDER."""
+    """pair, ordered."""
     if llm_provider() == "openai":
         return OpenAITranscriptionProvider(), GeminiTranscriptionProvider()
     return GeminiTranscriptionProvider(), OpenAITranscriptionProvider()
@@ -228,7 +228,7 @@ async def speech_to_text_node(
     fallback_provider: STTProvider | None = None,
     audit: GuardrailLogger | None = None,
 ) -> ConversationState:
-    """run stt, fail fallback."""
+    """run stt, fail, fallback."""
     audit = audit or NullGuardrailLogger()
     voice = dict(state.get("voice_state") or empty_voice_state())
 
@@ -256,7 +256,7 @@ async def speech_to_text_node(
         logger.exception(
             "audio transcription failed (%s), trying fallback: %s", primary_label, exc,
         )
-        # fail first, then primary.
+        # fail, then primary.
         try:
             fallback = fallback_provider
             result = await fallback.transcribe(

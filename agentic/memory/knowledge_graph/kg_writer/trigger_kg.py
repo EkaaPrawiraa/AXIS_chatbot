@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 
 
 async def write_trigger(inp: TriggerInput) -> str:
-    """freq += 1 last_seen = now aliases += incoming_desc"""
+    """freq++ last_seen = now aliases += incoming_desc"""
     _require(inp.category,    "category")
     _require(inp.description, "description")
     _require(inp.user_id,     "user_id")
@@ -66,7 +66,7 @@ async def write_trigger(inp: TriggerInput) -> str:
             )
 
     if existing:
-        # build list: new phrasing + caller-supplied aliases. drop canonical desc; Cypher dedup ex. aliases.
+        # buat list: phrasenya + alias caller. drop desc canonik. dedup Cypher alias.
         canonical = existing["canonical"]
         candidate_aliases: list[str] = []
         if inp.description and inp.description != canonical:
@@ -158,7 +158,7 @@ async def write_trigger(inp: TriggerInput) -> str:
         },
     )
 
-    # mirrors into pgvector, flip on success.
+    # mirrors pgvector, flip ok.
     await sync_embedding_to_pgvector(
         label="Trigger",
         node_id=node_id,

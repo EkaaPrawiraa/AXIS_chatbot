@@ -1,4 +1,4 @@
-"""supersede old node. renamed labels, edges, cypher."""
+"""sudah, ganti nama, ubah query."""
 
 from __future__ import annotations
 
@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 
 async def write_subject(inp: SubjectInput) -> str:
-    """Upsert node w/ avg sent & inc mention_count, refresh last_mentioned. Returns merged/new node id."""
+    """Upsert node w/ avg sent, inc mention_count, refresh last_mentioned. Returns merged/new node id."""
     _require(inp.name,       "name")
     _require(inp.role,       "role")
     _require(inp.user_id,    "user_id")

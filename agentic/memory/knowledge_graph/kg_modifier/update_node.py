@@ -1,4 +1,4 @@
-"""buat patch"""
+"""patch it"""
 
 from __future__ import annotations
 
@@ -19,7 +19,7 @@ async def update_node_property(
     node_id: str,
     updates: dict[str, Any],
 ) -> int:
-    """surg. update node props"""
+    """surg. update node. props"""
     label = validate_label(label)
     if not node_id:
         raise ValueError("node_id is required")

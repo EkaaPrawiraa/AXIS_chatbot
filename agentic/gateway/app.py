@@ -1,4 +1,4 @@
-"""fastapi_factory"""
+"""fastapi init"""
 
 from __future__ import annotations
 
@@ -43,7 +43,7 @@ def _seconds_until_next_decay_run(hour_utc: int = 2) -> float:
 
 
 async def _memory_decay_loop() -> None:
-    """run decay daily fail."""
+    """run decay fail daily."""
     while True:
         wait_s = _seconds_until_next_decay_run(hour_utc=2)
         logger.info(
@@ -67,7 +67,7 @@ async def _memory_decay_loop() -> None:
 
 
 async def _pgvector_sync_loop() -> None:
-    """retry, unsynced, kg, embeddings"""
+    """retry, unsync, kg, emb"""
     interval_s = float(os.getenv("PGVECTOR_SYNC_INTERVAL_SECONDS", "300"))
     batch_size = int(os.getenv("PGVECTOR_SYNC_BATCH_SIZE", "100"))
     while True:
@@ -92,7 +92,7 @@ async def _pgvector_sync_loop() -> None:
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    """start serv & bg workers"""
+    """start serv & bg woks"""
     startup_logger.info(
         "agentic gateway starting up; graph_state_log=%s",
         os.getenv("AXIS_GRAPH_STATE_LOG", "").strip() or "off",

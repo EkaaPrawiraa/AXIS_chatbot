@@ -1,4 +1,4 @@
-"""log timing"""
+"""log tgl"""
 
 from __future__ import annotations
 
@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 
 
 class RequestLoggingMiddleware(BaseHTTPMiddleware):
-    """ekstrak"""
+    """ekstrak data"""
 
     async def dispatch(
         self, request: Request, call_next: RequestResponseEndpoint

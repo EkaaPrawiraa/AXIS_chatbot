@@ -41,7 +41,7 @@ except Exception:  # pragma: no cover
 
 @dataclass(frozen=True)
 class JudgeOutcome:
-    """distortion, confidence"""
+    """skip klo distorsi"""
 
     technique: CBTTechnique
     reason: str
@@ -86,7 +86,7 @@ def _format_last_directive(cbt_state: dict[str, Any]) -> str:
 
 
 def _format_linguistic_signals(signals: dict[str, Any] | None) -> str:
-    """str"""
+    """skip str"""
     if not signals:
         return "(unavailable)"
     parts: list[str] = []

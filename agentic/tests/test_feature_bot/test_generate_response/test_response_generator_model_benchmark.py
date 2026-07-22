@@ -1,4 +1,4 @@
-"""bench manual"""
+"""bench  manual"""
 
 from __future__ import annotations
 

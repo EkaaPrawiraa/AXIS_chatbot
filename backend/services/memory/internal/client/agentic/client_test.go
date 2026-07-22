@@ -10,7 +10,7 @@ import (
 	apperrors "github.com/EkaaPrawiraa/companionshipchatbot/shared/pkg/errors"
 )
 
-// skip klo error
+// skip error
 
 func newTestClient(t *testing.T, statusCode int, body string) *Client {
 	t.Helper()

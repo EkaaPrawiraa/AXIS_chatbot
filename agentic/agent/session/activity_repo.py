@@ -71,7 +71,7 @@ class SessionActivityRepository(Protocol):
     ) -> int: ...
 
 
-# inmem impl (tests + dev)
+# inmem impl (tests, dev)
 
 
 class InMemorySessionActivityRepository:
@@ -228,7 +228,7 @@ class InMemorySessionActivityRepository:
 
 
 class PostgresSessionActivityRepository:
-    """buat nyimpen config"""
+    """buat nyimpan config"""
 
     def __init__(self, *, pg_pool: Any) -> None:
         self._pool = pg_pool

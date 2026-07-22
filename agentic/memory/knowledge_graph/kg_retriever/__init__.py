@@ -1,8 +1,8 @@
-"""ngambil"""
+"""ambil"""
 
 from __future__ import annotations
 
-# smp ngambil
+# ambil
 from agentic.memory.knowledge_graph.kg_retriever.schemas import (
     BehaviorInput,
     EmotionInput,
@@ -29,7 +29,7 @@ from agentic.memory.knowledge_graph.kg_retriever.relationships import (
     invalidate_edge,
 )
 
-# baca node
+# baca
 from agentic.memory.knowledge_graph.kg_retriever.node_readers import (
     read_emotion,
     read_thought,
@@ -73,7 +73,7 @@ __all__ = [
     "PersonInput",   # backward compat alias for SubjectInput
     "ThoughtInput",
     "TriggerInput",
-    # skip klo error
+    # skip error
     "link_emotion_to_thought",
     "link_experience_to_emotion",
     "link_experience_to_trigger",

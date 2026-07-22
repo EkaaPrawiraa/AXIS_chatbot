@@ -1,10 +1,4 @@
-"""Trigger.aliases (the paraphrase history the KG accumulates via
-write_trigger's cosine/keyword merge, e.g. "dospem susah dihubungi" and
-"dosen ga bales-bales chat" merged into one Trigger) was written but never
-read at retrieval time. This verifies _fetch_keyword_experiences now matches
-against aliases too, not just the trigger's canonical description -- the
-concrete "paraphrase recall" advantage a flat semantic-search baseline
-cannot replicate without the same underlying Trigger identity."""
+"""`verify aliases`"""
 
 import pytest
 
@@ -43,8 +37,6 @@ async def test_keyword_fallback_matches_via_trigger_alias(
         {"user_id": user_id, "ns": ns, "exp_id": exp_id, "trigger_id": trigger_id},
     )
 
-    # Query text shares zero words with the canonical trigger description,
-    # only with one of its aliases. _rehydrate_experience's return dict has
-    # no "id" field (matches the pre-existing shape), so assert on content.
+    # `assert not 'id' in rehydrate_experience.return_dict`
     results = await _fetch_keyword_experiences(user_id, "pembimbing susah ditemui lagi")
     assert any(r.get("description") == "ada masalah lagi minggu ini" for r in results)

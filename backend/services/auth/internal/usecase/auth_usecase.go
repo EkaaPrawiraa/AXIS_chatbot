@@ -23,12 +23,12 @@ import (
 // refreshTTL: 30 hari AccessTTL: 24 jam
 const refreshTTL = 30 * 24 * time.Hour
 
-// `hapus semua`
+// `hapus`
 type MemoryPurger interface {
 	PurgeAccount(ctx context.Context, userID string) error
 }
 
-// googleauth' 'Verify
+// verify
 type GoogleVerifier interface {
 	Verify(ctx context.Context, idToken string, clientID string) (*googleauth.Claims, error)
 }
@@ -92,7 +92,7 @@ type AuthOutput struct {
 	Profile      ProfileDTO `json:"profile"`
 }
 
-// logoutInput ngambil sesi.
+// logoutInput ngambil
 type LogoutInput struct {
 	UserID       string
 	AccessJTI    string
@@ -199,7 +199,7 @@ type GoogleLoginInput struct {
 	IDToken string
 }
 
-// ```plaintext login email belum terdaftar buat akun baru ```
+// buat akun baru
 func (u *AuthUsecase) GoogleLogin(ctx context.Context, input GoogleLoginInput) (AuthOutput, error) {
 	idToken := strings.TrimSpace(input.IDToken)
 	if idToken == "" {
@@ -213,7 +213,7 @@ func (u *AuthUsecase) GoogleLogin(ctx context.Context, input GoogleLoginInput) (
 	if err != nil {
 		return AuthOutput{}, apperrors.Unauthorized("invalid google sign-in")
 	}
-	// skip email ngga valid
+	// skip email
 	if !claims.EmailVerified {
 		return AuthOutput{}, apperrors.Unauthorized("google account email is not verified")
 	}
@@ -259,7 +259,7 @@ func (u *AuthUsecase) GoogleLogin(ctx context.Context, input GoogleLoginInput) (
 	return out, nil
 }
 
-// refresh_token
+// refresh
 func (u *AuthUsecase) Refresh(ctx context.Context, refreshToken string) (AuthOutput, error) {
 	refreshToken = strings.TrimSpace(refreshToken)
 	if refreshToken == "" {
@@ -432,7 +432,7 @@ func (u *AuthUsecase) UpdateProfile(ctx context.Context, input UpdateProfileInpu
 	return profileDTO(updated), nil
 }
 
-// delete account, purge data, anonim, purge, server, log error
+// delete, purge, anon, purge, server, log
 func (u *AuthUsecase) DeleteAccount(ctx context.Context, input DeleteAccountInput) error {
 	if err := validateUUID("userId", input.UserID); err != nil {
 		return err
@@ -521,7 +521,7 @@ func newToken(userID string) (string, error) {
 	return axisauth.Sign(userID, 24*time.Hour, axisauth.SecretFromEnv())
 }
 
-// random acak, hash SHA-256.
+// buat ngacak, hash sha256.
 func newRefreshToken() (string, string, error) {
 	var b [32]byte
 	if _, err := rand.Read(b[:]); err != nil {

@@ -1,9 +1,4 @@
-"""Regression: RETRIEVAL_MODE=vector_only crashed on every real call
-(SearchHit has no `.text` attribute, only `.content`), and after that fix
-still leaked raw dict reprs into the prompt block because RetrievedContext's
-semantic_memories/semantic_experiences are typed list[str] but this branch
-built list[dict]. Neither bug had any test coverage and neither was caught
-until the ablation campaign run on 2026-07-12 hit this code path for real."""
+"""`regression: crash on real calls`"""
 
 from __future__ import annotations
 

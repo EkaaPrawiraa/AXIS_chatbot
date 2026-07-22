@@ -1,1 +1,1 @@
-"""aplikasi gw"""
+"""buat ngeplay"""

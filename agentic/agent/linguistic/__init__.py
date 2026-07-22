@@ -1,4 +1,4 @@
-"""langs ngisi dengan data"""
+"""ngisi dengan data"""
 
 from agentic.agent.linguistic.corpus import (
     CorpusEntry,

@@ -1,4 +1,4 @@
-"""adapt Beck 1979 & Beck 2011"""
+"""adapt Beck 1979 & 2011"""
 
 from __future__ import annotations
 
@@ -30,7 +30,7 @@ _NEXT_STEP: dict[ThoughtRecordStep, ThoughtRecordStep] = {
 
 @dataclass
 class ThoughtRecordSubState:
-    """buat nyimpen sub-state"""
+    """buat nyimpan sub-state"""
 
     step: ThoughtRecordStep = ThoughtRecordStep.CATCH_THOUGHT
     thought: str | None = None
@@ -172,7 +172,7 @@ class ThoughtRecordMachine:
         hinted_distortion: Distortion | None = None,
         llm: Any | None = None,
     ) -> ThoughtRecordTurn:
-        # buat nyimpan reply
+        # buat nyimpan
         if user_reply.strip():
             self._record_reply(sub_state, user_reply.strip(), hinted_distortion)
             sub_state.step = _NEXT_STEP[sub_state.step]

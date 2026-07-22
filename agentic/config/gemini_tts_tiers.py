@@ -36,7 +36,7 @@ GEMINI_TTS_TIERS: dict[str, GeminiTTSTier] = {
 
 DEFAULT_GEMINI_TTS_TIER = "gemini-3.5-flash-preview-tts"
 
-# # case-insensitive # compare to "alloy" or "OpenAI" # filter out non-catalog
+# filter out non-catalog
 GEMINI_PREBUILT_VOICE_NAMES: frozenset[str] = frozenset({
     "achernar", "achird", "algenib", "algieba", "alnilam", "aoede",
     "autonoe", "callirrhoe", "charon", "despina", "enceladus", "erinome",
@@ -59,7 +59,7 @@ _TIER_ALIASES: dict[str, str] = {
 
 
 def resolve_gemini_tier(tts_model: str | None) -> GeminiTTSTier:
-    """resolusi tier dan default"""
+    """sol tier dan def"""
     key = _TIER_ALIASES.get(tts_model or "", tts_model or "")
     return GEMINI_TTS_TIERS.get(key, GEMINI_TTS_TIERS[DEFAULT_GEMINI_TTS_TIER])
 
@@ -69,7 +69,7 @@ def resolve_gemini_voice_name(tier: GeminiTTSTier, gender: str | None) -> str:
     return tier.male_voice if gender == "pria" else tier.female_voice
 
 
-# membuat mirroring VOICE_CHARACTER_MAP
+# buat mirroring
 VOICE_CHARACTER_MAP: dict[str, dict[str, str]] = {
     "hangat": {"female": "Sulafat", "male": "Achird"},
     "tenang": {"female": "Aoede", "male": "Enceladus"},
@@ -85,7 +85,7 @@ _VOICE_NAME_TO_CHARACTER: dict[str, str] = {
 
 
 def resolve_voice_character(voice_id: str | None) -> str | None:
-    """skip klo error"""
+    """skip error"""
     if not voice_id:
         return None
     return _VOICE_NAME_TO_CHARACTER.get(voice_id.strip().lower())
@@ -131,7 +131,7 @@ _EMPATHETIC_MODIFIER = (
 
 
 def build_gemini_director_notes(character_id: str | None, *, empathetic: bool) -> str:
-    """build block synthesize resolve_voice_character fallback"""
+    """build, synthesize, resolve, voice, character, fallback"""
     style = _CHARACTER_STYLE_NOTES.get(character_id or "", _CHARACTER_STYLE_NOTES[_DEFAULT_CHARACTER])
     lines = [
         "### DIRECTOR'S NOTES",

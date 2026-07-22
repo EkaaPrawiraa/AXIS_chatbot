@@ -1,4 +1,4 @@
-"""ac tkn"""
+"""buat nyimpen config"""
 
 from __future__ import annotations
 

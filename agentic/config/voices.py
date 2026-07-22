@@ -11,7 +11,7 @@ import yaml
 
 
 def _env_default_language() -> str | None:
-    """`lang diambil`"""
+    """`ambil lang`"""
     val = os.getenv("DEFAULT_USER_LANGUAGE")
     return val.strip().lower() if val else None
 
@@ -33,7 +33,7 @@ class VoiceEntry:
 
     @property
     def is_configured(self) -> bool:
-        """filled"""
+        """fill"""
         return not self.elevenlabs_voice_id.startswith("REPLACE_WITH")
 
 
@@ -49,7 +49,7 @@ class VoiceCatalog:
     openai_tts_instructions: str
 
     def for_language(self, language: str) -> tuple[VoiceEntry, ...]:
-        """ambil suara semua"""
+        """ambil suara"""
         return tuple(v for v in self.voices.values() if v.language == language)
 
     def default_for(self, language: str | None) -> VoiceEntry:

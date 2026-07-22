@@ -9,7 +9,7 @@ import (
 	"github.com/redis/go-redis/v9"
 )
 
-// skip if not reachable
+// skip klo ngotot
 
 func testRedisClient(t *testing.T) *redis.Client {
 	t.Helper()

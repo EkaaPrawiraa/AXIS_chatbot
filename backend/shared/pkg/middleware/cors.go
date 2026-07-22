@@ -27,7 +27,7 @@ func CORS(next http.Handler, allowedOrigins []string) http.Handler {
 			w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE, OPTIONS")
 			w.Header().Set("Access-Control-Allow-Headers", "Authorization, Content-Type, X-Requested-With, X-CSRF-Token")
 			w.Header().Set("Access-Control-Allow-Credentials", "true")
-			// ngga visible buat js
+			// ngga dijs
 			w.Header().Set(
 				"Access-Control-Expose-Headers",
 				"X-RateLimit-Limit-Turns, X-RateLimit-Remaining-Turns, "+

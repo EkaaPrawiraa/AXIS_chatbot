@@ -1,4 +1,4 @@
-"""test agentic.assessment"""
+"""test ag. ass."""
 
 from __future__ import annotations
 

@@ -1,4 +1,4 @@
-"""skip klo error"""
+"""skip error"""
 
 from __future__ import annotations
 
@@ -37,7 +37,7 @@ _unavailable: bool = False
 
 
 def _pool_is_usable(pool: object) -> bool:
-    """Return whether an asyncpg pool belongs to a live event loop."""
+    """check pool live loop"""
     if getattr(pool, "_closed", False):
         return False
     loop = getattr(pool, "_loop", None)
@@ -45,14 +45,13 @@ def _pool_is_usable(pool: object) -> bool:
 
 
 async def get_pool():
-    """None"""
+    """skip klo error"""
     global _pool, _unavailable
 
     if _pool is not None:
         if _pool_is_usable(_pool):
             return _pool
-        # pytest may create a fresh event loop for a later async test. A pool
-        # tied to the previous closed loop cannot be reused safely.
+        # skip klo fresh loop
         _pool = None
     if _unavailable:
         return None
@@ -94,7 +93,7 @@ async def get_pool():
 
 
 async def close_pool() -> None:
-    """close pool. safe to call."""
+    """close pool. safe."""
     global _pool, _unavailable
     if _pool is not None:
         try:
@@ -105,7 +104,7 @@ async def close_pool() -> None:
 
 
 async def is_available() -> bool:
-    """skip except"""
+    """skip klo error"""
     pool = await get_pool()
     return pool is not None
 

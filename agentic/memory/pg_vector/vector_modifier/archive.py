@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 
 async def archive_node(label: str, neo4j_node_id: str) -> int:
-    """set to false, ret updated rows"""
+    """set to false, ret rows"""
     require_str(neo4j_node_id, "neo4j_node_id")
 
     pool = await get_pool()

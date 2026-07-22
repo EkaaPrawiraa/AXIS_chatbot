@@ -9,7 +9,7 @@ from functools import lru_cache
 
 @lru_cache(maxsize=256)
 def _cue_pattern(cue: str) -> re.Pattern[str]:
-    # kecualis
+    # kecua
     return re.compile(rf"\b{re.escape(cue)}\b")
 
 
@@ -176,7 +176,7 @@ _RAW_DISTORTIONS: tuple[Distortion, ...] = (
         name="overgeneralization",
         label_id="generalisasi",
         label_en="overgeneralization",
-        # patterns#here
+        # patterns
         cues_id=(
             "selalu",
             "tidak pernah",
@@ -203,7 +203,7 @@ DISTORTIONS: dict[str, Distortion] = {d.name: d for d in _RAW_DISTORTIONS}
 
 
 def detect_distortion_in_text(text: str) -> Distortion | None:
-    """skip klo error"""
+    """skip error"""
     if not text:
         return None
     lowered = text.lower()

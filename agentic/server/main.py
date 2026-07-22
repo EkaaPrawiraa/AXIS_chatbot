@@ -1,4 +1,4 @@
-"""skip klo error"""
+"""skip error"""
 
 from __future__ import annotations
 
@@ -35,7 +35,7 @@ from agentic.gateway.app import create_app
 
 logger = logging.getLogger(__name__)
 
-# inisialisasi objek
+# inisialisasi
 app = create_app()
 
 

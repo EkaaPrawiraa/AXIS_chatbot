@@ -1,4 +1,4 @@
-"""modular prompt reg"""
+"""buat reg"""
 
 from agentic.prompts.loader import (
     PromptNotFoundError,

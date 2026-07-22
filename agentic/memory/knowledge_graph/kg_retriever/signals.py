@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 # skip error
 
 async def fetch_recency(user_id: str, *, top_n: int = 2) -> list[str]:
-    """rm session for latest user"""
+    """rm sess for latest user"""
     rows = await get_client().execute_read(
         """
         MATCH (u:User {id: $user_id})-[:HAD_SESSION]->(s:Session)
@@ -38,7 +38,7 @@ async def fetch_semantic_memories(
     similarity_floor: float = 0.5,
     importance_floor: float = 0.5,
 ) -> list[str]:
-    """`skip`"""
+    """skip"""
     logger.warning(
         "fetch_semantic_memories called but embeddings are in pgvector, not Neo4j. "
         "Use agentic.memory.pg_vector.search_memory() instead. Returning []."
@@ -46,7 +46,7 @@ async def fetch_semantic_memories(
     return []
 
 
-# skip klo signal 3
+# skip signal 3
 
 async def fetch_salient_memories(
     user_id: str,
@@ -54,7 +54,7 @@ async def fetch_salient_memories(
     top_k: int = 5,
     importance_floor: float = 0.5,
 ) -> list[str]:
-    """high-importance-filter"""
+    """filter"""
     rows = await get_client().execute_read(
         """
         MATCH (u:User {id: $user_id})-[:HAS_MEMORY]->(m:Memory)
@@ -138,7 +138,7 @@ async def fetch_recurring_triggers(
 async def fetch_recent_experiences(
     user_id: str, *, limit: int = 5,
 ) -> list[dict[str, Any]]:
-    """apprve exp"""
+    """skip exp"""
     return await get_client().execute_read(
         """
         MATCH (u:User {id: $user_id})-[:EXPERIENCED]->(e:Experience)
@@ -177,7 +177,7 @@ async def fetch_active_behaviors(
 async def fetch_recurring_themes(
     user_id: str, *, limit: int = 5,
 ) -> list[dict[str, Any]]:
-    """backed by HAS"""
+    """buat nyimpen HAS"""
     return await get_client().execute_read(
         """
         MATCH (u:User {id: $user_id})-[r:HAS_RECURRING_THEME]->(top:Topic)

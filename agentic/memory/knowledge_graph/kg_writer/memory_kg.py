@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 
 
 async def write_memory(inp: MemoryInput) -> str:
-    """compress mem node" "link user" "embed pgvector" "return new id"""
+    """compress mem, link user, embed pgvector, return new id"""
     _require(inp.summary,    "summary")
     _require(inp.user_id,    "user_id")
     _require(inp.session_id, "session_id")
@@ -70,7 +70,7 @@ async def write_memory(inp: MemoryInput) -> str:
         },
     )
 
-    # skip anchor fail
+    # skip anchor
     if not rows:
         raise RuntimeError(
             f"write_memory: Neo4j returned no rows for user={inp.user_id} "
@@ -78,7 +78,7 @@ async def write_memory(inp: MemoryInput) -> str:
             "Call _ensure_kg_anchors before writing."
         )
 
-    # log failures, retry on failure.
+    # log fail, retry fail.
     await sync_embedding_to_pgvector(
         label="Memory",
         node_id=node_id,

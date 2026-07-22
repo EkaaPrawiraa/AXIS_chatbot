@@ -1,4 +1,4 @@
-"""tts node"""
+"""tts"""
 
 from __future__ import annotations
 
@@ -67,7 +67,7 @@ class TestNode:
     async def test_v25_streaming_generator_is_materialized_to_bytes(
         self, audit, fake_openai_tts, voice_catalog,
     ) -> None:
-        """skip klo error"""
+        """skip error"""
 
         class StreamingElevenLabsFake:
             def __init__(self) -> None:
@@ -117,7 +117,7 @@ class TestNode:
             mode="v3",
             text="[softly] Tarik napas pelan-pelan.",
         )
-        # prefers v3 mode
+        # v3 mode
         state["voice_state"]["speech_response_tags"] = state["voice_state"][
             "speech_response"
         ]
@@ -225,7 +225,7 @@ class TestNode:
             mode="v3",
             text="[softly] Tarik napas. [pause] Pelan saja.",
         )
-        # buat nyimpen config
+        # buat nyimpan config
         state["voice_state"]["speech_response"] = "Tarik napas. Pelan saja."
         state["voice_state"]["speech_response_tags"] = state["voice_state"][
             "speech_response"

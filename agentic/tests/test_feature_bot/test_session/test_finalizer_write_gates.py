@@ -13,7 +13,7 @@ from agentic.agent.session.finalizer_factory import (
 
 
 class TestExperienceGate:
-    """ubah behvior"""
+    """ubah behvior ini"""
 
     def test_low_significance_rejected(self) -> None:
         assert not _should_write_experience(
@@ -32,7 +32,7 @@ class TestExperienceGate:
 
 
 class TestEmotionGate:
-    """write 24/7."""
+    """24/7 ngoding."""
 
     def test_low_intensity_rejected(self) -> None:
         assert not _should_write_emotion(
@@ -45,7 +45,7 @@ class TestEmotionGate:
         )
 
     def test_missing_intensity_defaults_to_passing(self) -> None:
-        """`0`"""
+        """skip"""
         assert _should_write_emotion({"label": "sedih", "source_text": "sedih hari ini"})
 
     def test_empty_label_rejected(self) -> None:
@@ -53,7 +53,7 @@ class TestEmotionGate:
 
 
 class TestBehaviorGate:
-    """write 24/7."""
+    """24/7 ngoding."""
 
     def test_low_significance_rejected(self) -> None:
         assert not _should_write_behavior(
@@ -101,8 +101,7 @@ class TestTriggerGate:
 
 
 class TestSafeIsoDatetime:
-    """regression: extractor returning a non-ISO placeholder (e.g. 'UNKNOWN')
-    used to reach Neo4j's datetime() raw and crash the whole Experience write"""
+    """regression: extractor, non-ISO, Neo4j, datetime, crash, whole, Experience, write"""
 
     def test_valid_iso_string_passes_through(self) -> None:
         assert _safe_iso_datetime("2026-07-10T12:00:00+00:00", fallback="FALLBACK") == "2026-07-10T12:00:00+00:00"
@@ -120,5 +119,5 @@ class TestSafeIsoDatetime:
         assert _safe_iso_datetime("", fallback="FALLBACK") == "FALLBACK"
 
     def test_z_suffix_iso_string_passes_through(self) -> None:
-        # extractor sometimes emits the Z form rather than +00:00
+        # emits Z, not +00:00
         assert _safe_iso_datetime("2026-07-10T12:00:00Z", fallback="FALLBACK") == "2026-07-10T12:00:00Z"

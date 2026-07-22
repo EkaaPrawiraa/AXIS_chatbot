@@ -1,4 +1,4 @@
-"""buat block context"""
+"""buat context"""
 
 from __future__ import annotations
 
@@ -37,7 +37,7 @@ def _retrieval_rewrite_enabled() -> bool:
 
 
 def _build_retrieval_window(state: ConversationState) -> str:
-    """append last user + curr msg"""
+    """append last user & curr msg"""
     msgs = state.get("messages") or []
     user_msgs: list[str] = []
     for m in msgs[-(_RETRIEVAL_QUERY_USER_TURNS * 4):]:
@@ -129,7 +129,7 @@ class ContextStats:
 
 
 def _format_short_term(state: ConversationState) -> str:
-    """retturn last few turn pairs"""
+    """return last few turn pairs"""
     history = state.get("messages") or []
     if not history:
         return ""
@@ -249,7 +249,7 @@ async def memory_retrieval_node(
 
 
 def _default_context_builder() -> ContextBuilderFn | None:
-    """import ctx"""
+    """ctx"""
     if os.getenv("AGENTIC_DISABLE_CONTEXT_BUILDER"):
         return None
     try:

@@ -1,4 +1,4 @@
-"""skip klo pgvector"""
+"""skip pgvector"""
 
 from __future__ import annotations
 

@@ -1,1 +1,1 @@
-"""buat agentic"""
+"""buat agen"""

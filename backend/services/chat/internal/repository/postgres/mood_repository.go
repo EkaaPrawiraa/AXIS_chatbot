@@ -16,7 +16,7 @@ func NewMoodRepository(db *sql.DB) *MoodRepository {
 	return &MoodRepository{db: db}
 }
 
-// Upsert, overwrite, Jakarta time.
+// Upsert, overwrite, Jkt.
 func (r *MoodRepository) Upsert(ctx context.Context, userID string, score int) (entity.Mood, error) {
 	row := r.db.QueryRowContext(ctx, `
 		INSERT INTO user_moods (user_id, mood_date, mood_score, updated_at)
@@ -32,7 +32,7 @@ func (r *MoodRepository) Upsert(ctx context.Context, userID string, score int) (
 	return mood, nil
 }
 
-// `ambil data`
+// ambil, buang error.
 func (r *MoodRepository) ListRecent(ctx context.Context, userID string, days int) ([]entity.Mood, error) {
 	rows, err := r.db.QueryContext(ctx, `
 		SELECT id, user_id, mood_date, mood_score, created_at, updated_at

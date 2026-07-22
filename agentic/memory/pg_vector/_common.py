@@ -1,9 +1,9 @@
-"""validate & map lbl-to-table"""
+"""`map lbl`"""
 
 from __future__ import annotations
 
 
-# buat nyimpan mapping.
+# buat nyimpan.
 
 LABEL_TO_TABLE: dict[str, str] = {
     "Memory":     "memory_embeddings",
@@ -17,7 +17,7 @@ EMBEDDABLE_LABELS: frozenset[str] = frozenset(LABEL_TO_TABLE.keys())
 
 
 def table_for(label: str) -> str:
-    """resolve node to pgvector table"""
+    """buat pgvector"""
     if label not in LABEL_TO_TABLE:
         raise ValueError(
             f"label {label!r} is not embeddable. "
@@ -35,7 +35,7 @@ def require_str(value: str | None, field_name: str) -> str:
 
 
 def require_vector(vec: list[float] | None, expected_dim: int) -> list[float]:
-    """reject w/o match."""
+    """reject."""
     if vec is None:
         raise ValueError("embedding vector is required (got None)")
     if not isinstance(vec, list):

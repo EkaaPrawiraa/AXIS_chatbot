@@ -239,7 +239,7 @@ func (u *ChatUsecase) SubmitMood(ctx context.Context, userID string, score int) 
 	return MoodDTO{Date: mood.MoodDate.Format("2006-01-02"), Score: mood.Score}, nil
 }
 
-// `trend mood`
+// `ngeliat`
 func (u *ChatUsecase) MoodTrend(ctx context.Context, userID string, days int) ([]MoodDTO, error) {
 	if err := validateUUID("userId", userID); err != nil {
 		return nil, err
@@ -555,7 +555,7 @@ type RegenerateMessageInput struct {
 	CBTState               map[string]any
 }
 
-// Regen" "aply" "history
+// aply" "history
 func (u *ChatUsecase) RegenerateMessage(ctx context.Context, input RegenerateMessageInput) (SendMessageOutput, error) {
 	if err := validateUUID("conversationId", input.SessionID); err != nil {
 		return SendMessageOutput{}, err
@@ -587,7 +587,7 @@ func (u *ChatUsecase) RegenerateMessage(ctx context.Context, input RegenerateMes
 		return SendMessageOutput{}, apperrors.Invalid("no preceding user message to regenerate a reply for")
 	}
 
-	// build hist, skip stale, fresh.
+	// buat hist, skip stale, fresh.
 	contextHistory := history[:len(history)-1]
 	agenticMessages := make([]ChatMessage, 0, len(contextHistory))
 	for _, msg := range contextHistory {
@@ -708,7 +708,7 @@ func (u *ChatUsecase) StreamMessage(ctx context.Context, input StreamMessageInpu
 		})
 	}
 
-	// stream
+	// skip klo lag
 	assistantMessage, err := u.messages.Append(ctx, entity.Message{
 		SessionID: input.SessionID,
 		UserID:    input.UserID,
@@ -723,7 +723,7 @@ func (u *ChatUsecase) StreamMessage(ctx context.Context, input StreamMessageInpu
 
 	var accumulated strings.Builder
 	tokenCount := 0
-	// survive disso.
+	// survive.
 	bgCtx := context.Background()
 
 	resp, err := u.agentic.Stream(ctx, AgenticChatRequest{
@@ -750,14 +750,14 @@ func (u *ChatUsecase) StreamMessage(ctx context.Context, input StreamMessageInpu
 				return err
 			}
 		}
-		// flush to db 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30
+		// flush 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 3
 		if tokenCount%30 == 0 {
 			_ = u.messages.UpdateStatusAndContent(bgCtx, assistantMessage.ID, "streaming", accumulated.String())
 		}
 		return nil
 	})
 	if err != nil {
-		// buat nyimpen partial content
+		// buat nyimpan
 		_ = u.messages.UpdateStatusAndContent(bgCtx, assistantMessage.ID, "streaming", accumulated.String())
 		return SendMessageOutput{}, err
 	}
@@ -925,7 +925,7 @@ func messageDTO(msg entity.Message) MessageDTO {
 	}
 }
 
-// map db to frontend, 'sent' msg if old, stream int.
+// db2front, 'sent' if old, stream int.
 func messageFrontendStatus(msg entity.Message) string {
 	switch msg.Status {
 	case "streaming":
@@ -974,7 +974,7 @@ func responseMetadata(phq9State map[string]any) map[string]any {
 	return metadata
 }
 
-// ngambil data, return nil.
+// ambil data, ngkalo nil.
 func phq9MetadataFromState(phq9State map[string]any) map[string]any {
 	if len(phq9State) == 0 {
 		return nil

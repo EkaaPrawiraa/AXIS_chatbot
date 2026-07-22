@@ -1,4 +1,4 @@
-"""test state machine"""
+"""init state"""
 
 from __future__ import annotations
 
@@ -26,7 +26,7 @@ async def test_full_run_with_hinted_distortion() -> None:
     assert turn.next_state.step is ThoughtRecordStep.CATCH_THOUGHT
     assert "satu kalimat" in turn.bot_prompt.lower()
 
-    # distort, ngambil, set, init, skip
+    # distort, get, set, init, skip
     turn = await machine.step(
         sub_state=turn.next_state,
         user_reply="aku pasti gagal final besok",
@@ -45,7 +45,7 @@ async def test_full_run_with_hinted_distortion() -> None:
     assert turn.next_state.step is ThoughtRecordStep.EVIDENCE_FOR
     assert turn.next_state.distortion == "catastrophizing"
 
-    # evidence
+    # evidence取证
     turn = await machine.step(
         sub_state=turn.next_state,
         user_reply="aku belum belajar materi bab terakhir",

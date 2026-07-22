@@ -1,4 +1,4 @@
-"""get pol"""
+"""get polini"""
 
 from __future__ import annotations
 
@@ -123,7 +123,7 @@ async def apply_sensitivity_policy(
     counts_per_tier: dict[int, int] = {}
 
     for c in candidates:
-        # gate
+        # open
         if policy.bitemporal_validity_required and not c.valid:
             await audit.log(
                 GuardrailEvent(
@@ -209,7 +209,7 @@ def _render(c: MemoryCandidate, tier: SensitivityTier) -> str | None:
             return c.summary
         if c.category:
             return f"Pola emosional terkait kategori: {c.category}"
-        # pilih sent
+        # pilih
         snippet = (c.content or "").split(".", 1)[0]
         return snippet.strip() or None
     if tier.retrieval == "category_only":

@@ -1,4 +1,4 @@
-"""skip klo error"""
+"""skip error"""
 
 from __future__ import annotations
 
@@ -20,11 +20,11 @@ ALLOWED_LAYERS: frozenset[str] = frozenset(
 
 
 class PromptNotFoundError(FileNotFoundError):
-    """nlf dgn dlm"""
+    """db conn"""
 
 
 class PromptSchemaError(ValueError):
-    """yaml ngeluar"""
+    """ngeluar"""
 
 
 
@@ -49,13 +49,13 @@ _CACHE: dict[str, PromptBundle] = {}
 
 
 def clear_cache() -> None:
-    """drop cache, use hot reload."""
+    """drop cache, hot reload."""
     _CACHE.clear()
 
 
 
 def load_prompt(ref: str) -> str:
-    """ngk kalo ngotot"""
+    """skip ngotot"""
     return load_prompt_bundle(ref).system
 
 
@@ -73,11 +73,11 @@ def load_prompt_bundle(ref: str) -> PromptBundle:
 
 
 def list_prompts() -> tuple[str, ...]:
-    """`get all`"""
+    """`get`"""
     refs: list[str] = []
     for path in sorted(PROMPTS_ROOT.rglob("*.yaml")):
         if path.parent == PROMPTS_ROOT:
-            # expose stem
+            # ngeluarkan stem
             refs.append(path.stem)
             continue
         rel = path.relative_to(PROMPTS_ROOT).with_suffix("")
@@ -96,7 +96,7 @@ def _normalize_ref(ref: str) -> str:
 
 
 def _resolve_path(ref: str) -> Path:
-    """find yaml path"""
+    """get yaml path"""
     candidates = [
         PROMPTS_ROOT / f"{ref}.yaml",
         PROMPTS_ROOT / f"{ref}.yml",

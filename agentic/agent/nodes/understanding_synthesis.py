@@ -1,9 +1,4 @@
-"""understanding_synthesis: silent internal reasoning pass, v3 pipeline only.
-
-Builds a psychological model of the user (mentalization + CBT case
-formulation + trauma-informed lens) from retrieved memory context, before
-response_generator writes a reply. Never talks to the user directly --
-response_generator translates the result into natural language."""
+"""understand_synthesis: silent, v3, mentalization, CBT, trauma, response_generator, translate."""
 
 from __future__ import annotations
 
@@ -51,7 +46,7 @@ except Exception:  # pragma: no cover
 
 @dataclass(frozen=True)
 class UnderstandingSynthesis:
-    """Structured result of one understanding_synthesis pass."""
+    """understand_synthesis."""
 
     current_emotion: str | None
     unmet_need: str | None
@@ -186,10 +181,7 @@ def _parse_synthesis_output(raw: str) -> UnderstandingSynthesis:
 
 
 async def _fetch_thought_record_history(user_id: str, *, limit: int = 3) -> list[dict[str, Any]]:
-    """HAS_THOUGHT_RECORD is written by thought_record_writer.py but was
-    never read anywhere before this -- the entire CBT thought-record trail
-    (which distortion the user already worked on, and the balanced thought
-    they reached) was invisible to retrieval."""
+    """`skip`"""
     try:
         from agentic.memory.neo4j_client import get_client
 
@@ -210,8 +202,7 @@ async def _fetch_thought_record_history(user_id: str, *, limit: int = 3) -> list
 
 
 async def _fetch_phq9_snapshot(user_id: str) -> Any | None:
-    """AssessmentRepository.get_last_phq9 already existed; it was simply
-    never consulted anywhere outside the PHQ-9 flow itself."""
+    """already existed; never consulted."""
     try:
         from agentic.memory.assessment_repo import AssessmentRepository
         from agentic.memory.pg_vector.client import get_pool
@@ -227,14 +218,6 @@ async def _fetch_phq9_snapshot(user_id: str) -> Any | None:
 
 
 async def build_synthesis_only_context(user_id: str) -> str:
-    """Private input for understanding_synthesis ONLY. This is deliberately
-    NOT added to state["kg_context"] -- response_generator (v2 or v3) never
-    receives this text at all, regardless of prompt discipline, so the
-    "never surface raw scores/clinical labels" guarantee is architectural,
-    not just a prompt instruction. Carries ThoughtRecord history and PHQ-9
-    trend so this node's understanding is genuinely informed by the user's
-    CBT/assessment history without that data ever reaching the
-    response-facing layer."""
     if not user_id:
         return ""
 
@@ -294,17 +277,11 @@ async def synthesize_understanding(
     *,
     llm: Any | None = None,
 ) -> UnderstandingSynthesis:
-    """Run one understanding_synthesis pass. Never raises -- any failure
-    (empty context, no client, call error, unparsable output) degrades to
-    an explicit insufficient-data result rather than fabricating one."""
+    """Run one understanding_synthesis pass."""
     kg_context = (state.get("kg_context") or "").strip()
     synthesis_only_context = await build_synthesis_only_context(state.get("user_id") or "")
     if not kg_context and not synthesis_only_context:
-        # Cold-start / no retrieval context of any kind: do not call the
-        # LLM just to have it reason about nothing, that is exactly the
-        # pressure that produces a fabricated narrative. A user with real
-        # CBT/PHQ-9 history but no other memory yet is NOT this case --
-        # that history alone is enough to reason from.
+        # `skip`
         return _insufficient_data_result()
 
     client = llm if llm is not None else _build_default_client()

@@ -1,4 +1,4 @@
-"""pilih CBT"""
+"""pilih CBT, skip error"""
 
 from __future__ import annotations
 
@@ -8,7 +8,7 @@ from typing import Mapping
 
 
 class CBTTechnique(str, Enum):
-    """none"""
+    """skip klo error"""
 
     NONE = "none"
     VALIDATE = "validate"
@@ -20,7 +20,7 @@ class CBTTechnique(str, Enum):
     SELF_COMPASSION = "self_compassion"
 
 
-# agentic/prompts/cbt/
+# skip
 PROMPT_REFS: Mapping[CBTTechnique, str] = {
     CBTTechnique.VALIDATE: "cbt/validate",
     CBTTechnique.REFRAME: "cbt/reframe",

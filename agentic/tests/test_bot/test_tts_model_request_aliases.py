@@ -1,4 +1,4 @@
-"""fix"""
+"""fix it"""
 from __future__ import annotations
 
 from agentic.gateway.model.chat import SynthesizeSpeechRequest, VoiceTurnRequest

@@ -55,7 +55,7 @@ async def linguistic_enrichment_node(
 
     # refresh, keep, single, preserve.
     if signals.language == "mixed":
-        # prefer indonesian base response lan downstream
+        # prefer indonesian lan downstream
         state["resolved_language"] = (
             state.get("language_pref")
             or state.get("resolved_language")

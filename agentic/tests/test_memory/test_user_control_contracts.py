@@ -1,7 +1,4 @@
-"""Contracts backing Tabel v2-user-control: view, correct, and hide a memory
-node through the real gateway service layer (agentic.gateway.service.memory_graph),
-and delete conversation history through purge_session_full. All three run
-against a live Neo4j instance, not mocks."""
+"""contracts, view, correct, hide, mem, gateway, purge, live, Neo4j"""
 
 from __future__ import annotations
 

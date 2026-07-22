@@ -22,7 +22,7 @@ logger = logging.getLogger(__name__)
 
 
 async def write_thought(inp: ThoughtInput) -> str:
-    """cosine dup pgvector node"""
+    """cos dup pg"""
     _require(inp.content,    "content")
     _require(inp.user_id,    "user_id")
     _require(inp.session_id, "session_id")
@@ -36,9 +36,9 @@ async def write_thought(inp: ThoughtInput) -> str:
         user_id=inp.user_id,
     )
 
-    # merge path
+    # merge
     if existing and existing["similarity"] >= MERGE_THRESHOLD:
-        # append msg id
+        # msg_id_akhir
         await client.execute_write(
             """
             MATCH (th:Thought {id: $id})
@@ -61,7 +61,7 @@ async def write_thought(inp: ThoughtInput) -> str:
         logger.debug("Thought merged into existing: %s", existing["id"])
         return existing["id"]
 
-    # overlap flag
+    # overlap
     if existing and existing["similarity"] >= REVIEW_THRESHOLD:
         logger.info(
             "Thought similarity %.2f in review zone -- writing new node "
@@ -112,7 +112,7 @@ async def write_thought(inp: ThoughtInput) -> str:
         },
     )
 
-    # mirrors into pgvector, flip on success.
+    # mirrors pgvector, flip ok.
     await sync_embedding_to_pgvector(
         label="Thought",
         node_id=node_id,

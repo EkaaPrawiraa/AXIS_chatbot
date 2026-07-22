@@ -1,4 +1,4 @@
-"""edges"""
+"""skip klo error"""
 
 from __future__ import annotations
 
@@ -29,7 +29,7 @@ async def write_experience(inp: ExperienceInput) -> str:
 
     client = get_client()
 
-    # dup lookup
+    # check dup
     existing = await find_similar_node(
         label="Experience",
         embedding=inp.embedding,
@@ -37,7 +37,7 @@ async def write_experience(inp: ExperienceInput) -> str:
     )
 
     if existing and existing["similarity"] >= MERGE_THRESHOLD:
-        # reinforce sig, cap 1.0, append msg id, add to edge provenance
+        # reinforce sig, cap 1.0, msg id, add prov
         await client.execute_write(
             """
             MATCH (e:Experience {id: $id})
@@ -116,7 +116,7 @@ async def write_experience(inp: ExperienceInput) -> str:
             f"session={inp.session_id} — User or Session anchor node missing."
         )
 
-    # mirrors into pgvector, flip on success.
+    # mirrors pgvector, flip ok.
     await sync_embedding_to_pgvector(
         label="Experience",
         node_id=node_id,

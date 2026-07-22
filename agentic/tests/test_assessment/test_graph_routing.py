@@ -42,7 +42,7 @@ class TestRouteAfterDialogue:
         assert route_after_dialogue({}) == "response_generator"
 
 
-# buat ngelip
+# elip ngelip
 
 
 class TestRouteAfterGuardrail:

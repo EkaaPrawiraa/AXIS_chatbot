@@ -13,7 +13,7 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 )
 
-// `env buat`
+// buat nyimpen config
 func ClientIDFromEnv() string {
 	return strings.TrimSpace(os.Getenv("GOOGLE_CLIENT_ID"))
 }
@@ -26,7 +26,7 @@ var googleIssuers = map[string]bool{
 	"https://accounts.google.com": true,
 }
 
-// subset id payload getToken
+// get token
 type Claims struct {
 	Subject       string // "sub", Google's stable per-account id
 	Email         string

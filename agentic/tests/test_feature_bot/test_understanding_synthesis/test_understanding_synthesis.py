@@ -1,8 +1,4 @@
-"""understanding_synthesis: the grounding-safety test (empty kg_context ->
-insufficient_data, no fabricated narrative) matters most here -- this is
-the node most exposed to hallucination risk in the v3 pipeline, mirroring
-the exact regression class the Arya cold-start decontamination this
-session was about."""
+"""empty kg_context, insufficient_data, no narrative, high risk."""
 
 from __future__ import annotations
 
@@ -66,10 +62,7 @@ _VALID_JSON = """{
 
 
 def test_empty_kg_context_short_circuits_without_calling_llm() -> None:
-    """The most important test in this file: no retrieval context means no
-    LLM call at all, not a call that might fabricate a narrative from
-    nothing. Cold-start users (like the Arya persona) must never get a
-    confidently-worded psychological read manufactured from empty data."""
+    """no retrieval, no LLM, no fabricated narrative."""
     llm = FakeSynthesisLLM(replies=[_VALID_JSON])
 
     async def _run() -> UnderstandingSynthesis:

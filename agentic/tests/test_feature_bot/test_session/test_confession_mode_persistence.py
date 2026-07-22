@@ -1,8 +1,4 @@
-"""Contract: Confession Space turns must never reach the session-activity
-table that the sweeper polls to discover sessions for KG finalization, so a
-confession conversation is structurally invisible to long-term memory writing
-(session_end.py skips activity_repo.upsert_activity() by omission, not by a
-guard inside the finalizer itself)."""
+"""skip conv discovery"""
 
 from __future__ import annotations
 

@@ -44,13 +44,13 @@ __all__ = [
     "EMBED_DIM",
     "embed_text",
     "embed_many",
-    # write it short
+    # write short
     "upsert_memory",
     "upsert_experience",
     "upsert_thought",
     "upsert_trigger",
     "upsert_behavior",
-    # baca
+    # baca, skip
     "SearchHit",
     "search_memory",
     "search_experience",

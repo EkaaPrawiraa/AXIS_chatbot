@@ -1,4 +1,4 @@
-"""update_node_property."""
+"""update."""
 
 from __future__ import annotations
 
@@ -16,7 +16,7 @@ def _collect(**kwargs: Any) -> dict[str, Any]:
     return {k: v for k, v in kwargs.items() if v is not _NOT_GIVEN}
 
 
-# wraps
+# wraps	end
 
 async def update_emotion(
     emotion_id: str,

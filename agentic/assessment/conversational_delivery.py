@@ -28,7 +28,7 @@ from agentic.config.llm_models import (
 logger = logging.getLogger(__name__)
 
 
-# msg "classes
+# classes
 
 try:  # pragma: no cover - import behavior depends on environment
     from langchain_core.messages import (  # type: ignore[import-not-found]
@@ -86,7 +86,7 @@ def build_greeting(language: str) -> str:
 
 
 def build_offer(language: str) -> str:
-    """start"""
+    """skip klo error"""
     if language == "id":
         return (
             "Sudah beberapa minggu sejak terakhir kali kita ngecek gimana "
@@ -101,7 +101,7 @@ def build_offer(language: str) -> str:
 
 
 def build_item_prompt(item_id: int, language: str) -> str:
-    """buat msg PHQ-9"""
+    """buat msg 'PHQ-9"""
     question = item_text(item_id, language)
     options = options_with_scores(language)
     if language == "id":
@@ -120,7 +120,7 @@ def build_item_prompt(item_id: int, language: str) -> str:
 
 
 def build_clarification(item_id: int, language: str, prior_text: str) -> str:
-    """cek score?"""
+    """cek?"""
     if language == "id":
         return (
             f"Aku ingin pastiin paham jawabanmu untuk pertanyaan {item_id}. "
@@ -175,7 +175,7 @@ async def build_clarification_explanation(
 
 
 def build_acknowledgement(item_id: int, language: str) -> str:
-    """nto next"""
+    """nto"""
     if language == "id":
         return f"Oke, aku catat. Lanjut ke pertanyaan {item_id + 1}."
     return f"Got it, noted. Moving on to question {item_id + 1}."
@@ -247,7 +247,7 @@ _JSON_RE = re.compile(r"\{.*\}", re.DOTALL)
 
 
 def _parse_score_json(raw: str) -> tuple[int, float]:
-    """get score & confidence"""
+    """get_score & get_confidence"""
     if not raw:
         return 0, 0.0
     match = _JSON_RE.search(raw)
@@ -287,7 +287,7 @@ async def build_feedback_message(
     item9_flagged: bool,
     llm: Any | None = None,
 ) -> str:
-    """ekip feedback."""
+    """ngelapkan"""
     use_llm_feedback = os.getenv("PHQ9_FEEDBACK_USE_LLM", "").strip().lower() in {
         "1",
         "true",

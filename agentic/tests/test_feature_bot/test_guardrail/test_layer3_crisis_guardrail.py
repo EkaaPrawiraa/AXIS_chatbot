@@ -1,4 +1,4 @@
-"""test l3 pre-gen crisis"""
+"""test l3 pre-gen"""
 
 from __future__ import annotations
 
@@ -50,7 +50,7 @@ class TestPreGenNode:
 
     @pytest.mark.asyncio
     async def test_phq9_in_progress_defers_crisis(self, audit) -> None:
-        """`skip phq9_in_flight`"""
+        """skip"""
         state = empty_conversation_state(user_id="u1", session_id="s1")
         state["current_message"] = "ingin mengakhiri hidupnya"
         phq = empty_phq9_state()
@@ -62,7 +62,7 @@ class TestPreGenNode:
         assert state.get("safety_flag") != "crisis", (
             "crisis must defer while PHQ-9 is active"
         )
-        # audit trail
+        # audit  trail
         assert any(
             e.event_type == "semantic_crisis_deferred_phq9"
             for e in audit.events
@@ -93,7 +93,7 @@ class TestPreGenNode:
         state["phq9_state"] = phq
 
         await crisis_guardrail_node(state, audit=audit)
-        # finish PHQ-9
+        # finish 9
         assert state.get("safety_flag") != "crisis"
 
 

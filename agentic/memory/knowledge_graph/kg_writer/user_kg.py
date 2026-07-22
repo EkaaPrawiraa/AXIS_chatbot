@@ -15,12 +15,12 @@ async def ensure_user_node(
     user_id: str,
     pg_pool: Any,
 ) -> bool:
-    """r/fetch/pg&merge/neo4j"""
+    """fetch/pg&merge/neo4j"""
     if not user_id:
         logger.warning("ensure_user_node: user_id is empty — skipping")
         return False
 
-    # `dbr`
+    # dbconn
     display_name: str = ""
     preferred_language: str = "id"
 
@@ -47,7 +47,7 @@ async def ensure_user_node(
             exc,
         )
 
-    # merge&with
+    # merge_with
     try:
         await get_client().execute_write(
             """

@@ -1,11 +1,7 @@
-"""Regression: _rehydrate_experience used to bucket-collect each node type
-(collect(DISTINCT trigger), collect(DISTINCT emotion), ...) before joining
-them into one flat "Triggers: A, B -> Emotions: X, Y" string. When one
-experience had two parallel triggers/emotions, the rendered text implied a
-single causal chain even though the schema has no edge correlating which
-trigger caused which emotion, and which emotion's own thought/behavior got
-mixed with another emotion's. Fixed by grouping Thought/Behavior under the
-Emotion that actually produced them (the one pairing the schema supports)."""
+"""Regression: _rehydrate_experience used to bucket-collect each node type separately then join
+them into one flat "Triggers: A, B -> Emotions: X, Y" string, implying a single causal chain even
+when the schema has no edge correlating which trigger caused which emotion. Fixed by grouping
+Thought/Behavior under the Emotion that actually produced them."""
 
 import pytest
 
@@ -89,8 +85,7 @@ async def test_two_emotions_keep_their_own_thought_and_behavior(
     assert cemas_behaviors == {"begadang ngerjain revisi"}
     assert kecewa_behaviors == {"menghindari grup angkatan"}
 
-    # Flat backward-compat union still populated for compute_relation_richness
-    # and PHQ-noise filtering, which only check truthiness/content.
+    # Flat backward-compat union still populated for compute_relation_richness and PHQ-noise filtering, which only check truthiness/content
     assert {e for e in rec["emotions"]} == {"cemas", "kecewa"}
     assert len(rec["thoughts"]) == 2
     assert len(rec["behaviors"]) == 2
@@ -100,9 +95,7 @@ async def test_two_emotions_keep_their_own_thought_and_behavior(
     rendered = _render_causal_chain(
         triggers=rec["triggers"], emotion_chains=rec["emotion_chains"]
     )
-    # The old bug: rendering would cross-join, e.g. implying "sidang ditunda"
-    # caused "kecewa" via a shared flat arrow. New rendering keeps each
-    # emotion's own thought/behavior nested under it, not fused across.
+    # Old bug cross-joined emotions (e.g. "sidang ditunda" appearing to cause "kecewa" via a shared flat arrow); now each emotion's thought/behavior nests under only its own emotion
     assert "cemas" in rendered and "kecewa" in rendered
     assert "aku pasti gagal sidang" in rendered
     assert "aku ketinggalan dari teman seangkatan" in rendered
